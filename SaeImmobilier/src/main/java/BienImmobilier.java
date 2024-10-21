@@ -1,5 +1,5 @@
 
-public class Location {
+public class BienImmobilier {
 	private String adresse;
 	private int nouvelIndice;
 	private int ancienIndice;
@@ -13,7 +13,7 @@ public class Location {
 	private float repartitionEntretien;
 	private int iDLocation;
 
-	public Location(int iDLocation, int codePostal, String adresse) {
+	public BienImmobilier(int iDLocation, int codePostal, String adresse) {
 		this.iDLocation = iDLocation;
 		this.codePostal = codePostal;
 		this.adresse = adresse;
