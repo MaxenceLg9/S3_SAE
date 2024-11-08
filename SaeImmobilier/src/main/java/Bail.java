@@ -9,16 +9,30 @@ public class Bail extends Date{
 	private float regularisationCharge;
 	private Date dateDebut;
 	private Date dateFin;
-	
+	private List<Logement> logements;
+	private List<Locataire> locataires;
 
 	public Bail(Date dateDebut) {
 		this.date = dateDebut;
+		this.logements=new ArrayList<>();
+		this.locataires=new ArrayList<>();
 	}
 
 	public int getNbMoisLoues() {
 		return this.nbMoisLoues;
 	}
-
+	public List<Logement> getLogements() {
+		return this.logements;
+	}
+	public List<Locataire> getLocataires() {
+		return this.locataires;
+	}
+	public void ajouterLocataire(Locataire locataire) {
+		this.locataires.add(locataire);
+	}
+	public void ajouterLogement(Logement logement) {
+		this.logements.add(logement);
+	}
 	public void setNbMoisLoues(int nbMoisLoues) {
 		this.nbMoisLoues = nbMoisLoues;
 	}
