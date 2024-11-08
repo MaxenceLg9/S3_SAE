@@ -1,5 +1,5 @@
 
-public class Logement extends BienLouable {
+public class Logement extends Immeuble {
 
 	public Logement(int iDLocation, int codePostal, String adresse) {
 		super(iDLocation, codePostal, adresse);
