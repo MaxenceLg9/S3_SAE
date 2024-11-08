@@ -1,4 +1,4 @@
-
+package modele;
 public class Immeuble {
 	private String adresse;
 	private int nouvelIndice;
