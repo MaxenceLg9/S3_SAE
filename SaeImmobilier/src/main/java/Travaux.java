@@ -1,3 +1,4 @@
+package modele;
 public class Travaux {
 	private String NumeroFacture;
 	private String Entreprise;
@@ -7,6 +8,7 @@ public class Travaux {
 	private Date Date;
 	private String Nature;
 	private String NumeroDevis;
+	private Float MontantADeclarer;
 
 	public Travaux(String NumeroDeFacture, String Entreprise, Date Date) {
 		this.Date = Date;
@@ -76,5 +78,9 @@ public class Travaux {
 
 	public void setReduction(Float reduction) {
 		this.Reduction = reduction;
+	}
+	public Float getMontantADeclarer() {
+		this.MontantADeclarer=(this.Montant-this.MontantNonDeductible)*(1-this.Reduction);
+		return this.MontantADeclarer;
 	}
 }

@@ -1,4 +1,4 @@
-
+package modele;
 public class Locataire {
 
 	private int numero;
@@ -7,12 +7,13 @@ public class Locataire {
 	private String email;
 	private String nom;
 	private String prenom;
-
+	private List<Baux> baux;
 	public Locataire(int numero, String nom, String prenom, String email) {
 		this.email = email;
 		this.numero = numero;
 		this.nom = nom;
 		this.prenom = prenom;
+		this.baux=new ArrayList<>();
 	}
 
 	public int getNumero() {
@@ -62,5 +63,10 @@ public class Locataire {
 	public void setPrenom(String prenom) {
 		this.prenom = prenom;
 	}
-
+	public List<Bail> getBaux(){
+		return this.baux;
+	}
+	public void ajouterBail(Bail bail) {
+		this.baux.add(bail);
+	}
 }
