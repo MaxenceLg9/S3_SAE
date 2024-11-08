@@ -1,5 +1,5 @@
 package modele;
-public class Logement extends BienImmobilier {
+public class Logement {
 	private String lieuImmeuble;
 	private float repartitionElectricite;
 	private float repartitionOrduresMenageres;
