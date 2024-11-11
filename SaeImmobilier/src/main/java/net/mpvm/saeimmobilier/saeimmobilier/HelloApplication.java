@@ -5,10 +5,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
 
 public class HelloApplication extends Application {
     @Override
@@ -19,9 +21,12 @@ public class HelloApplication extends Application {
         //stage.setFullScreen(true);
         Group root = new Group();
         Scene scene = new Scene(root, 320,240, Color.BLACK);
-        Image icon = new Image(HelloApplication.class.getResource("icon.png").toString());
+        Image icon = new Image(HelloApplication.class.getResource("icon_immobilier.png").toString());
         stage.getIcons().add(icon);
         stage.setScene(scene);
+        stage.setFullScreen(true);
+        stage.setFullScreenExitHint("Press Esc to exit full screen");
+        stage.setFullScreenExitKeyCombination(KeyCombination.keyCombination("esc"));
         stage.show();
     }
 
