@@ -1,6 +1,8 @@
 package modele;
 
-public class Bail extends Date{
+import java.util.ArrayList;
+
+public class Bail {
 	private int nbMoisLoues;
 	private float provisionSurCharge;
 	private float factureEau;
@@ -9,11 +11,11 @@ public class Bail extends Date{
 	private float regularisationCharge;
 	private Date dateDebut;
 	private Date dateFin;
-	private List<Logement> logements;
-	private List<Locataire> locataires;
+	private ArrayList<Logement> logements;
+	private ArrayList<Locataire> locataires;
 
-	public Bail(Date dateDebut) {
-		this.date = dateDebut;
+	public Bail(Date dateDebut,Integer Annee, Integer Mois, Integer Jour) {
+        this.dateDebut = new Date(Annee, Mois, Jour);
 		this.logements=new ArrayList<>();
 		this.locataires=new ArrayList<>();
 	}
@@ -21,10 +23,10 @@ public class Bail extends Date{
 	public int getNbMoisLoues() {
 		return this.nbMoisLoues;
 	}
-	public List<Logement> getLogements() {
+	public ArrayList<Logement> getLogements() {
 		return this.logements;
 	}
-	public List<Locataire> getLocataires() {
+	public ArrayList<Locataire> getLocataires() {
 		return this.locataires;
 	}
 	public void ajouterLocataire(Locataire locataire) {
@@ -70,11 +72,11 @@ public class Bail extends Date{
 	}
 
 	public float getRegularitationCharge() {
-		return this.regularitationCharge;
+		return this.regularisationCharge;
 	}
 
 	public void setRegularitationCharge(float regularitationCharge) {
-		this.regularitationCharge = regularitationCharge;
+		this.regularisationCharge = regularitationCharge;
 	}
 
 	public Date getDateDebut() {
@@ -85,13 +87,9 @@ public class Bail extends Date{
 		this.dateDebut = dateDebut;
 	}
 	public Date getDateFin() {
-		int nbMois=this.nbMoisLoues;
-		int anneeARajouter=0;
-		while (!this.getNbMoisLoues()+this.dateDebut.getMois()<=12) {
-			int nbMois=nbMois-12;
-			int anneeARajouter=+1;
-		}	
-		
+		while (!(this.getNbMoisLoues()+this.dateDebut.getMois()<=12)) {
+			this.dateFin.setAnnee(this.dateFin.getAnnee()+1);
+		}
 		this.dateFin=this.dateDebut.setMois(this.dateDebut.getMois()+this.getNbMoisLoues());
 		return this.dateFin;
 		

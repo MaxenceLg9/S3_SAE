@@ -16,7 +16,7 @@ public class Date {
 				}
 			}
 		}
-		if (Mois == 2 && Jour > 28 && !Annee % 4 == 0) {
+		if (Mois == 2 && Jour > 28 && !(Annee % 4 == 0)) {
 			throw new IllegalArgumentException("Jour trop élevé pour février");
 		}
 		if (Mois == 2 || Mois == 4 || Mois == 6 || Mois == 9 || Mois == 11 && Jour > 30) {
@@ -48,7 +48,7 @@ public class Date {
 				}
 			}
 		}
-		if (Mois == 2 && Jour > 28 && !Annee % 4 == 0) {
+		if (Mois == 2 && Jour > 28 && !(Annee % 4 == 0)) {
 			throw new IllegalArgumentException("Jour trop élevé pour février");
 		}
 		this.Annee = annee;
@@ -67,7 +67,7 @@ public class Date {
 				}
 			}
 		}
-		if (Mois == 2 && Jour > 28 && !Annee % 4 == 0) {
+		if (Mois == 2 && Jour > 28 && !(Annee % 4 == 0)) {
 			throw new IllegalArgumentException("Jour trop élevé pour février");
 		}
 		if (Mois == 2 || Mois == 4 || Mois == 6 || Mois == 9 || Mois == 11 && Jour > 30) {
@@ -86,7 +86,7 @@ public class Date {
 				}
 			}
 		}
-		if (Mois == 2 && Jour > 28 && !Annee % 4 == 0) {
+		if (Mois == 2 && Jour > 28 && !(Annee % 4 == 0)) {
 			throw new IllegalArgumentException("Jour trop élevé pour février");
 		}
 		if (Mois == 2 || Mois == 4 || Mois == 6 || Mois == 9 || Mois == 11 && Jour > 30) {

@@ -1,12 +1,15 @@
 package modele;
+
+import java.util.ArrayList;
+
 public class Logement {
 	private String lieuImmeuble;
 	private float repartitionElectricite;
 	private float repartitionOrduresMenageres;
 	private float repartitionEntretien;
 	private int idLocation;
-	private List<Travaux> travaux;
-	private List<Bail> baux;
+	private ArrayList<Travaux> travaux;
+	private ArrayList<Bail> baux;
 	
 	public Logement(int idLocation, String lieu) {
 		this.idLocation=idLocation;
@@ -22,10 +25,10 @@ public class Logement {
 	public int getIdLocation() {
 		return this.idLocation;
 	}
-	public Travaux[] getTravaux() {
+	public ArrayList<Travaux> getTravaux() {
 		return this.travaux;
 	}
-	public Bail[] getBaux() {
+	public ArrayList<Bail> getBaux() {
 		return this.baux;
 	}
 	public float getRepartitionElectricite() {
