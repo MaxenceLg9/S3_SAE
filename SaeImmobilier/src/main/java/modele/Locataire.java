@@ -1,4 +1,7 @@
 package modele;
+
+import java.util.ArrayList;
+
 public class Locataire {
 
 	private int numero;
@@ -7,7 +10,7 @@ public class Locataire {
 	private String email;
 	private String nom;
 	private String prenom;
-	private List<Baux> baux;
+	private ArrayList<Bail> baux;
 	public Locataire(int numero, String nom, String prenom, String email) {
 		this.email = email;
 		this.numero = numero;
@@ -63,7 +66,7 @@ public class Locataire {
 	public void setPrenom(String prenom) {
 		this.prenom = prenom;
 	}
-	public List<Bail> getBaux(){
+	public ArrayList<Bail> getBaux(){
 		return this.baux;
 	}
 	public void ajouterBail(Bail bail) {
