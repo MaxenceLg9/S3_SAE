@@ -19,7 +19,7 @@ CREATE TABLE Bail(
     DateFin Date
 );
 
-CREATE TABLE AssocieBail (
+CREATE TABLE AssocieBailLocataire (
      id_bail INTEGER,
      id_Locataire INTEGER,
      PRIMARY KEY (id_bail, id_Locataire),
