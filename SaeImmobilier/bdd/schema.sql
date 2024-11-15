@@ -26,3 +26,4 @@ CREATE TABLE AssocieBail (
      FOREIGN KEY (id_bail) REFERENCES Bail(id_bail),
      FOREIGN KEY (id_Locataire) REFERENCES Locataire(id_Locataire)
 );
+
