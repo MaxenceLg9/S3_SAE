@@ -25,7 +25,7 @@ public class HelloApplication extends Application {
         stage.getIcons().add(icon);
         stage.setScene(scene);
         stage.setFullScreen(true);
-        stage.setFullScreenExitHint("Press Esc to exit full screen");
+        stage.setFullScreenExitHint("");
         stage.setFullScreenExitKeyCombination(KeyCombination.keyCombination("esc"));
         stage.show();
     }
