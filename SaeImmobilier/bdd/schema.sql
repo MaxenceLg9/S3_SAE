@@ -19,10 +19,11 @@ CREATE TABLE Bail(
     DateFin Date
 );
 
-CREATE TABLE AssocieBail (
+CREATE TABLE AssocieBailLocataire (
      id_bail INTEGER,
      id_Locataire INTEGER,
      PRIMARY KEY (id_bail, id_Locataire),
      FOREIGN KEY (id_bail) REFERENCES Bail(id_bail),
      FOREIGN KEY (id_Locataire) REFERENCES Locataire(id_Locataire)
 );
+
