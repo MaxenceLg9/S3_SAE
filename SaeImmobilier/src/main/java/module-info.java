@@ -1,4 +1,4 @@
-module net.mpvm.saeimmobilier.saeimmobilier {
+module net.mpvm.saeimmobilier {
     requires javafx.controls;
     requires javafx.fxml;
     requires javafx.web;
@@ -12,6 +12,10 @@ module net.mpvm.saeimmobilier.saeimmobilier {
     requires com.almasb.fxgl.all;
     requires java.desktop;
 
-    opens net.mpvm.saeimmobilier.saeimmobilier to javafx.fxml;
-    exports net.mpvm.saeimmobilier.saeimmobilier;
+    opens net.mpvm.saeimmobilier.data.fxml to javafx.fxml;
+    opens net.mpvm.saeimmobilier.data.images to javafx.fxml;
+    exports net.mpvm.saeimmobilier.vue;
+    opens net.mpvm.saeimmobilier.vue to javafx.fxml;
+    exports net.mpvm.saeimmobilier.controleur;
+    opens net.mpvm.saeimmobilier.controleur to javafx.fxml;
 }

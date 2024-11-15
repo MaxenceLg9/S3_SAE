@@ -1,4 +1,4 @@
-package net.mpvm.saeimmobilier.saeimmobilier;
+package net.mpvm.saeimmobilier.controleur;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;

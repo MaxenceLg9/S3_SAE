@@ -1,30 +1,24 @@
-package net.mpvm.saeimmobilier.saeimmobilier;
+package net.mpvm.saeimmobilier.vue;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCombination;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.net.URL;
 
 public class HelloApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("connexion.fxml"));
-        //Scene scene = new Scene(fxmlLoader.load(), 320, 240);
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/net/mpvm/saeimmobilier/data/fxml/connexion.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 700, 550);
         stage.setTitle("Connexion");
-        //stage.setFullScreen(true);
-        Group root = new Group();
-        Scene scene = new Scene(root, 320,240, Color.BLACK);
-        Image icon = new Image(HelloApplication.class.getResource("icon_immobilier.png").toString());
+        Image icon = new Image(getClass().getResource("/net/mpvm/saeimmobilier/data/images/icon_immobilier.png").toString());
         stage.getIcons().add(icon);
         stage.setScene(scene);
-        stage.setFullScreen(true);
+        //stage.setFullScreen(true);
         stage.setFullScreenExitHint("");
         stage.setFullScreenExitKeyCombination(KeyCombination.keyCombination("esc"));
         stage.show();
