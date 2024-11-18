@@ -48,7 +48,7 @@ public class Assurance {
     }
 
     // Méthode getMontantQuotité
-    public float getMontantQuotité() {
+    public float getMontantQuotite() {
         return this.quotiteJurisprudence;
     }
 
@@ -71,9 +71,9 @@ public class Assurance {
     }
 
     // Méthode pour valider la cohérence des montants calculés
-    public boolean validerCohérenceAssurance() {
-        float totalCalculé = this.TotalAssurance();
-        if (totalCalculé < 0 || totalCalculé != (this.quotiteJurisprudence + this.protectionJuridique + this.prime)) {
+    public boolean validerCoherenceAssurance() {
+        float totalCalcule = this.TotalAssurance();
+        if (totalCalcule < 0 || totalCalcule != (this.quotiteJurisprudence + this.protectionJuridique + this.prime)) {
             throw new IllegalStateException("Incohérence détectée dans les montants d'assurance.");
         }
         return true;

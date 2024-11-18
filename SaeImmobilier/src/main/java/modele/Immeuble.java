@@ -12,9 +12,6 @@ public class Immeuble {
 	private String ville;
 	private int codePostal;
 	private String lieuImmeuble;
-	private float repartitionElectricite;
-	private float repartitionOrduresMenageres;
-	private float repartitionEntretien;
 	private int idLocation;
 	private String typeBien;
 	private List<Bien> biensAssocies;
@@ -97,39 +94,6 @@ public class Immeuble {
 		this.lieuImmeuble = lieuImmeuble;
 	}
 
-	public float getRepartitionElectricite() {
-		return repartitionElectricite;
-	}
-
-	public void setRepartitionElectricite(float repartitionElectricite) throws IllegalArgumentException {
-		if (repartitionElectricite < 0 || repartitionElectricite > 1) {
-			throw new IllegalArgumentException("Le pourcentage doit être entre 0 et 1.");
-		}
-		this.repartitionElectricite = repartitionElectricite;
-	}
-
-	public float getRepartitionOrduresMenageres() {
-		return repartitionOrduresMenageres;
-	}
-
-	public void setRepartitionOrduresMenageres(float repartitionOrduresMenageres) throws IllegalArgumentException {
-		if (repartitionOrduresMenageres < 0 || repartitionOrduresMenageres > 1) {
-			throw new IllegalArgumentException("Le pourcentage doit être entre 0 et 1.");
-		}
-		this.repartitionOrduresMenageres = repartitionOrduresMenageres;
-	}
-
-	public float getRepartitionEntretien() {
-		return repartitionEntretien;
-	}
-
-	public void setRepartitionEntretien(float repartitionEntretien) throws IllegalArgumentException {
-		if (repartitionEntretien < 0 || repartitionEntretien > 1) {
-			throw new IllegalArgumentException("Le pourcentage doit être entre 0 et 1.");
-		}
-		this.repartitionEntretien = repartitionEntretien;
-	}
-
 	public int getIdLocation() {
 		return idLocation;
 	}
@@ -167,11 +131,11 @@ public class Immeuble {
 		this.biensAssocies.add(bien);
 	}
 
-	public void verifierRepartitionCharges(float taxeOrdures) throws IllegalArgumentException {
-		float totalRepartition = repartitionElectricite + repartitionOrduresMenageres + repartitionEntretien;
-		if (totalRepartition <= taxeOrdures) {
-			throw new IllegalArgumentException("Le total des répartitions doit être strictement supérieur à la taxe des ordures.");
-		}
+	public Assurance getAssurance() {
+		return this.assurance;
+	}
+	public void setAssurance(Assurance assurance) {
+		this.assurance = assurance;
 	}
 
 	public void mettreAJourIndice(int nouvelIndice) throws IllegalArgumentException {
