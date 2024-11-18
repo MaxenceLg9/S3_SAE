@@ -4,33 +4,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Immeuble {
-	private float iR; // Taux d'intérêt ou autre valeur
 	private int idImmeuble;
 	private List<Bien> biensAssocies;
 	private List<Travaux> travauxAssocies;
 
 	// Constructeur
-	public Immeuble(int Immeuble) {
-		this.idImmeuble = Immeuble;
+	public Immeuble(int idImmeuble) {
+		this.idImmeuble = idImmeuble;
 		this.biensAssocies = new ArrayList<>();
 		this.travauxAssocies = new ArrayList<>();
 	}
 
 	// Getters et Setters
 
-	public float getiR() {
-		return iR;
-	}
-
-	public void setiR(float iR) {
-		this.iR = iR;
-	}
-
-	public int getIdLocation() {
+	public int getIdImmeuble() {
 		return idImmeuble;
 	}
 
-	public void setIdLocation(int idLocation) {
+	public void setIdImmeuble(int idImmeuble) {
 		this.idImmeuble = idImmeuble;
 	}
 
@@ -42,7 +33,11 @@ public class Immeuble {
 		this.biensAssocies = biensAssocies;
 	}
 
+	public List<Travaux> getTravauxAssocies() {
+		return travauxAssocies;
+	}
 
-
-
+	public void setTravauxAssocies(List<Travaux> travauxAssocies) {
+		this.travauxAssocies = travauxAssocies;
+	}
 }

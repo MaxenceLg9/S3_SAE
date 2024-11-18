@@ -8,6 +8,9 @@ public class Bien {
     private String ville;
     private int codePostal;
     private Assurance assurance;
+    private float iR; // Taux d'intérêt ou autre valeur
+
+
     public Bien(String ville, int CodePostal, String adresse) {
         this.ville = ville;
         this.codePostal = CodePostal;
@@ -41,6 +44,12 @@ public class Bien {
     public void setAdresse(String adresse) {
         this.adresse = adresse;
     }
+    public float getiR() {
+        return iR;
+    }
 
+    public void setiR(float iR) {
+        this.iR = iR;
+    }
 
 }

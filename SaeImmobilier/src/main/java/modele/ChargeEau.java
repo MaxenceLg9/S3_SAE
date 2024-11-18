@@ -7,8 +7,8 @@ public class ChargeEau extends Charges{
     private float PartieVariable;
     private int AncienIndice;
 
-    public ChargeEau(Bail bail) {
-        super(bail);
+    public ChargeEau(int IdCharges) {
+        super(IdCharges);
     }
     public int getNouvelIndice() {
         return NouvelIndice;

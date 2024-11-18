@@ -13,7 +13,7 @@ public class Locataire {
 	private ArrayList<Bail> baux;
 
 
-	public Locataire(int numero, String nom, String prenom, String email) {
+	private Locataire(int numero, String nom, String prenom, String email) {
 		this.email = email;
 		this.numero = numero;
 		this.nom = nom;

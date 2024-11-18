@@ -15,7 +15,20 @@ public class Proprietaire {
 	private String Adresse;
 	private ArrayList<Bien> biensLoues;
 	private int IdProprietaire;
-
+	private Proprietaire(int IdProprietaire,String Email,String MotDePasse) {
+		Pattern pattern = Pattern.compile("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$");
+		Matcher matcher = pattern.matcher(Email);
+		if (!matcher.matches()) {
+			throw new IllegalArgumentException("Email non valide");
+		}
+		if (MotDePasse.length() < 8 || MotDePasse.length() > 24) {
+			throw new IllegalArgumentException("Le mot de passe doit être compris entre 8 et 24 caractères.");
+		}
+		this.Email = Email;
+		this.IdProprietaire = IdProprietaire;
+		this.MotDePasse = MotDePasse;
+		this.biensLoues = new ArrayList<>();
+	}
 	public Proprietaire(String Email, String MotDePasse) throws IllegalArgumentException {
 		Pattern pattern = Pattern.compile("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$");
 		Matcher matcher = pattern.matcher(Email);
@@ -110,7 +123,7 @@ public class Proprietaire {
 		float totalCharges = 0;
 
 		if (biensLoues != null) {
-			for (Bien logement : biensLoues) {
+			for (Bien logement : biensLoues.getBaux()) {
 				for (Bail bail : logement.getBaux()) {
 					// Accumule les répartitions des locataires associées au bail
 					for (Float part : bail.getRepartitionElectricite().values()) {
