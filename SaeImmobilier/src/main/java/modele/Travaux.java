@@ -11,6 +11,8 @@ public class Travaux {
 	private Float MontantADeclarer;
 	private String entrepriseDevis;
 	private Float montantDevis;
+	private Immeuble immeuble;
+	private Bien bien;
 
 	public Travaux(String NumeroDeFacture, String Entreprise, Date Date) {
 		this.Date = Date;
@@ -95,7 +97,6 @@ public class Travaux {
 		this.recuperableImpots = impots;
 		this.recuperableLocataire = locataire;
 	}
-
 
 	public void associerDevis(String entreprise, Float montant) throws IllegalArgumentException {
 		if (this.entrepriseDevis != null && !this.entrepriseDevis.equals(entreprise)) {

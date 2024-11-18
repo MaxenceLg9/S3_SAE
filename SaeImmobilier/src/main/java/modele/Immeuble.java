@@ -8,26 +8,30 @@ public class Immeuble {
 	private int nouvelIndice;
 	private int ancienIndice;
 	private float partieFixe;
-	private float iR;
+	private float iR; // Taux d'intérêt ou autre valeur
 	private String ville;
 	private int codePostal;
 	private String lieuImmeuble;
-	private float repartitionElectricité;
+	private float repartitionElectricite;
 	private float repartitionOrduresMenageres;
 	private float repartitionEntretien;
-	private int iDLocation;
+	private int idLocation;
 	private String typeBien;
-	private List<Logement> biensAssocies;
+	private List<Bien> biensAssocies;
+	private Assurance assurance;
+	private List<Travaux> travauxAssocies;
 
-	public Immeuble(int iDLocation, int codePostal, String adresse) {
-		this.iDLocation = iDLocation;
+	// Constructeur
+	public Immeuble(int idLocation, int codePostal, String adresse) {
+		this.idLocation = idLocation;
 		this.codePostal = codePostal;
 		this.adresse = adresse;
-		this.biensAssocies = new ArrayList<Logement>();
+		this.biensAssocies = new ArrayList<>();
 	}
 
+	// Getters et Setters
 	public String getAdresse() {
-		return this.adresse;
+		return adresse;
 	}
 
 	public void setAdresse(String adresse) {
@@ -35,15 +39,18 @@ public class Immeuble {
 	}
 
 	public int getNouvelIndice() {
-		return this.nouvelIndice;
+		return nouvelIndice;
 	}
 
-	public void setNouvelIndice(int nouvelIndice) {
+	public void setNouvelIndice(int nouvelIndice) throws IllegalArgumentException {
+		if (nouvelIndice < ancienIndice) {
+			throw new IllegalArgumentException("Le nouvel indice ne peut pas être inférieur à l'ancien.");
+		}
 		this.nouvelIndice = nouvelIndice;
 	}
 
 	public int getAncienIndice() {
-		return this.ancienIndice;
+		return ancienIndice;
 	}
 
 	public void setAncienIndice(int ancienIndice) {
@@ -51,7 +58,7 @@ public class Immeuble {
 	}
 
 	public float getPartieFixe() {
-		return this.partieFixe;
+		return partieFixe;
 	}
 
 	public void setPartieFixe(float partieFixe) {
@@ -59,7 +66,7 @@ public class Immeuble {
 	}
 
 	public float getiR() {
-		return this.iR;
+		return iR;
 	}
 
 	public void setiR(float iR) {
@@ -67,7 +74,7 @@ public class Immeuble {
 	}
 
 	public String getVille() {
-		return this.ville;
+		return ville;
 	}
 
 	public void setVille(String ville) {
@@ -75,7 +82,7 @@ public class Immeuble {
 	}
 
 	public int getCodePostal() {
-		return this.codePostal;
+		return codePostal;
 	}
 
 	public void setCodePostal(int codePostal) {
@@ -83,68 +90,95 @@ public class Immeuble {
 	}
 
 	public String getLieuImmeuble() {
-		return this.lieuImmeuble;
+		return lieuImmeuble;
 	}
 
 	public void setLieuImmeuble(String lieuImmeuble) {
 		this.lieuImmeuble = lieuImmeuble;
 	}
 
-	public float getRepartitionElectricité() {
-		return this.repartitionElectricité;
+	public float getRepartitionElectricite() {
+		return repartitionElectricite;
 	}
 
-	public void setRepartitionElectricité(float repartitionElectricité) {
-		this.repartitionElectricité = repartitionElectricité;
+	public void setRepartitionElectricite(float repartitionElectricite) throws IllegalArgumentException {
+		if (repartitionElectricite < 0 || repartitionElectricite > 1) {
+			throw new IllegalArgumentException("Le pourcentage doit être entre 0 et 1.");
+		}
+		this.repartitionElectricite = repartitionElectricite;
 	}
 
 	public float getRepartitionOrduresMenageres() {
-		return this.repartitionOrduresMenageres;
+		return repartitionOrduresMenageres;
 	}
 
-	public void setRepartitionOrduresMenageres(float repartitionOrduresMenageres) {
+	public void setRepartitionOrduresMenageres(float repartitionOrduresMenageres) throws IllegalArgumentException {
+		if (repartitionOrduresMenageres < 0 || repartitionOrduresMenageres > 1) {
+			throw new IllegalArgumentException("Le pourcentage doit être entre 0 et 1.");
+		}
 		this.repartitionOrduresMenageres = repartitionOrduresMenageres;
 	}
 
 	public float getRepartitionEntretien() {
-		return this.repartitionEntretien;
+		return repartitionEntretien;
 	}
 
-	public void setRepartitionEntretien(float repartitionEntretien) {
+	public void setRepartitionEntretien(float repartitionEntretien) throws IllegalArgumentException {
+		if (repartitionEntretien < 0 || repartitionEntretien > 1) {
+			throw new IllegalArgumentException("Le pourcentage doit être entre 0 et 1.");
+		}
 		this.repartitionEntretien = repartitionEntretien;
 	}
 
-	public int getiDLocation() {
-		return this.iDLocation;
+	public int getIdLocation() {
+		return idLocation;
 	}
 
-	public void setiDLocation(int iDLocation) {
-		this.iDLocation = iDLocation;
+	public void setIdLocation(int idLocation) {
+		this.idLocation = idLocation;
+	}
+
+	public String getTypeBien() {
+		return typeBien;
 	}
 
 	public void setTypeBien(String typeBien) throws IllegalArgumentException {
-		if (!typeBien.equalsIgnoreCase("bâtiment") && !typeBien.equalsIgnoreCase("logement") && !typeBien.equalsIgnoreCase("garage")) {
-			throw new IllegalArgumentException("Le type de bien doit être 'bâtiment', 'logement', ou 'garage'.");
+		if (!typeBien.equalsIgnoreCase("bâtiment") &&
+				!typeBien.equalsIgnoreCase("logement") &&
+				!typeBien.equalsIgnoreCase("garage")) {
+			throw new IllegalArgumentException("Le type de bien doit être 'bâtiment', 'logement' ou 'garage'.");
 		}
-		this.typeBien = typeBien;
+		this.typeBien = typeBien.toLowerCase(); // Normalisation
 	}
-	public void associerBien(Immeuble bien) throws IllegalArgumentException {
-		if (this.typeBien.equals("bâtiment") && bien.typeBien.equals("bâtiment")) {
+
+	public List<Bien> getBiensAssocies() {
+		return biensAssocies;
+	}
+
+	public void setBiensAssocies(List<Bien> biensAssocies) {
+		this.biensAssocies = biensAssocies;
+	}
+
+	// Méthodes supplémentaires
+	public void associerBien(Bien bien) throws IllegalArgumentException {
+		if (typeBien != null && typeBien.equalsIgnoreCase("bâtiment") ) {
 			throw new IllegalArgumentException("Les bâtiments ne peuvent pas être associés entre eux.");
 		}
-		if (!this.typeBien.equals("bâtiment") && bien.typeBien.equals("bâtiment")) {
-			throw new IllegalArgumentException("Un bien non bâtiment doit être associé à un bâtiment.");
+		this.biensAssocies.add(bien);
+	}
+
+	public void verifierRepartitionCharges(float taxeOrdures) throws IllegalArgumentException {
+		float totalRepartition = repartitionElectricite + repartitionOrduresMenageres + repartitionEntretien;
+		if (totalRepartition <= taxeOrdures) {
+			throw new IllegalArgumentException("Le total des répartitions doit être strictement supérieur à la taxe des ordures.");
 		}
 	}
 
-	public void associerBien(Immeuble bien) {
-		if (this instanceof Immeuble && bien instanceof Immeuble) {
-			throw new IllegalArgumentException("Un bâtiment ne peut pas être associé à un autre bâtiment.");
+	public void mettreAJourIndice(int nouvelIndice) throws IllegalArgumentException {
+		if (nouvelIndice < ancienIndice) {
+			throw new IllegalArgumentException("Le nouvel indice ne peut pas être inférieur à l'ancien.");
 		}
-		if (!(bien instanceof Immeuble)) {
-			this.biensAssocies.add(bien);
-		}
+		this.ancienIndice = this.nouvelIndice;
+		this.nouvelIndice = nouvelIndice;
 	}
-
-
 }

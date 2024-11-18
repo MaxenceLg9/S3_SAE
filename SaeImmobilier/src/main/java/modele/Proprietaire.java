@@ -15,7 +15,7 @@ public class Proprietaire {
 	private Float Electricite;
 	private Float OrduresMenageres;
 	private Float Entretien;
-	private Logement[] biensLoues;
+	private Bien[] biensLoues;
 
 	public Proprietaire(String Email, String MotDePasse) throws IllegalArgumentException {
 		Pattern pattern = Pattern.compile("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$");
@@ -132,7 +132,7 @@ public class Proprietaire {
 	public float calculerRegularisationCharges() {
 		float totalCharges = 0;
 
-		for (Logement logement : biensLoues) {
+		for (Bien logement : biensLoues) {
 			totalCharges += logement.getRepartitionElectricite() + logement.getRepartitionEntretien() + logement.getRepartitionOrduresMenageres();
 		}
 		return totalCharges;

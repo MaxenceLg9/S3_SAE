@@ -6,18 +6,21 @@ public class Locataire {
 
 	private int numero;
 	private String genre;
-	private String telepone;
+	private String telephone;
 	private String email;
 	private String nom;
 	private String prenom;
 	private ArrayList<Bail> baux;
-
+	private ArrayList<Float> charges;
+	private float totalCharge;
 	public Locataire(int numero, String nom, String prenom, String email) {
 		this.email = email;
 		this.numero = numero;
 		this.nom = nom;
 		this.prenom = prenom;
 		this.baux=new ArrayList<>();
+		this.charges=new ArrayList<>();
+		this.totalCharge=0f;
 	}
 
 	public int getNumero() {
@@ -36,12 +39,12 @@ public class Locataire {
 		this.genre = genre;
 	}
 
-	public String getTelepone() {
-		return this.telepone;
+	public String getTelephone() {
+		return this.telephone;
 	}
 
-	public void setTelepone(String telepone) {
-		this.telepone = telepone;
+	public void setTelephone(String telephone) {
+		this.telephone = telephone;
 	}
 
 	public String getEmail() {
@@ -73,4 +76,12 @@ public class Locataire {
 	public void ajouterBail(Bail bail) {
 		this.baux.add(bail);
 	}
+
+	public ArrayList<Float> getCharges(){return this.charges;}
+
+	public void setCharges(float charges) {this.charges.add(charges);}
+
+	public float getTotalCharge(){return this.totalCharge;}
+
+	public void setTotalCharge(float totalCharge) {this.totalCharge = totalCharge;}
 }

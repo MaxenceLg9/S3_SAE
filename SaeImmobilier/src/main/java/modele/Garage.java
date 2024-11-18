@@ -1,9 +1,9 @@
 package modele;
 
-public class Garage extends Immeuble {
+public class Garage extends Bien {
 
-	public Garage(int iDLocation, int codePostal, String adresse) {
-		super(iDLocation, codePostal, adresse);
+	public Garage(int idLocation, String lieu,Immeuble immeuble) {
+		super(idLocation, lieu, immeuble);
 
 	}
 
