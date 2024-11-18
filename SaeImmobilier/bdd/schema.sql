@@ -12,14 +12,22 @@ CREATE TABLE BiensImmobiliers (
     )
 );
 
+
 CREATE TABLE Bail(
     IdBail INTEGER primary key,
     IdBien INTEGER,
     IdLocataire INTEGER,
+    IdConsoEau INTEGER,
+    IdConsoElectricite INTEGER,
+    IdConsoGaz INTEGER,
+    NbMoisLoue INTEGER,
     DateDebut Date,
     DateFin Date,
     MontantLoyer float,
-    MontantCharges float,
+    ConsomationEau float,
+    ConsomationElectricite float,
+    ConsomationGaz float,
+    TotalCharges float,
     DepotGaranti float,
     TypeBail varchar(20), -- non meublé, meublé, colocation
     Renouvelable Boolean,
@@ -27,8 +35,24 @@ CREATE TABLE Bail(
     DateSignature Date,
     Etat varchar check ( Etat in ('Actif', 'Terminé', 'Preavis') ),
     foreign key (IdBien) references BiensImmobiliers(IdBien),
-    foreign key (IdLocataire) references Locataires(IdLocataire)
+    foreign key (IdLocataire) references Locataires(IdLocataire),
+    foreign key (IdConsoEau) references ConsommationEau(IdConsommationEau),
+    foreign key (IdConsoElectricite) references  ConsommationsElectricite(IdConsommationElec),
+    foreign key (IdConsoGaz) references ConsommationsGaz(IdConsommationGaz)
 );
+
+CREATE TRIGGER CalculTotalCharges
+    AFTER INSERT ON Bail
+BEGIN
+    UPDATE Bail
+    SET TotalCharges = (
+        SELECT IFNULL(SUM(Montant), 0)
+        FROM Charges
+        WHERE IdBien = NEW.IdBien
+    )
+    WHERE IdBail = NEW.IdBail;
+END;
+
 
 CREATE TABLE Locataires (
     IdLocataire INTEGER PRIMARY KEY,
@@ -82,7 +106,7 @@ CREATE TABLE Travaux (
     FOREIGN KEY (IdBien) REFERENCES BiensImmobiliers(IdBien)
 );
 
-CREATE TRIGGER CalculateMontantADeclarer
+CREATE TRIGGER CalculMontantADeclarer
     AFTER INSERT ON Travaux
 BEGIN
     UPDATE Travaux
@@ -109,7 +133,7 @@ CREATE TABLE Cautions (
     TotalRevenus float
 );
 
-CREATE TRIGGER CalculateTotalRevenus
+CREATE TRIGGER CalculTotalRevenus
     AFTER INSERT ON Cautions
 BEGIN
     UPDATE Cautions
@@ -128,7 +152,7 @@ CREATE TABLE Assurances (
     FOREIGN KEY (IdBien) REFERENCES BiensImmobiliers(IdBien)
 );
 
-CREATE TRIGGER CalculateTotalPrime
+CREATE TRIGGER CalculTotalPrime
     AFTER INSERT ON Assurances
 BEGIN
     UPDATE Assurances
