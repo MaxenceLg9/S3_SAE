@@ -11,12 +11,16 @@ public class Locataire {
 	private String nom;
 	private String prenom;
 	private ArrayList<Bail> baux;
+	private ArrayList<Float> charges;
+	private float totalCharge;
 	public Locataire(int numero, String nom, String prenom, String email) {
 		this.email = email;
 		this.numero = numero;
 		this.nom = nom;
 		this.prenom = prenom;
 		this.baux=new ArrayList<>();
+		this.charges=new ArrayList<>();
+		this.totalCharge=0f;
 	}
 
 	public int getNumero() {
@@ -72,4 +76,12 @@ public class Locataire {
 	public void ajouterBail(Bail bail) {
 		this.baux.add(bail);
 	}
+
+	public ArrayList<Float> getCharges(){return this.charges;}
+
+	public void setCharges(float charges) {this.charges.add(charges);}
+
+	public float getTotalCharge(){return this.totalCharge;}
+
+	public void setTotalCharge(float totalCharge) {this.totalCharge = totalCharge;}
 }
