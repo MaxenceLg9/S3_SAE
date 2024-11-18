@@ -13,12 +13,17 @@ public class TestConnexionDB {
 
         try (var conn = DriverManager.getConnection(url)) {
             //requête select sur la table Immeuble + affichage
+            /*String insert = "INSERT INTO Locataires VALUES (0,'Doe', 'John', 'Monsieur', '0601020304', 'johndoe@prankex.rizz', 'false')";
+            Statement iStmt = conn.createStatement();
+            iStmt.executeUpdate(insert);
+            int nbRow = iStmt.executeUpdate("SELECT * FROM Locataire");
+            System.out.println(nbRow + "rows affected");*/
 
-            String sql = "SELECT * FROM BiensLouable";
+            String select = "SELECT * FROM Locataires";
             Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(sql);
+            ResultSet rs = stmt.executeQuery(select);
             while(rs.next()){
-                System.out.println(rs.getString(0));
+                System.out.println("Nom :" + rs.getString(2) + ", Prenom :" + rs.getString(3) + ", Tel :" + rs.getString(5) + ", Email :" + rs.getString(6));
             }
             System.out.println("Connection to SQLite has been established.");
         } catch (SQLException e) {

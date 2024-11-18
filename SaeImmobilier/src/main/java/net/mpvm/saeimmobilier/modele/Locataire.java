@@ -91,5 +91,7 @@ public class Locataire {
 	public void setTotalCharge(float totalCharge) {this.totalCharge = totalCharge;}
 
 	public void save() {
+
+
 	}
 }
