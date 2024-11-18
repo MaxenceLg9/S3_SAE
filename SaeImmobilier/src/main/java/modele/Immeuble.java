@@ -5,9 +5,7 @@ import java.util.List;
 
 public class Immeuble {
 	private String adresse;
-	private int nouvelIndice;
-	private int ancienIndice;
-	private float partieFixe;
+
 	private float iR; // Taux d'intérêt ou autre valeur
 	private String ville;
 	private int codePostal;
@@ -35,32 +33,7 @@ public class Immeuble {
 		this.adresse = adresse;
 	}
 
-	public int getNouvelIndice() {
-		return nouvelIndice;
-	}
 
-	public void setNouvelIndice(int nouvelIndice) throws IllegalArgumentException {
-		if (nouvelIndice < ancienIndice) {
-			throw new IllegalArgumentException("Le nouvel indice ne peut pas être inférieur à l'ancien.");
-		}
-		this.nouvelIndice = nouvelIndice;
-	}
-
-	public int getAncienIndice() {
-		return ancienIndice;
-	}
-
-	public void setAncienIndice(int ancienIndice) {
-		this.ancienIndice = ancienIndice;
-	}
-
-	public float getPartieFixe() {
-		return partieFixe;
-	}
-
-	public void setPartieFixe(float partieFixe) {
-		this.partieFixe = partieFixe;
-	}
 
 	public float getiR() {
 		return iR;
@@ -138,11 +111,5 @@ public class Immeuble {
 		this.assurance = assurance;
 	}
 
-	public void mettreAJourIndice(int nouvelIndice) throws IllegalArgumentException {
-		if (nouvelIndice < ancienIndice) {
-			throw new IllegalArgumentException("Le nouvel indice ne peut pas être inférieur à l'ancien.");
-		}
-		this.ancienIndice = this.nouvelIndice;
-		this.nouvelIndice = nouvelIndice;
-	}
+
 }

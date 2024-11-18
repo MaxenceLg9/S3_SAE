@@ -15,6 +15,7 @@ public class Bail {
 	private Date dateFin;
 	private ArrayList<Bien> biens;
 	private ArrayList<Locataire> locataires;
+	private ArrayList<Charges> charges;
 
 	// Répartitions par locataire
 	private Map<Locataire, Float> repartitionElectricite;
@@ -29,6 +30,7 @@ public class Bail {
 		this.repartitionElectricite = new HashMap<>();
 		this.repartitionOrduresMenageres = new HashMap<>();
 		this.repartitionEntretien = new HashMap<>();
+		this.charges = new ArrayList<>();
 	}
 
 	// Méthode pour savoir si le bail est en colocation
