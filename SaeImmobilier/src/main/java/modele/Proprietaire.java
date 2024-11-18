@@ -1,5 +1,6 @@
 package modele;
 
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -12,7 +13,8 @@ public class Proprietaire {
 	private String Ville;
 	private Integer CodePostal;
 	private String Adresse;
-	private Bien[] biensLoues;
+	private ArrayList<Bien> biensLoues;
+	private int IdProprietaire;
 
 	public Proprietaire(String Email, String MotDePasse) throws IllegalArgumentException {
 		Pattern pattern = Pattern.compile("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$");
@@ -25,6 +27,7 @@ public class Proprietaire {
 		}
 		this.Email = Email;
 		this.MotDePasse = MotDePasse;
+		this.biensLoues = new ArrayList<>();
 	}
 
 	// Getters et setters pour les propriétés

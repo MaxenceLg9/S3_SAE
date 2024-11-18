@@ -1,6 +1,7 @@
 package modele;
 
 public class ChargeEau extends Charges{
+    private int IdChargeEau;
     private int NouvelIndice;
     private float PartieFixe;
     private float PartieVariable;

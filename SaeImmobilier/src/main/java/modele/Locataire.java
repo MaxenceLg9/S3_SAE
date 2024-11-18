@@ -3,7 +3,7 @@ package modele;
 import java.util.ArrayList;
 
 public class Locataire {
-
+	private int IdLocataire;
 	private int numero;
 	private String genre;
 	private String telephone;

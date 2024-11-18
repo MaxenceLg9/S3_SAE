@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Bail {
+	private int IdBail;
 	private int nbMoisLoues;
 	private float provisionSurCharge;
 	private float factureEau;
@@ -16,11 +17,11 @@ public class Bail {
 	private ArrayList<Bien> biens;
 	private ArrayList<Locataire> locataires;
 	private ArrayList<Charges> charges;
-
-	// Répartitions par locataire
 	private Map<Locataire, Float> repartitionElectricite;
 	private Map<Locataire, Float> repartitionOrduresMenageres;
 	private Map<Locataire, Float> repartitionEntretien;
+	private boolean colocation;
+
 
 	// Constructeur
 	public Bail(Date dateDebut) {
@@ -35,7 +36,10 @@ public class Bail {
 
 	// Méthode pour savoir si le bail est en colocation
 	public boolean estEnColocation() {
-		return this.locataires.size() > 1;
+		if (this.locataires.size() > 1) {
+			this.colocation = true;
+		}
+		return this.colocation;
 	}
 
 	// Méthode pour diviser le loyer entre colocataires

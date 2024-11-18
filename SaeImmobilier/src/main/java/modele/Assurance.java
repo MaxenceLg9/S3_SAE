@@ -1,11 +1,15 @@
 package modele;
 
+import java.util.Optional;
+
 public class Assurance {
+    private int IdAssurance;
     private float quotiteJurisprudence;
     private float protectionJuridique;
     private float prime;
     private TypeContrat typeContrat; // Type Propriétaire ou aide juridique, pour une des règles métier
     private float AugmentationAnnuelle;
+    private Optional<Bien> bien;
 
     // Constructeur par défaut
     public Assurance(TypeContrat typeContrat) {

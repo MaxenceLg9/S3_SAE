@@ -4,36 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Immeuble {
-	private String adresse;
-
 	private float iR; // Taux d'intérêt ou autre valeur
-	private String ville;
-	private int codePostal;
-	private String lieuImmeuble;
-	private int idLocation;
-	private String typeBien;
+	private int idImmeuble;
 	private List<Bien> biensAssocies;
-	private Assurance assurance;
 	private List<Travaux> travauxAssocies;
 
 	// Constructeur
-	public Immeuble(int idLocation, int codePostal, String adresse) {
-		this.idLocation = idLocation;
-		this.codePostal = codePostal;
-		this.adresse = adresse;
+	public Immeuble(int Immeuble) {
+		this.idImmeuble = Immeuble;
 		this.biensAssocies = new ArrayList<>();
+		this.travauxAssocies = new ArrayList<>();
 	}
 
 	// Getters et Setters
-	public String getAdresse() {
-		return adresse;
-	}
-
-	public void setAdresse(String adresse) {
-		this.adresse = adresse;
-	}
-
-
 
 	public float getiR() {
 		return iR;
@@ -43,49 +26,12 @@ public class Immeuble {
 		this.iR = iR;
 	}
 
-	public String getVille() {
-		return ville;
-	}
-
-	public void setVille(String ville) {
-		this.ville = ville;
-	}
-
-	public int getCodePostal() {
-		return codePostal;
-	}
-
-	public void setCodePostal(int codePostal) {
-		this.codePostal = codePostal;
-	}
-
-	public String getLieuImmeuble() {
-		return lieuImmeuble;
-	}
-
-	public void setLieuImmeuble(String lieuImmeuble) {
-		this.lieuImmeuble = lieuImmeuble;
-	}
-
 	public int getIdLocation() {
-		return idLocation;
+		return idImmeuble;
 	}
 
 	public void setIdLocation(int idLocation) {
-		this.idLocation = idLocation;
-	}
-
-	public String getTypeBien() {
-		return typeBien;
-	}
-
-	public void setTypeBien(String typeBien) throws IllegalArgumentException {
-		if (!typeBien.equalsIgnoreCase("bâtiment") &&
-				!typeBien.equalsIgnoreCase("logement") &&
-				!typeBien.equalsIgnoreCase("garage")) {
-			throw new IllegalArgumentException("Le type de bien doit être 'bâtiment', 'logement' ou 'garage'.");
-		}
-		this.typeBien = typeBien.toLowerCase(); // Normalisation
+		this.idImmeuble = idImmeuble;
 	}
 
 	public List<Bien> getBiensAssocies() {
@@ -96,20 +42,7 @@ public class Immeuble {
 		this.biensAssocies = biensAssocies;
 	}
 
-	// Méthodes supplémentaires
-	public void associerBien(Bien bien) throws IllegalArgumentException {
-		if (typeBien != null && typeBien.equalsIgnoreCase("bâtiment") ) {
-			throw new IllegalArgumentException("Les bâtiments ne peuvent pas être associés entre eux.");
-		}
-		this.biensAssocies.add(bien);
-	}
 
-	public Assurance getAssurance() {
-		return this.assurance;
-	}
-	public void setAssurance(Assurance assurance) {
-		this.assurance = assurance;
-	}
 
 
 }
