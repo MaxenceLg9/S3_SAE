@@ -4,8 +4,8 @@ public class Assurance {
     private float quotiteJurisprudence;
     private float protectionJuridique;
     private float prime;
-    private TypeContrat typeContrat;// Type Propriétaire ou aide juridique, pour une des règles métier
-
+    private TypeContrat typeContrat; // Type Propriétaire ou aide juridique, pour une des règles métier
+    private float AugmentationAnnuelle;
 
     // Constructeur par défaut
     public Assurance(TypeContrat typeContrat) {
@@ -58,11 +58,6 @@ public class Assurance {
         return this.quotiteJurisprudence + this.protectionJuridique + this.prime;
     }
 
-    // Méthode pour valider la régularisation des charges
-    public boolean validerRegularisationCharges(float montantVerse, float montantDu) {
-        return Math.abs(montantVerse - montantDu) <= 0.01; // Tolérance d'arrondi
-    }
-
     // Méthode pour revaloriser la prime
     public void revaloriserPrime(float pourcentageAugmentation) {
         if (pourcentageAugmentation < 0 || pourcentageAugmentation > 0.1) {
@@ -78,5 +73,13 @@ public class Assurance {
             throw new IllegalStateException("Incohérence détectée dans les montants d'assurance.");
         }
         return true;
+    }
+
+    // Méthode pour calculer le pourcentage d'augmentation
+    public float calculerPourcentageAugmentation(float primePrecedente, float primeActuelle) {
+        if (primePrecedente <= 0) {
+            throw new IllegalArgumentException("La prime précédente doit être supérieure à zéro.");
+        }
+        return ((primeActuelle - primePrecedente) / primePrecedente) * 100;
     }
 }
