@@ -121,13 +121,12 @@ BEGIN
 END;
 
 
-
 CREATE TABLE AssocieBailLocataire (
      IDBail INTEGER,
      IDLocataire INTEGER,
      PRIMARY KEY (IDBail, IDLocataire),
      FOREIGN KEY (IDBail) REFERENCES Bail(id_bail),
-     FOREIGN KEY (IDLocataire) REFERENCES Locataire(id_Locataire)
+     FOREIGN KEY (IDLocataire) REFERENCES Locataires(IDLocataire)
 );
 
 CREATE TABLE Etat_des_Lieux (
