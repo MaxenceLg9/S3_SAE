@@ -1,17 +1,18 @@
-package modele;
+package net.mpvm.saeimmobilier.modele;
 
 import java.util.ArrayList;
 
 public class Locataire {
-	private int IdLocataire;
+
 	private int numero;
 	private String genre;
-	private String telephone;
+	private String telepone;
 	private String email;
 	private String nom;
 	private String prenom;
 	private ArrayList<Bail> baux;
-
+	private ArrayList<Float> charges;
+	private float totalCharge;
 
 	private Locataire(int numero, String nom, String prenom, String email) {
 		this.email = email;
@@ -19,8 +20,14 @@ public class Locataire {
 		this.nom = nom;
 		this.prenom = prenom;
 		this.baux=new ArrayList<>();
-
+		this.charges=new ArrayList<>();
+		this.totalCharge=0f;
 	}
+
+	public Locataire(String nom, String prenom, String email){
+		this(0, nom, prenom, email);
+	}
+
 	public int getNumero() {
 		return this.numero;
 	}
@@ -37,12 +44,12 @@ public class Locataire {
 		this.genre = genre;
 	}
 
-	public String getTelephone() {
-		return this.telephone;
+	public String getTelepone() {
+		return this.telepone;
 	}
 
-	public void setTelephone(String telephone) {
-		this.telephone = telephone;
+	public void setTelepone(String telepone) {
+		this.telepone = telepone;
 	}
 
 	public String getEmail() {
@@ -75,4 +82,16 @@ public class Locataire {
 		this.baux.add(bail);
 	}
 
+	public ArrayList<Float> getCharges(){return this.charges;}
+
+	public void setCharges(float charges) {this.charges.add(charges);}
+
+	public float getTotalCharge(){return this.totalCharge;}
+
+	public void setTotalCharge(float totalCharge) {this.totalCharge = totalCharge;}
+
+	public void save() {
+
+
+	}
 }

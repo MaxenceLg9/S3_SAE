@@ -1,15 +1,17 @@
 package net.mpvm.saeimmobilier.controleur;
 
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.TextField;
 import net.mpvm.saeimmobilier.modele.Immeuble;
 
-public class CtrlNewBien {
+public class CtrlNewLogement {
 
     @FXML
     private ChoiceBox<Immeuble> listImmeubles;
+    @FXML
+    private TextField inputSurfaceHabitable;
 
     @FXML
     public void initialize() {
@@ -20,6 +22,7 @@ public class CtrlNewBien {
         } else {
             System.out.println("ChoiceBox listImmeubles is not injected");
         }
+        inputSurfaceHabitable.setPromptText("Insérez la surface habitable en m²");
     }
 
     @FXML

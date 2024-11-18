@@ -11,6 +11,8 @@ module net.mpvm.saeimmobilier {
     requires eu.hansolo.tilesfx;
     requires com.almasb.fxgl.all;
     requires java.desktop;
+    requires org.xerial.sqlitejdbc;
+    requires org.slf4j;
 
     opens net.mpvm.saeimmobilier.data.fxml to javafx.fxml;
     opens net.mpvm.saeimmobilier.data.images to javafx.fxml;
