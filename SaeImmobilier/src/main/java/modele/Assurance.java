@@ -3,20 +3,42 @@ package modele;
 import java.util.Optional;
 
 public class Assurance {
-    private int IdAssurance;
+    private int idAssurance;
     private float quotiteJurisprudence;
     private float protectionJuridique;
     private float prime;
     private TypeContrat typeContrat; // Type Propriétaire ou aide juridique, pour une des règles métier
-    private float AugmentationAnnuelle;
-    private Optional<Bien> bien;
+    private float augmentationAnnuelle;
+    private Optional<Bien> bien; // Bien lié à l'assurance
+
+    private Assurance(int IdAssurance,TypeContrat typeContrat){
+        if (typeContrat == null) {
+            throw new IllegalArgumentException("Le type de contrat est obligatoire.");
+        }
+        this.idAssurance = IdAssurance;
+        this.typeContrat = typeContrat;
+        this.bien = Optional.empty(); // Initialisé à une valeur vide
+    }
 
     // Constructeur par défaut
     public Assurance(TypeContrat typeContrat) {
+        if (typeContrat == null) {
+            throw new IllegalArgumentException("Le type de contrat est obligatoire.");
+        }
         this.typeContrat = typeContrat;
+        this.bien = Optional.empty(); // Initialisé à une valeur vide
     }
 
     // Getters et Setters
+
+    public int getIdAssurance() {
+        return idAssurance;
+    }
+
+    public void setIdAssurance(int idAssurance) {
+        this.idAssurance = idAssurance;
+    }
+
     public float getQuotiteJurisprudence() {
         return quotiteJurisprudence;
     }
@@ -52,12 +74,20 @@ public class Assurance {
         this.typeContrat = typeContrat;
     }
 
-    // Méthode getMontantQuotité
+    public Optional<Bien> getBien() {
+        return bien;
+    }
+
+    public void setBien(Bien bien) {
+        this.bien = Optional.ofNullable(bien); // Permet de lier ou de supprimer le bien
+    }
+
+    // Méthode pour obtenir le montant de la quotité
     public float getMontantQuotite() {
         return this.quotiteJurisprudence;
     }
 
-    // Méthode TotalAssurance
+    // Méthode pour calculer le total de l'assurance
     public float TotalAssurance() {
         return this.quotiteJurisprudence + this.protectionJuridique + this.prime;
     }

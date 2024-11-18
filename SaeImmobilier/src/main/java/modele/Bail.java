@@ -1,11 +1,12 @@
 package modele;
 
 import java.util.ArrayList;
+
 import java.util.HashMap;
 import java.util.Map;
 
 public class Bail {
-	private int IdBail;
+	private int idBail;
 	private int nbMoisLoues;
 	private float provisionSurCharge;
 	private float factureEau;
@@ -21,7 +22,6 @@ public class Bail {
 	private Map<Locataire, Float> repartitionOrduresMenageres;
 	private Map<Locataire, Float> repartitionEntretien;
 	private boolean colocation;
-
 
 	// Constructeur
 	public Bail(Date dateDebut) {
@@ -83,76 +83,34 @@ public class Bail {
 		return partsLoyer;
 	}
 
-	// Getters et setters pour les répartitions
-	public Map<Locataire, Float> getRepartitionElectricite() {
-		return this.repartitionElectricite;
-	}
-
-	public void setRepartitionElectricite(Locataire locataire, float pourcentage) {
-		if (pourcentage < 0 || pourcentage > 1) {
-			throw new IllegalArgumentException("Pourcentage pas compris entre 0 et 1");
-		}
-		this.repartitionElectricite.put(locataire, pourcentage);
-	}
-
-	public Map<Locataire, Float> getRepartitionOrduresMenageres() {
-		return this.repartitionOrduresMenageres;
-	}
-
-	public void setRepartitionOrduresMenageres(Locataire locataire, float pourcentage) {
-		if (pourcentage < 0 || pourcentage > 1) {
-			throw new IllegalArgumentException("Pourcentage pas compris entre 0 et 1");
-		}
-		this.repartitionOrduresMenageres.put(locataire, pourcentage);
-	}
-
-	public Map<Locataire, Float> getRepartitionEntretien() {
-		return this.repartitionEntretien;
-	}
-
-	public void setRepartitionEntretien(Locataire locataire, float pourcentage) {
-		if (pourcentage < 0 || pourcentage > 1) {
-			throw new IllegalArgumentException("Pourcentage pas compris entre 0 et 1");
-		}
-		this.repartitionEntretien.put(locataire, pourcentage);
-	}
-
-	// Autres getters et setters
-	public ArrayList<Bien> getLogements() {
-		return this.biens;
-	}
-
+	// Méthode pour ajouter un logement
 	public void ajouterLogement(Bien bien) {
 		this.biens.add(bien);
 	}
 
-	public ArrayList<Locataire> getLocataires() {
-		return this.locataires;
-	}
-
+	// Méthode pour ajouter un locataire
 	public void ajouterLocataire(Locataire locataire) {
 		this.locataires.add(locataire);
 	}
 
-	public Date getDateDebut() {
-		return this.dateDebut;
-	}
-
-	public void setDateDebut(Date dateDebut) {
-		this.dateDebut = dateDebut;
-	}
-
-	public Date getDateFin() {
+	// Méthode pour obtenir la date de fin en fonction de la durée
+	public Date calculerDateFin() {
 		if (this.dateDebut == null || this.nbMoisLoues <= 0) {
 			return null;
 		}
 
-		// Utilisation de la méthode addMonths pour calculer la date de fin
+		// Utilisation d'une méthode fictive `addMonths` pour calculer la date
 		return this.dateDebut.addMonths(this.nbMoisLoues);
 	}
 
-	public void setDateFin(Date dateFin) {
-		this.dateFin = dateFin;
+	// Getters et Setters
+
+	public int getIdBail() {
+		return idBail;
+	}
+
+	public void setIdBail(int idBail) {
+		this.idBail = idBail;
 	}
 
 	public int getNbMoisLoues() {
@@ -161,14 +119,6 @@ public class Bail {
 
 	public void setNbMoisLoues(int nbMoisLoues) {
 		this.nbMoisLoues = nbMoisLoues;
-	}
-
-	public float getLoyer() {
-		return loyer;
-	}
-
-	public void setLoyer(float loyer) {
-		this.loyer = loyer;
 	}
 
 	public float getProvisionSurCharge() {
@@ -195,11 +145,83 @@ public class Bail {
 		this.totalCharge = totalCharge;
 	}
 
+	public float getLoyer() {
+		return loyer;
+	}
+
+	public void setLoyer(float loyer) {
+		if (loyer <= 0) {
+			throw new IllegalArgumentException("Le loyer doit être positif.");
+		}
+		this.loyer = loyer;
+	}
+
 	public float getRegularisationCharge() {
 		return regularisationCharge;
 	}
 
 	public void setRegularisationCharge(float regularisationCharge) {
 		this.regularisationCharge = regularisationCharge;
+	}
+
+	public Date getDateDebut() {
+		return dateDebut;
+	}
+
+	public void setDateDebut(Date dateDebut) {
+		this.dateDebut = dateDebut;
+	}
+
+	public Date getDateFin() {
+		return dateFin;
+	}
+
+	public void setDateFin(Date dateFin) {
+		this.dateFin = dateFin;
+	}
+
+	public ArrayList<Bien> getBiens() {
+		return biens;
+	}
+
+	public ArrayList<Locataire> getLocataires() {
+		return locataires;
+	}
+
+	public ArrayList<Charges> getCharges() {
+		return charges;
+	}
+
+	public Map<Locataire, Float> getRepartitionElectricite() {
+		return repartitionElectricite;
+	}
+
+	public void setRepartitionElectricite(Locataire locataire, float pourcentage) {
+		if (pourcentage < 0 || pourcentage > 1) {
+			throw new IllegalArgumentException("Pourcentage pas compris entre 0 et 1");
+		}
+		this.repartitionElectricite.put(locataire, pourcentage);
+	}
+
+	public Map<Locataire, Float> getRepartitionOrduresMenageres() {
+		return repartitionOrduresMenageres;
+	}
+
+	public void setRepartitionOrduresMenageres(Locataire locataire, float pourcentage) {
+		if (pourcentage < 0 || pourcentage > 1) {
+			throw new IllegalArgumentException("Pourcentage pas compris entre 0 et 1");
+		}
+		this.repartitionOrduresMenageres.put(locataire, pourcentage);
+	}
+
+	public Map<Locataire, Float> getRepartitionEntretien() {
+		return repartitionEntretien;
+	}
+
+	public void setRepartitionEntretien(Locataire locataire, float pourcentage) {
+		if (pourcentage < 0 || pourcentage > 1) {
+			throw new IllegalArgumentException("Pourcentage pas compris entre 0 et 1");
+		}
+		this.repartitionEntretien.put(locataire, pourcentage);
 	}
 }

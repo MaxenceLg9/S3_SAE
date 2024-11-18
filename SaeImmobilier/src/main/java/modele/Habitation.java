@@ -2,8 +2,8 @@ package modele;
 
 public class Habitation extends BienLouable {
 
-    public Habitation(int idLocation, String lieu,Immeuble immeuble) {
-        super(idLocation, lieu, immeuble);
+    public Habitation( String lieu,Immeuble immeuble) {
+        super(lieu, immeuble);
 
     }
 
