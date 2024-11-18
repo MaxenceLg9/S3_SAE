@@ -9,6 +9,8 @@ public class Travaux {
 	private String Nature;
 	private String NumeroDevis;
 	private Float MontantADeclarer;
+	private String entrepriseDevis;
+	private Float montantDevis;
 
 	public Travaux(String NumeroDeFacture, String Entreprise, Date Date) {
 		this.Date = Date;
@@ -83,4 +85,24 @@ public class Travaux {
 		this.MontantADeclarer=(this.Montant-this.MontantNonDeductible)*(1-this.Reduction);
 		return this.MontantADeclarer;
 	}
+	private boolean recuperableImpots;
+	private boolean recuperableLocataire;
+
+	public void setRecuperabilite(boolean impots, boolean locataire) throws IllegalArgumentException {
+		if (impots && locataire) {
+			throw new IllegalArgumentException("Une facture ne peut pas être récupérable aux impôts et au locataire simultanément.");
+		}
+		this.recuperableImpots = impots;
+		this.recuperableLocataire = locataire;
+	}
+
+
+	public void associerDevis(String entreprise, Float montant) throws IllegalArgumentException {
+		if (this.entrepriseDevis != null && !this.entrepriseDevis.equals(entreprise)) {
+			throw new IllegalArgumentException("L'entreprise ne peut pas être modifiée.");
+		}
+		this.entrepriseDevis = entreprise;
+		this.montantDevis = montant;
+	}
+
 }

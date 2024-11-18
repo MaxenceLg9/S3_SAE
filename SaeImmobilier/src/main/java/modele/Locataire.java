@@ -11,6 +11,7 @@ public class Locataire {
 	private String nom;
 	private String prenom;
 	private ArrayList<Bail> baux;
+
 	public Locataire(int numero, String nom, String prenom, String email) {
 		this.email = email;
 		this.numero = numero;

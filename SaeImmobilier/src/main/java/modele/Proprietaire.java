@@ -15,6 +15,7 @@ public class Proprietaire {
 	private Float Electricite;
 	private Float OrduresMenageres;
 	private Float Entretien;
+	private Logement[] biensLoues;
 
 	public Proprietaire(String Email, String MotDePasse) throws IllegalArgumentException {
 		Pattern pattern = Pattern.compile("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$");
@@ -128,4 +129,15 @@ public class Proprietaire {
 		this.Ville = ville;
 	}
 
+	public float calculerRegularisationCharges() {
+		float totalCharges = 0;
+
+		for (Logement logement : biensLoues) {
+			totalCharges += logement.getRepartitionElectricite() + logement.getRepartitionEntretien() + logement.getRepartitionOrduresMenageres();
+		}
+		return totalCharges;
+	}
+	public boolean verifierMontantRegularisation(float sommeVersee, float sommeDue) {
+		return Math.abs(sommeVersee - sommeDue) < 0.01; // Tolérance pour arrondis
+	}
 }

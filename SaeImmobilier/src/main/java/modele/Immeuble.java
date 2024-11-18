@@ -1,4 +1,8 @@
 package modele;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class Immeuble {
 	private String adresse;
 	private int nouvelIndice;
@@ -12,11 +16,14 @@ public class Immeuble {
 	private float repartitionOrduresMenageres;
 	private float repartitionEntretien;
 	private int iDLocation;
+	private String typeBien;
+	private List<Logement> biensAssocies;
 
 	public Immeuble(int iDLocation, int codePostal, String adresse) {
 		this.iDLocation = iDLocation;
 		this.codePostal = codePostal;
 		this.adresse = adresse;
+		this.biensAssocies = new ArrayList<Logement>();
 	}
 
 	public String getAdresse() {
@@ -114,4 +121,30 @@ public class Immeuble {
 	public void setiDLocation(int iDLocation) {
 		this.iDLocation = iDLocation;
 	}
+
+	public void setTypeBien(String typeBien) throws IllegalArgumentException {
+		if (!typeBien.equalsIgnoreCase("bâtiment") && !typeBien.equalsIgnoreCase("logement") && !typeBien.equalsIgnoreCase("garage")) {
+			throw new IllegalArgumentException("Le type de bien doit être 'bâtiment', 'logement', ou 'garage'.");
+		}
+		this.typeBien = typeBien;
+	}
+	public void associerBien(Immeuble bien) throws IllegalArgumentException {
+		if (this.typeBien.equals("bâtiment") && bien.typeBien.equals("bâtiment")) {
+			throw new IllegalArgumentException("Les bâtiments ne peuvent pas être associés entre eux.");
+		}
+		if (!this.typeBien.equals("bâtiment") && bien.typeBien.equals("bâtiment")) {
+			throw new IllegalArgumentException("Un bien non bâtiment doit être associé à un bâtiment.");
+		}
+	}
+
+	public void associerBien(Immeuble bien) {
+		if (this instanceof Immeuble && bien instanceof Immeuble) {
+			throw new IllegalArgumentException("Un bâtiment ne peut pas être associé à un autre bâtiment.");
+		}
+		if (!(bien instanceof Immeuble)) {
+			this.biensAssocies.add(bien);
+		}
+	}
+
+
 }
