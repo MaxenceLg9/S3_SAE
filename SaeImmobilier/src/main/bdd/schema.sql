@@ -38,7 +38,7 @@ CREATE TABLE Charges (
 );
 
 CREATE TABLE ConsommationEau (
-    IdConsommation INTEGER PRIMARY KEY AUTOINCREMENT,
+    IdConsommationEau INTEGER PRIMARY KEY AUTOINCREMENT,
     IdBien INTEGER,
     Mois varchar(10),
     NouvelIndice float,
@@ -47,6 +47,7 @@ CREATE TABLE ConsommationEau (
     PartieVariable float,
     FOREIGN KEY (IdBien) REFERENCES BiensImmobiliers(IdBien)
 );
+
 
 CREATE TABLE Travaux (
     IdTravaux INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -134,5 +135,34 @@ CREATE TABLE Etat_des_Lieux (
     Nom_Bailleur  varchar(20),
     Prenom_Bailleur varchar(20),
     Element varchar(20),
-    Etat_Element varchar(20)
+    Etat_Element varchar(20) check ( Etat_Element in ('Bon Etat', 'Etat d''usage', 'neuf', 'Mauvais Etat') )
+);
+
+Create table ConsommationElectricite
+(
+    IdConsommationElec INTEGER PRIMARY KEY AUTOINCREMENT,
+    IdBien             INTEGER,
+    DateReleve         DATE,
+    NouvelIndice       float,
+    AncienIndice       float,
+    PartieFixe         float,
+    PartieVariable     float,
+    FOREIGN KEY (IdBien) REFERENCES BiensImmobiliers (IdBien)
+);
+
+Create table ConsommationGaz (
+    IdConsommationGaz INTEGER PRIMARY KEY AUTOINCREMENT,
+    IdBien INTEGER,
+    DateReleve DATE,
+    NouvelIndice float,
+    AncienIndice float,
+    PartieFixe float,
+    PartieVariable float,
+    FOREIGN KEY (IdBien) REFERENCES BiensImmobiliers(IdBien)
+);
+
+CREATE TABLE ArchivesLocataires(
+    IDArchives INTEGER PRIMARY KEY autoincrement,
+    Nom_Locataire varchar(20),
+    Prenom_Locataire varchar(20)
 )
