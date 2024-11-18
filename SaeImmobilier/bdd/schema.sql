@@ -27,3 +27,10 @@ CREATE TABLE AssocieBailLocataire (
      FOREIGN KEY (id_Locataire) REFERENCES Locataire(id_Locataire)
 );
 
+CREATE TABLE Etat_des_Lieux (
+    Date_Dignature Date,
+    Nom_Bailleur  varchar(20),
+    Prenom_Bailleur varchar(20),
+    Element varchar(20),
+    Etat_Element varchar(20)
+)
