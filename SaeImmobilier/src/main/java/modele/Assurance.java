@@ -4,10 +4,13 @@ public class Assurance {
     private float quotiteJurisprudence;
     private float protectionJuridique;
     private float prime;
-    private String typeContrat;
+    private TypeContrat typeContrat;// Type Propriétaire ou aide juridique, pour une des règles métier
+
 
     // Constructeur par défaut
-    public Assurance() {}
+    public Assurance(TypeContrat typeContrat) {
+        this.typeContrat = typeContrat;
+    }
 
     // Getters et Setters
     public float getQuotiteJurisprudence() {
@@ -34,15 +37,13 @@ public class Assurance {
         this.prime = prime;
     }
 
-    public String getTypeContrat() {
+    public TypeContrat getTypeContrat() {
         return typeContrat;
     }
 
-    public void setTypeContrat(String typeContrat) {
-        if (typeContrat == null ||
-                (!typeContrat.equalsIgnoreCase("propriétaire") &&
-                        !typeContrat.equalsIgnoreCase("aide juridique"))) {
-            throw new IllegalArgumentException("Le type de contrat doit être 'propriétaire' ou 'aide juridique'.");
+    public void setTypeContrat(TypeContrat typeContrat) {
+        if (typeContrat == null) {
+            throw new IllegalArgumentException("Le type de contrat est obligatoire.");
         }
         this.typeContrat = typeContrat;
     }
