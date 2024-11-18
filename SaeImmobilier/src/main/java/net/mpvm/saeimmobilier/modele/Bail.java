@@ -1,4 +1,4 @@
-package modele;
+package net.mpvm.saeimmobilier.modele;
 
 import java.util.ArrayList;
 

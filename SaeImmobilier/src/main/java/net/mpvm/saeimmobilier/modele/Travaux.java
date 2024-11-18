@@ -1,4 +1,4 @@
-package modele;
+package net.mpvm.saeimmobilier.modele;
 public class Travaux {
 	private String NumeroFacture;
 	private String Entreprise;
