@@ -35,14 +35,9 @@ CREATE TABLE Locataires (
     Nom varchar(20),
     Prenom varchar(20),
     Genre varchar(20) CHECK (Genre IN ('Madame', 'Monsieur')),
-    AdresseContact varchar(40),
-    CodePostal varchar(10),
-    Ville varchar(20),
     Telephone varchar(10),
     Email varchar(20),
-    DateEntree DATE,
-    DateSortie DATE,
-    IsColocataire INTEGER DEFAULT 0 CHECK (IsColocataire IN (0, 1))
+    IsColocataire BOOLEAN
 );
 
 
@@ -146,10 +141,14 @@ CREATE TABLE AssocieBailLocataire (
     IDBail INTEGER,
     IDLocataire INTEGER,
     QuotitéLoyer float,
+    DateEntree DATE,
+    DateSortie DATE,
     PRIMARY KEY (IDBail, IDLocataire),
     FOREIGN KEY (IDBail) REFERENCES Bail(IdBail),
     FOREIGN KEY (IDLocataire) REFERENCES Locataires(IDLocataire)
 );
+
+
 
 CREATE TABLE EtatdesLieux (
     Date_Dignature Date,
