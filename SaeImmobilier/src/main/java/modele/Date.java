@@ -80,7 +80,26 @@ public class Date {
 				return 31;
 		}
 	}
+	public Date addMonths(int months) {
+		int newMois = this.mois + months;
+		int newAnnee = this.annee;
 
+		// Ajuster l'année et le mois si le mois dépasse 12 ou est négatif
+		while (newMois > 12) {
+			newMois -= 12;
+			newAnnee++;
+		}
+		while (newMois < 1) {
+			newMois += 12;
+			newAnnee--;
+		}
+
+		// Ajuster le jour si nécessaire
+		int maxJour = getDaysInMonth(newAnnee, newMois);
+		int newJour = Math.min(this.jour, maxJour);
+
+		return new Date(newAnnee, newMois, newJour);
+	}
 	// Vérifie si une année est bissextile
 	private boolean isLeapYear(Integer annee) {
 		if (annee % 4 != 0) {

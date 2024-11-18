@@ -12,16 +12,12 @@ public class Proprietaire {
 	private String Ville;
 	private Integer CodePostal;
 	private String Adresse;
-	private Float Electricite;
-	private Float OrduresMenageres;
-	private Float Entretien;
 	private Bien[] biensLoues;
 
 	public Proprietaire(String Email, String MotDePasse) throws IllegalArgumentException {
 		Pattern pattern = Pattern.compile("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$");
 		Matcher matcher = pattern.matcher(Email);
-		boolean matchFound = matcher.matches();
-		if (!matchFound) {
+		if (!matcher.matches()) {
 			throw new IllegalArgumentException("Email non valide");
 		}
 		if (MotDePasse.length() < 8 || MotDePasse.length() > 24) {
@@ -29,8 +25,9 @@ public class Proprietaire {
 		}
 		this.Email = Email;
 		this.MotDePasse = MotDePasse;
-
 	}
+
+	// Getters et setters pour les propriétés
 
 	public String getAdresse() {
 		return this.Adresse;
@@ -40,16 +37,8 @@ public class Proprietaire {
 		return this.CodePostal;
 	}
 
-	public Float getElectricite() {
-		return this.Electricite;
-	}
-
 	public String getEmail() {
 		return this.Email;
-	}
-
-	public Float getEntretien() {
-		return this.Entretien;
 	}
 
 	public String getMotDePasse() {
@@ -58,10 +47,6 @@ public class Proprietaire {
 
 	public String getNom() {
 		return this.Nom;
-	}
-
-	public Float getOrduresMenageres() {
-		return this.OrduresMenageres;
 	}
 
 	public String getPrenom() {
@@ -84,26 +69,17 @@ public class Proprietaire {
 		this.CodePostal = codePostal;
 	}
 
-	public void setElectricite(Float electricite) {
-		this.Electricite = electricite;
-	}
-
 	public void setEmail(String email) {
 		Pattern pattern = Pattern.compile("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$");
-		Matcher matcher = pattern.matcher(this.Email);
-		boolean matchFound = matcher.matches();
-		if (!matchFound) {
+		Matcher matcher = pattern.matcher(email);
+		if (!matcher.matches()) {
 			throw new IllegalArgumentException("Email non valide");
 		}
 		this.Email = email;
 	}
 
-	public void setEntretien(Float entretien) {
-		this.Entretien = entretien;
-	}
-
 	public void setMotDePasse(String motDePasse) {
-		if (this.MotDePasse.length() < 8 || this.MotDePasse.length() > 24) {
+		if (motDePasse.length() < 8 || motDePasse.length() > 24) {
 			throw new IllegalArgumentException("Le mot de passe doit être compris entre 8 et 24 caractères.");
 		}
 		this.MotDePasse = motDePasse;
@@ -111,10 +87,6 @@ public class Proprietaire {
 
 	public void setNom(String nom) {
 		this.Nom = nom;
-	}
-
-	public void setOrduresMenageres(Float orduresMenageres) {
-		this.OrduresMenageres = orduresMenageres;
 	}
 
 	public void setPrenom(String prenom) {
@@ -129,14 +101,30 @@ public class Proprietaire {
 		this.Ville = ville;
 	}
 
+	// Méthodes pour la gestion des charges
+
 	public float calculerRegularisationCharges() {
 		float totalCharges = 0;
 
-		for (Bien logement : biensLoues) {
-			totalCharges += logement.getRepartitionElectricite() + logement.getRepartitionEntretien() + logement.getRepartitionOrduresMenageres();
+		if (biensLoues != null) {
+			for (Bien logement : biensLoues) {
+				for (Bail bail : logement.getBaux()) {
+					// Accumule les répartitions des locataires associées au bail
+					for (Float part : bail.getRepartitionElectricite().values()) {
+						totalCharges += part;
+					}
+					for (Float part : bail.getRepartitionEntretien().values()) {
+						totalCharges += part;
+					}
+					for (Float part : bail.getRepartitionOrduresMenageres().values()) {
+						totalCharges += part;
+					}
+				}
+			}
 		}
 		return totalCharges;
 	}
+
 	public boolean verifierMontantRegularisation(float sommeVersee, float sommeDue) {
 		return Math.abs(sommeVersee - sommeDue) < 0.01; // Tolérance pour arrondis
 	}
