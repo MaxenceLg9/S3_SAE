@@ -11,12 +11,19 @@ public class Locataire {
 	private String nom;
 	private String prenom;
 	private ArrayList<Bail> baux;
-	public Locataire(int numero, String nom, String prenom, String email) {
+
+	private Locataire(int numero, String nom, String prenom, String email) {
 		this.email = email;
 		this.numero = numero;
 		this.nom = nom;
 		this.prenom = prenom;
 		this.baux=new ArrayList<>();
+	}
+
+	public Locataire(String nom, String prenom, String email){
+		this(0, nom, prenom, email);
+		//requete qui recupere le max id
+
 	}
 
 	public int getNumero() {
@@ -71,5 +78,10 @@ public class Locataire {
 	}
 	public void ajouterBail(Bail bail) {
 		this.baux.add(bail);
+	}
+
+	public void save() {
+		//requete d'insertion
+
 	}
 }
