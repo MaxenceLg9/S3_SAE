@@ -1,4 +1,5 @@
-package modele;
+package net.mpvm.saeimmobilier.modele;
+
 public class Immeuble {
 	private String adresse;
 	private int nouvelIndice;
@@ -12,11 +13,13 @@ public class Immeuble {
 	private float repartitionOrduresMenageres;
 	private float repartitionEntretien;
 	private int iDLocation;
+	private String nomImmeuble;
 
-	public Immeuble(int iDLocation, int codePostal, String adresse) {
+	public Immeuble(int iDLocation, int codePostal, String adresse, String nomImmeuble) {
 		this.iDLocation = iDLocation;
 		this.codePostal = codePostal;
 		this.adresse = adresse;
+		this.nomImmeuble = nomImmeuble;
 	}
 
 	public String getAdresse() {
@@ -113,5 +116,10 @@ public class Immeuble {
 
 	public void setiDLocation(int iDLocation) {
 		this.iDLocation = iDLocation;
+	}
+
+	@Override
+	public String toString(){
+		return this.nomImmeuble + ", " + this.adresse;
 	}
 }
