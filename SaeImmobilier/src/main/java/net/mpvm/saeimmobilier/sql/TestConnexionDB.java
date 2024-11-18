@@ -25,6 +25,9 @@ public class TestConnexionDB {
             while(rs.next()){
                 System.out.println("Nom :" + rs.getString(2) + ", Prenom :" + rs.getString(3) + ", Tel :" + rs.getString(5) + ", Email :" + rs.getString(6));
             }
+            rs.close();
+            stmt.close();
+            conn.close();
             System.out.println("Connection to SQLite has been established.");
         } catch (SQLException e) {
             System.out.println(e.getMessage());
