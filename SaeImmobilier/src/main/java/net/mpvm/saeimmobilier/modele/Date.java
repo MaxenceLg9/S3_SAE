@@ -1,105 +1,119 @@
-package net.mpvm.saeimmobilier.modele;
+package modele;
+
 public class Date {
-	private Integer Annee;
-	private Integer Mois;
-	private Integer Jour;
-	private String DateComplete;
+	private Integer annee;
+	private Integer mois;
+	private Integer jour;
+	private String dateComplete;
 
-	public Date(Integer Annee, Integer Mois, Integer Jour) throws IllegalArgumentException {
-		if (Jour < 1 || Jour > 31) {
-			throw new IllegalArgumentException("Jour pas compris entre 1 et 31");
+	// Constructeur avec validation
+	public Date(Integer annee, Integer mois, Integer jour) {
+		if (!isValidDate(annee, mois, jour)) {
+			throw new IllegalArgumentException("Date invalide : " + jour + "/" + mois + "/" + annee);
 		}
-		if (Mois == 2 && Jour > 29 && Annee % 4 == 0) {
-			if (Annee % 100 == 0) {
-				if (Annee % 400 != 0) {
-					throw new IllegalArgumentException("L'année n'est pas bissextile");
-				}
-			}
-		}
-		if (Mois == 2 && Jour > 28 && !(Annee % 4 == 0)) {
-			throw new IllegalArgumentException("Jour trop élevé pour février");
-		}
-		if (Mois == 2 || Mois == 4 || Mois == 6 || Mois == 9 || Mois == 11 && Jour > 30) {
-			throw new IllegalArgumentException("Jour trop élevé pour des mois de 30 jours");
-		}
-		this.Annee = Annee;
-		this.Jour = Jour;
-		this.Mois = Mois;
-		this.DateComplete = this.Jour + "/" + this.Mois + "/" + this.Annee;
+		this.annee = annee;
+		this.mois = mois;
+		this.jour = jour;
+		updateDateComplete();
 	}
 
+	// Getters
 	public Integer getAnnee() {
-		return this.Annee;
-	}
-
-	public Integer getJour() {
-		return this.Jour;
+		return this.annee;
 	}
 
 	public Integer getMois() {
-		return this.Mois;
+		return this.mois;
 	}
 
-	public Date setAnnee(Integer annee) {
-		if (Mois == 2 && Jour > 29 && Annee % 4 == 0) {
-			if (Annee % 100 == 0) {
-				if (Annee % 400 != 0) {
-					throw new IllegalArgumentException("L'année n'est pas bissextile");
-				}
-			}
-		}
-		if (Mois == 2 && Jour > 28 && !(Annee % 4 == 0)) {
-			throw new IllegalArgumentException("Jour trop élevé pour février");
-		}
-		this.Annee = annee;
-		this.DateComplete = this.Jour + "/" + this.Mois + "/" + this.Annee;
-		return this;
+	public Integer getJour() {
+		return this.jour;
 	}
 
-	public Date setJour(Integer jour) {
-		if (Jour < 1 || Jour > 31) {
-			throw new IllegalArgumentException("Jour pas compris entre 1 et 31");
+	// Setters avec validation
+	public void setAnnee(Integer annee) {
+		if (!isValidDate(annee, this.mois, this.jour)) {
+			throw new IllegalArgumentException("Date invalide avec cette année : " + jour + "/" + mois + "/" + annee);
 		}
-		if (Mois == 2 && Jour > 29 && Annee % 4 == 0) {
-			if (Annee % 100 == 0) {
-				if (Annee % 400 != 0) {
-					throw new IllegalArgumentException("L'année n'est pas bissextile");
-				}
-			}
-		}
-		if (Mois == 2 && Jour > 28 && !(Annee % 4 == 0)) {
-			throw new IllegalArgumentException("Jour trop élevé pour février");
-		}
-		if (Mois == 2 || Mois == 4 || Mois == 6 || Mois == 9 || Mois == 11 && Jour > 30) {
-			throw new IllegalArgumentException("Jour trop élevé pour des mois de 30 jours");
-		}
-		this.Jour = jour;
-		this.DateComplete = this.Jour + "/" + this.Mois + "/" + this.Annee;
-		return this;
+		this.annee = annee;
+		updateDateComplete();
 	}
 
-	public Date setMois(Integer mois) throws IllegalArgumentException{
-		if (Mois == 2 && Jour > 29 && Annee % 4 == 0) {
-			if (Annee % 100 == 0) {
-				if (Annee % 400 != 0) {
-					throw new IllegalArgumentException("L'année n'est pas bissextile");
-				}
-			}
+	public void setMois(Integer mois) {
+		if (!isValidDate(this.annee, mois, this.jour)) {
+			throw new IllegalArgumentException("Date invalide avec ce mois : " + jour + "/" + mois + "/" + annee);
 		}
-		if (Mois == 2 && Jour > 28 && !(Annee % 4 == 0)) {
-			throw new IllegalArgumentException("Jour trop élevé pour février");
-		}
-		if (Mois == 2 || Mois == 4 || Mois == 6 || Mois == 9 || Mois == 11 && Jour > 30) {
-			throw new IllegalArgumentException("Jour trop élevé pour des mois de 30 jours");
-		}
-		this.Mois = mois;
-		this.DateComplete = this.Jour + "/" + this.Mois + "/" + this.Annee;
-		return this;
+		this.mois = mois;
+		updateDateComplete();
 	}
 
+	public void setJour(Integer jour) {
+		if (!isValidDate(this.annee, this.mois, jour)) {
+			throw new IllegalArgumentException("Date invalide avec ce jour : " + jour + "/" + mois + "/" + annee);
+		}
+		this.jour = jour;
+		updateDateComplete();
+	}
+
+	// Mise à jour de la date complète sous forme de chaîne
+	private void updateDateComplete() {
+		this.dateComplete = this.jour + "/" + this.mois + "/" + this.annee;
+	}
+
+	// Méthode de validation des dates
+	private boolean isValidDate(Integer annee, Integer mois, Integer jour) {
+		if (mois < 1 || mois > 12 || jour < 1) {
+			return false;
+		}
+		int maxJour = getDaysInMonth(annee, mois);
+		return jour <= maxJour;
+	}
+
+	// Retourne le nombre de jours dans un mois donné
+	private int getDaysInMonth(Integer annee, Integer mois) {
+		switch (mois) {
+			case 2:
+				return isLeapYear(annee) ? 29 : 28;
+			case 4: case 6: case 9: case 11:
+				return 30;
+			default:
+				return 31;
+		}
+	}
+	public Date addMonths(int months) {
+		int newMois = this.mois + months;
+		int newAnnee = this.annee;
+
+		// Ajuster l'année et le mois si le mois dépasse 12 ou est négatif
+		while (newMois > 12) {
+			newMois -= 12;
+			newAnnee++;
+		}
+		while (newMois < 1) {
+			newMois += 12;
+			newAnnee--;
+		}
+
+		// Ajuster le jour si nécessaire
+		int maxJour = getDaysInMonth(newAnnee, newMois);
+		int newJour = Math.min(this.jour, maxJour);
+
+		return new Date(newAnnee, newMois, newJour);
+	}
+	// Vérifie si une année est bissextile
+	private boolean isLeapYear(Integer annee) {
+		if (annee % 4 != 0) {
+			return false;
+		}
+		if (annee % 100 == 0 && annee % 400 != 0) {
+			return false;
+		}
+		return true;
+	}
+
+	// Représentation de l'objet sous forme de chaîne
 	@Override
 	public String toString() {
-		return this.DateComplete;
+		return this.dateComplete;
 	}
-
 }
