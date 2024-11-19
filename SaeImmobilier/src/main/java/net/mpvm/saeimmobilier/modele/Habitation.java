@@ -1,9 +1,10 @@
-package modele;
+package net.mpvm.saeimmobilier.modele;
 
 public class Habitation extends BienLouable {
 
-    public Habitation( String lieu,Immeuble immeuble) {
-        super(lieu, immeuble);
+    public Habitation() {
+        super();
+
 
     }
 

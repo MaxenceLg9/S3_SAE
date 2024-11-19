@@ -1,4 +1,4 @@
-package modele;
+package net.mpvm.saeimmobilier.modele;
 
 import java.util.ArrayList;
 
@@ -9,12 +9,23 @@ public class Bien {
     private int codePostal;
     private Assurance assurance;
     private float iR; // Taux d'intérêt ou autre valeur
-
+    private Bien(int IdBien, String ville,int CodePostal,String adresse) {
+        this.IdBien = IdBien;
+        this.ville = ville;
+        this.codePostal = CodePostal;
+        this.adresse = adresse;
+    }
 
     public Bien(String ville, int CodePostal, String adresse) {
         this.ville = ville;
         this.codePostal = CodePostal;
         this.adresse = adresse;
+    }
+    public int getIdBien() {
+        return IdBien;
+    }
+    public void setIdBien(int IdBien) {
+        this.IdBien = IdBien;
     }
     public String getVille() {
         return ville;

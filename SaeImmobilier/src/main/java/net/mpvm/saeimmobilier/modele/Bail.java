@@ -15,7 +15,7 @@ public class Bail {
 	private float regularisationCharge;
 	private Date dateDebut;
 	private Date dateFin;
-	private ArrayList<Bien> biens;
+	private ArrayList<BienLouable> biens;
 	private ArrayList<Locataire> locataires;
 	private ArrayList<Charges> charges;
 	private Map<Locataire, Float> repartitionElectricite;
@@ -84,7 +84,7 @@ public class Bail {
 	}
 
 	// Méthode pour ajouter un logement
-	public void ajouterLogement(Bien bien) {
+	public void ajouterBien(BienLouable bien) {
 		this.biens.add(bien);
 	}
 
@@ -180,7 +180,7 @@ public class Bail {
 		this.dateFin = dateFin;
 	}
 
-	public ArrayList<Bien> getBiens() {
+	public ArrayList<BienLouable> getBiens() {
 		return biens;
 	}
 

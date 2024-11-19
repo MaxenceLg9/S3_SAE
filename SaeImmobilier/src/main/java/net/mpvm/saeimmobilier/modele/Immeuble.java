@@ -1,19 +1,26 @@
-package modele;
+package net.mpvm.saeimmobilier.modele;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Immeuble {
+public class Immeuble extends Bien{
 	private int idImmeuble;
-	private List<Bien> biensAssocies;
+	private List<BienLouable> biensAssocies;
 	private List<Travaux> travauxAssocies;
 
-	// Constructeur
-	public Immeuble(int idImmeuble) {
+	private Immeuble( String ville, int codePostal, String adresse, int idImmeuble) {
+		super( ville, codePostal, adresse); // Initialisation des attributs hérités de Bien
 		this.idImmeuble = idImmeuble;
 		this.biensAssocies = new ArrayList<>();
 		this.travauxAssocies = new ArrayList<>();
 	}
+
+	public Immeuble(String ville, int codePostal, String adresse) {
+		super(ville, codePostal, adresse); // Utilisation du constructeur de Bien
+		this.biensAssocies = new ArrayList<>();
+		this.travauxAssocies = new ArrayList<>();
+	}
+
 
 	// Getters et Setters
 
@@ -25,11 +32,11 @@ public class Immeuble {
 		this.idImmeuble = idImmeuble;
 	}
 
-	public List<Bien> getBiensAssocies() {
+	public List<BienLouable> getBiensAssocies() {
 		return biensAssocies;
 	}
 
-	public void setBiensAssocies(List<Bien> biensAssocies) {
+	public void setBiensAssocies(List<BienLouable> biensAssocies) {
 		this.biensAssocies = biensAssocies;
 	}
 

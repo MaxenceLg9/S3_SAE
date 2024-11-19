@@ -1,7 +1,4 @@
-package modele;
-
-import java.util.Date;
-
+package net.mpvm.saeimmobilier.modele;
 public class EtatDesLieux extends Document {
     private int idEtatDesLieux;
     private Date dateSignature;
@@ -31,5 +28,8 @@ public class EtatDesLieux extends Document {
     // Setters
     public void setDateSignature(Date dateSignature) {
         this.dateSignature = dateSignature;
+    }
+    public void setIdEtatDesLieux(int idEtatDesLieux) {
+        this.idEtatDesLieux = idEtatDesLieux;
     }
 }

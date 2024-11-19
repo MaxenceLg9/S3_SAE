@@ -1,8 +1,8 @@
-package modele;
+package net.mpvm.saeimmobilier.modele;
 
 import java.util.ArrayList;
 
-public class BienLouable {
+public class BienLouable extends Bien {
 	private int idBienLouable;
 	private String lieuImmeuble;
 	private ArrayList<Travaux> travaux;
@@ -13,20 +13,26 @@ public class BienLouable {
 	private String numeroFiscal;
 	private Immeuble immeuble;
 	private Proprietaire proprietaire;
-	public BienLouable(String lieuImmeuble, Immeuble immeuble) {
-		this.lieuImmeuble = lieuImmeuble;
-		this.immeuble = immeuble;
-		this.travaux = new ArrayList<>();
-		this.baux = new ArrayList<>();
-	}
-	// Constructeur
-	private BienLouable(int idBienLouable, String lieuImmeuble, Immeuble immeuble) {
+	private BienLouable( String ville, int codePostal, String adresse,
+					   int idBienLouable, String lieuImmeuble, Immeuble immeuble) {
+		super( ville, codePostal, adresse); // Initialisation des attributs hérités de Bien
 		this.idBienLouable = idBienLouable;
 		this.lieuImmeuble = lieuImmeuble;
 		this.immeuble = immeuble;
 		this.travaux = new ArrayList<>();
 		this.baux = new ArrayList<>();
 	}
+
+	public BienLouable(String ville, int codePostal, String adresse, String lieuImmeuble, Immeuble immeuble) {
+		super(ville, codePostal, adresse); // Utilisation du constructeur de Bien pour initier ville, codePostal, adresse
+		this.lieuImmeuble = lieuImmeuble;
+		this.immeuble = immeuble;
+		this.travaux = new ArrayList<>();
+		this.baux = new ArrayList<>();
+	}
+
+
+
 
 	// Getters et Setters pour tous les champs
 
@@ -115,4 +121,5 @@ public class BienLouable {
 	public void setProprietaire(Proprietaire proprietaire) {
 		this.proprietaire = proprietaire;
 	}
+
 }

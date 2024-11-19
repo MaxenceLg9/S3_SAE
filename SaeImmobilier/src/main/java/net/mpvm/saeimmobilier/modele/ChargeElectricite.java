@@ -1,4 +1,4 @@
-package modele;
+package net.mpvm.saeimmobilier.modele;
 
 public class ChargeElectricite extends Charges {
     private int idChargeElectricite;

@@ -1,6 +1,5 @@
-package modele;
+package net.mpvm.saeimmobilier.modele;
 
-import java.util.Date;
 
 public class Caution {
     private int idCaution;
@@ -13,36 +12,20 @@ public class Caution {
     private float remuneration;
     private float autresRevenus;
     private float totalRevenus;
+    private Locataire locataire;
 
     // Constructeur privé pour idCaution
-    private Caution(int idCaution, Date dateNaissance, String lieuNaissance, String situationFamiliale,
-                   String profession, String employeur, String typeContratTravail,
-                   float remuneration, float autresRevenus, float totalRevenus) {
+    private Caution(int idCaution, String TypeContratTravail,Locataire locataire ) {
         this.idCaution = idCaution;
-        this.dateNaissance = dateNaissance;
-        this.lieuNaissance = lieuNaissance;
-        this.situationFamiliale = situationFamiliale;
-        this.profession = profession;
-        this.employeur = employeur;
+
         this.typeContratTravail = typeContratTravail;
-        this.remuneration = remuneration;
-        this.autresRevenus = autresRevenus;
-        this.totalRevenus = totalRevenus;
+        this.locataire = locataire;
     }
 
     // Constructeur public (sans idCaution)
-    public Caution(Date dateNaissance, String lieuNaissance, String situationFamiliale,
-                   String profession, String employeur, String typeContratTravail,
-                   float remuneration, float autresRevenus, float totalRevenus) {
-        this.dateNaissance = dateNaissance;
-        this.lieuNaissance = lieuNaissance;
-        this.situationFamiliale = situationFamiliale;
-        this.profession = profession;
-        this.employeur = employeur;
+    public Caution( String TypeContratTravail,Locataire locataire ) {
         this.typeContratTravail = typeContratTravail;
-        this.remuneration = remuneration;
-        this.autresRevenus = autresRevenus;
-        this.totalRevenus = totalRevenus;
+        this.locataire = locataire;
     }
 
     // Getters
@@ -117,5 +100,11 @@ public class Caution {
 
     public void setTotalRevenus(float totalRevenus) {
         this.totalRevenus = totalRevenus;
+    }
+    public Locataire getLocataire(){
+        return locataire;
+    }
+    public void setLocataire(Locataire locataire){
+        this.locataire = locataire;
     }
 }

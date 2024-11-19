@@ -1,4 +1,6 @@
-package modele;
+package net.mpvm.saeimmobilier.modele;
+
+import java.util.Date;
 
 import java.util.Date;
 

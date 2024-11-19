@@ -1,4 +1,6 @@
-package modele;
+package net.mpvm.saeimmobilier.modele;
+
+
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -13,7 +15,7 @@ public class Proprietaire {
 	private String Ville;
 	private Integer CodePostal;
 	private String Adresse;
-	private ArrayList<Bien> biensLoues;
+	private ArrayList<Bien> biensPossedes;
 	private int IdProprietaire;
 	private Proprietaire(int IdProprietaire,String Email,String MotDePasse) {
 		Pattern pattern = Pattern.compile("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$");
@@ -27,7 +29,7 @@ public class Proprietaire {
 		this.Email = Email;
 		this.IdProprietaire = IdProprietaire;
 		this.MotDePasse = MotDePasse;
-		this.biensLoues = new ArrayList<>();
+		this.biensPossedes = new ArrayList<>();
 	}
 	public Proprietaire(String Email, String MotDePasse) throws IllegalArgumentException {
 		Pattern pattern = Pattern.compile("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$");
@@ -40,7 +42,7 @@ public class Proprietaire {
 		}
 		this.Email = Email;
 		this.MotDePasse = MotDePasse;
-		this.biensLoues = new ArrayList<>();
+		this.biensPossedes = new ArrayList<>();
 	}
 
 	// Getters et setters pour les propriétés
@@ -115,30 +117,6 @@ public class Proprietaire {
 
 	public void setVille(String ville) {
 		this.Ville = ville;
-	}
-
-	// Méthodes pour la gestion des charges
-
-	public float calculerRegularisationCharges() {
-		float totalCharges = 0;
-
-		if (biensLoues != null) {
-			for (Bien logement : biensLoues.getBaux()) {
-				for (Bail bail : logement.getBaux()) {
-					// Accumule les répartitions des locataires associées au bail
-					for (Float part : bail.getRepartitionElectricite().values()) {
-						totalCharges += part;
-					}
-					for (Float part : bail.getRepartitionEntretien().values()) {
-						totalCharges += part;
-					}
-					for (Float part : bail.getRepartitionOrduresMenageres().values()) {
-						totalCharges += part;
-					}
-				}
-			}
-		}
-		return totalCharges;
 	}
 
 	public boolean verifierMontantRegularisation(float sommeVersee, float sommeDue) {
