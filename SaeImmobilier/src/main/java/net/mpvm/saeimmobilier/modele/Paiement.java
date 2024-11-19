@@ -3,27 +3,34 @@ package modele;
 import java.util.Date;
 
 public class Paiement {
+    private int idPaiement;  // Attribut unique non demandé dans le constructeur public
     private float montant;
     private Date datePaiement;
     private TypePaiement typePaiement;
     private StatutPaiement statutPaiement;
 
-    // Constructeur privé qui demande tous les attributs
-    private Paiement(float montant, Date datePaiement, TypePaiement typePaiement, StatutPaiement statutPaiement) {
+    // Constructeur privé qui demande tous les attributs, y compris idPaiement
+    private Paiement(int idPaiement, float montant, Date datePaiement, TypePaiement typePaiement, StatutPaiement statutPaiement) {
+        this.idPaiement = idPaiement;
         this.montant = montant;
         this.datePaiement = datePaiement;
         this.typePaiement = typePaiement;
         this.statutPaiement = statutPaiement;
     }
 
-    // Constructeur public qui demande tous les attributs sauf statutPaiement
-    public Paiement(float montant, Date datePaiement, TypePaiement typePaiement) {
+    // Constructeur public qui demande tous les attributs sauf idPaiement
+    public Paiement(float montant, Date datePaiement, TypePaiement typePaiement, StatutPaiement statutPaiement) {
         this.montant = montant;
         this.datePaiement = datePaiement;
         this.typePaiement = typePaiement;
+        this.statutPaiement = statutPaiement;
     }
 
     // Getters
+    public int getIdPaiement() {
+        return idPaiement;
+    }
+
     public float getMontant() {
         return montant;
     }
