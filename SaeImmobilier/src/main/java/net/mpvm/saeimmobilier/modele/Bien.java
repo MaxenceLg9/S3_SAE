@@ -1,7 +1,5 @@
 package net.mpvm.saeimmobilier.modele;
 
-import java.util.ArrayList;
-
 public class Bien {
     private int IdBien;
     private String adresse;

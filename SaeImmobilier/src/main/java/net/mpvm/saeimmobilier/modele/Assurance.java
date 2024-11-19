@@ -1,5 +1,6 @@
 package net.mpvm.saeimmobilier.modele;
 
+
 import java.util.Optional;
 
 public class Assurance {

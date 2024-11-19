@@ -1,7 +1,5 @@
 package net.mpvm.saeimmobilier.modele;
 
-
-
 public class ChargeEntretien extends Charges {
     private int idChargeEntretien;
     private ChargeEntretien(Date dateReleve,int idChargeEntretien) {

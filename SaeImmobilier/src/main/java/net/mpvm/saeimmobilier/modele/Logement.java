@@ -1,7 +1,4 @@
 package net.mpvm.saeimmobilier.modele;
-
-import eu.hansolo.tilesfx.skins.PercentageTileSkin;
-
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.TreeMap;

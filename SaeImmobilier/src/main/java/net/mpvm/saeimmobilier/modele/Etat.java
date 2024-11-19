@@ -1,5 +1,6 @@
 package net.mpvm.saeimmobilier.modele;
 
+
 public enum Etat {
     NEUF,
     BON_ETAT,

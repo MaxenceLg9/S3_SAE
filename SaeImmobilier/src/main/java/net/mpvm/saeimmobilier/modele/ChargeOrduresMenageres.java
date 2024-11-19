@@ -3,7 +3,10 @@ package net.mpvm.saeimmobilier.modele;
 public class ChargeOrduresMenageres extends Charges {
     private int idChargesOrduresMenageres;
 
-    // Constructeur
+    private ChargeOrduresMenageres(Date dateReleve,int IdChargesOrduresMenageres) {
+        super(dateReleve);
+        this.idChargesOrduresMenageres = IdChargesOrduresMenageres;
+    }
     public ChargeOrduresMenageres(Date dateReleve) {
         super(dateReleve);
     }

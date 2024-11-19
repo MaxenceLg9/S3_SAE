@@ -1,5 +1,6 @@
 package net.mpvm.saeimmobilier.modele;
 
+
 public class ChargeEau extends Charges{
     private int IdChargeEau;
     private int NouvelIndice;

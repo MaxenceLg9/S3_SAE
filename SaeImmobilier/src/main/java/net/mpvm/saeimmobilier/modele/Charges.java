@@ -1,7 +1,6 @@
 package net.mpvm.saeimmobilier.modele;
 
 
-
 public class Charges {
     private Bail bail;
     private int idCharges;

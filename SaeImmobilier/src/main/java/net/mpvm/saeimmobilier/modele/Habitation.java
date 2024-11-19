@@ -4,8 +4,6 @@ public class Habitation extends BienLouable {
 
     public Habitation() {
         super();
-
-
     }
 
 }

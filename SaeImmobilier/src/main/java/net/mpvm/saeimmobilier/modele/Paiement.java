@@ -1,9 +1,5 @@
 package net.mpvm.saeimmobilier.modele;
 
-import java.util.Date;
-
-import java.util.Date;
-
 public class Paiement {
     private int idPaiement;  // Attribut unique non demandé dans le constructeur public
     private float montant;

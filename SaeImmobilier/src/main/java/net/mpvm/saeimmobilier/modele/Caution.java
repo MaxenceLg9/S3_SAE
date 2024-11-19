@@ -1,6 +1,7 @@
 package net.mpvm.saeimmobilier.modele;
 
 
+
 public class Caution {
     private int idCaution;
     private Date dateNaissance;

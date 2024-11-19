@@ -1,9 +1,5 @@
 package net.mpvm.saeimmobilier.modele;
 
-
-
-
-
 public class Document {
     private int idDocument;
     private String cheminDocument;

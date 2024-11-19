@@ -3,6 +3,7 @@ public class EtatDesLieux extends Document {
     private int idEtatDesLieux;
     private Date dateSignature;
 
+
     // Constructeur privé qui demande tous les attributs (y compris ceux de la classe parente)
     private EtatDesLieux(int idEtatDesLieux, String cheminDocument, Date dateAjout, Date dateSignature) {
         super(cheminDocument, dateAjout); // Appelle le constructeur de la classe parente

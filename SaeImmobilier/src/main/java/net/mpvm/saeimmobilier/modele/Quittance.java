@@ -1,5 +1,6 @@
 package net.mpvm.saeimmobilier.modele;
 
+
 public class Quittance extends Document {
     private float montantLoyer;
     private float montantCharges;

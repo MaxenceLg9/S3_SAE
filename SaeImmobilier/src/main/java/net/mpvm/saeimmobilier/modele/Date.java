@@ -1,5 +1,6 @@
 package net.mpvm.saeimmobilier.modele;
 
+
 public class Date {
 	private Integer annee;
 	private Integer mois;

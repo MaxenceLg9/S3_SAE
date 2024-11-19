@@ -1,4 +1,5 @@
 package net.mpvm.saeimmobilier.modele;
+
 public class Travaux {
 	private String NumeroFacture;
 	private String Entreprise;
@@ -13,6 +14,7 @@ public class Travaux {
 	private Float montantDevis;
 	private Immeuble immeuble;
 	private Bien bien;
+
 
 	public Travaux(String NumeroDeFacture, String Entreprise, Date Date) {
 		this.Date = Date;
