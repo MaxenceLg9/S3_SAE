@@ -64,7 +64,8 @@ CREATE TABLE Locataires (
     Genre varchar(20) CHECK (Genre IN ('Madame', 'Monsieur')),
     Telephone varchar(10),
     Email varchar(20),
-    IsColocataire BOOLEAN
+    IdColocation integer,
+    foreign key (IdColocation) references Colocations(IdColocation)
 );
 
 
@@ -281,12 +282,19 @@ CREATE TABLE TaxesFonciere(
 
 CREATE TABLE Colocations (
     IdColocation INTEGER primary key autoincrement,
-    IdBail INTEGER,
+    NbLocatires INTEGER,
+    DateArrivee Date,
+    DateDepart Date,
+    quotiteLoyer float
+);
+
+create table AssocieLocataireColocation(
+    IdColocation INTEGER,
     IdLocataire INTEGER,
     DateArrivee Date,
     DateDepart Date,
-    quotiteLoyer float,
-    foreign key (IdBail) references Bail(IdBail),
+    primary key (IdColocation,IdLocataire),
+    foreign key (IdColocation) references Colocations(IdColocation),
     foreign key (IdLocataire) references Locataires(IdLocataire)
 );
 

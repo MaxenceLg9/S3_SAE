@@ -2,7 +2,7 @@ Drop Table ArchivesLocataires;
 Drop Table AssocieBailLocataire;
 Drop Table Assurances;
 Drop Table Bail;
-Drop Table BiensLouable;
+Drop Table BiensLouables;
 Drop Table Cautions;
 Drop Table Charges;
 Drop Table ChargesEau;
