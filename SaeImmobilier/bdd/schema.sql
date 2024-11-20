@@ -1,4 +1,4 @@
-CREATE TABLE BiensLouable (
+CREATE TABLE BiensLouables (
     IdBien INTEGER PRIMARY KEY,
     Adresse varchar(30),
     Ville varchar(20),
@@ -56,7 +56,6 @@ BEGIN
     )
     WHERE IdBail = NEW.IdBail;
 END;
-
 
 CREATE TABLE Locataires (
     IdLocataire INTEGER PRIMARY KEY,
