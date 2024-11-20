@@ -57,7 +57,6 @@ BEGIN
     WHERE IdBail = NEW.IdBail;
 END;
 
-
 CREATE TABLE Locataires (
     IdLocataire INTEGER PRIMARY KEY,
     Nom varchar(20),
