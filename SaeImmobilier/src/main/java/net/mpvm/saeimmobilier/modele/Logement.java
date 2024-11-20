@@ -105,4 +105,5 @@ public class Logement {
 			super(message);
 		}
 	}
+
 }

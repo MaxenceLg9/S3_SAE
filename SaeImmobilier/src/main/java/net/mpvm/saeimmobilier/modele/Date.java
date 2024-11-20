@@ -112,6 +112,14 @@ public class Date {
 		return true;
 	}
 
+	public String getDateComplete() {
+		return dateComplete;
+	}
+
+	public void setDateComplete(String dateComplete) {
+		this.dateComplete = dateComplete;
+	}
+
 	// Représentation de l'objet sous forme de chaîne
 	@Override
 	public String toString() {

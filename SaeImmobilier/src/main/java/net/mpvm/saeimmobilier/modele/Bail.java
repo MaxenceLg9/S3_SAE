@@ -19,20 +19,33 @@ public class Bail {
 	private ArrayList<BienLouable> biens;
 	private ArrayList<Locataire> locataires;
 	private ArrayList<Charges> charges;
+	private ArrayList<Paiement> paiements;
 	private Map<Locataire, Float> repartitionElectricite;
 	private Map<Locataire, Float> repartitionOrduresMenageres;
 	private Map<Locataire, Float> repartitionEntretien;
 	private boolean colocation;
-
+	private Bail(int idBail,Date dateDebut){
+		this.idBail = idBail;
+		this.dateDebut = dateDebut;
+		this.biens = new ArrayList<>();
+		this.locataires = new ArrayList<>();
+		this.charges = new ArrayList<>();
+		this.paiements = new ArrayList<>();
+		this.repartitionElectricite = new HashMap<>();
+		this.repartitionEntretien = new HashMap<>();
+		this.colocation = false;
+	}
 	// Constructeur
 	public Bail(Date dateDebut) {
 		this.dateDebut = dateDebut;
 		this.biens = new ArrayList<>();
-		this.locataires = new ArrayList<>();
-		this.repartitionElectricite = new HashMap<>();
 		this.repartitionOrduresMenageres = new HashMap<>();
-		this.repartitionEntretien = new HashMap<>();
 		this.charges = new ArrayList<>();
+		this.locataires = new ArrayList<>();
+		this.paiements = new ArrayList<>();
+		this.repartitionElectricite = new HashMap<>();
+		this.repartitionEntretien = new HashMap<>();
+		this.colocation = false;
 	}
 
 	// Méthode pour savoir si le bail est en colocation
@@ -225,4 +238,41 @@ public class Bail {
 		}
 		this.repartitionEntretien.put(locataire, pourcentage);
 	}
+
+	public ArrayList<Paiement> getPaiements() {
+		return paiements;
+	}
+	public void setPaiements(ArrayList<Paiement> paiements) {
+		this.paiements = paiements;
+	}
+
+	public void setRepartitionElectricite(Map<Locataire, Float> repartitionElectricite) {
+		this.repartitionElectricite = repartitionElectricite;
+	}
+
+	public void setBiens(ArrayList<BienLouable> biens) {
+		this.biens = biens;
+	}
+	public void setLocataires(ArrayList<Locataire> locataires) {
+		this.locataires = locataires;
+	}
+	public void setCharges(ArrayList<Charges> charges) {
+		this.charges = charges;
+	}
+
+	public boolean isColocation() {
+		return colocation;
+	}
+	public void setColocation(boolean colocation) {
+		this.colocation = colocation;
+	}
+
+	public void setRepartitionEntretien(Map<Locataire, Float> repartitionEntretien) {
+		this.repartitionEntretien = repartitionEntretien;
+	}
+
+	public void setRepartitionOrduresMenageres(Map<Locataire, Float> repartitionOrduresMenageres) {
+		this.repartitionOrduresMenageres = repartitionOrduresMenageres;
+	}
+
 }

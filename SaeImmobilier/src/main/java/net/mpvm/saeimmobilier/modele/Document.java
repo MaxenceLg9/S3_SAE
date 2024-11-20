@@ -47,5 +47,6 @@ public class Document {
     public void setBail(Bail bail) {
         this.bail = bail;
     }
+
 }
 

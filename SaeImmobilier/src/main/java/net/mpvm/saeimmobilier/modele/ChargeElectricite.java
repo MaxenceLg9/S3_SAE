@@ -20,4 +20,5 @@ public class ChargeElectricite extends Charges {
     public void setIdChargeElectricite(int idChargeElectricite) {
         this.idChargeElectricite = idChargeElectricite;
     }
+
 }

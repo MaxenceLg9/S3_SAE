@@ -46,4 +46,5 @@ public class Immeuble extends Bien{
 	public void setTravauxAssocies(List<Travaux> travauxAssocies) {
 		this.travauxAssocies = travauxAssocies;
 	}
+
 }

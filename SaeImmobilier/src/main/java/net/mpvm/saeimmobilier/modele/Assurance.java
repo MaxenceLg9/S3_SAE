@@ -117,4 +117,15 @@ public class Assurance {
         }
         return ((primeActuelle - primePrecedente) / primePrecedente) * 100;
     }
+
+    public float getAugmentationAnnuelle() {
+        return augmentationAnnuelle;
+    }
+    public void setAugmentationAnnuelle(float augmentationAnnuelle) {
+        this.augmentationAnnuelle = augmentationAnnuelle;
+    }
+
+    public void setBien(Optional<Bien> bien) {
+        this.bien = bien;
+    }
 }

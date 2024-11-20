@@ -33,4 +33,5 @@ public class EtatDesLieux extends Document {
     public void setIdEtatDesLieux(int idEtatDesLieux) {
         this.idEtatDesLieux = idEtatDesLieux;
     }
+
 }
