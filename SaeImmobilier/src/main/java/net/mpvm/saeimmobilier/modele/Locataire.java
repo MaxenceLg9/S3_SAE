@@ -2,13 +2,12 @@ package net.mpvm.saeimmobilier.modele;
 
 import net.mpvm.saeimmobilier.sql.BD;
 
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Objects;
+import java.util.Map;
 
 public class Locataire {
 
+	public static final String TABLE_NAME = "Locataire";
 	private int numero;
 	private char sexe;
 	private String telepone;
@@ -97,18 +96,7 @@ public class Locataire {
 	public void setTotalCharge(float totalCharge) {this.totalCharge = totalCharge;}
 
 	public void save() {
-		String insertLocataire = "INSERT INTO Locataires (nom, prenom, email, sexe, telephone) VALUES (?, ?, ?, ?, ?)";
-		PreparedStatement st = Objects.requireNonNull(BD.prepareStatement(insertLocataire));
-        try {
-			st.setString(1, this.nom);
-			st.setString(2, this.prenom);
-			st.setString(3,this.email);
-			st.setString(4, Character.toString(this.sexe));
-			st.setString(5, this.telepone);
-			int row = st.executeUpdate();
-			System.out.println(row + " rows affected");
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+		Map<String, String> params = Map.of("nom", this.nom, "prenom", this.prenom, "email", this.email, "sexe", Character.toString(this.sexe), "telephone", this.telepone);
+		BD.insertInto(TABLE_NAME, params, true);
     }
 }

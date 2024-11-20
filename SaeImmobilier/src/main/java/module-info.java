@@ -13,6 +13,7 @@ module net.mpvm.saeimmobilier {
     requires java.desktop;
     requires org.xerial.sqlitejdbc;
     requires org.slf4j;
+    requires annotations;
 
     opens net.mpvm.saeimmobilier.data.fxml to javafx.fxml;
     opens net.mpvm.saeimmobilier.data.images to javafx.fxml;

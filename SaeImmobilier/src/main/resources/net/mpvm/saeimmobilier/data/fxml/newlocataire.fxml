@@ -21,7 +21,6 @@
       <Label layoutX="130.0" layoutY="404.0" prefHeight="17.0" prefWidth="107.0" text="Sexe" />
       <RadioButton fx:id="radioButtonM" layoutX="126.0" layoutY="421.0" mnemonicParsing="false" text="Masculin" />
       <RadioButton fx:id="radioButtonF" layoutX="287.0" layoutY="421.0" mnemonicParsing="false" text="Feminin" />
-      <CheckBox fx:id="checkboxColocataire" layoutX="126.0" layoutY="470.0" mnemonicParsing="false" onAction="#checkboxChecked" prefHeight="17.0" prefWidth="225.0" text="Colocataire" />
       <Label layoutX="129.0" layoutY="354.0" prefHeight="17.0" prefWidth="107.0" text="Telephone" />
       <TextField fx:id="fieldTelephone" layoutX="125.0" layoutY="371.0" prefHeight="25.0" prefWidth="225.0" />
    </children>

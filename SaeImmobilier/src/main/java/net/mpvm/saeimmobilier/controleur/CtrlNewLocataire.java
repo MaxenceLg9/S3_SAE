@@ -15,8 +15,6 @@ public class CtrlNewLocataire {
     @FXML
     private AnchorPane anchorPaneRacine;
     @FXML
-    private CheckBox checkboxColocataire;
-    @FXML
     private RadioButton radioButtonF;
     @FXML
     private RadioButton radioButtonM;
@@ -31,13 +29,11 @@ public class CtrlNewLocataire {
 
 
     private List<Node> fieldsLocataires;
-    private List<Node> fieldsColocataires;
     private ToggleGroup toggleGroup;
 
     @FXML
     public void initialize(){
         fieldSetup();
-        fieldsColocataires = new ArrayList<>();
         groupButton();
     }
 
@@ -87,24 +83,5 @@ public class CtrlNewLocataire {
             }
         }
         return true;
-    }
-
-    public void checkboxChecked(ActionEvent actionEvent) {
-        if(checkboxColocataire.isSelected()){
-            togglePaneColocataire(true);
-        }
-        else{
-            togglePaneColocataire(false);
-        }
-    }
-
-    private void togglePaneColocataire(Boolean t){
-        if(t){
-            // TODO
-            System.out.println("Activé");
-        }
-        else{
-            System.out.println("Désactivé");
-        }
     }
 }
