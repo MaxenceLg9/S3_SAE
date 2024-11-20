@@ -2,26 +2,25 @@ package net.mpvm.saeimmobilier.modele;
 
 import net.mpvm.saeimmobilier.sql.BD;
 
-import java.sql.Connection;
-import java.sql.Statement;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Objects;
 
 public class Locataire {
 
 	private int numero;
-	private String genre;
+	private char sexe;
 	private String telepone;
 	private String email;
 	private String nom;
 	private String prenom;
-	private ArrayList<Bail> baux;
-	private ArrayList<Float> charges;
+	private final ArrayList<Bail> baux;
+	private final ArrayList<Float> charges;
 	private float totalCharge;
 
-	private Locataire(int numero, String nom, String prenom, String email) {
+	private Locataire(String nom, String prenom, String email) {
 		this.email = email;
-		this.numero = numero;
 		this.nom = nom;
 		this.prenom = prenom;
 		this.baux=new ArrayList<>();
@@ -29,8 +28,10 @@ public class Locataire {
 		this.totalCharge=0f;
 	}
 
-	public Locataire(String nom, String prenom, String email){
-		this(0, nom, prenom, email);
+	public Locataire(String nom, String prenom, String email, char sexe, String telepone) {
+		this(nom, prenom, email);
+		this.sexe = sexe;
+		this.telepone = telepone;
 	}
 
 	public int getNumero() {
@@ -41,12 +42,12 @@ public class Locataire {
 		this.numero = numero;
 	}
 
-	public String getGenre() {
-		return this.genre;
+	public char getSexe() {
+		return this.sexe;
 	}
 
-	public void setGenre(String genre) {
-		this.genre = genre;
+	public void setSexe(char sexe) {
+		this.sexe = sexe;
 	}
 
 	public String getTelepone() {
@@ -96,7 +97,18 @@ public class Locataire {
 	public void setTotalCharge(float totalCharge) {this.totalCharge = totalCharge;}
 
 	public void save() {
-		Statement st = Objects.requireNonNull(BD.createStatement());
-
-	}
+		String insertLocataire = "INSERT INTO Locataires (nom, prenom, email, sexe, telephone) VALUES (?, ?, ?, ?, ?)";
+		PreparedStatement st = Objects.requireNonNull(BD.prepareStatement(insertLocataire));
+        try {
+			st.setString(1, this.nom);
+			st.setString(2, this.prenom);
+			st.setString(3,this.email);
+			st.setString(4, Character.toString(this.sexe));
+			st.setString(5, this.telepone);
+			int row = st.executeUpdate();
+			System.out.println(row + " rows affected");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

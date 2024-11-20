@@ -2,13 +2,13 @@ package net.mpvm.saeimmobilier.sql;
 
 import java.sql.*;
 
+
 public class TestConnexionDB {
 
     public static void connect() {
         // connection string
-        var url = "jdbc:sqlite:bdd/BDImmobilier.db";
 
-        try (Connection conn = DriverManager.getConnection(url)) {
+        try {
             //requête select sur la table Immeuble + affichage
             /*String insert = "INSERT INTO Locataires VALUES (0,'Doe', 'John', 'Monsieur', '0601020304', 'johndoe@prankex.rizz', 'false')";
             Statement iStmt = conn.createStatement();
@@ -17,14 +17,13 @@ public class TestConnexionDB {
             System.out.println(nbRow + "rows affected");*/
 
             String select = "SELECT * FROM Locataires";
-            Statement stmt = conn.createStatement();
+            Statement stmt = BD.createStatement();
             ResultSet rs = stmt.executeQuery(select);
             while(rs.next()){
                 System.out.println("Nom :" + rs.getString(2) + ", Prenom :" + rs.getString(3) + ", Tel :" + rs.getString(5) + ", Email :" + rs.getString(6));
             }
             rs.close();
             stmt.close();
-            conn.close();
             System.out.println("Connection to SQLite has been established.");
         } catch (SQLException e) {
             System.out.println(e.getMessage());
