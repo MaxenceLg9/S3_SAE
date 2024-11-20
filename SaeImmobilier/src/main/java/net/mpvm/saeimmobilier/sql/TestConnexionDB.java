@@ -1,9 +1,6 @@
 package net.mpvm.saeimmobilier.sql;
 
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 public class TestConnexionDB {
 
@@ -11,7 +8,7 @@ public class TestConnexionDB {
         // connection string
         var url = "jdbc:sqlite:bdd/BDImmobilier.db";
 
-        try (var conn = DriverManager.getConnection(url)) {
+        try (Connection conn = DriverManager.getConnection(url)) {
             //requête select sur la table Immeuble + affichage
             /*String insert = "INSERT INTO Locataires VALUES (0,'Doe', 'John', 'Monsieur', '0601020304', 'johndoe@prankex.rizz', 'false')";
             Statement iStmt = conn.createStatement();

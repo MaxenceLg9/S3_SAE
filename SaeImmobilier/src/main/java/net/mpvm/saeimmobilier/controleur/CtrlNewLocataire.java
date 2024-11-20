@@ -17,6 +17,7 @@ public class CtrlNewLocataire {
     public void initialize(){
         fieldNom.setPromptText("Nom du locataire");
         fieldPrenom.setPromptText("Prénom du locataire");
+        fieldEmail.setPromptText("Email du locataire");
     }
 
     @FXML

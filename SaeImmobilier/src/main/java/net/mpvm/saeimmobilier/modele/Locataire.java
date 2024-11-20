@@ -1,6 +1,11 @@
 package net.mpvm.saeimmobilier.modele;
 
+import net.mpvm.saeimmobilier.sql.BD;
+
+import java.sql.Connection;
+import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Locataire {
 
@@ -91,7 +96,7 @@ public class Locataire {
 	public void setTotalCharge(float totalCharge) {this.totalCharge = totalCharge;}
 
 	public void save() {
-
+		Statement st = Objects.requireNonNull(BD.createStatement());
 
 	}
 }
