@@ -1,27 +1,125 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane fx:id="anchorPaneRacine" prefHeight="550.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.mpvm.saeimmobilier.controleur.CtrlNewLocataire">
-   <children>
-      <Label fx:id="labelTitle" layoutX="14.0" layoutY="14.0" prefHeight="17.0" prefWidth="252.0" text="Création d'un locataire" />
-      <TextField fx:id="fieldPrenom" layoutX="126.0" layoutY="176.0" prefHeight="25.0" prefWidth="225.0" />
-      <TextField fx:id="fieldNom" layoutX="126.0" layoutY="248.0" prefHeight="25.0" prefWidth="225.0" />
-      <Label layoutX="130.0" layoutY="159.0" prefHeight="17.0" prefWidth="107.0" text="Nom du locataire" />
-      <Label layoutX="130.0" layoutY="231.0" text="Prenom du locataire" />
-      <Label layoutX="130.0" layoutY="299.0" prefHeight="17.0" prefWidth="107.0" text="Adresse email" />
-      <TextField fx:id="fieldEmail" layoutX="126.0" layoutY="316.0" prefHeight="25.0" prefWidth="225.0" />
-      <Button layoutX="14.0" layoutY="511.0" mnemonicParsing="false" onAction="#ajouterLocataire" text="Ajouter le locataire" />
-      <Button layoutX="628.0" layoutY="511.0" mnemonicParsing="false" text="Annuler" />
-      <Label layoutX="130.0" layoutY="404.0" prefHeight="17.0" prefWidth="107.0" text="Sexe" />
-      <RadioButton fx:id="radioButtonM" layoutX="126.0" layoutY="421.0" mnemonicParsing="false" text="Masculin" />
-      <RadioButton fx:id="radioButtonF" layoutX="287.0" layoutY="421.0" mnemonicParsing="false" text="Feminin" />
-      <Label layoutX="129.0" layoutY="354.0" prefHeight="17.0" prefWidth="107.0" text="Telephone" />
-      <TextField fx:id="fieldTelephone" layoutX="125.0" layoutY="371.0" prefHeight="25.0" prefWidth="225.0" />
-   </children>
-</AnchorPane>
+<VBox minHeight="550.0" minWidth="700.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.mpvm.saeimmobilier.controleur.CtrlNewLocataire">
+    <children>
+        <Label fx:id="labelTitle" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="300.0" text="Création d'un locataire" VBox.vgrow="ALWAYS">
+            <VBox.margin>
+                <Insets left="20.0" />
+            </VBox.margin></Label>
+        <ScrollPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="700.0" VBox.vgrow="ALWAYS">
+            <content>
+                <FlowPane alignment="TOP_CENTER" columnHalignment="CENTER" prefHeight="450.0" prefWidth="700.0" vgap="10.0">
+                    <children>
+                        <GridPane prefHeight="50.0" prefWidth="600.0">
+                            <columnConstraints>
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints maxHeight="40.0" minHeight="3.0" prefHeight="16.0" vgrow="SOMETIMES" />
+                                <RowConstraints maxHeight="68.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            </rowConstraints>
+                            <children>
+                                <TextField fx:id="fieldPrenom" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="270.0" GridPane.rowIndex="1" />
+                                <Label text="Prenom du locataire" />
+                            </children>
+                            <FlowPane.margin>
+                                <Insets />
+                            </FlowPane.margin>
+                        </GridPane>
+                        <GridPane prefHeight="50.0" prefWidth="600.0">
+                            <columnConstraints>
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints maxHeight="50.0" minHeight="3.0" prefHeight="19.0" vgrow="SOMETIMES" />
+                                <RowConstraints maxHeight="68.0" minHeight="0.0" prefHeight="31.0" vgrow="SOMETIMES" />
+                            </rowConstraints>
+                            <children>
+                                <Label prefHeight="17.0" prefWidth="107.0" text="Nom du locataire" />
+                                <TextField fx:id="fieldNom" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="270.0" GridPane.rowIndex="1" />
+                            </children>
+                        </GridPane>
+                        <GridPane prefHeight="50.0" prefWidth="600.0">
+                            <columnConstraints>
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints maxHeight="21.0" minHeight="5.0" prefHeight="21.0" />
+                                <RowConstraints maxHeight="46.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
+                            </rowConstraints>
+                            <children>
+                                <TextField fx:id="fieldEmail" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="3.0" prefWidth="270.0" GridPane.rowIndex="1" />
+                                <Label prefHeight="17.0" prefWidth="107.0" text="Adresse email" />
+                            </children>
+                        </GridPane>
+                        <GridPane prefHeight="50.0" prefWidth="600.0">
+                            <columnConstraints>
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints maxHeight="40.0" minHeight="3.0" prefHeight="16.0" vgrow="SOMETIMES" />
+                                <RowConstraints maxHeight="68.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            </rowConstraints>
+                            <children>
+                                <Label prefHeight="17.0" prefWidth="107.0" text="Telephone" />
+                                <TextField fx:id="fieldTelephone" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="270.0" GridPane.rowIndex="1" />
+                            </children>
+                        </GridPane>
+                        <GridPane prefHeight="50.0" prefWidth="600.0">
+                            <columnConstraints>
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints maxHeight="40.0" minHeight="3.0" prefHeight="16.0" vgrow="SOMETIMES" />
+                                <RowConstraints maxHeight="68.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            </rowConstraints>
+                            <children>
+                                <RadioButton fx:id="radioButtonM" mnemonicParsing="false" text="Masculin" GridPane.rowIndex="1" />
+                                <Label prefHeight="17.0" prefWidth="107.0" text="Sexe" />
+                                <RadioButton fx:id="radioButtonF" mnemonicParsing="false" text="Feminin" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                            </children>
+                        </GridPane>
+                    </children>
+                    <padding>
+                        <Insets bottom="50.0" left="50.0" right="50.0" top="50.0" />
+                    </padding>
+                </FlowPane>
+            </content>
+        </ScrollPane>
+        <GridPane>
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            </rowConstraints>
+            <children>
+                <Button alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#ajouterLocataire" text="Ajouter le locataire">
+                    <GridPane.margin>
+                        <Insets left="10.0" />
+                    </GridPane.margin></Button>
+                <Button alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#annuler" text="Annuler" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.halignment="RIGHT" GridPane.rowSpan="2147483647">
+                    <GridPane.margin>
+                        <Insets right="10.0" />
+                    </GridPane.margin></Button>
+            </children>
+            <VBox.margin>
+                <Insets bottom="10.0" top="10.0" />
+            </VBox.margin>
+        </GridPane>
+    </children>
+</VBox>

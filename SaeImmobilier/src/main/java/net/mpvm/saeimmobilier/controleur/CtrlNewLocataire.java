@@ -27,9 +27,7 @@ public class CtrlNewLocataire {
     @FXML
     private TextField fieldTelephone;
 
-
-    private List<Node> fieldsLocataires;
-    private ToggleGroup toggleGroup;
+    private List<TextField> fieldsLocataires;
 
     @FXML
     public void initialize(){
@@ -38,10 +36,8 @@ public class CtrlNewLocataire {
     }
 
     private void fieldSetup() {
-        fieldNom.setPromptText("Nom du locataire");
-        fieldPrenom.setPromptText("Prénom du locataire");
-        fieldEmail.setPromptText("Email du locataire");
-        fieldTelephone.setPromptText("Téléphone du locataire");
+        setFieldsPromptText();
+
         fieldsLocataires = new ArrayList<>(){
             {
                 add(fieldNom);
@@ -52,8 +48,15 @@ public class CtrlNewLocataire {
         };
     }
 
+    private void setFieldsPromptText() {
+        fieldNom.setPromptText("Nom du locataire");
+        fieldPrenom.setPromptText("Prénom du locataire");
+        fieldEmail.setPromptText("Email du locataire");
+        fieldTelephone.setPromptText("Téléphone du locataire");
+    }
+
     private void groupButton() {
-        toggleGroup = new ToggleGroup();
+        ToggleGroup toggleGroup = new ToggleGroup();
         radioButtonM.setSelected(true);
         radioButtonF.setToggleGroup(toggleGroup);
         radioButtonM.setToggleGroup(toggleGroup);
@@ -66,22 +69,28 @@ public class CtrlNewLocataire {
             new Locataire(fieldNom.getText(), fieldPrenom.getText(), fieldEmail.getText(), sexe, this.fieldTelephone.getText()).save();
         }
         else{
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Erreur");
-            alert.setHeaderText("Champs vides");
-            alert.setContentText("Veuillez remplir tous les champs");
-            alert.showAndWait();
+            alertFieldsEmpty();
         }
     }
 
+    private void alertFieldsEmpty() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Erreur");
+        alert.setHeaderText("Champs vides");
+        alert.setContentText("Veuillez remplir tous les champs");
+        alert.showAndWait();
+    }
+
     private boolean fieldsNotEmpty() {
-        for(Node node : fieldsLocataires){
-            if(node instanceof TextField){
-                if(((TextField) node).getText().isEmpty()){
-                    return false;
-                }
+        for(TextField textField : fieldsLocataires){
+            if(textField.getText().isEmpty()){
+                return false;
             }
         }
         return true;
+    }
+
+    public void annuler(ActionEvent actionEvent) {
+        System.out.println("World Hello!");
     }
 }
