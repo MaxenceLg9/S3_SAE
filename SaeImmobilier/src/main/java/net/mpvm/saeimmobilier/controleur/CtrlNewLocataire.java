@@ -25,6 +25,7 @@ public class CtrlNewLocataire {
     @FXML
     private TextField fieldTelephone;
 
+    @FXML
     private List<TextField> fieldsLocataires;
 
     @FXML
