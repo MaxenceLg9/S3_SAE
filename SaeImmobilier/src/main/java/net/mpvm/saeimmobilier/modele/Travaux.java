@@ -1,4 +1,5 @@
 package net.mpvm.saeimmobilier.modele;
+
 public class Travaux {
 	private String NumeroFacture;
 	private String Entreprise;
@@ -9,6 +10,11 @@ public class Travaux {
 	private String Nature;
 	private String NumeroDevis;
 	private Float MontantADeclarer;
+	private String entrepriseDevis;
+	private Float montantDevis;
+	private Immeuble immeuble;
+	private Bien bien;
+
 
 	public Travaux(String NumeroDeFacture, String Entreprise, Date Date) {
 		this.Date = Date;
@@ -82,5 +88,71 @@ public class Travaux {
 	public Float getMontantADeclarer() {
 		this.MontantADeclarer=(this.Montant-this.MontantNonDeductible)*(1-this.Reduction);
 		return this.MontantADeclarer;
+	}
+	private boolean recuperableImpots;
+	private boolean recuperableLocataire;
+
+	public void setRecuperabilite(boolean impots, boolean locataire) throws IllegalArgumentException {
+		if (impots && locataire) {
+			throw new IllegalArgumentException("Une facture ne peut pas être récupérable aux impôts et au locataire simultanément.");
+		}
+		this.recuperableImpots = impots;
+		this.recuperableLocataire = locataire;
+	}
+
+	public void associerDevis(String entreprise, Float montant) throws IllegalArgumentException {
+		if (this.entrepriseDevis != null && !this.entrepriseDevis.equals(entreprise)) {
+			throw new IllegalArgumentException("L'entreprise ne peut pas être modifiée.");
+		}
+		this.entrepriseDevis = entreprise;
+		this.montantDevis = montant;
+	}
+
+	public void setBien(Bien bien) {
+		this.bien = bien;
+	}
+	public Bien getBien() {
+		return this.bien;
+	}
+
+	public boolean isRecuperableImpots() {
+		return recuperableImpots;
+	}
+
+	public boolean isRecuperableLocataire() {
+		return recuperableLocataire;
+	}
+
+	public Float getMontantDevis() {
+		return montantDevis;
+	}
+
+	public Immeuble getImmeuble() {
+		return immeuble;
+	}
+	public void setImmeuble(Immeuble immeuble) {
+		this.immeuble = immeuble;
+	}
+
+	public String getEntrepriseDevis() {
+		return entrepriseDevis;
+	}
+	public void setEntrepriseDevis(String entrepriseDevis) {
+		this.entrepriseDevis = entrepriseDevis;
+	}
+
+	public void setMontantADeclarer(Float montantADeclarer) {
+		MontantADeclarer = montantADeclarer;
+	}
+
+	public void setMontantDevis(Float montantDevis) {
+		this.montantDevis = montantDevis;
+	}
+
+	public void setRecuperableImpots(boolean recuperableImpots) {
+		this.recuperableImpots = recuperableImpots;
+	}
+	public void setRecuperableLocataire(boolean recuperableLocataire) {
+		this.recuperableLocataire = recuperableLocataire;
 	}
 }

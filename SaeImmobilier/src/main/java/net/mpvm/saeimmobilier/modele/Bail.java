@@ -1,8 +1,13 @@
 package net.mpvm.saeimmobilier.modele;
 
+
 import java.util.ArrayList;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Bail {
+	private int idBail;
 	private int nbMoisLoues;
 	private float provisionSurCharge;
 	private float factureEau;
@@ -11,36 +16,127 @@ public class Bail {
 	private float regularisationCharge;
 	private Date dateDebut;
 	private Date dateFin;
-	private ArrayList<Logement> logements;
+	private ArrayList<BienLouable> biens;
 	private ArrayList<Locataire> locataires;
-
-	public Bail(Date dateDebut,Integer Annee, Integer Mois, Integer Jour) {
-        this.dateDebut = new Date(Annee, Mois, Jour);
-		this.logements=new ArrayList<>();
-		this.locataires=new ArrayList<>();
+	private ArrayList<Charges> charges;
+	private ArrayList<Paiement> paiements;
+	private Map<Locataire, Float> repartitionElectricite;
+	private Map<Locataire, Float> repartitionOrduresMenageres;
+	private Map<Locataire, Float> repartitionEntretien;
+	private boolean colocation;
+	private Bail(int idBail,Date dateDebut){
+		this.idBail = idBail;
+		this.dateDebut = dateDebut;
+		this.biens = new ArrayList<>();
+		this.locataires = new ArrayList<>();
+		this.charges = new ArrayList<>();
+		this.paiements = new ArrayList<>();
+		this.repartitionElectricite = new HashMap<>();
+		this.repartitionEntretien = new HashMap<>();
+		this.colocation = false;
+	}
+	// Constructeur
+	public Bail(Date dateDebut) {
+		this.dateDebut = dateDebut;
+		this.biens = new ArrayList<>();
+		this.repartitionOrduresMenageres = new HashMap<>();
+		this.charges = new ArrayList<>();
+		this.locataires = new ArrayList<>();
+		this.paiements = new ArrayList<>();
+		this.repartitionElectricite = new HashMap<>();
+		this.repartitionEntretien = new HashMap<>();
+		this.colocation = false;
 	}
 
-	public int getNbMoisLoues() {
-		return this.nbMoisLoues;
+	// Méthode pour savoir si le bail est en colocation
+	public boolean estEnColocation() {
+		if (this.locataires.size() > 1) {
+			this.colocation = true;
+		}
+		return this.colocation;
 	}
-	public ArrayList<Logement> getLogements() {
-		return this.logements;
+
+	// Méthode pour diviser le loyer entre colocataires
+	public Map<Locataire, Float> diviserLoyer() {
+		if (this.locataires.isEmpty()) {
+			throw new IllegalStateException("Aucun locataire n'est associé au bail.");
+		}
+
+		Map<Locataire, Float> partsLoyer = new HashMap<>();
+		if (estEnColocation()) {
+			float totalPourcentage = 0;
+			boolean utilisationRepartition = false;
+
+			// Vérifier si des répartitions sont définies
+			for (Locataire locataire : locataires) {
+				if (repartitionElectricite.containsKey(locataire) ||
+						repartitionEntretien.containsKey(locataire) ||
+						repartitionOrduresMenageres.containsKey(locataire)) {
+					utilisationRepartition = true;
+					totalPourcentage += repartitionElectricite.getOrDefault(locataire, 0f);
+				}
+			}
+
+			if (utilisationRepartition && totalPourcentage > 0) {
+				// Répartition en fonction des pourcentages définis
+				for (Locataire locataire : locataires) {
+					float pourcentage = repartitionElectricite.getOrDefault(locataire, 0f);
+					partsLoyer.put(locataire, this.loyer * pourcentage);
+				}
+			} else {
+				// Répartition équitable
+				float partEquitable = this.loyer / this.locataires.size();
+				for (Locataire locataire : locataires) {
+					partsLoyer.put(locataire, partEquitable);
+				}
+			}
+		} else {
+			// Bail sans colocation : un seul locataire paie l'intégralité
+			partsLoyer.put(locataires.get(0), this.loyer);
+		}
+		return partsLoyer;
 	}
-	public ArrayList<Locataire> getLocataires() {
-		return this.locataires;
+
+	// Méthode pour ajouter un logement
+	public void ajouterBien(BienLouable bien) {
+		this.biens.add(bien);
 	}
+
+	// Méthode pour ajouter un locataire
 	public void ajouterLocataire(Locataire locataire) {
 		this.locataires.add(locataire);
 	}
-	public void ajouterLogement(Logement logement) {
-		this.logements.add(logement);
+
+	// Méthode pour obtenir la date de fin en fonction de la durée
+	public Date calculerDateFin() {
+		if (this.dateDebut == null || this.nbMoisLoues <= 0) {
+			return null;
+		}
+
+		// Utilisation d'une méthode fictive `addMonths` pour calculer la date
+		return this.dateDebut.addMonths(this.nbMoisLoues);
 	}
+
+	// Getters et Setters
+
+	public int getIdBail() {
+		return idBail;
+	}
+
+	public void setIdBail(int idBail) {
+		this.idBail = idBail;
+	}
+
+	public int getNbMoisLoues() {
+		return nbMoisLoues;
+	}
+
 	public void setNbMoisLoues(int nbMoisLoues) {
 		this.nbMoisLoues = nbMoisLoues;
 	}
 
 	public float getProvisionSurCharge() {
-		return this.provisionSurCharge;
+		return provisionSurCharge;
 	}
 
 	public void setProvisionSurCharge(float provisionSurCharge) {
@@ -48,7 +144,7 @@ public class Bail {
 	}
 
 	public float getFactureEau() {
-		return this.factureEau;
+		return factureEau;
 	}
 
 	public void setFactureEau(float factureEau) {
@@ -56,7 +152,7 @@ public class Bail {
 	}
 
 	public float getTotalCharge() {
-		return this.totalCharge;
+		return totalCharge;
 	}
 
 	public void setTotalCharge(float totalCharge) {
@@ -64,35 +160,119 @@ public class Bail {
 	}
 
 	public float getLoyer() {
-		return this.loyer;
+		return loyer;
 	}
 
 	public void setLoyer(float loyer) {
+		if (loyer <= 0) {
+			throw new IllegalArgumentException("Le loyer doit être positif.");
+		}
 		this.loyer = loyer;
 	}
 
-	public float getRegularitationCharge() {
-		return this.regularisationCharge;
+	public float getRegularisationCharge() {
+		return regularisationCharge;
 	}
 
-	public void setRegularitationCharge(float regularitationCharge) {
-		this.regularisationCharge = regularitationCharge;
+	public void setRegularisationCharge(float regularisationCharge) {
+		this.regularisationCharge = regularisationCharge;
 	}
 
 	public Date getDateDebut() {
-		return this.dateDebut;
+		return dateDebut;
 	}
 
 	public void setDateDebut(Date dateDebut) {
 		this.dateDebut = dateDebut;
 	}
+
 	public Date getDateFin() {
-		while (!(this.getNbMoisLoues()+this.dateDebut.getMois()<=12)) {
-			this.dateFin.setAnnee(this.dateFin.getAnnee()+1);
-		}
-		this.dateFin=this.dateDebut.setMois(this.dateDebut.getMois()+this.getNbMoisLoues());
-		return this.dateFin;
-		
+		return dateFin;
 	}
-	
+
+	public void setDateFin(Date dateFin) {
+		this.dateFin = dateFin;
+	}
+
+	public ArrayList<BienLouable> getBiens() {
+		return biens;
+	}
+
+	public ArrayList<Locataire> getLocataires() {
+		return locataires;
+	}
+
+	public ArrayList<Charges> getCharges() {
+		return charges;
+	}
+
+	public Map<Locataire, Float> getRepartitionElectricite() {
+		return repartitionElectricite;
+	}
+
+	public void setRepartitionElectricite(Locataire locataire, float pourcentage) {
+		if (pourcentage < 0 || pourcentage > 1) {
+			throw new IllegalArgumentException("Pourcentage pas compris entre 0 et 1");
+		}
+		this.repartitionElectricite.put(locataire, pourcentage);
+	}
+
+	public Map<Locataire, Float> getRepartitionOrduresMenageres() {
+		return repartitionOrduresMenageres;
+	}
+
+	public void setRepartitionOrduresMenageres(Locataire locataire, float pourcentage) {
+		if (pourcentage < 0 || pourcentage > 1) {
+			throw new IllegalArgumentException("Pourcentage pas compris entre 0 et 1");
+		}
+		this.repartitionOrduresMenageres.put(locataire, pourcentage);
+	}
+
+	public Map<Locataire, Float> getRepartitionEntretien() {
+		return repartitionEntretien;
+	}
+
+	public void setRepartitionEntretien(Locataire locataire, float pourcentage) {
+		if (pourcentage < 0 || pourcentage > 1) {
+			throw new IllegalArgumentException("Pourcentage pas compris entre 0 et 1");
+		}
+		this.repartitionEntretien.put(locataire, pourcentage);
+	}
+
+	public ArrayList<Paiement> getPaiements() {
+		return paiements;
+	}
+	public void setPaiements(ArrayList<Paiement> paiements) {
+		this.paiements = paiements;
+	}
+
+	public void setRepartitionElectricite(Map<Locataire, Float> repartitionElectricite) {
+		this.repartitionElectricite = repartitionElectricite;
+	}
+
+	public void setBiens(ArrayList<BienLouable> biens) {
+		this.biens = biens;
+	}
+	public void setLocataires(ArrayList<Locataire> locataires) {
+		this.locataires = locataires;
+	}
+	public void setCharges(ArrayList<Charges> charges) {
+		this.charges = charges;
+	}
+
+	public boolean isColocation() {
+		return colocation;
+	}
+	public void setColocation(boolean colocation) {
+		this.colocation = colocation;
+	}
+
+	public void setRepartitionEntretien(Map<Locataire, Float> repartitionEntretien) {
+		this.repartitionEntretien = repartitionEntretien;
+	}
+
+	public void setRepartitionOrduresMenageres(Map<Locataire, Float> repartitionOrduresMenageres) {
+		this.repartitionOrduresMenageres = repartitionOrduresMenageres;
+	}
+
 }
