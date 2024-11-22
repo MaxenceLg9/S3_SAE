@@ -135,4 +135,5 @@ public class Proprietaire {
 	public void setBiensPossedes(ArrayList<Bien> biensPossedes) {
 		this.biensPossedes = biensPossedes;
 	}
+
 }
