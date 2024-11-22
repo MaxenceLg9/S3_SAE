@@ -1,37 +1,61 @@
 package net.mpvm.saeimmobilier.controleur;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import net.mpvm.saeimmobilier.modele.Immeuble;
+import net.mpvm.saeimmobilier.modele.Proprietaire;
+import net.mpvm.saeimmobilier.modele.Bien;
 
-public class CtrlNewLogement {
+import java.util.ArrayList;
 
-    @FXML
-    private ChoiceBox<Immeuble> listImmeubles;
-    @FXML
-    private TextField inputSurfaceHabitable;
+public class CtrlNewBien {
 
     @FXML
+    private ComboBox<Proprietaire> comboProprietaire;
+    @FXML
+    private TextField fieldAdresse;
+    @FXML
+    private TextField fieldCodePostal;
+    @FXML
+    private TextField fieldVille;
+    @FXML
+    private TextArea areaDescription;
+    @FXML
+    private TextField fieldPrix;
+
+    private ArrayList<Proprietaire> proprietaires;
+
     public void initialize() {
-        // Initialize the list of Immeubles
-        if (listImmeubles != null) {
-            listImmeubles.getItems().add(new Immeuble(1, 1, "Rue du U", "Résidence du TDC"));
-            System.out.println(listImmeubles.getItems().getFirst().getAdresse());
-        } else {
-            System.out.println("ChoiceBox listImmeubles is not injected");
+        // Remplir la liste des propriétaires
+        proprietaires = // Charger depuis une source de données
+        comboProprietaire.getItems().addAll(proprietaires);
+    }
+
+    @FXML
+    private void ajouterBien() {
+        try {
+            Proprietaire proprietaire = comboProprietaire.getValue();
+            String adresse = fieldAdresse.getText();
+            int codePostal = Integer.parseInt(fieldCodePostal.getText());
+            String ville = fieldVille.getText();
+            String description = areaDescription.getText();
+            float prix = Float.parseFloat(fieldPrix.getText());
+
+            // Créer un nouvel objet Bien
+            Bien nouveauBien = new Bien(adresse, ville, codePostal, description, prix);
+            proprietaire.getBiensPossedes().add(nouveauBien);
+
+            // Sauvegarder dans la base de données ou l'afficher
+            System.out.println("Nouveau bien ajouté avec succès.");
+        } catch (Exception e) {
+            System.err.println("Erreur lors de l'ajout : " + e.getMessage());
         }
-        inputSurfaceHabitable.setPromptText("Insérez la surface habitable en m²");
     }
 
     @FXML
-    public void ajouterBien(ActionEvent actionEvent) {
-        System.out.println("Hello World!");
-    }
-
-    @FXML
-    public void supprimerBien(ActionEvent actionEvent) {
-        System.out.println("World Hello!");
+    private void annuler() {
+        // Fermer la fenêtre ou réinitialiser les champs
+        System.out.println("Ajout annulé.");
     }
 }
