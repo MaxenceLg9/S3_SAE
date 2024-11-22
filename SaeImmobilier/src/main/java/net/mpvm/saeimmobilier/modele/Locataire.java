@@ -11,6 +11,8 @@ import java.util.Map;
 
 public class Locataire {
 
+	public static final String TABLE_NAME = "Locataire";
+
 	private int id;
 	private char sexe;
 	private String telepone;
@@ -109,7 +111,7 @@ public class Locataire {
 	}
 
 	static {
-		public final String TABLE_NAME = "Locataire";
+
 		public List<Locataire> getLocataires() {
 			List<Locataire> l = new ArrayList<>();
 			ResultSet rs = BD.select(TABLE_NAME,null,null);
