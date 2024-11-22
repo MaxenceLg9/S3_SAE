@@ -130,8 +130,9 @@ public class BD{
         return query;
     }
 
-    public static void delete(String table, HashMap<String, Integer> id) throws SQLException {
+    public static void delete(String table, HashMap<String, Integer> id, boolean commit) throws SQLException {
         PreparedStatement pSt = prepareStatement(createDeleteQuery(table, id));
+        executeUpdate(pSt,commit);
     }
 
     private static String createDeleteQuery(String table, @NotNull Map<String,Integer> args){

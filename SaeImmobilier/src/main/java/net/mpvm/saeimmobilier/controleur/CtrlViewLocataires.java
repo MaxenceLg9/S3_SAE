@@ -38,8 +38,8 @@ public class CtrlViewLocataires {
 
             Label nom = new Label("Nom : " + l.getNom());
             Label prenom = new Label("Prenom : " + l.getPrenom());
-            Label email = new Label("Email" + l.getEmail());
-            Label telephone = new Label("N° numero tel." + l.getTelepone());
+            Label email = new Label("Email " + l.getEmail());
+            Label telephone = new Label("N° tel." + l.getTelepone());
 
             gp.add(nom,0,0);
             gp.add(prenom,0,1);

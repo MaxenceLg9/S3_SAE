@@ -115,7 +115,7 @@ public class Locataire {
 		try {
 			BD.delete(TABLE_NAME, new HashMap<>() {{
 				put("IdLocatire", getId());
-			}});
+			}}, true);
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
