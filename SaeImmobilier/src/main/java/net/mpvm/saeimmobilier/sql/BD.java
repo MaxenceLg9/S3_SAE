@@ -22,6 +22,8 @@ public class BD{
 
     private static void createConn(){
         String url = "jdbc:sqlite:bdd/bdImmo";
+        if(conn != null)
+            return;
         try {
             conn = DriverManager.getConnection(url);
             conn.setAutoCommit(false);
@@ -46,12 +48,13 @@ public class BD{
     }
 
     public static void executeUpdate(@NotNull PreparedStatement preparedStatement, boolean commit) throws SQLException {
+        createConn();
         int row = preparedStatement.executeUpdate();
         System.out.println(row + " rows affected");
         if (commit)
             getConnection().commit();
         preparedStatement.close();
-        getConnection().close();
+        //getConnection().close();
     }
 
 
@@ -130,8 +133,9 @@ public class BD{
         return query;
     }
 
-    public static void delete(String table, HashMap<String, Integer> id) throws SQLException {
+    public static void delete(String table, HashMap<String, Integer> id, boolean commit) throws SQLException {
         PreparedStatement pSt = prepareStatement(createDeleteQuery(table, id));
+        executeUpdate(pSt,commit);
     }
 
     private static String createDeleteQuery(String table, @NotNull Map<String,Integer> args){
