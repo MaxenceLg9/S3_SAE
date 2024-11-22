@@ -27,7 +27,7 @@ public class CtrlViewLocataires {
     }
 
     private void afficheLocataires() {
-        locataires = Locataire.getLocataires().stream().collect(Collectors.toMap(Locataire::getIdLocataire, Function.identity()));
+        locataires = Locataire.getLocataires().stream().collect(Collectors.toMap(Locataire::getId, Function.identity()));
         vBoxContent.getChildren().clear();
         for(Locataire l : locataires.values()) {
             GridPane gp = new GridPane(1, 1);
@@ -41,11 +41,11 @@ public class CtrlViewLocataires {
             Label nom = new Label("Nom : " + l.getNom());
             Label prenom = new Label("Prenom : " + l.getPrenom());
             Label email = new Label("Email " + l.getEmail());
-            Label telephone = new Label("N° tel." + l.getTelephone());
+            Label telephone = new Label("N° tel." + l.getTelepone());
             Label sexe = new Label("Sexe :" + l.getSexe());
             Button button = new Button("Supprimer le locataire");
             button.setOnAction(event -> {
-                askForDelete(l.getIdLocataire());
+                askForDelete(l.getId());
             });
 
             gp.add(nom,0,0);
@@ -54,7 +54,7 @@ public class CtrlViewLocataires {
             gp.add(telephone,1,0);
             gp.add(sexe,2,2);
 
-            button.setId(String.valueOf(l.getIdLocataire()));
+            button.setId(String.valueOf(l.getId()));
             gp.add(button,2,1);
 
             gp.setAlignment(Pos.TOP_CENTER);

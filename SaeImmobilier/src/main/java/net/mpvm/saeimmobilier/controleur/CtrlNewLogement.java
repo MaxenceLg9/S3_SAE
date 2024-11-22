@@ -1,3 +1,4 @@
+/*
 package net.mpvm.saeimmobilier.controleur;
 
 import javafx.fxml.FXML;
@@ -59,3 +60,4 @@ public class CtrlNewBien {
         System.out.println("Ajout annulé.");
     }
 }
+*/

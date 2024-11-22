@@ -1,6 +1,9 @@
 package net.mpvm.saeimmobilier.modele;
 
 import net.mpvm.saeimmobilier.sql.BD;
+import net.mpvm.saeimmobilier.sql.QueryElement;
+import net.mpvm.saeimmobilier.sql.SelectQueryElement;
+import net.mpvm.saeimmobilier.sql.UpdateQueryElement;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,7 +14,9 @@ import java.util.Map;
 
 public class Locataire {
 
-	public static final String TABLE_NAME = "Locataire";
+	public static final String INSERT_QUERY = "INSERT INTO Locataire (nom, prenom, email, sexe, telephone) VALUES (?, ?, ?, ?, ?)";
+	public static final String SELECT_QUERY = "SELECT * FROM Locataire";
+	private static final String DELETE_QUERY = "DELETE FROM Locataire WHERE IdLocataire = ?";
 
 	private int id;
 	private char sexe;
@@ -102,9 +107,9 @@ public class Locataire {
 	public void setTotalCharge(float totalCharge) {this.totalCharge = totalCharge;}
 
 	public void save() {
-		Map<String, String> params = Map.of("nom", this.nom, "prenom", this.prenom, "email", this.email, "sexe", Character.toString(this.sexe), "telephone", this.telepone);
+
 		try{
-			BD.insertInto(TABLE_NAME, params, true);
+			new UpdateQueryElement(INSERT_QUERY).addArgs(Map.of(1, this.nom, 2, this.prenom, 3, this.email, 4, Character.toString(this.sexe), 5, this.telepone)).execute();
 		}
 		catch (SQLException sqlE){
 			sqlE.printStackTrace();
@@ -113,9 +118,7 @@ public class Locataire {
 
 	public void delete(){
 		try {
-			BD.delete(TABLE_NAME, new HashMap<>() {{
-				put("IdLocatire", getId());
-			}});
+			new UpdateQueryElement(DELETE_QUERY).addArgs(Map.of(1,this.id)).execute();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
@@ -123,8 +126,7 @@ public class Locataire {
 
 	public static List<Locataire> getLocataires() {
 		List<Locataire> l = new ArrayList<>();
-		ResultSet rs = BD.select(TABLE_NAME,null,null);
-		try {
+		try(ResultSet rs = new SelectQueryElement(SELECT_QUERY).execute()) {
 			while (rs.next()) {
 				l.add(new Locataire(rs.getString("nom"),rs.getString("prenom"),rs.getString("email"),rs.getString("sexe").charAt(0),rs.getString("telephone")).setId(rs.getInt("IdLocataire")));
 			}
@@ -135,4 +137,3 @@ public class Locataire {
 		return l;
 	}
 }
-
