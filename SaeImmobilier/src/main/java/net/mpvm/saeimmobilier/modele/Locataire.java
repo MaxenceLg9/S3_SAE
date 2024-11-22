@@ -2,13 +2,18 @@ package net.mpvm.saeimmobilier.modele;
 
 import net.mpvm.saeimmobilier.sql.BD;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Locataire {
-	private int idLocataire;
+
 	public static final String TABLE_NAME = "Locataire";
-	private int numero;
+
+	private int idLocataire;
 	private char sexe;
 	private String telephone;
 	private String email;
@@ -18,8 +23,7 @@ public class Locataire {
 	private final ArrayList<Float> charges;
 	private float totalCharge;
 
-	private Locataire(int idLocataire,String nom, String prenom, String email) {
-		this.idLocataire = idLocataire;
+	private Locataire(String nom, String prenom, String email) {
 		this.email = email;
 		this.nom = nom;
 		this.prenom = prenom;
@@ -29,21 +33,18 @@ public class Locataire {
 	}
 
 	public Locataire(String nom, String prenom, String email, char sexe, String telephone) {
-		this.nom=nom ;
-		this.prenom=prenom;
-		this.email=email;
+		this(nom, prenom, email);
 		this.sexe = sexe;
 		this.telephone = telephone;
-        this.baux = new ArrayList<>();
-        this.charges = new ArrayList<>();
-    }
-
-	public int getNumero() {
-		return this.numero;
 	}
 
-	public void setNumero(int numero) {
-		this.numero = numero;
+	public int getIdLocataire() {
+		return this.idLocataire;
+	}
+
+	private Locataire setId(int idLo) {
+		this.idLocataire = idLocataire;
+		return this;
 	}
 
 	public char getSexe() {
@@ -58,8 +59,8 @@ public class Locataire {
 		return this.telephone;
 	}
 
-	public void setTelepone(String telepone) {
-		this.telephone = telepone;
+	public void setTelepone(String telephone) {
+		this.telephone = telephone;
 	}
 
 	public String getEmail() {
@@ -100,19 +101,37 @@ public class Locataire {
 
 	public void setTotalCharge(float totalCharge) {this.totalCharge = totalCharge;}
 
-	public int getIdLocataire() {
-		return idLocataire;
-	}
-	public void setIdLocataire(int idLocataire) {
-		this.idLocataire = idLocataire;
-	}
-
-	public void setTelephone(String telephone) {
-		this.telephone = telephone;
-	}
-
 	public void save() {
 		Map<String, String> params = Map.of("nom", this.nom, "prenom", this.prenom, "email", this.email, "sexe", Character.toString(this.sexe), "telephone", this.telephone);
-		BD.insertInto(TABLE_NAME, params, true);
+		try{
+			BD.insertInto(TABLE_NAME, params, true);
+		}
+		catch (SQLException sqlE){
+			sqlE.printStackTrace();
+		}
+	}
+
+	public void delete(){
+		try {
+			BD.delete(TABLE_NAME, new HashMap<>() {{
+				put("IdLocataire", getIdLocataire());
+			}});
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static List<Locataire> getLocataires() {
+		List<Locataire> l = new ArrayList<>();
+		ResultSet rs = BD.select(TABLE_NAME,null,null);
+		try {
+			while (rs.next()) {
+				l.add(new Locataire(rs.getString("nom"),rs.getString("prenom"),rs.getString("email"),rs.getString("sexe").charAt(0),rs.getString("telephone")).setId(rs.getInt("IdLocataire")));
+			}
+		}
+		catch (SQLException sqlException){
+			sqlException.printStackTrace();
+		}
+		return l;
 	}
 }
