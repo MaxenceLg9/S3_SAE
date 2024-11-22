@@ -4,7 +4,6 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
-<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.FlowPane?>
@@ -18,87 +17,83 @@
             <VBox.margin>
                 <Insets left="20.0" />
             </VBox.margin></Label>
-        <ScrollPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="700.0" VBox.vgrow="ALWAYS">
-            <content>
-                <FlowPane alignment="TOP_CENTER" columnHalignment="CENTER" prefHeight="450.0" prefWidth="700.0" vgap="10.0">
-                    <children>
-                        <GridPane prefHeight="50.0" prefWidth="600.0">
-                            <columnConstraints>
-                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                            </columnConstraints>
-                            <rowConstraints>
-                                <RowConstraints maxHeight="40.0" minHeight="3.0" prefHeight="16.0" vgrow="SOMETIMES" />
-                                <RowConstraints maxHeight="68.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                            </rowConstraints>
-                            <children>
-                                <TextField fx:id="fieldPrenom" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="270.0" GridPane.rowIndex="1" />
-                                <Label text="Prenom du locataire" />
-                            </children>
-                            <FlowPane.margin>
-                                <Insets />
-                            </FlowPane.margin>
-                        </GridPane>
-                        <GridPane prefHeight="50.0" prefWidth="600.0">
-                            <columnConstraints>
-                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                            </columnConstraints>
-                            <rowConstraints>
-                                <RowConstraints maxHeight="50.0" minHeight="3.0" prefHeight="19.0" vgrow="SOMETIMES" />
-                                <RowConstraints maxHeight="68.0" minHeight="0.0" prefHeight="31.0" vgrow="SOMETIMES" />
-                            </rowConstraints>
-                            <children>
-                                <Label prefHeight="17.0" prefWidth="107.0" text="Nom du locataire" />
-                                <TextField fx:id="fieldNom" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="270.0" GridPane.rowIndex="1" />
-                            </children>
-                        </GridPane>
-                        <GridPane prefHeight="50.0" prefWidth="600.0">
-                            <columnConstraints>
-                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                            </columnConstraints>
-                            <rowConstraints>
-                                <RowConstraints maxHeight="21.0" minHeight="5.0" prefHeight="21.0" />
-                                <RowConstraints maxHeight="46.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
-                            </rowConstraints>
-                            <children>
-                                <TextField fx:id="fieldEmail" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="3.0" prefWidth="270.0" GridPane.rowIndex="1" />
-                                <Label prefHeight="17.0" prefWidth="107.0" text="Adresse email" />
-                            </children>
-                        </GridPane>
-                        <GridPane prefHeight="50.0" prefWidth="600.0">
-                            <columnConstraints>
-                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                            </columnConstraints>
-                            <rowConstraints>
-                                <RowConstraints maxHeight="40.0" minHeight="3.0" prefHeight="16.0" vgrow="SOMETIMES" />
-                                <RowConstraints maxHeight="68.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                            </rowConstraints>
-                            <children>
-                                <Label prefHeight="17.0" prefWidth="107.0" text="Telephone" />
-                                <TextField fx:id="fieldTelephone" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="270.0" GridPane.rowIndex="1" />
-                            </children>
-                        </GridPane>
-                        <GridPane prefHeight="50.0" prefWidth="600.0">
-                            <columnConstraints>
-                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                            </columnConstraints>
-                            <rowConstraints>
-                                <RowConstraints maxHeight="40.0" minHeight="3.0" prefHeight="16.0" vgrow="SOMETIMES" />
-                                <RowConstraints maxHeight="68.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                            </rowConstraints>
-                            <children>
-                                <RadioButton fx:id="radioButtonM" mnemonicParsing="false" text="Masculin" GridPane.rowIndex="1" />
-                                <Label prefHeight="17.0" prefWidth="107.0" text="Sexe" />
-                                <RadioButton fx:id="radioButtonF" mnemonicParsing="false" text="Feminin" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                            </children>
-                        </GridPane>
-                    </children>
-                    <padding>
-                        <Insets bottom="50.0" left="50.0" right="50.0" top="50.0" />
-                    </padding>
-                </FlowPane>
-            </content>
-        </ScrollPane>
+          <FlowPane alignment="TOP_CENTER" columnHalignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="700.0" vgap="10.0">
+              <children>
+                  <GridPane prefHeight="50.0" prefWidth="600.0">
+                      <columnConstraints>
+                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      </columnConstraints>
+                      <rowConstraints>
+                          <RowConstraints maxHeight="40.0" minHeight="3.0" prefHeight="16.0" vgrow="SOMETIMES" />
+                          <RowConstraints maxHeight="68.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      </rowConstraints>
+                      <children>
+                          <TextField fx:id="fieldPrenom" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="270.0" GridPane.rowIndex="1" />
+                          <Label text="Prenom du locataire" />
+                      </children>
+                      <FlowPane.margin>
+                          <Insets />
+                      </FlowPane.margin>
+                  </GridPane>
+                  <GridPane prefHeight="50.0" prefWidth="600.0">
+                      <columnConstraints>
+                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      </columnConstraints>
+                      <rowConstraints>
+                          <RowConstraints maxHeight="50.0" minHeight="3.0" prefHeight="19.0" vgrow="SOMETIMES" />
+                          <RowConstraints maxHeight="68.0" minHeight="0.0" prefHeight="31.0" vgrow="SOMETIMES" />
+                      </rowConstraints>
+                      <children>
+                          <Label prefHeight="17.0" prefWidth="107.0" text="Nom du locataire" />
+                          <TextField fx:id="fieldNom" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="270.0" GridPane.rowIndex="1" />
+                      </children>
+                  </GridPane>
+                  <GridPane prefHeight="50.0" prefWidth="600.0">
+                      <columnConstraints>
+                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      </columnConstraints>
+                      <rowConstraints>
+                          <RowConstraints maxHeight="21.0" minHeight="5.0" prefHeight="21.0" />
+                          <RowConstraints maxHeight="46.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
+                      </rowConstraints>
+                      <children>
+                          <TextField fx:id="fieldEmail" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="3.0" prefWidth="270.0" GridPane.rowIndex="1" />
+                          <Label prefHeight="17.0" prefWidth="107.0" text="Adresse email" />
+                      </children>
+                  </GridPane>
+                  <GridPane prefHeight="50.0" prefWidth="600.0">
+                      <columnConstraints>
+                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      </columnConstraints>
+                      <rowConstraints>
+                          <RowConstraints maxHeight="40.0" minHeight="3.0" prefHeight="16.0" vgrow="SOMETIMES" />
+                          <RowConstraints maxHeight="68.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      </rowConstraints>
+                      <children>
+                          <Label prefHeight="17.0" prefWidth="107.0" text="Telephone" />
+                          <TextField fx:id="fieldTelephone" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="270.0" GridPane.rowIndex="1" />
+                      </children>
+                  </GridPane>
+                  <GridPane prefHeight="50.0" prefWidth="600.0">
+                      <columnConstraints>
+                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      </columnConstraints>
+                      <rowConstraints>
+                          <RowConstraints maxHeight="40.0" minHeight="3.0" prefHeight="16.0" vgrow="SOMETIMES" />
+                          <RowConstraints maxHeight="68.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      </rowConstraints>
+                      <children>
+                          <RadioButton fx:id="radioButtonM" mnemonicParsing="false" text="Masculin" GridPane.rowIndex="1" />
+                          <Label prefHeight="17.0" prefWidth="107.0" text="Sexe" />
+                          <RadioButton fx:id="radioButtonF" mnemonicParsing="false" text="Feminin" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                      </children>
+                  </GridPane>
+              </children>
+              <padding>
+                  <Insets bottom="50.0" left="50.0" right="50.0" top="50.0" />
+              </padding>
+          </FlowPane>
         <GridPane>
             <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />

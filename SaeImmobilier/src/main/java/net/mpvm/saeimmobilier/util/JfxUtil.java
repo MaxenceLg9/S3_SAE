@@ -4,7 +4,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import net.mpvm.saeimmobilier.vue.HelloApplication;
 
 import java.io.IOException;
 
@@ -16,7 +15,7 @@ public class JfxUtil {
 
         scene.getStylesheets().add(JfxUtil.class.getResource("/net/mpvm/saeimmobilier/data/css/style.css").toExternalForm());
 
-        Image icon = new Image(HelloApplication.class.getResource("/net/mpvm/saeimmobilier/data/images/icon_immobilier.png").toString());
+        Image icon = new Image(JfxUtil.class.getResource("/net/mpvm/saeimmobilier/data/images/icon_immobilier.png").toString());
 
         primaryStage.setMinHeight(550);
         primaryStage.setMinWidth(700);
