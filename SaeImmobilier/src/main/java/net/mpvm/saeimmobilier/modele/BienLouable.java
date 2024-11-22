@@ -123,4 +123,11 @@ public class BienLouable extends Bien {
 		this.proprietaire = proprietaire;
 	}
 
+	public void setTravaux(ArrayList<Travaux> travaux) {
+		this.travaux = travaux;
+	}
+
+	public void setBaux(ArrayList<Bail> baux) {
+		this.baux = baux;
+	}
 }

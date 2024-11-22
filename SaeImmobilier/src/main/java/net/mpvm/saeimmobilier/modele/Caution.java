@@ -108,4 +108,13 @@ public class Caution {
     public void setLocataire(Locataire locataire){
         this.locataire = locataire;
     }
+
+    public int getIdCaution() {
+        return idCaution;
+    }
+
+    public void setIdCaution(int idCaution) {
+        this.idCaution = idCaution;
+    }
+
 }

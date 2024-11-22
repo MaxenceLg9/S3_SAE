@@ -108,4 +108,51 @@ public class Travaux {
 		this.montantDevis = montant;
 	}
 
+	public void setBien(Bien bien) {
+		this.bien = bien;
+	}
+	public Bien getBien() {
+		return this.bien;
+	}
+
+	public boolean isRecuperableImpots() {
+		return recuperableImpots;
+	}
+
+	public boolean isRecuperableLocataire() {
+		return recuperableLocataire;
+	}
+
+	public Float getMontantDevis() {
+		return montantDevis;
+	}
+
+	public Immeuble getImmeuble() {
+		return immeuble;
+	}
+	public void setImmeuble(Immeuble immeuble) {
+		this.immeuble = immeuble;
+	}
+
+	public String getEntrepriseDevis() {
+		return entrepriseDevis;
+	}
+	public void setEntrepriseDevis(String entrepriseDevis) {
+		this.entrepriseDevis = entrepriseDevis;
+	}
+
+	public void setMontantADeclarer(Float montantADeclarer) {
+		MontantADeclarer = montantADeclarer;
+	}
+
+	public void setMontantDevis(Float montantDevis) {
+		this.montantDevis = montantDevis;
+	}
+
+	public void setRecuperableImpots(boolean recuperableImpots) {
+		this.recuperableImpots = recuperableImpots;
+	}
+	public void setRecuperableLocataire(boolean recuperableLocataire) {
+		this.recuperableLocataire = recuperableLocataire;
+	}
 }

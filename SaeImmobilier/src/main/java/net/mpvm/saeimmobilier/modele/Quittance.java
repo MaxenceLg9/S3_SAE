@@ -47,4 +47,11 @@ public class Quittance extends Document {
     public void setPaiement(Paiement paiement) {
         this.paiement = paiement;
     }
+
+    public int getIdQuittance() {
+        return IdQuittance;
+    }
+    public void setIdQuittance(int IdQuittance) {
+        this.IdQuittance = IdQuittance;
+    }
 }

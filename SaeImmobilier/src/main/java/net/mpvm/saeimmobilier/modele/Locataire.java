@@ -10,7 +10,7 @@ public class Locataire {
 	private String nom;
 	private String prenom;
 	private ArrayList<Bail> baux;
-	private ArrayList<Float> charges;
+
 	private float totalCharge;
 
 	private Locataire(int numero, String nom, String prenom, String email) {
@@ -19,12 +19,15 @@ public class Locataire {
 		this.nom = nom;
 		this.prenom = prenom;
 		this.baux=new ArrayList<>();
-		this.charges=new ArrayList<>();
 		this.totalCharge=0f;
 	}
 
 	public Locataire(String nom, String prenom, String email){
-		this(0, nom, prenom, email);
+		this.email = email;
+		this.nom = nom;
+		this.prenom = prenom;
+		this.baux=new ArrayList<>();
+		this.totalCharge=0f;
 	}
 
 	public int getNumero() {
@@ -81,16 +84,11 @@ public class Locataire {
 		this.baux.add(bail);
 	}
 
-	public ArrayList<Float> getCharges(){return this.charges;}
-
-	public void setCharges(float charges) {this.charges.add(charges);}
-
 	public float getTotalCharge(){return this.totalCharge;}
 
 	public void setTotalCharge(float totalCharge) {this.totalCharge = totalCharge;}
 
-	public void save() {
-
-
+	public void setBaux(ArrayList<Bail> baux) {
+		this.baux = baux;
 	}
 }

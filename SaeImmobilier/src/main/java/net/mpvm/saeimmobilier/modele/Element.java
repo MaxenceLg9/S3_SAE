@@ -35,4 +35,5 @@ public class Element {
     public void addEtatDesLieux(EtatDesLieux etat) {
         etatsLieux.add(etat);
     }
+
 }

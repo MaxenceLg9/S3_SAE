@@ -119,4 +119,20 @@ public class Proprietaire {
 	public boolean verifierMontantRegularisation(float sommeVersee, float sommeDue) {
 		return Math.abs(sommeVersee - sommeDue) < 0.01; // Tolérance pour arrondis
 	}
+
+	public int getIdProprietaire() {
+		return IdProprietaire;
+	}
+
+	public void setIdProprietaire(int idProprietaire) {
+		IdProprietaire = idProprietaire;
+	}
+
+	public ArrayList<Bien> getBiensPossedes() {
+		return biensPossedes;
+	}
+
+	public void setBiensPossedes(ArrayList<Bien> biensPossedes) {
+		this.biensPossedes = biensPossedes;
+	}
 }

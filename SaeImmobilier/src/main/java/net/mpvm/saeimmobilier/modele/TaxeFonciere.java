@@ -14,4 +14,24 @@ public class TaxeFonciere extends Document{
         super(cheminDocument, dateAjout);
         this.Annee = Annee;
     }
+
+    public int getIdTaxeFonciere() {
+        return idTaxeFonciere;
+    }
+    public void setIdTaxeFonciere(int idTaxeFonciere) {
+        this.idTaxeFonciere = idTaxeFonciere;
+    }
+
+    public float getMontant() {
+        return Montant;
+    }
+    public void setMontant(float montant) {
+        Montant = montant;
+    }
+    public int getAnnee() {
+        return Annee;
+    }
+    public void setAnnee(int annee) {
+        Annee = annee;
+    }
 }

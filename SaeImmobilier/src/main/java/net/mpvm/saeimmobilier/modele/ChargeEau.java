@@ -56,4 +56,10 @@ public class ChargeEau extends Charges{
         this.IdChargeEau = IdChargeEau;
     }
 
+    public float getPartieVariable() {
+        return PartieVariable;
+    }
+    public void setPartieVariable(float PartieVariable) {
+        this.PartieVariable = PartieVariable;
+    }
 }
