@@ -104,29 +104,26 @@ public class Locataire {
 	public void save() {
 		Map<String, String> params = Map.of("nom", this.nom, "prenom", this.prenom, "email", this.email, "sexe", Character.toString(this.sexe), "telephone", this.telepone);
 		BD.insertInto(TABLE_NAME, params, true);
-    }
+	}
 
 	public void delete(){
-		BD.delete(TABLE_NAME, new HashMap<String,Integer>(){{put("IdLocatire",getId());}});
+		BD.delete(TABLE_NAME, new HashMap<>() {{
+			put("IdLocatire", getId());
+		}});
 	}
 
-	static {
-
-		public List<Locataire> getLocataires() {
-			List<Locataire> l = new ArrayList<>();
-			ResultSet rs = BD.select(TABLE_NAME,null,null);
-			try {
-				while (rs.next()) {
-					l.add(new Locataire(rs.getString("nom"),rs.getString("prenom"),rs.getString("email"),rs.getString("sexe").charAt(0),rs.getString("telephone")).setId(rs.getInt("IdLocataire")));
-				}
+	public static List<Locataire> getLocataires() {
+		List<Locataire> l = new ArrayList<>();
+		ResultSet rs = BD.select(TABLE_NAME,null,null);
+		try {
+			while (rs.next()) {
+				l.add(new Locataire(rs.getString("nom"),rs.getString("prenom"),rs.getString("email"),rs.getString("sexe").charAt(0),rs.getString("telephone")).setId(rs.getInt("IdLocataire")));
 			}
-			catch (SQLException sqlException){
-				sqlException.printStackTrace();
-			}
-			return l;
 		}
+		catch (SQLException sqlException){
+			sqlException.printStackTrace();
+		}
+		return l;
 	}
-
-
 }
 
