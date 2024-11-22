@@ -22,6 +22,8 @@ public class BD{
 
     private static void createConn(){
         String url = "jdbc:sqlite:bdd/bdImmo";
+        if(conn != null)
+            return;
         try {
             conn = DriverManager.getConnection(url);
             conn.setAutoCommit(false);
@@ -46,12 +48,13 @@ public class BD{
     }
 
     public static void executeUpdate(@NotNull PreparedStatement preparedStatement, boolean commit) throws SQLException {
+        createConn();
         int row = preparedStatement.executeUpdate();
         System.out.println(row + " rows affected");
         if (commit)
             getConnection().commit();
         preparedStatement.close();
-        getConnection().close();
+        //getConnection().close();
     }
 
 
