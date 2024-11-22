@@ -13,9 +13,9 @@ public class Locataire {
 
 	public static final String TABLE_NAME = "Locataire";
 
-	private int id;
+	private int idLocataire;
 	private char sexe;
-	private String telepone;
+	private String telephone;
 	private String email;
 	private String nom;
 	private String prenom;
@@ -32,18 +32,18 @@ public class Locataire {
 		this.totalCharge=0f;
 	}
 
-	public Locataire(String nom, String prenom, String email, char sexe, String telepone) {
+	public Locataire(String nom, String prenom, String email, char sexe, String telephone) {
 		this(nom, prenom, email);
 		this.sexe = sexe;
-		this.telepone = telepone;
+		this.telephone = telephone;
 	}
 
-	public int getId() {
-		return this.id;
+	public int getIdLocataire() {
+		return this.idLocataire;
 	}
 
-	private Locataire setId(int id) {
-		this.id = id;
+	private Locataire setId(int idLo) {
+		this.idLocataire = idLocataire;
 		return this;
 	}
 
@@ -55,12 +55,12 @@ public class Locataire {
 		this.sexe = sexe;
 	}
 
-	public String getTelepone() {
-		return this.telepone;
+	public String getTelephone() {
+		return this.telephone;
 	}
 
-	public void setTelepone(String telepone) {
-		this.telepone = telepone;
+	public void setTelepone(String telephone) {
+		this.telephone = telephone;
 	}
 
 	public String getEmail() {
@@ -102,7 +102,7 @@ public class Locataire {
 	public void setTotalCharge(float totalCharge) {this.totalCharge = totalCharge;}
 
 	public void save() {
-		Map<String, String> params = Map.of("nom", this.nom, "prenom", this.prenom, "email", this.email, "sexe", Character.toString(this.sexe), "telephone", this.telepone);
+		Map<String, String> params = Map.of("nom", this.nom, "prenom", this.prenom, "email", this.email, "sexe", Character.toString(this.sexe), "telephone", this.telephone);
 		try{
 			BD.insertInto(TABLE_NAME, params, true);
 		}
@@ -114,8 +114,8 @@ public class Locataire {
 	public void delete(){
 		try {
 			BD.delete(TABLE_NAME, new HashMap<>() {{
-				put("IdLocataire", getId());
-			}}, true);
+				put("IdLocataire", getIdLocataire());
+			}});
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
@@ -135,4 +135,3 @@ public class Locataire {
 		return l;
 	}
 }
-
