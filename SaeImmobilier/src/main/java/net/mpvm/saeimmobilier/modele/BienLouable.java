@@ -14,9 +14,8 @@ public class BienLouable extends Bien {
 	private String numeroFiscal;
 	private Immeuble immeuble;
 	private Proprietaire proprietaire;
-	private int nbPieces;
 	private BienLouable( String ville, int codePostal, String adresse,
-					   int idBienLouable, String lieuImmeuble, Immeuble immeuble,int nbPieces) {
+					   int idBienLouable, String lieuImmeuble, Immeuble immeuble) {
 		super( ville, codePostal, adresse); // Initialisation des attributs hérités de Bien
 		this.idBienLouable = idBienLouable;
 		this.lieuImmeuble = lieuImmeuble;
@@ -25,7 +24,7 @@ public class BienLouable extends Bien {
 		this.baux = new ArrayList<>();
 	}
 
-	public BienLouable(String ville, int codePostal, String adresse, String lieuImmeuble, Immeuble immeuble,int nbPieces) {
+	public BienLouable(String ville, int codePostal, String adresse, String lieuImmeuble, Immeuble immeuble) {
 		super(ville, codePostal, adresse); // Utilisation du constructeur de Bien pour initier ville, codePostal, adresse
 		this.lieuImmeuble = lieuImmeuble;
 		this.immeuble = immeuble;
@@ -131,12 +130,4 @@ public class BienLouable extends Bien {
 	public void setBaux(ArrayList<Bail> baux) {
 		this.baux = baux;
 	}
-
-	public int getNbPieces() {
-		return nbPieces;
-	}
-	public void setNbPieces(int nbPieces) {
-		this.nbPieces = nbPieces;
-	}
-
 }

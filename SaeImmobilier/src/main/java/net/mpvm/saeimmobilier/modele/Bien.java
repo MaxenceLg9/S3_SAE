@@ -6,8 +6,7 @@ public class Bien {
     private String ville;
     private int codePostal;
     private Assurance assurance;
-    private float iR;
-
+    private float iR; // Taux d'intérêt ou autre valeur
     private Bien(int IdBien, String ville,int CodePostal,String adresse) {
         this.IdBien = IdBien;
         this.ville = ville;
