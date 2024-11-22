@@ -26,7 +26,8 @@ public class CtrlViewLocataires {
     }
 
     private void afficheLocataires() {
-        locataires = Locataire.getLocataires().stream().collect(Collectors.toMap(Locataire::getId, Function.identity()));;
+        locataires = Locataire.getLocataires().stream().collect(Collectors.toMap(Locataire::getId, Function.identity()));
+        vBoxContent.getChildren().clear();
         for(Locataire l : locataires.values()) {
             GridPane gp = new GridPane(1, 1);
             ColumnConstraints col1 = new ColumnConstraints();
