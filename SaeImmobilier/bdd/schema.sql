@@ -277,7 +277,7 @@ CREATE TABLE TaxesFonciere(
     foreign key (IdBien) references  BienLouable(IdBien)
 );
 
-CREATE TABLE Cohabiter(
+CREATE TABLE Habiter(
     IdBail INTEGER,
     IdColotaire INTEGER,
     DateDebut Date,
