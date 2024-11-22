@@ -103,13 +103,22 @@ public class Locataire {
 
 	public void save() {
 		Map<String, String> params = Map.of("nom", this.nom, "prenom", this.prenom, "email", this.email, "sexe", Character.toString(this.sexe), "telephone", this.telepone);
-		BD.insertInto(TABLE_NAME, params, true);
+		try{
+			BD.insertInto(TABLE_NAME, params, true);
+		}
+		catch (SQLException sqlE){
+			sqlE.printStackTrace();
+		}
 	}
 
 	public void delete(){
-		BD.delete(TABLE_NAME, new HashMap<>() {{
-			put("IdLocatire", getId());
-		}});
+		try {
+			BD.delete(TABLE_NAME, new HashMap<>() {{
+				put("IdLocatire", getId());
+			}});
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	public static List<Locataire> getLocataires() {

@@ -4,18 +4,30 @@ import javafx.fxml.FXML;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import net.mpvm.saeimmobilier.modele.Locataire;
 
-import java.awt.desktop.SystemEventListener;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class CtrlViewLocataires {
     @FXML
     public VBox vBoxContent;
 
+    private Map<Integer, Locataire> locataires;
+
     public void initialize(){
-        for(Locataire l : Locataire.getLocataires()) {
+        afficheLocataires();
+    }
+
+    private void afficheLocataires() {
+        locataires = Locataire.getLocataires().stream().collect(Collectors.toMap(Locataire::getId, Function.identity()));;
+        for(Locataire l : locataires.values()) {
             GridPane gp = new GridPane(1, 1);
             ColumnConstraints col1 = new ColumnConstraints();
             col1.setPrefWidth(100);
@@ -24,15 +36,21 @@ public class CtrlViewLocataires {
 
             gp.getColumnConstraints().addAll(col1,col1);
 
-            Label nom = new Label(l.getNom());
-            Label prenom = new Label(l.getPrenom());
-            Label email = new Label(l.getEmail());
-            Label telephone = new Label(l.getTelepone());
+            Label nom = new Label("Nom : " + l.getNom());
+            Label prenom = new Label("Prenom : " + l.getPrenom());
+            Label email = new Label("Email" + l.getEmail());
+            Label telephone = new Label("N° numero tel." + l.getTelepone());
 
             gp.add(nom,0,0);
             gp.add(prenom,0,1);
             gp.add(email,1,1);
             gp.add(telephone,1,0);
+            Button button = new Button("Supprimer le locataire");
+            button.setOnAction(event -> {
+                askForDelete(l.getId());
+            });
+            button.setId(String.valueOf(l.getId()));
+            gp.add(button,2,1);
 
             gp.setAlignment(Pos.TOP_CENTER);
 
@@ -56,6 +74,23 @@ public class CtrlViewLocataires {
 
             vBoxContent.getChildren().add(gp);
         }
-        //vBoxContent.layout();
     }
+
+    @FXML
+    public void askForDelete(int id){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation de la suppression");
+        alert.setHeaderText("Souhaitez-vous réellement supprimer ce locataire? ");
+        alert.setContentText("Cette action est irréversible");
+        alert.showAndWait()
+                .filter(r -> r.equals(ButtonType.OK))
+                .ifPresent(r -> deleteLocataire(id));
+    }
+
+    private void deleteLocataire(int id){
+        locataires.get(id).delete();
+        afficheLocataires();
+    }
+
+
 }
