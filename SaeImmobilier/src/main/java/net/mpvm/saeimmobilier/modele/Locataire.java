@@ -2,13 +2,18 @@ package net.mpvm.saeimmobilier.modele;
 
 import net.mpvm.saeimmobilier.sql.BD;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Locataire {
 
 	public static final String TABLE_NAME = "Locataire";
-	private int numero;
+
+	private int id;
 	private char sexe;
 	private String telepone;
 	private String email;
@@ -33,12 +38,13 @@ public class Locataire {
 		this.telepone = telepone;
 	}
 
-	public int getNumero() {
-		return this.numero;
+	public int getId() {
+		return this.id;
 	}
 
-	public void setNumero(int numero) {
-		this.numero = numero;
+	private Locataire setId(int id) {
+		this.id = id;
+		return this;
 	}
 
 	public char getSexe() {
@@ -97,6 +103,36 @@ public class Locataire {
 
 	public void save() {
 		Map<String, String> params = Map.of("nom", this.nom, "prenom", this.prenom, "email", this.email, "sexe", Character.toString(this.sexe), "telephone", this.telepone);
-		BD.insertInto(TABLE_NAME, params, true);
-    }
+		try{
+			BD.insertInto(TABLE_NAME, params, true);
+		}
+		catch (SQLException sqlE){
+			sqlE.printStackTrace();
+		}
+	}
+
+	public void delete(){
+		try {
+			BD.delete(TABLE_NAME, new HashMap<>() {{
+				put("IdLocataire", getId());
+			}}, true);
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static List<Locataire> getLocataires() {
+		List<Locataire> l = new ArrayList<>();
+		ResultSet rs = BD.select(TABLE_NAME,null,null);
+		try {
+			while (rs.next()) {
+				l.add(new Locataire(rs.getString("nom"),rs.getString("prenom"),rs.getString("email"),rs.getString("sexe").charAt(0),rs.getString("telephone")).setId(rs.getInt("IdLocataire")));
+			}
+		}
+		catch (SQLException sqlException){
+			sqlException.printStackTrace();
+		}
+		return l;
+	}
 }
+

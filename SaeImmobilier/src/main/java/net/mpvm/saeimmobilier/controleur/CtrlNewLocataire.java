@@ -13,8 +13,6 @@ import java.util.List;
 public class CtrlNewLocataire {
 
     @FXML
-    private AnchorPane anchorPaneRacine;
-    @FXML
     private RadioButton radioButtonF;
     @FXML
     private RadioButton radioButtonM;
