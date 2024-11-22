@@ -152,6 +152,10 @@ public class CtrlNewBien {
             // Initialiser la fenêtre avec l'utilitaire existant
             JfxUtil.applicationInit(stage, "newlocataire.fxml", "Ajouter un Locataire");
 
+            Stage stage2 = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
+            // Fermer la fenêtre
+            stage2.close();
+
             // Afficher la fenêtre
             stage.show();
         } catch (Exception e) {
@@ -160,8 +164,12 @@ public class CtrlNewBien {
     }
 
     @FXML
-    public void supprimerBien(ActionEvent actionEvent) {
-        System.out.println("World Hello!");
+    public void Annuler(ActionEvent actionEvent) {
+        // Obtenir la fenêtre actuelle (Stage) à partir de l'événement
+        Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
+        // Fermer la fenêtre
+        stage.close();
     }
+
 }
 

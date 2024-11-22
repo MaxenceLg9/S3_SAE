@@ -5,7 +5,9 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 import net.mpvm.saeimmobilier.modele.Locataire;
+import net.mpvm.saeimmobilier.util.JfxUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,7 +64,7 @@ public class CtrlNewLocataire {
     }
 
     @FXML
-    public void ajouterLocataire(){
+    public void ajouterLocataire(ActionEvent event) {
         if(fieldsNotEmpty()) {
             char sexe = radioButtonF.isSelected() ? 'F' : 'M';
             new Locataire(fieldNom.getText(), fieldPrenom.getText(), fieldEmail.getText(), sexe, this.fieldTelephone.getText()).save();
@@ -70,6 +72,23 @@ public class CtrlNewLocataire {
         else{
             alertFieldsEmpty();
         }
+        try {
+            // Créer une nouvelle fenêtre (Stage)
+            Stage stage = new Stage();
+
+            // Initialiser la fenêtre avec l'utilitaire existant
+            JfxUtil.applicationInit(stage, "newbien.fxml", "Ajouter un Bien");
+
+            Stage stage2 = (Stage) ((Button) event.getSource()).getScene().getWindow();
+            // Fermer la fenêtre
+            stage2.close();
+
+            // Afficher la fenêtre
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     private void alertFieldsEmpty() {
@@ -90,6 +109,23 @@ public class CtrlNewLocataire {
     }
 
     public void annuler(ActionEvent actionEvent) {
-        System.out.println("World Hello!");
+
+        try {
+            // Créer une nouvelle fenêtre (Stage)
+            Stage stage = new Stage();
+
+            // Initialiser la fenêtre avec l'utilitaire existant
+            JfxUtil.applicationInit(stage, "newbien.fxml", "Ajouter un Bien");
+
+            Stage stage2 = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
+            // Fermer la fenêtre
+            stage2.close();
+
+            // Afficher la fenêtre
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 }
