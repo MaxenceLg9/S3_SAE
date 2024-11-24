@@ -13,9 +13,9 @@ public class Locataire {
 
 	public static final String TABLE_NAME = "Locataire";
 
-	private int id;
+	private int IdLocataire;
 	private char sexe;
-	private String telepone;
+	private String telephone;
 	private String email;
 	private String nom;
 	private String prenom;
@@ -32,18 +32,18 @@ public class Locataire {
 		this.totalCharge=0f;
 	}
 
-	public Locataire(String nom, String prenom, String email, char sexe, String telepone) {
+	public Locataire(String nom, String prenom, String email, char sexe, String telephone) {
 		this(nom, prenom, email);
 		this.sexe = sexe;
-		this.telepone = telepone;
+		this.telephone = telephone;
 	}
 
-	public int getId() {
-		return this.id;
+	public int getIdLocataire() {
+		return this.IdLocataire;
 	}
 
-	private Locataire setId(int id) {
-		this.id = id;
+	private Locataire setIdLocataire(int idLocataire) {
+		this.IdLocataire = idLocataire;
 		return this;
 	}
 
@@ -55,12 +55,12 @@ public class Locataire {
 		this.sexe = sexe;
 	}
 
-	public String getTelepone() {
-		return this.telepone;
+	public String getTelephone() {
+		return this.telephone;
 	}
 
-	public void setTelepone(String telepone) {
-		this.telepone = telepone;
+	public void setTelephone(String telephone) {
+		this.telephone = telephone;
 	}
 
 	public String getEmail() {
@@ -102,7 +102,7 @@ public class Locataire {
 	public void setTotalCharge(float totalCharge) {this.totalCharge = totalCharge;}
 
 	public void save() {
-		Map<String, String> params = Map.of("nom", this.nom, "prenom", this.prenom, "email", this.email, "sexe", Character.toString(this.sexe), "telephone", this.telepone);
+		Map<String, String> params = Map.of("nom", this.nom, "prenom", this.prenom, "email", this.email, "sexe", Character.toString(this.sexe), "telephone", this.telephone);
 		try{
 			BD.insertInto(TABLE_NAME, params, true);
 		}
@@ -114,7 +114,7 @@ public class Locataire {
 	public void delete(){
 		try {
 			BD.delete(TABLE_NAME, new HashMap<>() {{
-				put("IdLocatire", getId());
+				put("IdLocataire", getIdLocataire());
 			}});
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
@@ -126,7 +126,7 @@ public class Locataire {
 		ResultSet rs = BD.select(TABLE_NAME,null,null);
 		try {
 			while (rs.next()) {
-				l.add(new Locataire(rs.getString("nom"),rs.getString("prenom"),rs.getString("email"),rs.getString("sexe").charAt(0),rs.getString("telephone")).setId(rs.getInt("IdLocataire")));
+				l.add(new Locataire(rs.getString("nom"),rs.getString("prenom"),rs.getString("email"),rs.getString("sexe").charAt(0),rs.getString("telephone")).setIdLocataire(rs.getInt("IdLocataire")));
 			}
 		}
 		catch (SQLException sqlException){
