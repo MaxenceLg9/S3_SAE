@@ -14,8 +14,8 @@ import java.util.Map;
 
 public class Locataire {
 
-	public static final String INSERT_QUERY = "INSERT INTO Locataire (nom, prenom, email, sexe, telephone) VALUES (?, ?, ?, ?, ?)";
-	public static final String SELECT_QUERY = "SELECT * FROM Locataire";
+	private static final String INSERT_QUERY = "INSERT INTO Locataire (nom, prenom, email, sexe, telephone) VALUES (?, ?, ?, ?, ?)";
+	private static final String SELECT_QUERY = "SELECT * FROM Locataire";
 	private static final String DELETE_QUERY = "DELETE FROM Locataire WHERE IdLocataire = ?";
 
 	private int id;
