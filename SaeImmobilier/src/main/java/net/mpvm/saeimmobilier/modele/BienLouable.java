@@ -10,24 +10,35 @@ public class BienLouable extends Bien {
 	private ArrayList<Bail> baux;
 	private int ancienIndex;
 	private boolean changementCompteur;
-	private int surface;
+	private float surface;
 	private String numeroFiscal;
 	private Immeuble immeuble;
 	private Proprietaire proprietaire;
+	private int nbPieces;
+	private int codePostal;
+
 	private BienLouable( String ville, int codePostal, String adresse,
-					   int idBienLouable, String lieuImmeuble, Immeuble immeuble) {
+						 int idBienLouable,int nbPieces, int NumeroFiscal, Immeuble immeuble, float surface) {
 		super( ville, codePostal, adresse); // Initialisation des attributs hérités de Bien
 		this.idBienLouable = idBienLouable;
 		this.lieuImmeuble = lieuImmeuble;
 		this.immeuble = immeuble;
+		this.surface = surface;
+		this.nbPieces = nbPieces;
+		this.codePostal = codePostal;
+		this.numeroFiscal = numeroFiscal;
 		this.travaux = new ArrayList<>();
 		this.baux = new ArrayList<>();
 	}
 
-	public BienLouable(String ville, int codePostal, String adresse, String lieuImmeuble, Immeuble immeuble) {
+	public BienLouable(String ville, int codePostal, String adresse,int nbPieces, int NumeroFiscal,float surface, Immeuble immeuble) {
 		super(ville, codePostal, adresse); // Utilisation du constructeur de Bien pour initier ville, codePostal, adresse
 		this.lieuImmeuble = lieuImmeuble;
 		this.immeuble = immeuble;
+		this.surface = surface;
+		this.nbPieces = nbPieces;
+		this.codePostal = codePostal;
+		this.numeroFiscal = numeroFiscal;
 		this.travaux = new ArrayList<>();
 		this.baux = new ArrayList<>();
 	}
@@ -85,7 +96,7 @@ public class BienLouable extends Bien {
 		this.changementCompteur = changementCompteur;
 	}
 
-	public int getSurface() {
+	public float getSurface() {
 		return surface;
 	}
 
@@ -129,5 +140,11 @@ public class BienLouable extends Bien {
 
 	public void setBaux(ArrayList<Bail> baux) {
 		this.baux = baux;
+	}
+	public int getNbPieces() {
+		return nbPieces;
+	}
+	public void setNbPieces(int nbPieces) {
+		this.nbPieces = nbPieces;
 	}
 }

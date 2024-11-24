@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="CENTER" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="700.0" spacing="20.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.mpvm.saeimmobilier.controleur.CtrlNewBien">
+  <children>
+    <AnchorPane prefHeight="550.0" prefWidth="700.0">
+      <TextField fx:id="FieldAdresse" layoutX="23.0" layoutY="73.0" prefHeight="25.0" prefWidth="206.0" promptText="Adresse" />
+      <Label fx:id="labelTitle" layoutX="14.0" layoutY="14.0" prefHeight="17.0" prefWidth="175.0" text="Ajout d'un bien" />
+      <Label layoutX="23.0" layoutY="49.0" prefHeight="17.0" prefWidth="206.0" text="Adresse du bien" />
+      <Label layoutX="23.0" layoutY="165.0" prefHeight="17.0" prefWidth="206.0" text="Ville du bien" />
+      <TextField fx:id="FieldVille" layoutX="23.0" layoutY="189.0" prefHeight="25.0" prefWidth="206.0" promptText="Surface Ville" />
+      <Label layoutX="23.0" layoutY="295.0" prefHeight="17.0" prefWidth="206.0" text="Sélectionner l'Immeuble du bien" />
+      <ChoiceBox fx:id="listImmeubles" layoutX="23.0" layoutY="313.0" prefHeight="25.0" prefWidth="206.0">
+      </ChoiceBox>
+      <ButtonBar layoutX="266.0" layoutY="496.0" prefHeight="40.0" prefWidth="244.0" />
+      <Button alignment="CENTER" contentDisplay="TOP" layoutX="478.0" layoutY="504.0" mnemonicParsing="false" onAction="#Annuler" prefHeight="25.0" prefWidth="94.0" style="-fx-background-color: #FF7043; -fx-background-radius: 10px;" text="Annuler" textFill="WHITE" />
+      <Button layoutX="586.0" layoutY="504.0" mnemonicParsing="false" onAction="#ajouterBien" style="-fx-background-color: #0D47A1; -fx-background-radius: 10px;" text="Ajouter le bien" textFill="WHITE" />
+      <Label layoutX="23.0" layoutY="108.0" prefHeight="17.0" prefWidth="206.0" text="Code Postal du bien" />
+      <TextField fx:id="FieldCodePostal" layoutX="23.0" layoutY="132.0" prefHeight="25.0" prefWidth="206.0" promptText="Code Postal" />
+      <Label layoutX="266.0" layoutY="106.0" prefHeight="17.0" prefWidth="206.0" text="Numéro fiscale du bien" />
+      <TextField fx:id="FieldNumFisc" layoutX="266.0" layoutY="130.0" prefHeight="25.0" prefWidth="206.0" promptText="Numéro fiscale" />
+      <Label layoutX="266.0" layoutY="49.0" prefHeight="17.0" prefWidth="206.0" text="Nombre de pièces du bien" />
+      <TextField fx:id="FieldNbPieces" layoutX="266.0" layoutY="73.0" prefHeight="25.0" prefWidth="206.0" promptText="Nombre de pièces" />
+      <Label layoutX="23.0" layoutY="232.0" prefHeight="17.0" prefWidth="206.0" text="Type du bien" />
+      <Label layoutX="266.0" layoutY="169.0" prefHeight="17.0" prefWidth="206.0" text="Surface habitable du bien" />
+      <TextField fx:id="FieldSurface" layoutX="266.0" layoutY="193.0" prefHeight="25.0" prefWidth="206.0" promptText="Surface habitable" />
+      <Label layoutX="266.0" layoutY="232.0" prefHeight="17.0" prefWidth="206.0" text="Date d'ajout du bien" />
+      <ChoiceBox fx:id="ListTypeBien" layoutX="23.0" layoutY="256.0" prefHeight="25.0" prefWidth="206.0" />
+      <Label fx:id="LabelDate" layoutX="266.0" layoutY="260.0" prefHeight="18.0" prefWidth="206.0" />
+      <Button fx:id="btnajouterLocataire" layoutX="266.0" layoutY="353.0" mnemonicParsing="false" onAction="#AddLocataire" prefHeight="25.0" prefWidth="206.0" style="-fx-background-color: #3E83ED; -fx-background-radius: 10px;" text="Ajouter un locataire" textFill="WHITE" />
+      <ComboBox fx:id="comboLocataires" layoutX="266.0" layoutY="313.0" prefHeight="25.0" prefWidth="206.0" />
+         <Label layoutX="266.0" layoutY="295.0" prefHeight="17.0" prefWidth="175.0" text="Locataires existant" />
+    </AnchorPane>
+  </children>
+</VBox>
