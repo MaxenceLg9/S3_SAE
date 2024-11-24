@@ -76,6 +76,16 @@ public class BienLouable extends Bien {
 		return baux;
 	}
 
+	@Override
+	public int getCodePostal() {
+		return codePostal;
+	}
+
+	@Override
+	public void setCodePostal(int codePostal) {
+		this.codePostal = codePostal;
+	}
+
 	public void ajouterBail(Bail bail) {
 		this.baux.add(bail);
 	}
@@ -94,6 +104,10 @@ public class BienLouable extends Bien {
 
 	public void setChangementCompteur(boolean changementCompteur) {
 		this.changementCompteur = changementCompteur;
+	}
+
+	public void setSurface(float surface) {
+		this.surface = surface;
 	}
 
 	public float getSurface() {
