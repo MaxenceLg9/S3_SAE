@@ -21,7 +21,6 @@ public class TestQueryElement {
 
     private SelectQueryElement selectQueryElement;
     private UpdateQueryElement updateQueryElement;
-    private Savepoint savepoint;
 
     @BeforeEach
     public void init() {
@@ -32,7 +31,6 @@ public class TestQueryElement {
     @AfterEach
     public void close() throws QueryElement.QueryException {
         if(selectQueryElement != null) {
-            selectQueryElement.rollback();
             selectQueryElement.close();
         }
         if(updateQueryElement != null) {
@@ -55,12 +53,10 @@ public class TestQueryElement {
     @Test
     public void testUpdateQueryBehaviour() throws QueryElement.QueryException, SQLException {
         updateQueryElement = new UpdateQueryElement(Locataire.INSERT_QUERY, false);
-
-        savepoint = updateQueryElement.savePoint();
-
         updateQueryElement.setArgs(Map.of(1, "nom", 2, "prenom", 3, "email", 4, 'M', 5, "telephone"));
         updateQueryElement.execute();
         updateQueryElement.commit();
+        updateQueryElement.close();
 
         selectQueryElement = new SelectQueryElement("SELECT * FROM Locataire WHERE email = ?");
         selectQueryElement.setArgs(Map.of(1, "email"));
@@ -68,7 +64,15 @@ public class TestQueryElement {
         rsQuery.next();
         assertEquals("nom", rsQuery.getString("nom"));
 
-        updateQueryElement.rollback(savepoint);
+
+        updateQueryElement = new UpdateQueryElement(Locataire.DELETE_QUERY, false);
+        updateQueryElement.setArgs(Map.of(1, rsQuery.getObject("IdLocataire")));
+
+        selectQueryElement.close();
+
+        updateQueryElement.execute();
+        updateQueryElement.commit();
+
     }
 
     @Test
