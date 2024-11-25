@@ -20,7 +20,7 @@
 <?import javafx.scene.text.Font?>
 
 
-<BorderPane style="-fx-background-color: #B4DFE5;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.mpvm.saeimmobilier.controleur.CtrlNewBien">
+<BorderPane style="-fx-background-color: #F4F4F4;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.mpvm.saeimmobilier.controleur.CtrlNewBien">
    <center>
       <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
@@ -121,7 +121,7 @@
                                     <Insets right="10.0" />
                                  </GridPane.margin>
                               </ChoiceBox>
-                           <Button fx:id="btnajouterLocataire" minHeight="30.0" minWidth="140.0" mnemonicParsing="false" onAction="#AddLocataire" style="-fx-background-color: #3E83ED; -fx-background-radius: 10px;" text="Ajouter un locataire" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="10">
+                           <Button fx:id="btnajouterLocataire" minHeight="30.0" minWidth="140.0" mnemonicParsing="false" onAction="#AddLocataire" style="-fx-background-color: #5DADEC; -fx-background-radius: 10px;" text="Ajouter un locataire" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="10">
                                  <GridPane.margin>
                                     <Insets />
                                  </GridPane.margin>
@@ -171,12 +171,12 @@
                      <children>
                         <HBox alignment="CENTER_RIGHT" prefHeight="76.0" prefWidth="652.0" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="20.0">
                            <children>
-                           <Button alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" onAction="#Annuler" prefHeight="35.0" prefWidth="150.0" style="-fx-background-color: #FF7043; -fx-background-radius: 10px;" text="Annuler" textFill="WHITE">
+                           <Button alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" onAction="#Annuler" prefHeight="35.0" prefWidth="150.0" style="-fx-background-color: E74C3C; -fx-background-radius: 10px;" text="Annuler" textFill="WHITE">
                                  <font>
                                     <Font name="System Bold" size="14.0" />
                                  </font>
                               </Button>
-                           <Button mnemonicParsing="false" onAction="#ajouterBien" prefHeight="35.0" prefWidth="150.0" style="-fx-background-color: #0D47A1; -fx-background-radius: 10px;" text="Ajouter le bien" textFill="WHITE">
+                           <Button mnemonicParsing="false" onAction="#ajouterBien" prefHeight="35.0" prefWidth="150.0" style="-fx-background-color: #5DADEC; -fx-background-radius: 10px;" text="Ajouter le bien" textFill="WHITE">
                                  <font>
                                     <Font name="System Bold" size="14.0" />
                                  </font>
@@ -196,7 +196,7 @@
    <left>
       <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <VBox prefHeight="610.0" prefWidth="161.0" style="-fx-background-color: #0D47A1;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <VBox prefHeight="610.0" prefWidth="161.0" style="-fx-background-color: #002B5B;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
                   <BorderPane prefHeight="200.0" prefWidth="198.0">
                      <top>
@@ -249,7 +249,7 @@
                   <Insets />
                </opaqueInsets>
             </VBox>
-            <Button fx:id="BtnDisconnect" alignment="BOTTOM_CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="26.0" style="-fx-background-color: #FF7043; -fx-background-radius: 8px;" text="Déconnexion" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="25.0">
+            <Button fx:id="BtnDisconnect" alignment="BOTTOM_CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="26.0" style="-fx-background-color: #E74C3C; -fx-background-radius: 8px;" text="Déconnexion" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="25.0">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
