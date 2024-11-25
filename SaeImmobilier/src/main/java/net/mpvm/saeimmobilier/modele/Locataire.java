@@ -1,8 +1,8 @@
 package net.mpvm.saeimmobilier.modele;
 
-import net.mpvm.saeimmobilier.sql.QueryElement;
-import net.mpvm.saeimmobilier.sql.SelectQueryElement;
-import net.mpvm.saeimmobilier.sql.UpdateQueryElement;
+import net.mpvm.saeimmobilier.sql.QueryElement.QueryElement;
+import net.mpvm.saeimmobilier.sql.QueryElement.SelectQueryElement;
+import net.mpvm.saeimmobilier.sql.QueryElement.UpdateQueryElement;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

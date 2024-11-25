@@ -1,6 +1,5 @@
-package net.mpvm.saeimmobilier.sql;
+package net.mpvm.saeimmobilier.sql.QueryElement;
 
-import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;

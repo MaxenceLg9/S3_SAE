@@ -1,8 +1,9 @@
-package net.mpvm.saeimmobilier.sql;
+package net.mpvm.saeimmobilier.sql.QueryElement;
+
+import net.mpvm.saeimmobilier.sql.Connection.BD;
 
 import java.io.Closeable;
 import java.io.IOException;
-import java.net.ConnectException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -29,7 +30,7 @@ public abstract class QueryElement<T> implements Closeable {
     }
 
     protected PreparedStatement prepareStatement() throws SQLException{
-        return connection.prepareStatement(this.getQuery());
+        return connection.prepareStatement(query);
     }
 
     public String getQuery(){

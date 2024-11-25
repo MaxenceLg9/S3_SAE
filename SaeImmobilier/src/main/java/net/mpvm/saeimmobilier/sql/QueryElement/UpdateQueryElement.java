@@ -1,4 +1,4 @@
-package net.mpvm.saeimmobilier.sql;
+package net.mpvm.saeimmobilier.sql.QueryElement;
 
 import java.sql.SQLException;
 

@@ -1,13 +1,6 @@
-package net.mpvm.saeimmobilier.sql;
-
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import org.sqlite.JDBC;
-import org.sqlite.SQLiteConnection;
-import org.sqlite.jdbc4.JDBC4Connection;
+package net.mpvm.saeimmobilier.sql.Connection;
 
 import java.sql.*;
-import java.util.*;
 
 public class BD{
 
