@@ -53,11 +53,20 @@ public class TestQueryElement {
     }
 
     @Test
-    public void testQueryWithTooManyArgs() {
+    public void testUpdateQueryWithTooManyArgs() {
         assertThrows(QueryElement.QueryException.class, () -> {
             updateQueryElement = new UpdateQueryElement(Locataire.SELECT_QUERY, false);
             updateQueryElement.addArgs(Map.of(1, "nom", 2, "prenom", 3, "email", 4, 'M', 5, "telephone"));
             updateQueryElement.execute();
+        });
+    }
+
+    @Test
+    public void testSelectQueryWithTooManyArgs() {
+        assertThrows(QueryElement.QueryException.class, () -> {
+            selectQueryElement = new SelectQueryElement(Locataire.SELECT_QUERY);
+            selectQueryElement.addArgs(Map.of(1, "nom", 2, "prenom", 3, "email", 4, 'M', 5, "telephone"));
+            selectQueryElement.execute();
         });
     }
 }

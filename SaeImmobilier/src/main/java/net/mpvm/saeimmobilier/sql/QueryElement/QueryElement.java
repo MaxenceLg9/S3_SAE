@@ -14,7 +14,7 @@ public abstract class QueryElement<T> implements Closeable {
     private final String query;
     protected final PreparedStatement preparedStatement;
     private final Connection connection;
-    private long nArgs;
+    private final long nArgs;
 
     public QueryElement(String query, boolean commit) throws QueryException {
         this.query = query;
@@ -25,6 +25,10 @@ public abstract class QueryElement<T> implements Closeable {
         } catch (SQLException e) {
             throw new QueryException("Error creating connection or Statement", e);
         }
+    }
+
+    public long getArgs(){
+        return this.nArgs;
     }
 
     protected PreparedStatement getPreparedStatement(){

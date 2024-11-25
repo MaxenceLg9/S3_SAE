@@ -25,6 +25,8 @@ public final class SelectQueryElement extends QueryElement<ResultSet> {
     @Override
     public QueryElement<ResultSet> addArgs(Map<Integer,Object> args) throws QueryException {
         //adding the args for the fake query
+        if(args.size() != getArgs())
+            throw new QueryException("Error, wrong number of args");
         for(Map.Entry<Integer,Object> entry : args.entrySet()) {
             try {
                 fakeStatement.setObject(entry.getKey(), entry.getValue());
