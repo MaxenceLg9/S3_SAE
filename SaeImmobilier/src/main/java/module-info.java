@@ -21,5 +21,5 @@ module net.mpvm.saeimmobilier {
     //opens net.mpvm.saeimmobilier.controleur to javafx.fxml;
     exports net.mpvm.saeimmobilier.vue;
     exports net.mpvm.saeimmobilier.controleur;
-
+    opens net.mpvm.saeimmobilier.controleur to javafx.fxml;
 }

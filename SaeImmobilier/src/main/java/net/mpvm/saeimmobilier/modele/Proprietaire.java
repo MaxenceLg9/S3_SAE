@@ -1,5 +1,9 @@
 package net.mpvm.saeimmobilier.modele;
+import net.mpvm.saeimmobilier.sql.BD;
+
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -134,6 +138,15 @@ public class Proprietaire {
 
 	public void setBiensPossedes(ArrayList<Bien> biensPossedes) {
 		this.biensPossedes = biensPossedes;
+	}
+	public void save() {
+		Map<String, String> params = Map.of("Email", this.Email, "MotDePasse", this.MotDePasse);
+		try{
+			BD.insertInto(Proprietaire, params, true);
+		}
+		catch (SQLException sqlE){
+			sqlE.printStackTrace();
+		}
 	}
 
 }
