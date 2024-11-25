@@ -64,7 +64,8 @@ public class CtrlNewBien {
 
         // Initialize the list of Immeubles
         if (listImmeubles != null) {
-            listImmeubles.getItems().add(new Immeuble("Toulouse", 31400, "Rue de la paix"));
+            Immeuble immeuble = new Immeuble("Toulouse", 31400, "Rue de la paix");
+            listImmeubles.getItems().add(immeuble);
             System.out.println(listImmeubles.getItems().getFirst().getAdresse());
         } else {
             System.out.println("ChoiceBox listImmeubles is not injected");

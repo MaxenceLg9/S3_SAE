@@ -34,7 +34,7 @@ CREATE TABLE Bail(
     Renouvelable Boolean,
     CheminDocument varchar(100),
     DateSignature Date,
-    Etat varchar check ( Etat in ('Actif', 'Terminé', 'Preavis') ),
+    Etat varchar(10) check ( Etat in ('Actif', 'Terminé', 'Preavis') ),
     foreign key (IdBien) references BienLouable(IdBien),
     foreign key (IdChargeEau) references ChargesEau(IdChargeEau),
     foreign key (IdChargeElectricite) references  ChargesElectricite(IdChargeElectricite),
@@ -45,6 +45,7 @@ CREATE TABLE Bail(
 
 CREATE TRIGGER CalculTotalCharges
     AFTER INSERT ON Bail
+    for each row
 BEGIN
     UPDATE Bail
     SET TotalCharges = (
@@ -53,7 +54,7 @@ BEGIN
         WHERE IdBien = NEW.IdBien
     )
     WHERE IdBail = NEW.IdBail;
-END;--TODO : Modifier pour update
+END;
 
 
 CREATE TABLE Locataire (
@@ -67,7 +68,7 @@ CREATE TABLE Locataire (
 
 
 CREATE TABLE Charges (
-    IdCharge INTEGER PRIMARY KEY AUTOINCREMENT,
+    IdCharge INTEGER PRIMARY KEY auto_increment,
     IdBien INTEGER,
     Montant float,
     DateCharge DATE,
@@ -75,7 +76,7 @@ CREATE TABLE Charges (
 );
 
 CREATE TABLE ChargesEau (
-    IdChargeEau INTEGER PRIMARY KEY AUTOINCREMENT,
+    IdChargeEau INTEGER PRIMARY KEY auto_increment,
     IdCharge INTEGER,
     IdBien INTEGER,
     IdLocataire INTEGER,
@@ -91,7 +92,7 @@ CREATE TABLE ChargesEau (
 
 
 CREATE TABLE Travaux (
-    IdTravaux INTEGER PRIMARY KEY AUTOINCREMENT,
+    IdTravaux INTEGER PRIMARY KEY auto_increment,
     IdBien INTEGER,
     NumeroFacture INTEGER,
     AdressePostale varchar(40),
@@ -110,6 +111,7 @@ CREATE TABLE Travaux (
 
 CREATE TRIGGER CalculMontantADeclarer
     AFTER INSERT ON Travaux
+    for each row
 BEGIN
     UPDATE Travaux
     SET MontantADeclarer = (Montant - MontantNonDeductible) * (1 - Reduction)
@@ -118,7 +120,7 @@ END;
 
 
 CREATE TABLE Caution (
-    IdCaution INTEGER PRIMARY KEY AUTOINCREMENT,
+    IdCaution INTEGER PRIMARY KEY auto_increment,
     Nom varchar(20),
     Prenom varchar(20),
     DateNaissance DATE,
@@ -135,6 +137,7 @@ CREATE TABLE Caution (
 
 CREATE TRIGGER CalculTotalRevenus
     AFTER INSERT ON Caution
+    for each row
 BEGIN
     UPDATE Caution
     SET TotalRevenus = RemunerationMensuelle + AutresRevenus
@@ -143,7 +146,7 @@ END;
 
 
 CREATE TABLE Assurance (
-    IdAssurance INTEGER PRIMARY KEY AUTOINCREMENT,
+    IdAssurance INTEGER PRIMARY KEY auto_increment,
     IdBien INTEGER,
     ProtectionJuridique float,
     QuotitéJurisprudence float,
@@ -153,13 +156,17 @@ CREATE TABLE Assurance (
     FOREIGN KEY (IdBien) REFERENCES BienLouable(IdBien)
 );
 
+
 CREATE TRIGGER CalculTotalPrime
     AFTER INSERT ON Assurance
+    FOR EACH ROW
 BEGIN
     UPDATE Assurance
-    SET TotalPrime = ProtectionJuridique + Prime
+    SET TotalPrime = NEW.ProtectionJuridique + NEW.Prime
     WHERE IdAssurance = NEW.IdAssurance;
 END;
+
+
 
 
 CREATE TABLE AssocieBailLocataire (
@@ -176,7 +183,7 @@ CREATE TABLE AssocieBailLocataire (
 
 
 CREATE TABLE EtatdesLieux (
-    Id_EtatDesLieu INTEGER primary key autoincrement,
+    Id_EtatDesLieu INTEGER primary key auto_increment,
     Id_Bail INTEGER,
     Date_Signature Date,
     Nom_Bailleur  varchar(20),
@@ -188,7 +195,7 @@ CREATE TABLE EtatdesLieux (
 
 Create table ChargesElectricite
 (
-    IdChargeElectricite INTEGER PRIMARY KEY AUTOINCREMENT,
+    IdChargeElectricite INTEGER PRIMARY KEY auto_increment,
     IdCharge Integer,
     IdBien             INTEGER,
     IdLocataire INTEGER,
@@ -200,7 +207,7 @@ Create table ChargesElectricite
 );
 
 Create table ChargesOrduresMenagere(
-    IdChargeOrdureMenagere INTEGER PRIMARY KEY AUTOINCREMENT,
+    IdChargeOrdureMenagere INTEGER PRIMARY KEY auto_increment,
     IdCharge INTEGER,
     IdBien INTEGER,
     IdLocataire INTEGER,
@@ -212,7 +219,7 @@ Create table ChargesOrduresMenagere(
 );
 
 CREATE TABLE ChargesEntretien(
-    IdChargeEntretien INTEGER PRIMARY KEY AUTOINCREMENT,
+    IdChargeEntretien INTEGER PRIMARY KEY auto_increment,
     IdCharge INTEGER,
     IdBien INTEGER,
     IdLocataire INTEGER,
@@ -225,7 +232,7 @@ CREATE TABLE ChargesEntretien(
 );
 
 CREATE TABLE ArchiveLocataire(
-    IDArchives INTEGER PRIMARY KEY autoincrement,
+    IDArchives INTEGER PRIMARY KEY auto_increment,
     Nom_Locataire varchar(20),
     Prenom_Locataire varchar(20),
     Date_Depart DATE,
@@ -236,7 +243,7 @@ CREATE TABLE ArchiveLocataire(
 );
 
 create table DeclarationFiscale(
-    IdDeclarationFiscale INTEGER primary key autoincrement,
+    IdDeclarationFiscale INTEGER primary key auto_increment,
     annee INTEGER,
     revenusImmobiliers float,
     fraisGestion float,
@@ -247,8 +254,8 @@ create table DeclarationFiscale(
 );
 
 create table Document (
-    IdDocument INTEGER primary key autoincrement,
-    TypeDocument varchar(30), --bail, etat des lieux, diagnostics, etc
+    IdDocument INTEGER primary key auto_increment,
+    TypeDocument varchar(30), -- bail, etat des lieux, diagnostics, etc
     CheminFichier varchar(100),
     IdBien INTEGER,
     IdLocataire INTEGER,
@@ -258,7 +265,7 @@ create table Document (
 );
 
 CREATE TABLE QuittanceLOyer(
-    IdQuittance INTEGER primary key autoincrement,
+    IdQuittance INTEGER primary key auto_increment,
     IdLocataire INTEGER,
     IdBien INTEGER,
     MontantLoyer float,
@@ -270,7 +277,7 @@ CREATE TABLE QuittanceLOyer(
 );
 
 CREATE TABLE TaxesFonciere(
-    IdTaxeFonciere INTEGER primary key autoincrement,
+    IdTaxeFonciere INTEGER primary key auto_increment,
     Montant float,
     Annee INTEGER,
     IdBien INTEGER,
@@ -288,19 +295,19 @@ CREATE TABLE Habiter(
 );
 
 CREATE TABLE Paiement (
-    IdPaiement INTEGER primary key autoincrement ,
+    IdPaiement INTEGER primary key auto_increment ,
     IdBail INTEGER,
     IdLocataire INTEGER,
     Montant float,
     DatePaiement Date,
-    TypePaiement varchar(20) CHECK ( TypePaiement IN ('Chèque', 'Espèce', 'Virement') ), --cheque, espèce, virement
+    TypePaiement varchar(20) CHECK ( TypePaiement IN ('Chèque', 'Espèce', 'Virement') ), -- cheque, espèce, virement
     Statut varchar(10) CHECK ( Statut IN ('Validé','En Attente', 'Refusé') ),
     foreign key (IdBail) references Bail(IdBail),
     foreign key (IdLocataire) references Locataire(IdLocataire)
 );
 
 CREATE TABLE RepartitionCharges(
-    IdRepartition INTEGER primary key autoincrement,
+    IdRepartition INTEGER primary key auto_increment,
     IdCharge INTEGER,
     IdLocataire INTEGER,
     Pourcentage float check(Pourcentage between 0 and 100),

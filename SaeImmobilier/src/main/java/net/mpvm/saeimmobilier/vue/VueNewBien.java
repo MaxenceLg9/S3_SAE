@@ -17,7 +17,7 @@ public class VueNewBien extends Application {
     public void show() {
         try {
             // Charger le fichier FXML associé à la vue
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("VueNewBien.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("newbien.fxml"));
             Parent root = loader.load();
 
             // Créer une nouvelle scène et un stage

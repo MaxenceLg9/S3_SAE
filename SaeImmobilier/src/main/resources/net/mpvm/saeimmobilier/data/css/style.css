@@ -6,3 +6,6 @@
 AnchorPane{
     -fx-background-color: #F9F9F9;
 }
+.backgroundColor{
+    -fx-background-color: linear-gradient(to left,#F9F9F9,#F24589);
+}

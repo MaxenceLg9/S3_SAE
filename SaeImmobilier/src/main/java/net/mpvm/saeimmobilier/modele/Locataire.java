@@ -20,7 +20,7 @@ public class Locataire {
 
 	private int id;
 	private char sexe;
-	private String telepone;
+	private String telephone;
 	private String email;
 	private String nom;
 	private String prenom;
@@ -37,10 +37,10 @@ public class Locataire {
 		this.totalCharge=0f;
 	}
 
-	public Locataire(String nom, String prenom, String email, char sexe, String telepone) {
+	public Locataire(String nom, String prenom, String email, char sexe, String telephone) {
 		this(nom, prenom, email);
 		this.sexe = sexe;
-		this.telepone = telepone;
+		this.telephone = telephone;
 	}
 
 	public int getId() {
@@ -60,12 +60,12 @@ public class Locataire {
 		this.sexe = sexe;
 	}
 
-	public String getTelepone() {
-		return this.telepone;
+	public String gettelephone() {
+		return this.telephone;
 	}
 
-	public void setTelepone(String telepone) {
-		this.telepone = telepone;
+	public void settelephone(String telephone) {
+		this.telephone = telephone;
 	}
 
 	public String getEmail() {
@@ -109,7 +109,7 @@ public class Locataire {
 	public void save() {
 
 		try{
-			new UpdateQueryElement(INSERT_QUERY).addArgs(Map.of(1, this.nom, 2, this.prenom, 3, this.email, 4, Character.toString(this.sexe), 5, this.telepone)).execute();
+			new UpdateQueryElement(INSERT_QUERY).addArgs(Map.of(1, this.nom, 2, this.prenom, 3, this.email, 4, Character.toString(this.sexe), 5, this.telephone)).execute();
 		}
 		catch (SQLException sqlE){
 			sqlE.printStackTrace();
