@@ -1,310 +1,264 @@
-CREATE TABLE BienLouable (
-    IdBien INTEGER PRIMARY KEY,
-    Adresse varchar(30),
-    Ville varchar(20),
-    CodePostal varchar(5),
-    TypeBien varchar(20) CHECK (TypeBien IN ('Logement', 'Garage')),
-    Surface float,
-    NombrePieces INTEGER,
-    NumeroFiscal varchar(20),
-    DateAjout Date,
-    CONSTRAINT TypeBien_Specification CHECK (
-    (TypeBien = 'Immeuble' AND Surface IS NULL AND NombrePieces IS NULL) OR
-    (TypeBien != 'Immeuble' AND Surface IS NOT NULL AND NombrePieces IS NOT NULL)
-    )
+CREATE TABLE Locataire(
+                          Id_Locataire INT auto_increment,
+                          Nom VARCHAR(50),
+                          Prenom VARCHAR(50),
+                          Sexe CHAR(1),
+                          Telephone CHAR(10),
+                          Email VARCHAR(50),
+                          DateDepart DATE,
+                          MotifDepart VARCHAR(50),
+                          MontantSoldeCompte DOUBLE,
+                          DateNaissance DATE,
+                          LieuNaissance VARCHAR(50),
+                          SituationFamiliale VARCHAR(50),
+                          Employeur VARCHAR(50),
+                          Profession VARCHAR(50),
+                          TypeContrat VARCHAR(4),
+                          RemunerationMensuelle DOUBLE,
+                          AutresRevenus DOUBLE,
+                          TotalRevenus DOUBLE,
+                          PRIMARY KEY(Id_Locataire)
 );
 
+CREATE TABLE Travaux(
+                        Id_Travaux INT auto_increment,
+                        NumeroFacture VARCHAR(50),
+                        Côté VARCHAR(50),
+                        Entreprise VARCHAR(50),
+                        Montant DOUBLE,
+                        MontantNonDéductible DOUBLE,
+                        MontantADeclarer DOUBLE,
+                        Réduction DOUBLE,
+                        DateTravaux DATE,
+                        Nature VARCHAR(50),
+                        PRIMARY KEY(Id_Travaux)
+);
 
+CREATE TABLE Assurance(
+                          Id_Assurance INT auto_increment,
+                          ProtectionJuridique DOUBLE,
+                          QuotitéJuridique DOUBLE,
+                          Prime DOUBLE,
+                          AugmentationAnnuelle DOUBLE,
+                          TotalPrime DOUBLE,
+                          PRIMARY KEY(Id_Assurance)
+);
+
+CREATE TABLE Propriétaire(
+                             Id_Propriétaire INT auto_increment,
+                             Nom VARCHAR(50),
+                             Prenom VARCHAR(50),
+                             Telephone CHAR(10),
+                             Email VARCHAR(50),
+                             MotDePasse VARCHAR(50),
+                             Ville VARCHAR(50),
+                             CodePostal CHAR(5),
+                             Adresse VARCHAR(50),
+                             PRIMARY KEY(Id_Propriétaire)
+);
+
+CREATE TABLE BienLouable(
+                            IdBienLouable INT auto_increment,
+                            Lieu_Immeuble VARCHAR(50),
+                            Adresse VARCHAR(50),
+                            Ville VARCHAR(50),
+                            CodePostal CHAR(5),
+                            TypeBien VARCHAR(50),
+                            Surface DOUBLE,
+                            NombrePieces INT,
+                            NumeroFiscal VARCHAR(50),
+                            DateAjout DATE,
+                            Id_Assurance INT NOT NULL,
+                            Id_Propriétaire INT NOT NULL,
+                            PRIMARY KEY(IdBienLouable),
+                            FOREIGN KEY(Id_Assurance) REFERENCES Assurance(Id_Assurance),
+                            FOREIGN KEY(Id_Propriétaire) REFERENCES Propriétaire(Id_Propriétaire)
+);
 
 CREATE TABLE Bail(
-    IdBail INTEGER primary key,
-    IdBien INTEGER,
-    IdEtatDesLieu INTEGER,
-    IdChargeEau INTEGER,
-    IdChargeElectricite INTEGER,
-    IdChargeOrdureMenagere INTEGER,
-    IdChargeEntretien INTEGER,
-    NbMoisLoue INTEGER,
-    DateDebut Date,
-    DateFin Date,
-    MontantLoyer float,
-    TotalCharges float,
-    DepotGaranti float,
-    TypeBail varchar(20), -- non meublé, meublé, colocation
-    Renouvelable Boolean,
-    CheminDocument varchar(100),
-    DateSignature Date,
-    Etat varchar check ( Etat in ('Actif', 'Terminé', 'Preavis') ),
-    foreign key (IdBien) references BienLouable(IdBien),
-    foreign key (IdChargeEau) references ChargesEau(IdChargeEau),
-    foreign key (IdChargeElectricite) references  ChargesElectricite(IdChargeElectricite),
-    foreign key (IdChargeOrdureMenagere) references ChargesOrduresMenagere(IdChargeOrdureMenagere),
-    foreign key (IdChargeEntretien) references  ChargesEntretien(IdChargeEntretien),
-    foreign key (IdEtatDesLieu) references EtatdesLieux(Id_EtatDesLieu)
+                     IdBail INT auto_increment,
+                     NbMoisLoues INT,
+                     DateDebut DATE,
+                     DateFin DATE,
+                     TotalCharges DOUBLE,
+                     DepotGaranti DOUBLE,
+                     MontantLoyer DOUBLE,
+                     TypeBail VARCHAR(50),
+                     Renouvelable BOOLEAN,
+                     CheminDocument VARCHAR(50),
+                     DateSignature DATE,
+                     Etat VARCHAR(50),
+                     Repartition_Entretien DOUBLE,
+                     QuotitéLoyer DOUBLE,
+                     Repartition_Electricite VARCHAR(50),
+                     Repartition_Ordures_Menageres VARCHAR(50),
+                     IdBienLouable INT NOT NULL,
+                     PRIMARY KEY(IdBail),
+                     FOREIGN KEY(IdBienLouable) REFERENCES BienLouable(IdBienLouable)
 );
 
+CREATE TABLE Charges(
+                        Id_Charges INT auto_increment,
+                        Montant DOUBLE,
+                        DateCharge DATE,
+                        TypeCharges VARCHAR(50),
+                        IdBail INT NOT NULL,
+                        PRIMARY KEY(Id_Charges),
+                        FOREIGN KEY(IdBail) REFERENCES Bail(IdBail)
+);
+
+CREATE TABLE ChargesEau(
+                           Id_ChargesEau INT auto_increment,
+                           NouvelIndice INT,
+                           AncienIndice INT,
+                           PartieFixe DOUBLE,
+                           PartieVariable DOUBLE,
+                           Id_Charges INT NOT NULL,
+                           PRIMARY KEY(Id_ChargesEau),
+                           UNIQUE(Id_Charges),
+                           FOREIGN KEY(Id_Charges) REFERENCES Charges(Id_Charges)
+);
+
+CREATE TABLE Paiement(
+                         Id_Paiement INT auto_increment,
+                         Montant DOUBLE,
+                         DatePaiement DATE,
+                         TypePaiement VARCHAR(50),
+                         Statut VARCHAR(50),
+                         IdBail INT NOT NULL,
+                         PRIMARY KEY(Id_Paiement),
+                         FOREIGN KEY(IdBail) REFERENCES Bail(IdBail)
+);
+
+CREATE TABLE Document(
+                         Id_Document INT auto_increment,
+                         TypeDocument VARCHAR(50),
+                         CheminFichier VARCHAR(50),
+                         DateAjout DATE,
+                         IdBail INT NOT NULL,
+                         PRIMARY KEY(Id_Document),
+                         FOREIGN KEY(IdBail) REFERENCES Bail(IdBail)
+);
+
+CREATE TABLE ChargesEntretien(
+                                 Id_ChargesEntretien INT auto_increment,
+                                 Pourcentage DOUBLE,
+                                 Id_Charges INT NOT NULL,
+                                 PRIMARY KEY(Id_ChargesEntretien),
+                                 UNIQUE(Id_Charges),
+                                 FOREIGN KEY(Id_Charges) REFERENCES Charges(Id_Charges)
+);
+
+CREATE TABLE DeclarationFiscale(
+                                   Id_DeclarationFiscale INT auto_increment,
+                                   Annee INT,
+                                   RevenusImmobiliers DOUBLE,
+                                   FraisGestion DOUBLE,
+                                   MontantTravaux DOUBLE,
+                                   Cotisations DOUBLE,
+                                   Id_Document INT NOT NULL,
+                                   PRIMARY KEY(Id_DeclarationFiscale),
+                                   UNIQUE(Id_Document),
+                                   FOREIGN KEY(Id_Document) REFERENCES Document(Id_Document)
+);
+
+CREATE TABLE EtatDesLieux(
+                             Id_EtatDesLieux INT auto_increment,
+                             Date_Signature DATE,
+                             ElementEDL VARCHAR(50),
+                             Etat_Element VARCHAR(50),
+                             Id_Document INT NOT NULL,
+                             PRIMARY KEY(Id_EtatDesLieux),
+                             UNIQUE(Id_Document),
+                             FOREIGN KEY(Id_Document) REFERENCES Document(Id_Document)
+);
+
+CREATE TABLE QuittanceLoyer(
+                               Id_QuittanceLoyer INT auto_increment,
+                               MontantLoyer DOUBLE,
+                               MontantCharges DOUBLE,
+                               DatePaiement DATE,
+                               CheminFichier VARCHAR(50),
+                               Id_Document INT NOT NULL,
+                               PRIMARY KEY(Id_QuittanceLoyer),
+                               UNIQUE(Id_Document),
+                               FOREIGN KEY(Id_Document) REFERENCES Document(Id_Document)
+);
+
+CREATE TABLE TaxesFoncieres(
+                               Id_TaxesFoncieres INT auto_increment,
+                               Montant DOUBLE,
+                               Annee INT,
+                               Id_Document INT NOT NULL,
+                               PRIMARY KEY(Id_TaxesFoncieres),
+                               UNIQUE(Id_Document),
+                               FOREIGN KEY(Id_Document) REFERENCES Document(Id_Document)
+);
+
+CREATE TABLE AssocieBailLocataire(
+                                     Id_Locataire INT,
+                                     IdBail INT,
+                                     DateEntree DATE,
+                                     DateSortie DATE,
+                                     PRIMARY KEY(Id_Locataire, IdBail),
+                                     FOREIGN KEY(Id_Locataire) REFERENCES Locataire(Id_Locataire),
+                                     FOREIGN KEY(IdBail) REFERENCES Bail(IdBail)
+);
+
+CREATE TABLE Louer(
+                      Id_Locataire INT,
+                      IdBienLouable INT,
+                      DateDébut DATE,
+                      DateFin DATE,
+                      PRIMARY KEY(Id_Locataire, IdBienLouable),
+                      FOREIGN KEY(Id_Locataire) REFERENCES Locataire(Id_Locataire),
+                      FOREIGN KEY(IdBienLouable) REFERENCES BienLouable(IdBienLouable)
+);
+
+CREATE TABLE Réaliser(
+                         Id_Travaux INT,
+                         IdBienLouable INT,
+                         PRIMARY KEY(Id_Travaux, IdBienLouable),
+                         FOREIGN KEY(Id_Travaux) REFERENCES Travaux(Id_Travaux),
+                         FOREIGN KEY(IdBienLouable) REFERENCES BienLouable(IdBienLouable)
+);
+
+DELIMITER $$
+
+-- Trigger pour calculer TotalCharges dans la table Bail
 CREATE TRIGGER CalculTotalCharges
     AFTER INSERT ON Bail
+    FOR EACH ROW
 BEGIN
     UPDATE Bail
     SET TotalCharges = (
         SELECT IFNULL(SUM(Montant), 0)
         FROM Charges
-        WHERE IdBien = NEW.IdBien
+        WHERE Bail.IdBail = NEW.IdBail
     )
     WHERE IdBail = NEW.IdBail;
-END;--TODO : Modifier pour update
+END $$
 
-
-CREATE TABLE Locataire (
-    IdLocataire INTEGER PRIMARY KEY,
-    Nom varchar(20),
-    Prenom varchar(20),
-    Sexe varchar(20) CHECK (Sexe IN ('M', 'F')),
-    Telephone varchar(10),
-    Email varchar(20)
-);
-
-
-CREATE TABLE Charges (
-    IdCharge INTEGER PRIMARY KEY AUTOINCREMENT,
-    IdBien INTEGER,
-    Montant float,
-    DateCharge DATE,
-    FOREIGN KEY (IdBien) REFERENCES BienLouable(IdBien)
-);
-
-CREATE TABLE ChargesEau (
-    IdChargeEau INTEGER PRIMARY KEY AUTOINCREMENT,
-    IdCharge INTEGER,
-    IdBien INTEGER,
-    IdLocataire INTEGER,
-    DateReleve Date,
-    NouvelIndice INTEGER,
-    AncienIndice INTEGER,
-    PartieFixe float,
-    PartieVariable float,
-    FOREIGN KEY (IdBien) REFERENCES BienLouable(IdBien),
-    foreign key (IdLocataire) references Locataire(IdLocataire),
-    FOREIGN KEY (IdCharge) references  Charges(IdCharge)
-);
-
-
-CREATE TABLE Travaux (
-    IdTravaux INTEGER PRIMARY KEY AUTOINCREMENT,
-    IdBien INTEGER,
-    NumeroFacture INTEGER,
-    AdressePostale varchar(40),
-    Etage INTEGER,
-    Côté varchar(20),
-    TypeImmeuble varchar(20),
-    Entreprise varchar(20),
-    Montant float,
-    MontantNonDeductible float,
-    MontantADeclarer float,
-    Reduction float, -- Stocké en pourcentage, par exemple 0.2 pour 20%
-    DateTravaux DATE,
-    NatureTravaux varchar(100),
-    FOREIGN KEY (IdBien) REFERENCES BienLouable(IdBien)
-);
-
+-- Trigger pour calculer MontantADeclarer dans la table Travaux
 CREATE TRIGGER CalculMontantADeclarer
     AFTER INSERT ON Travaux
+    FOR EACH ROW
 BEGIN
     UPDATE Travaux
-    SET MontantADeclarer = (Montant - MontantNonDeductible) * (1 - Reduction)
-    WHERE IdTravaux = NEW.IdTravaux;
-END;
+    SET MontantADeclarer = (NEW.Montant - NEW.MontantNonDéductible) * (1 - NEW.Réduction)
+    WHERE Travaux.Id_Travaux = NEW.Id_Travaux;
+END $$
 
 
-CREATE TABLE Caution (
-    IdCaution INTEGER PRIMARY KEY AUTOINCREMENT,
-    Nom varchar(20),
-    Prenom varchar(20),
-    DateNaissance DATE,
-    LieuNaissance varchar(30),
-    Email varchar(30),
-    SituationFamiliale varchar(20),
-    Profession varchar(20),
-    Employeur varchar(30),
-    TypeContrat varchar(3) CHECK (TypeContrat IN ('CDI', 'CDD')),
-    RemunerationMensuelle float,
-    AutresRevenus float,
-    TotalRevenus float
-);
 
-CREATE TRIGGER CalculTotalRevenus
-    AFTER INSERT ON Caution
-BEGIN
-    UPDATE Caution
-    SET TotalRevenus = RemunerationMensuelle + AutresRevenus
-    WHERE IdCaution = NEW.IdCaution;
-END;
-
-
-CREATE TABLE Assurance (
-    IdAssurance INTEGER PRIMARY KEY AUTOINCREMENT,
-    IdBien INTEGER,
-    ProtectionJuridique float,
-    QuotitéJurisprudence float,
-    Prime float,
-    AugmentationAnnuelle float check (AugmentationAnnuelle between 0 and 100),
-    TotalPrime float,
-    FOREIGN KEY (IdBien) REFERENCES BienLouable(IdBien)
-);
-
+-- Trigger pour calculer TotalPrime dans la table Assurance
 CREATE TRIGGER CalculTotalPrime
     AFTER INSERT ON Assurance
+    FOR EACH ROW
 BEGIN
     UPDATE Assurance
-    SET TotalPrime = ProtectionJuridique + Prime
-    WHERE IdAssurance = NEW.IdAssurance;
-END;
+    SET TotalPrime = NEW.ProtectionJuridique + NEW.Prime
+    WHERE Id_Assurance = NEW.Id_Assurance;
+END $$
 
-
-CREATE TABLE AssocieBailLocataire (
-    IDBail INTEGER,
-    IDLocataire INTEGER,
-    QuotitéLoyer float,
-    DateEntree DATE,
-    DateSortie DATE,
-    PRIMARY KEY (IDBail, IDLocataire),
-    FOREIGN KEY (IDBail) REFERENCES Bail(IdBail),
-    FOREIGN KEY (IDLocataire) REFERENCES Locataire(IDLocataire)
-);
-
-
-
-CREATE TABLE EtatdesLieux (
-    Id_EtatDesLieu INTEGER primary key autoincrement,
-    Id_Bail INTEGER,
-    Date_Signature Date,
-    Nom_Bailleur  varchar(20),
-    Prenom_Bailleur varchar(20),
-    Element varchar(20),
-    Etat_Element varchar(20) check ( Etat_Element in ('Bon état', 'Etat d''usage', 'neuf', 'Mauvais état') ),
-    foreign key (Id_Bail) references Bail(IdBail)
-);
-
-Create table ChargesElectricite
-(
-    IdChargeElectricite INTEGER PRIMARY KEY AUTOINCREMENT,
-    IdCharge Integer,
-    IdBien             INTEGER,
-    IdLocataire INTEGER,
-    DateReleve Date,
-    Montant float,
-    FOREIGN KEY (IdBien) REFERENCES BienLouable (IdBien),
-    foreign key (IdLocataire) references  Locataire(IdLocataire),
-    foreign key (IdCharge) references Charges(IdCharge)
-);
-
-Create table ChargesOrduresMenagere(
-    IdChargeOrdureMenagere INTEGER PRIMARY KEY AUTOINCREMENT,
-    IdCharge INTEGER,
-    IdBien INTEGER,
-    IdLocataire INTEGER,
-    DateReleve Date,
-    Montant float,
-    FOREIGN KEY (IdBien) REFERENCES BienLouable(IdBien),
-    foreign key (IdLocataire) references  Locataire(IdLocataire),
-    foreign key (IdCharge) references Charges(IdCharge)
-);
-
-CREATE TABLE ChargesEntretien(
-    IdChargeEntretien INTEGER PRIMARY KEY AUTOINCREMENT,
-    IdCharge INTEGER,
-    IdBien INTEGER,
-    IdLocataire INTEGER,
-    DateReleve Date,
-    Montant float,
-    Pourcentage float check (Pourcentage between 0 and 100),
-    FOREIGN KEY (IdBien) REFERENCES BienLouable(IdBien),
-    foreign key (IdLocataire) references  Locataire(IdLocataire),
-    foreign key (IdCharge) references Charges(IdCharge)
-);
-
-CREATE TABLE ArchiveLocataire(
-    IDArchives INTEGER PRIMARY KEY autoincrement,
-    Nom_Locataire varchar(20),
-    Prenom_Locataire varchar(20),
-    Date_Depart DATE,
-    IdBien INTEGER,
-    motifDepart varchar(100),
-    montantSoldeCompte float,
-    FOREIGN KEY (IdBien) REFERENCES BienLouable(IdBien)
-);
-
-create table DeclarationFiscale(
-    IdDeclarationFiscale INTEGER primary key autoincrement,
-    annee INTEGER,
-    revenusImmobiliers float,
-    fraisGestion float,
-    montantTravaux float,
-    cotisations float,
-    IdBien INTEGER,
-    FOREIGN KEY (IdBien) references BienLouable(IdBien)
-);
-
-create table Document (
-    IdDocument INTEGER primary key autoincrement,
-    TypeDocument varchar(30), --bail, etat des lieux, diagnostics, etc
-    CheminFichier varchar(100),
-    IdBien INTEGER,
-    IdLocataire INTEGER,
-    DateAjout Date,
-    FOREIGN KEY (IdBien) references BienLouable(IdBien),
-    foreign key (IdLocataire) references  Locataire(IdLocataire)
-);
-
-CREATE TABLE QuittanceLOyer(
-    IdQuittance INTEGER primary key autoincrement,
-    IdLocataire INTEGER,
-    IdBien INTEGER,
-    MontantLoyer float,
-    MontantCharges float,
-    datePaiement Date,
-    CheminFichier varchar(100),
-    foreign key (IdLocataire) references Locataire(IdLocataire),
-    foreign key (IdBien) references BienLouable(IdBien)
-);
-
-CREATE TABLE TaxesFonciere(
-    IdTaxeFonciere INTEGER primary key autoincrement,
-    Montant float,
-    Annee INTEGER,
-    IdBien INTEGER,
-    foreign key (IdBien) references  BienLouable(IdBien)
-);
-
-CREATE TABLE Habiter(
-    IdBail INTEGER,
-    IdColotaire INTEGER,
-    DateDebut Date,
-    DateFin Date,
-    PRIMARY KEY (IdBail, IdColotaire),
-    FOREIGN KEY (IdColotaire) REFERENCES Locataire(IdLocataire),
-    FOREIGN KEY (IdBail) REFERENCES Bail(IdBail)
-);
-
-CREATE TABLE Paiement (
-    IdPaiement INTEGER primary key autoincrement ,
-    IdBail INTEGER,
-    IdLocataire INTEGER,
-    Montant float,
-    DatePaiement Date,
-    TypePaiement varchar(20) CHECK ( TypePaiement IN ('Chèque', 'Espèce', 'Virement') ), --cheque, espèce, virement
-    Statut varchar(10) CHECK ( Statut IN ('Validé','En Attente', 'Refusé') ),
-    foreign key (IdBail) references Bail(IdBail),
-    foreign key (IdLocataire) references Locataire(IdLocataire)
-);
-
-CREATE TABLE RepartitionCharges(
-    IdRepartition INTEGER primary key autoincrement,
-    IdCharge INTEGER,
-    IdLocataire INTEGER,
-    Pourcentage float check(Pourcentage between 0 and 100),
-    Montant float,
-    foreign key (IdCharge) references Charges(IdCharge),
-    foreign key (IdLocataire) references Locataire(IdLocataire)
-);
+DELIMITER ;
