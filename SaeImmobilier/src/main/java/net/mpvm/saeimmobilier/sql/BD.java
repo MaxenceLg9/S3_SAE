@@ -11,35 +11,11 @@ import java.util.*;
 
 public class BD{
 
-    private static Connection conn = null;
-
-    private static Connection getConnection(){
-        if(conn != null){
-            return conn;
-        }
-        createConn();
-        return conn;
-    }
-
-    private static void createConn(){
+    public static Connection getConnection(boolean commit) throws SQLException {
         String url = "jdbc:sqlite:bdd/bdImmo";
-        if(conn != null)
-            return;
-        try {
-            conn = DriverManager.getConnection(url);
-            if(conn instanceof JDBC4Connection){
-                System.out.println("Connection to SQLite has been established.");
-            }
-            conn.setAutoCommit(false);
-        } catch (Exception e){
-            System.out.println(e.getMessage());
-            conn = null;
-        }
-    }
-
-    public static PreparedStatement prepareStatement(String sql) throws SQLException {
-        createConn();
-        return Objects.requireNonNull(getConnection()).prepareStatement(sql);
+        Connection connection = DriverManager.getConnection(url);
+        connection.setAutoCommit(commit);
+        return connection;
     }
 
 }

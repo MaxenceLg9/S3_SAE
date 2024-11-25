@@ -5,13 +5,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import net.mpvm.saeimmobilier.modele.*;
-import net.mpvm.saeimmobilier.sql.BD;
 import net.mpvm.saeimmobilier.util.JfxUtil;
-import net.mpvm.saeimmobilier.vue.VueNewBien;
 
-import javax.xml.transform.Result;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -19,12 +14,10 @@ import java.util.List;
 
 public class CtrlNewBien {
 
-    public static final String TABLE_NAME = "Locataire";
-
     @FXML
     public Button btnajouterLocataire;
     @FXML
-    public ComboBox comboLocataires;
+    public ComboBox<Locataire> comboLocataires;
     @FXML
     private ChoiceBox<Immeuble> listImmeubles;
 
@@ -70,9 +63,14 @@ public class CtrlNewBien {
             System.out.println("ChoiceBox listImmeubles is not injected");
         }
 
-        List<Locataire> locataires = Locataire.getLocataires();
+        List<Locataire> locataires = null;
+        try {
+            locataires = Locataire.findALl();
+        } catch (Locataire.LocataireException e) {
+            locataires = new ArrayList<>();
+        }
         for (Locataire loc : locataires) {
-            this.comboLocataires.getItems().add(loc.getNom() + " " + loc.getPrenom());
+            this.comboLocataires.getItems().add(loc);
         }
 
         this.ListTypeBien.getItems().add(TypeBien.BIEN_LOUABLE);

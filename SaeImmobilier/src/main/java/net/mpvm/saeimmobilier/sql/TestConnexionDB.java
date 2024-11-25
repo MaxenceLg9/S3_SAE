@@ -21,13 +21,19 @@ public class TestConnexionDB {
             Object o = s;
             System.out.println(o.toString());
 
-            QueryElement<ResultSet> selectLocataires = new SelectQueryElement(select);
-
-            ResultSet rs = selectLocataires.execute();
-            while(rs.next()){
-                System.out.println("Nom :" + rs.getString(2) + ", Prenom :" + rs.getString(3) + ", Tel :" + rs.getString(5) + ", Email :" + rs.getString(6));
+            QueryElement<ResultSet> selectLocataires = null;
+            try {
+                selectLocataires = new SelectQueryElement(select);
+                ResultSet rs = selectLocataires.execute();
+                while(rs.next()){
+                    System.out.println("Nom :" + rs.getString(2) + ", Prenom :" + rs.getString(3) + ", Tel :" + rs.getString(5) + ", Email :" + rs.getString(6));
+                }
+                selectLocataires.close();
+            } catch (QueryElement.QueryException e) {
+                throw new RuntimeException(e);
             }
-            rs.close();
+
+
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
