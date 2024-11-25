@@ -97,13 +97,19 @@ public class CtrlNewBien {
     @FXML
     public void ajouterBien(ActionEvent actionEvent) {
         if (fieldsNotEmptyBienLouable()) {
-            if (this.ListTypeBien.getItems().getFirst().getDesignation() == TypeBien.BIEN_LOUABLE.getDesignation()) {
-                new BienLouable(this.FieldVille.getText(), Integer.valueOf(this.FieldCodePostal.getText()), this.FieldAdresse.getText(),
-                        Integer.valueOf(this.FieldNbPieces.getText()), Integer.valueOf(this.FieldNumFisc.getText()), Float.valueOf(this.FieldSurface.getText()),
+            if (this.ListTypeBien.getItems().getFirst().getDesignation().equals(TypeBien.BIEN_LOUABLE.getDesignation())) {
+                new BienLouable(this.FieldVille.getText(),
+                        Integer.parseInt(this.FieldCodePostal.getText()),
+                        this.FieldAdresse.getText(),
+                        Integer.parseInt(this.FieldNbPieces.getText()),
+                        Integer.parseInt(this.FieldNumFisc.getText()),
+                        Float.parseFloat(this.FieldSurface.getText()),
                         this.listImmeubles.getItems().getFirst());
             } else {
                 if(fieldsNotEmptyBien()) {
-                    new Bien(this.FieldVille.getText(), Integer.valueOf(this.FieldCodePostal.getText()), this.FieldAdresse.getText());
+                    new Bien(this.FieldVille.getText(),
+                            Integer.parseInt(this.FieldCodePostal.getText()),
+                            this.FieldAdresse.getText());
                 }
             }
 
