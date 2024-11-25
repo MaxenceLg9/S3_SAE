@@ -11,6 +11,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import net.mpvm.saeimmobilier.modele.Locataire;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -27,7 +28,11 @@ public class CtrlViewLocataires {
     }
 
     private void afficheLocataires() {
-        locataires = Locataire.getLocataires().stream().collect(Collectors.toMap(Locataire::getIdLocataire, Function.identity()));
+        try {
+            locataires = Locataire.findALl().stream().collect(Collectors.toMap(Locataire::getIdLocataire, Function.identity()));
+        } catch (Locataire.LocataireException e) {
+            locataires = new HashMap<>();
+        }
         vBoxContent.getChildren().clear();
         for(Locataire l : locataires.values()) {
             GridPane gp = new GridPane(1, 1);
@@ -44,9 +49,7 @@ public class CtrlViewLocataires {
             Label telephone = new Label("N° tel." + l.getTelephone());
             Label sexe = new Label("Sexe :" + l.getSexe());
             Button button = new Button("Supprimer le locataire");
-            button.setOnAction(event -> {
-                askForDelete(l.getIdLocataire());
-            });
+            button.setOnAction(event -> askForDelete(l.getIdLocataire()));
 
             gp.add(nom,0,0);
             gp.add(prenom,0,1);
@@ -95,7 +98,11 @@ public class CtrlViewLocataires {
     }
 
     private void deleteLocataire(int id){
-        locataires.get(id).delete();
+        try {
+            locataires.get(id).delete();
+        } catch (Locataire.LocataireException e) {
+            //TODO : handle exception with visual
+        }
         afficheLocataires();
     }
 }

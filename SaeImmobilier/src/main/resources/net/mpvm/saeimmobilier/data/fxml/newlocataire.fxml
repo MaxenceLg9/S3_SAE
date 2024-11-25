@@ -103,11 +103,11 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
-                <Button alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#ajouterLocataire" text="Ajouter le locataire">
+                <Button alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#ajouterLocataire" style="-fx-background-color: #0D47A1; -fx-background-radius: 10px;" text="Ajouter le locataire" textFill="WHITE">
                     <GridPane.margin>
                         <Insets left="10.0" />
                     </GridPane.margin></Button>
-                <Button alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#annuler" text="Annuler" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.halignment="RIGHT" GridPane.rowSpan="2147483647">
+                <Button alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#annuler" style="-fx-background-color: #FF7043; -fx-background-radius: 10px;" text="Annuler" textFill="WHITE" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.halignment="RIGHT" GridPane.rowSpan="2147483647">
                     <GridPane.margin>
                         <Insets right="10.0" />
                     </GridPane.margin></Button>
