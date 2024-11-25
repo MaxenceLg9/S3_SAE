@@ -23,7 +23,7 @@ public final class SelectQueryElement extends QueryElement<ResultSet> {
     }
 
     @Override
-    public QueryElement<ResultSet> addArgs(Map<Integer,Object> args) throws QueryException {
+    public QueryElement<ResultSet> setArgs(Map<Integer,Object> args) throws QueryException {
         //adding the args for the fake query
         if(args.size() != getArgs())
             throw new QueryException("Error, wrong number of args");
@@ -35,7 +35,7 @@ public final class SelectQueryElement extends QueryElement<ResultSet> {
             }
         }
         //executing the overrided method
-        return super.addArgs(args);
+        return super.setArgs(args);
     }
 
     @Override
@@ -47,7 +47,7 @@ public final class SelectQueryElement extends QueryElement<ResultSet> {
             throw new QueryException("Error, select query can't be used to modify the database", e);
         }
         //print the number of rows obtained by the query
-        System.out.println(this.getClass().getSimpleName() + " : " + setRowCount() + " rows updated");
+        System.out.println(this.getClass().getSimpleName() + " : " + setRowCount() + " rows selected");
         return rs;
     }
 

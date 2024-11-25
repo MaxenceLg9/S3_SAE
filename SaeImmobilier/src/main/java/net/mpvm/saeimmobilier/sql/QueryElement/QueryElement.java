@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Savepoint;
 import java.util.Map;
 
 public abstract class QueryElement<T> implements Closeable {
@@ -43,7 +44,7 @@ public abstract class QueryElement<T> implements Closeable {
         return this.query;
     }
 
-    public QueryElement<T> addArgs(Map<Integer,Object> args) throws QueryException {
+    public QueryElement<T> setArgs(Map<Integer,Object> args) throws QueryException {
         if(args.size() != nArgs)
             throw new QueryException("Error, wrong number of args");
         for(Map.Entry<Integer,Object> entry : args.entrySet()) {
@@ -72,6 +73,31 @@ public abstract class QueryElement<T> implements Closeable {
             this.connection.rollback();
         } catch (SQLException e) {
             throw new QueryException("Error rolling back", e);
+        }
+    }
+
+    public void rollback(Savepoint savepoint) throws QueryException {
+        try {
+            this.connection.rollback(savepoint);
+        } catch (SQLException e) {
+            throw new QueryException("Error rolling back to the savepoint", e);
+        }
+    }
+
+    public Savepoint savePoint() throws QueryException{
+        try {
+            return this.connection.setSavepoint();
+        } catch (SQLException e) {
+            throw new QueryException("Error creating savepoint", e);
+        }
+    }
+
+    public void commit() throws QueryException {
+        try{
+            connection.commit();
+        }
+        catch (SQLException e) {
+            throw new QueryException("Error committing", e);
         }
     }
 

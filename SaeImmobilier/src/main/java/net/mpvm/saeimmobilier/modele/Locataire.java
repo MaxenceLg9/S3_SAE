@@ -107,7 +107,7 @@ public class Locataire {
 		try{
 			if(this.getIdLocataire() == -1)
 				new UpdateQueryElement(INSERT_QUERY, true)
-						.addArgs(
+						.setArgs(
 								Map.of(1, this.getNom(),
 										2, this.getPrenom(),
 										3, this.getEmail(),
@@ -123,7 +123,7 @@ public class Locataire {
 	}
 
 	public void delete() throws LocataireException {
-		try(QueryElement<Integer> query = new UpdateQueryElement(DELETE_QUERY, true).addArgs(Map.of(1,this.getIdLocataire()))){
+		try(QueryElement<Integer> query = new UpdateQueryElement(DELETE_QUERY, true).setArgs(Map.of(1,this.getIdLocataire()))){
 			query.execute();
 		}
 		catch (QueryElement.QueryException e) {
