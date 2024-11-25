@@ -2,9 +2,7 @@ package net.mpvm.saeimmobilier.controleur;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import net.mpvm.saeimmobilier.modele.Locataire;
 import net.mpvm.saeimmobilier.util.JfxUtil;
@@ -67,7 +65,11 @@ public class CtrlNewLocataire {
     public void ajouterLocataire(ActionEvent event) {
         if(fieldsNotEmpty()) {
             char sexe = radioButtonF.isSelected() ? 'F' : 'M';
-            new Locataire(fieldNom.getText(), fieldPrenom.getText(), fieldEmail.getText(), sexe, this.fieldTelephone.getText()).save();
+            try {
+                new Locataire(fieldNom.getText(), fieldPrenom.getText(), fieldEmail.getText(), sexe, this.fieldTelephone.getText()).save();
+            } catch (Locataire.LocataireException e) {
+                //TODO : afficher une alerte
+            }
         }
         else{
             alertFieldsEmpty();
