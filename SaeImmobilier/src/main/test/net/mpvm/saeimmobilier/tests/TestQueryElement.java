@@ -25,18 +25,39 @@ public class TestQueryElement {
 
     @AfterEach
     public void close() throws QueryElement.QueryException {
-        if(selectQueryElement != null)
+        if(selectQueryElement != null) {
+            selectQueryElement.rollback();
             selectQueryElement.close();
-        if(updateQueryElement != null)
+        }
+        if(updateQueryElement != null) {
+            updateQueryElement.rollback();
             updateQueryElement.close();
+        }
     }
 
     @Test
-    public void testUpdateWithselectQuery() {
+    public void testUpdateWithSelectQuery() {
         assertThrows(QueryElement.QueryException.class, () -> {
             selectQueryElement = new SelectQueryElement(Locataire.INSERT_QUERY);
             selectQueryElement.addArgs(Map.of(1, "nom", 2, "prenom", 3, "email", 4, 'M', 5, "telephone"));
             selectQueryElement.execute();
+        });
+    }
+
+    @Test
+    public void testSelectWithUpdateQuery() {
+        assertThrows(QueryElement.QueryException.class, () -> {
+            updateQueryElement = new UpdateQueryElement(Locataire.SELECT_QUERY, false);
+            updateQueryElement.execute();
+        });
+    }
+
+    @Test
+    public void testQueryWithTooManyArgs() {
+        assertThrows(QueryElement.QueryException.class, () -> {
+            updateQueryElement = new UpdateQueryElement(Locataire.SELECT_QUERY, false);
+            updateQueryElement.addArgs(Map.of(1, "nom", 2, "prenom", 3, "email", 4, 'M', 5, "telephone"));
+            updateQueryElement.execute();
         });
     }
 }

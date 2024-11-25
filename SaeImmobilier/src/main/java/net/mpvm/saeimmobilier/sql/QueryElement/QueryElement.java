@@ -14,9 +14,11 @@ public abstract class QueryElement<T> implements Closeable {
     private final String query;
     protected final PreparedStatement preparedStatement;
     private final Connection connection;
+    private long nArgs;
 
     public QueryElement(String query, boolean commit) throws QueryException {
         this.query = query;
+        nArgs = query.chars().filter(ch -> ch == '?').count();
         try {
             this.connection = BD.getConnection(commit);
             this.preparedStatement = this.prepareStatement();
@@ -38,6 +40,8 @@ public abstract class QueryElement<T> implements Closeable {
     }
 
     public QueryElement<T> addArgs(Map<Integer,Object> args) throws QueryException {
+        if(args.size() != nArgs)
+            throw new QueryException("Error, wrong number of args");
         for(Map.Entry<Integer,Object> entry : args.entrySet()) {
             try {
                 preparedStatement.setObject(entry.getKey(), entry.getValue());
@@ -59,11 +63,22 @@ public abstract class QueryElement<T> implements Closeable {
         }
     }
 
+    public void rollback() throws QueryException {
+        try {
+            this.connection.rollback();
+        } catch (SQLException e) {
+            throw new QueryException("Error rolling back", e);
+        }
+    }
+
     public abstract T execute() throws QueryException;
 
     public static class QueryException extends IOException {
         public QueryException(String message, Throwable cause) {
             super(message, cause);
+        }
+        public QueryException(String message) {
+            super(message);
         }
     }
 }
