@@ -16,15 +16,18 @@ public class TestConnexionDB {
             int nbRow = iStmt.executeUpdate("SELECT * FROM Locataire");
             System.out.println(nbRow + "rows affected");*/
 
-            String select = "SELECT * FROM Locataires";
-            Statement stmt = BD.createStatement();
-            ResultSet rs = stmt.executeQuery(select);
+            String select = "SELECT * FROM Locataire";
+            String s = "AAA";
+            Object o = s;
+            System.out.println(o.toString());
+
+            QueryElement<ResultSet> selectLocataires = new SelectQueryElement(select);
+
+            ResultSet rs = selectLocataires.execute();
             while(rs.next()){
                 System.out.println("Nom :" + rs.getString(2) + ", Prenom :" + rs.getString(3) + ", Tel :" + rs.getString(5) + ", Email :" + rs.getString(6));
             }
             rs.close();
-            stmt.close();
-            System.out.println("Connection to SQLite has been established.");
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
