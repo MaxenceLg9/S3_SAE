@@ -20,10 +20,12 @@ public class VueNewBien extends Application {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("newbien.fxml"));
             Parent root = loader.load();
 
+
             // Créer une nouvelle scène et un stage
             Stage stage = new Stage();
             stage.setTitle("Ajouter un Bien");
             stage.setScene(new Scene(root));
+
             stage.show();
         } catch (Exception e) {
             e.printStackTrace();

@@ -19,10 +19,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<BorderPane style="-fx-background-color: #F4F4F4;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.mpvm.saeimmobilier.controleur.CtrlNewBien">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" style="-fx-background-color: #F4F4F4;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.mpvm.saeimmobilier.controleur.CtrlNewBien">
    <center>
-      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <AnchorPane BorderPane.alignment="CENTER">
          <children>
             <BorderPane layoutX="358.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <center>
@@ -63,7 +62,7 @@
                <center>
                   <AnchorPane BorderPane.alignment="CENTER">
                      <children>
-                        <GridPane AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="0.0">
+                        <GridPane AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="0.0">
                           <columnConstraints>
                             <ColumnConstraints fillWidth="false" halignment="LEFT" hgrow="SOMETIMES" maxWidth="110.39996337890625" minWidth="150.0" percentWidth="50.0" prefWidth="99.200048828125" />
                             <ColumnConstraints fillWidth="false" halignment="LEFT" maxWidth="101.599951171875" minWidth="150.0" percentWidth="50.0" />
@@ -194,9 +193,9 @@
       </AnchorPane>
    </center>
    <left>
-      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <AnchorPane prefHeight="610.0" prefWidth="157.0" BorderPane.alignment="CENTER">
          <children>
-            <VBox prefHeight="610.0" prefWidth="161.0" style="-fx-background-color: #002B5B;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <VBox style="-fx-background-color: #002B5B;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
                   <BorderPane prefHeight="200.0" prefWidth="198.0">
                      <top>
@@ -212,27 +211,27 @@
                      <center>
                         <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
                            <children>
-                              <Button minHeight="40.0" minWidth="120.0" mnemonicParsing="false" style="-fx-background-radius: 8px; -fx-background-color: #;" text="Retour à l'accueil">
+                              <Button minHeight="40.0" minWidth="120.0" mnemonicParsing="false" style="-fx-background-radius: 8px; -fx-background-color: #87D37C;" text="Retour à l'accueil">
                                  <VBox.margin>
                                     <Insets left="20.0" top="10.0" />
                                  </VBox.margin>
                               </Button>
-                              <Button minHeight="40.0" minWidth="120.0" mnemonicParsing="false" style="-fx-background-radius: 8px; -fx-background-color: #;" text="Liste des locataires">
+                              <Button minHeight="40.0" minWidth="120.0" mnemonicParsing="false" style="-fx-background-radius: 8px; -fx-background-color: #87D37C;" text="Liste des locataires">
                                  <VBox.margin>
                                     <Insets left="20.0" top="10.0" />
                                  </VBox.margin>
                               </Button>
-                              <Button minHeight="40.0" minWidth="120.0" mnemonicParsing="false" style="-fx-background-radius: 8px; -fx-background-color: #;" text="Liste des Biens">
+                              <Button minHeight="40.0" minWidth="120.0" mnemonicParsing="false" style="-fx-background-radius: 8px; -fx-background-color: #87D37C;" text="Liste des Biens">
                                  <VBox.margin>
                                     <Insets left="20.0" top="10.0" />
                                  </VBox.margin>
                               </Button>
-                              <Button minHeight="40.0" minWidth="120.0" mnemonicParsing="false" style="-fx-background-radius: 8px; -fx-background-color: #;" text="Liste des Baux">
+                              <Button minHeight="40.0" minWidth="120.0" mnemonicParsing="false" style="-fx-background-radius: 8px; -fx-background-color: #87D37C;" text="Liste des Baux">
                                  <VBox.margin>
                                     <Insets left="20.0" top="10.0" />
                                  </VBox.margin>
                               </Button>
-                              <Button minHeight="40.0" minWidth="120.0" mnemonicParsing="false" style="-fx-background-radius: 8px; -fx-background-color: #;" text="Archives">
+                              <Button minHeight="40.0" minWidth="120.0" mnemonicParsing="false" style="-fx-background-radius: 8px; -fx-background-color: #87D37C;" text="Archives">
                                  <VBox.margin>
                                     <Insets left="20.0" top="10.0" />
                                  </VBox.margin>
@@ -249,12 +248,15 @@
                   <Insets />
                </opaqueInsets>
             </VBox>
-            <Button fx:id="BtnDisconnect" alignment="BOTTOM_CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="26.0" style="-fx-background-color: #E74C3C; -fx-background-radius: 8px;" text="Déconnexion" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="25.0">
+            <Button fx:id="BtnDisconnect" alignment="BOTTOM_CENTER" contentDisplay="CENTER" minHeight="30.0" minWidth="130.0" mnemonicParsing="false" style="-fx-background-color: #E74C3C; -fx-background-radius: 8px;" text="Déconnexion" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="15.0">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
             </Button>
          </children>
+         <BorderPane.margin>
+            <Insets right="20.0" />
+         </BorderPane.margin>
       </AnchorPane>
    </left>
 </BorderPane>

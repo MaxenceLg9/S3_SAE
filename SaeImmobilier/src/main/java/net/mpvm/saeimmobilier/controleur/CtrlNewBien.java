@@ -15,9 +15,9 @@ import java.util.List;
 public class CtrlNewBien {
 
     @FXML
-    public Button btnajouterLocataire;
+    private Button btnajouterLocataire;
     @FXML
-    public ComboBox<Locataire> comboLocataires;
+    private ComboBox<Locataire> comboLocataires;
     @FXML
     private ChoiceBox<Immeuble> listImmeubles;
 
