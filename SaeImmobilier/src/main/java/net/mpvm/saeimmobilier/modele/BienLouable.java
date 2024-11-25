@@ -10,25 +10,35 @@ public class BienLouable extends Bien {
 	private ArrayList<Bail> baux;
 	private int ancienIndex;
 	private boolean changementCompteur;
-	private int surface;
+	private float surface;
 	private String numeroFiscal;
 	private Immeuble immeuble;
 	private Proprietaire proprietaire;
 	private int nbPieces;
+	private int codePostal;
+
 	private BienLouable( String ville, int codePostal, String adresse,
-					   int idBienLouable,int nbPieces, String lieuImmeuble, Immeuble immeuble) {
+						 int idBienLouable,int nbPieces, int NumeroFiscal, Immeuble immeuble, float surface) {
 		super( ville, codePostal, adresse); // Initialisation des attributs hérités de Bien
 		this.idBienLouable = idBienLouable;
 		this.lieuImmeuble = lieuImmeuble;
 		this.immeuble = immeuble;
+		this.surface = surface;
+		this.nbPieces = nbPieces;
+		this.codePostal = codePostal;
+		this.numeroFiscal = numeroFiscal;
 		this.travaux = new ArrayList<>();
 		this.baux = new ArrayList<>();
 	}
 
-	public BienLouable(String ville, int codePostal, String adresse,int nbPieces, String lieuImmeuble, Immeuble immeuble) {
+	public BienLouable(String ville, int codePostal, String adresse,int nbPieces, int NumeroFiscal,float surface, Immeuble immeuble) {
 		super(ville, codePostal, adresse); // Utilisation du constructeur de Bien pour initier ville, codePostal, adresse
 		this.lieuImmeuble = lieuImmeuble;
 		this.immeuble = immeuble;
+		this.surface = surface;
+		this.nbPieces = nbPieces;
+		this.codePostal = codePostal;
+		this.numeroFiscal = numeroFiscal;
 		this.travaux = new ArrayList<>();
 		this.baux = new ArrayList<>();
 	}
@@ -66,6 +76,16 @@ public class BienLouable extends Bien {
 		return baux;
 	}
 
+	@Override
+	public int getCodePostal() {
+		return codePostal;
+	}
+
+	@Override
+	public void setCodePostal(int codePostal) {
+		this.codePostal = codePostal;
+	}
+
 	public void ajouterBail(Bail bail) {
 		this.baux.add(bail);
 	}
@@ -86,7 +106,11 @@ public class BienLouable extends Bien {
 		this.changementCompteur = changementCompteur;
 	}
 
-	public int getSurface() {
+	public void setSurface(float surface) {
+		this.surface = surface;
+	}
+
+	public float getSurface() {
 		return surface;
 	}
 

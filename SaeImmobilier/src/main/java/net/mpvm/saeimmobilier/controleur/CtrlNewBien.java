@@ -3,125 +3,178 @@ package net.mpvm.saeimmobilier.controleur;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.layout.AnchorPane;
-import net.mpvm.saeimmobilier.modele.BienLouable;
+import javafx.stage.Stage;
+import net.mpvm.saeimmobilier.modele.*;
+import net.mpvm.saeimmobilier.util.JfxUtil;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CtrlNewBien {
 
     @FXML
-    private AnchorPane anchorPaneRacine;
+    private Button btnajouterLocataire;
     @FXML
-    private TextField fieldAdresse;
+    private ComboBox<Locataire> comboLocataires;
     @FXML
-    private TextField fieldVille;
-    @FXML
-    private TextField fieldCodePostal;
-    @FXML
-    private ComboBox<String> comboBoxTypeBien;
-    @FXML
-    private TextField fieldSurface;
-    @FXML
-    private TextField fieldNombrePieces;
-    @FXML
-    private TextField fieldNumeroFiscal;
+    private ChoiceBox<Immeuble> listImmeubles;
 
-    private List<TextField> fieldsBien;
+    @FXML
+    private Label LabelDate;
+    @FXML
+    private TextField FieldAdresse;
+    @FXML
+    private TextField FieldVille;
+    @FXML
+    private TextField FieldCodePostal;
+    @FXML
+    private TextField FieldNumFisc;
+    @FXML
+    private TextField FieldNbPieces;
+    @FXML
+    private TextField FieldSurface;
+    @FXML
+    private ChoiceBox<TypeBien> ListTypeBien;
+    @FXML
+    private List<TextField> fieldsLogement;
+
 
     @FXML
     public void initialize() {
-        fieldSetup();
-        setupComboBoxTypeBien();
+
+        fieldsetup();
+
+        LocalDate currentDate = LocalDate.now();
+
+        // Formater la date au format désiré (par exemple, dd/MM/yyyy)
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        String formattedDate = currentDate.format(formatter);
+
+        // Afficher la date dans le TextField
+        this.LabelDate.setText(formattedDate);
+
+        // Initialize the list of Immeubles
+        if (listImmeubles != null) {
+            Immeuble immeuble = new Immeuble("Toulouse", 31400, "Rue de la paix");
+            listImmeubles.getItems().add(immeuble);
+            System.out.println(listImmeubles.getItems().getFirst().getAdresse());
+        } else {
+            System.out.println("ChoiceBox listImmeubles is not injected");
+        }
+
+        List<Locataire> locataires = null;
+        try {
+            locataires = Locataire.findALl();
+        } catch (Locataire.LocataireException e) {
+            locataires = new ArrayList<>();
+        }
+        for (Locataire loc : locataires) {
+            this.comboLocataires.getItems().add(loc);
+        }
+
+        this.ListTypeBien.getItems().add(TypeBien.BIEN_LOUABLE);
+        this.ListTypeBien.getItems().add(TypeBien.IMMEUBLE);
+
+
+
     }
 
-    private void fieldSetup() {
-        setFieldsPromptText();
-
-        fieldsBien = new ArrayList<>() {
+    private void fieldsetup() {
+        fieldsLogement = new ArrayList<>(){
             {
-                add(fieldAdresse);
-                add(fieldVille);
-                add(fieldCodePostal);
-                add(fieldNumeroFiscal);
+                add(FieldVille);
+                add(FieldCodePostal);
+                add(FieldAdresse);
+                add(FieldNbPieces);
+                add(FieldNumFisc);
+                add(FieldSurface);
             }
         };
     }
 
-    private void setFieldsPromptText() {
-        fieldAdresse.setPromptText("Adresse du bien");
-        fieldVille.setPromptText("Ville du bien");
-        fieldCodePostal.setPromptText("Code postal");
-        fieldSurface.setPromptText("Surface (en m²)");
-        fieldNombrePieces.setPromptText("Nombre de pièces");
-        fieldNumeroFiscal.setPromptText("Numéro fiscal");
-    }
-
-    private void setupComboBoxTypeBien() {
-        comboBoxTypeBien.getItems().addAll("Logement", "Garage");
-        comboBoxTypeBien.getSelectionModel().selectFirst();
-    }
 
     @FXML
-    public void ajouterBien() {
-        if (fieldsNotEmpty()) {
-            try {
-                String adresse = fieldAdresse.getText();
-                String ville = fieldVille.getText();
-                String codePostal = fieldCodePostal.getText();
-                String typeBien = comboBoxTypeBien.getSelectionModel().getSelectedItem();
-                String numeroFiscal = fieldNumeroFiscal.getText();
-
-                Float surface = fieldSurface.getText().isEmpty() ? null : Float.parseFloat(fieldSurface.getText());
-                Integer nombrePieces = fieldNombrePieces.getText().isEmpty() ? null : Integer.parseInt(fieldNombrePieces.getText());
-
-                BienLouable nouveauBien = new BienLouable(adresse, ville, codePostal, typeBien, surface, nombrePieces, numeroFiscal);
-                nouveauBien.save(); // Appelle une méthode dans le modèle pour enregistrer l'objet dans la base de données
-
-                showSuccessAlert();
-            } catch (NumberFormatException e) {
-                showInvalidInputAlert();
+    public void ajouterBien(ActionEvent actionEvent) {
+        if (fieldsNotEmptyBienLouable()) {
+            if (this.ListTypeBien.getItems().getFirst().getDesignation().equals(TypeBien.BIEN_LOUABLE.getDesignation())) {
+                new BienLouable(this.FieldVille.getText(),
+                        Integer.parseInt(this.FieldCodePostal.getText()),
+                        this.FieldAdresse.getText(),
+                        Integer.parseInt(this.FieldNbPieces.getText()),
+                        Integer.parseInt(this.FieldNumFisc.getText()),
+                        Float.parseFloat(this.FieldSurface.getText()),
+                        this.listImmeubles.getItems().getFirst());
+            } else {
+                if(fieldsNotEmptyBien()) {
+                    new Bien(this.FieldVille.getText(),
+                            Integer.parseInt(this.FieldCodePostal.getText()),
+                            this.FieldAdresse.getText());
+                }
             }
+
         } else {
             alertFieldsEmpty();
         }
     }
 
-    private void alertFieldsEmpty() {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Erreur");
-        alert.setHeaderText("Champs vides");
-        alert.setContentText("Veuillez remplir tous les champs requis.");
-        alert.showAndWait();
-    }
 
-    private void showInvalidInputAlert() {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Erreur");
-        alert.setHeaderText("Entrée invalide");
-        alert.setContentText("Veuillez vérifier les valeurs numériques pour la surface ou le nombre de pièces.");
-        alert.showAndWait();
-    }
 
-    private void showSuccessAlert() {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Succès");
-        alert.setHeaderText("Bien ajouté");
-        alert.setContentText("Le nouveau bien a été ajouté avec succès.");
-        alert.showAndWait();
-    }
+    private boolean fieldsNotEmptyBienLouable() {
+        for(TextField textField : fieldsLogement){
+            if(textField.getText().isEmpty()){
+                return false;
+            }
+        }
+        return true;
+        }
 
-    private boolean fieldsNotEmpty() {
-        for (TextField textField : fieldsBien) {
-            if (textField.getText().isEmpty()) {
+    private boolean fieldsNotEmptyBien(){
+        for (int i = 0; i < 3; i++) {
+            if (this.fieldsLogement.get(i).getText().isEmpty()) {
                 return false;
             }
         }
         return true;
     }
 
-    public void annuler(ActionEvent actionEvent) {
-        System.out.println("Ajout annulé.");
+    private void alertFieldsEmpty() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Erreur");
+        alert.setHeaderText("Champs vides");
+        alert.setContentText("Veuillez remplir tous les champs");
+        alert.showAndWait();
     }
+
+
+    @FXML
+    public void AddLocataire(ActionEvent actionEvent) {
+        try {
+            // Créer une nouvelle fenêtre (Stage)
+            Stage stage = new Stage();
+
+            // Initialiser la fenêtre avec l'utilitaire existant
+            JfxUtil.applicationInit(stage, "newlocataire.fxml", "Ajouter un Locataire");
+
+            Stage stage2 = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
+            // Fermer la fenêtre
+            stage2.close();
+
+            // Afficher la fenêtre
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void Annuler(ActionEvent actionEvent) {
+        // Obtenir la fenêtre actuelle (Stage) à partir de l'événement
+        Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
+        // Fermer la fenêtre
+        stage.close();
+    }
+
 }
+

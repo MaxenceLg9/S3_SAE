@@ -47,4 +47,8 @@ public class Immeuble extends Bien{
 		this.travauxAssocies = travauxAssocies;
 	}
 
+	@Override
+	public String toString(){
+		return this.getAdresse() + " " + this.getVille() + ", " + this.getCodePostal();
+	}
 }

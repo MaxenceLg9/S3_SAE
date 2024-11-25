@@ -1,19 +1,22 @@
 package net.mpvm.saeimmobilier.modele;
 
-import net.mpvm.saeimmobilier.sql.BD;
+import net.mpvm.saeimmobilier.sql.QueryElement.QueryElement;
+import net.mpvm.saeimmobilier.sql.QueryElement.SelectQueryElement;
+import net.mpvm.saeimmobilier.sql.QueryElement.UpdateQueryElement;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class Locataire {
 
-	public static final String TABLE_NAME = "Locataire";
+	public static final String INSERT_QUERY = "INSERT INTO Locataire (nom, prenom, email, sexe, telephone) VALUES (?, ?, ?, ?, ?)";
+	public static final String SELECT_QUERY = "SELECT * FROM Locataire";
+	public static final String DELETE_QUERY = "DELETE FROM Locataire WHERE IdLocataire = ?";
 
-	private int IdLocataire;
+	private final int IdLocataire;
 	private char sexe;
 	private String telephone;
 	private String email;
@@ -23,28 +26,25 @@ public class Locataire {
 	private final ArrayList<Float> charges;
 	private float totalCharge;
 
-	private Locataire(String nom, String prenom, String email) {
-		this.email = email;
+
+	private Locataire(String nom, String prenom, String email, char sexe, String telephone, int idLocataire) {
 		this.nom = nom;
 		this.prenom = prenom;
-		this.baux=new ArrayList<>();
-		this.charges=new ArrayList<>();
-		this.totalCharge=0f;
+		this.email = email;
+		this.sexe = sexe;
+		this.telephone = telephone;
+		this.IdLocataire = idLocataire;
+		this.baux = new ArrayList<>();
+		this.charges = new ArrayList<>();
+		this.totalCharge = 0f;
 	}
 
 	public Locataire(String nom, String prenom, String email, char sexe, String telephone) {
-		this(nom, prenom, email);
-		this.sexe = sexe;
-		this.telephone = telephone;
+		this(nom, prenom, email, sexe, telephone, -1);
 	}
 
 	public int getIdLocataire() {
 		return this.IdLocataire;
-	}
-
-	private Locataire setIdLocataire(int idLocataire) {
-		this.IdLocataire = idLocataire;
-		return this;
 	}
 
 	public char getSexe() {
@@ -101,38 +101,65 @@ public class Locataire {
 
 	public void setTotalCharge(float totalCharge) {this.totalCharge = totalCharge;}
 
-	public void save() {
-		Map<String, String> params = Map.of("nom", this.nom, "prenom", this.prenom, "email", this.email, "sexe", Character.toString(this.sexe), "telephone", this.telephone);
+
+	public void save() throws LocataireException{
+
 		try{
-			BD.insertInto(TABLE_NAME, params, true);
+			if(this.getIdLocataire() == -1)
+				new UpdateQueryElement(INSERT_QUERY, true)
+						.setArgs(
+								Map.of(1, this.getNom(),
+										2, this.getPrenom(),
+										3, this.getEmail(),
+										4, Character.toString(this.getSexe()),
+										5, this.getTelephone()))
+						.execute();
+			else
+				throw new LocataireException("Le locataire existe déjà dans la table");
 		}
-		catch (SQLException sqlE){
-			sqlE.printStackTrace();
+		catch (QueryElement.QueryException sqlE){
+			throw new LocataireException("Erreur lors de l'ajout du locataire");
 		}
 	}
 
-	public void delete(){
-		try {
-			BD.delete(TABLE_NAME, new HashMap<>() {{
-				put("IdLocataire", getIdLocataire());
-			}});
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
+	public void delete() throws LocataireException {
+		try(QueryElement<Integer> query = new UpdateQueryElement(DELETE_QUERY, true).setArgs(Map.of(1,this.getIdLocataire()))){
+			query.execute();
+		}
+		catch (QueryElement.QueryException e) {
+			throw new LocataireException("Erreur lors de la suppression du locataire");
 		}
 	}
 
-	public static List<Locataire> getLocataires() {
+	public static List<Locataire> findALl() throws LocataireException {
 		List<Locataire> l = new ArrayList<>();
-		ResultSet rs = BD.select(TABLE_NAME,null,null);
-		try {
+
+		try(QueryElement<ResultSet> query = new SelectQueryElement(SELECT_QUERY)) {
+			ResultSet rs = query.execute();
 			while (rs.next()) {
-				l.add(new Locataire(rs.getString("nom"),rs.getString("prenom"),rs.getString("email"),rs.getString("sexe").charAt(0),rs.getString("telephone")).setIdLocataire(rs.getInt("IdLocataire")));
+				l.add(
+						new Locataire(rs.getString("nom"),
+								rs.getString("prenom"),
+								rs.getString("email"),
+								rs.getString("sexe").charAt(0),
+								rs.getString("telephone"),
+								rs.getInt("IdLocataire")));
 			}
 		}
-		catch (SQLException sqlException){
-			sqlException.printStackTrace();
+		catch (QueryElement.QueryException | SQLException queryException){
+			throw new LocataireException("Erreur lors de la récupération des locataires");
 		}
-		return l;
+        return l;
+	}
+
+	public static class LocataireException extends Exception{
+		public LocataireException(String message){
+			super(message);
+		}
+	}
+
+	public String toString(){
+		return "Nom : " + this.getNom() + ", Prenom : " + this.getPrenom() + ", Email : " + this.getEmail();
 	}
 }
 
