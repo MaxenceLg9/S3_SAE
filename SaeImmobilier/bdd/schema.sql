@@ -57,7 +57,7 @@ END;--TODO : Modifier pour update
 
 
 CREATE TABLE Locataire (
-    IdLocataire INTEGER PRIMARY KEY,
+    IdLocataire INTEGER PRIMARY KEY AUTOINCREMENT,
     Nom varchar(20),
     Prenom varchar(20),
     Sexe varchar(20) CHECK (Sexe IN ('M', 'F')),

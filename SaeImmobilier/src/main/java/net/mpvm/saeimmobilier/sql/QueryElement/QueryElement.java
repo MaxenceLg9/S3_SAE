@@ -50,8 +50,10 @@ public abstract class QueryElement<T> implements Closeable {
 
     public void close() throws QueryException {
         try {
-            preparedStatement.close();
-            connection.close();
+            if(preparedStatement != null)
+                preparedStatement.close();
+            if(connection != null)
+                connection.close();
         } catch (SQLException e) {
             throw new QueryException("Error closing connection or Statement", e);
         }

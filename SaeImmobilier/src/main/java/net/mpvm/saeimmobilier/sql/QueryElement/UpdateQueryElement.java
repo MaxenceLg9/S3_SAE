@@ -2,7 +2,7 @@ package net.mpvm.saeimmobilier.sql.QueryElement;
 
 import java.sql.SQLException;
 
-public class UpdateQueryElement extends QueryElement<Integer> {
+public final class UpdateQueryElement extends QueryElement<Integer> {
 
     public UpdateQueryElement(String query, boolean commit) throws QueryException {
         super(query,commit);

@@ -5,7 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
 
-public class SelectQueryElement extends QueryElement<ResultSet> {
+public final class SelectQueryElement extends QueryElement<ResultSet> {
 
     private final PreparedStatement fakeStatement;
     private ResultSet rs;
@@ -42,7 +42,7 @@ public class SelectQueryElement extends QueryElement<ResultSet> {
         try {
             rs = this.getPreparedStatement().executeQuery();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new QueryException("Error, select query can't be used to modify the database", e);
         }
         //print the number of rows obtained by the query
         System.out.println(this.getClass().getSimpleName() + " : " + setRowCount() + " rows updated");
@@ -67,7 +67,8 @@ public class SelectQueryElement extends QueryElement<ResultSet> {
 
     public void close() throws QueryException {
         try {
-            rs.close();
+            if(rs != null)
+                rs.close();
             super.close();
         }catch (SQLException e){
             throw new QueryException("Error closing resultSet", e);
