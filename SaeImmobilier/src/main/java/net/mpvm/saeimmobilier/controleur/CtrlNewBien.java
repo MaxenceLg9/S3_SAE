@@ -103,7 +103,6 @@ public class CtrlNewBien {
         this.ListTypeBien.getItems().add(TypeBien.BIEN_LOUABLE);
         this.ListTypeBien.getItems().add(TypeBien.IMMEUBLE);
 
-        this.
 
 
     }
