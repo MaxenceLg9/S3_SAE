@@ -7,6 +7,7 @@ import javafx.stage.Stage;
 import net.mpvm.saeimmobilier.modele.*;
 import net.mpvm.saeimmobilier.util.JfxUtil;
 
+import java.lang.reflect.Type;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -39,6 +40,31 @@ public class CtrlNewBien {
     private ChoiceBox<TypeBien> ListTypeBien;
     @FXML
     private List<TextField> fieldsLogement;
+
+
+    //TableView
+    @FXML
+    private TableView<Bien> TableLocataire;
+    @FXML
+    private TableColumn<Bien, String> ColNFisc;
+    @FXML
+    private TableColumn<Bien,TypeBien> ColType;
+    @FXML
+    private TableColumn<Bien,String> ColAdresse;
+    @FXML
+    private TableColumn<Bien,String> ColCodePostal;
+    @FXML
+    private TableColumn<Bien,String> ColVille;
+    @FXML
+    private TableColumn<Bien,Integer> ColNbP;
+    @FXML
+    private TableColumn<Bien,Float> ColSurface;
+    @FXML
+    private TableColumn<Bien,Integer> ColNbLoc;
+
+
+
+
 
 
     @FXML
@@ -77,6 +103,7 @@ public class CtrlNewBien {
         this.ListTypeBien.getItems().add(TypeBien.BIEN_LOUABLE);
         this.ListTypeBien.getItems().add(TypeBien.IMMEUBLE);
 
+        this.
 
 
     }
@@ -175,6 +202,7 @@ public class CtrlNewBien {
         // Fermer la fenêtre
         stage.close();
     }
+
 
 }
 

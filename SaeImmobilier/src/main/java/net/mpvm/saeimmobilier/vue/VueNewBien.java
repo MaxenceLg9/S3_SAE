@@ -11,7 +11,12 @@ public class VueNewBien extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
+
         JfxUtil.applicationInit(stage, "newbien.fxml", "Ajouter un Bien");
+        stage.setMinWidth(1300);
+        stage.setMinHeight(900);
+        stage.setHeight(900);
+        stage.setWidth(1300);
     }
 
     public void show() {
@@ -20,16 +25,21 @@ public class VueNewBien extends Application {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("newbien.fxml"));
             Parent root = loader.load();
 
+            // Créer une nouvelle scène avec des dimensions explicites
+            Scene scene = new Scene(root, 1300, 900);
 
-            // Créer une nouvelle scène et un stage
+            // Créer et configurer le stage
             Stage stage = new Stage();
+            stage.setMinWidth(1300);
+            stage.setMinHeight(900);
             stage.setTitle("Ajouter un Bien");
-            stage.setScene(new Scene(root));
+            stage.setScene(scene);
 
+            // Afficher la fenêtre
             stage.show();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
 }
+
