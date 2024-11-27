@@ -19,7 +19,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.mpvm.saeimmobilier.controleur.CtrlNewBien">
    <children>
       <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1100.0" style="-fx-background-color: #F4F4F4;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -251,7 +250,7 @@
                         <Insets />
                      </opaqueInsets>
                   </VBox>
-                  <Button fx:id="BtnDisconnect" alignment="BOTTOM_CENTER" contentDisplay="CENTER" minHeight="30.0" minWidth="130.0" mnemonicParsing="false" style="-fx-background-color: #E74C3C; -fx-background-radius: 8px;" text="Déconnexion" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="15.0">
+                  <Button fx:id="BtnDisconnect" alignment="BOTTOM_CENTER" contentDisplay="CENTER" minHeight="30.0" minWidth="130.0" mnemonicParsing="false" style="-fx-background-color: #E74C3C; -fx-background-radius: 8px;" text="Déconnexion" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="15.0">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>

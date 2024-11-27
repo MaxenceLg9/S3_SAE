@@ -32,6 +32,7 @@ public class VueNewBien extends Application {
             Stage stage = new Stage();
             stage.setMinWidth(1300);
             stage.setMinHeight(900);
+
             stage.setTitle("Ajouter un Bien");
             stage.setScene(scene);
 
