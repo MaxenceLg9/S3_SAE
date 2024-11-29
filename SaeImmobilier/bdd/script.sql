@@ -57,8 +57,8 @@ CREATE TABLE Propriétaire(
                              PRIMARY KEY(Id_Propriétaire)
 );
 
-CREATE TABLE BienLouable(
-                            IdBienLouable INT auto_increment,
+CREATE TABLE Bien(
+                            IdBien INT auto_increment,
                             Lieu_Immeuble VARCHAR(50),
                             Adresse VARCHAR(50),
                             Ville VARCHAR(50),
@@ -68,12 +68,17 @@ CREATE TABLE BienLouable(
                             NombrePieces INT,
                             NumeroFiscal VARCHAR(50),
                             DateAjout DATE,
+                            TypeBien varchar(20),
                             Id_Assurance INT NOT NULL,
                             Id_Propriétaire INT NOT NULL,
-                            PRIMARY KEY(IdBienLouable),
+                            PRIMARY KEY(IdBien),
                             FOREIGN KEY(Id_Assurance) REFERENCES Assurance(Id_Assurance),
                             FOREIGN KEY(Id_Propriétaire) REFERENCES Propriétaire(Id_Propriétaire)
 );
+
+Alter table Bien
+Add constraint check_type_bien
+CHECK ( Bien.TypeBien IN('BienLouable','Immeuble') );
 
 CREATE TABLE Bail(
                      IdBail INT auto_increment,
@@ -92,9 +97,9 @@ CREATE TABLE Bail(
                      QuotitéLoyer DOUBLE,
                      Repartition_Electricite VARCHAR(50),
                      Repartition_Ordures_Menageres VARCHAR(50),
-                     IdBienLouable INT NOT NULL,
+                     IdBien INT NOT NULL,
                      PRIMARY KEY(IdBail),
-                     FOREIGN KEY(IdBienLouable) REFERENCES BienLouable(IdBienLouable)
+                     FOREIGN KEY(IdBien) REFERENCES Bien(IdBien)
 );
 
 CREATE TABLE Charges(
@@ -207,20 +212,20 @@ CREATE TABLE AssocieBailLocataire(
 
 CREATE TABLE Louer(
                       Id_Locataire INT,
-                      IdBienLouable INT,
+                      IdBien INT,
                       DateDébut DATE,
                       DateFin DATE,
-                      PRIMARY KEY(Id_Locataire, IdBienLouable),
+                      PRIMARY KEY(Id_Locataire, IdBien),
                       FOREIGN KEY(Id_Locataire) REFERENCES Locataire(Id_Locataire),
-                      FOREIGN KEY(IdBienLouable) REFERENCES BienLouable(IdBienLouable)
+                      FOREIGN KEY(IdBien) REFERENCES Bien(IdBien)
 );
 
 CREATE TABLE Réaliser(
                          Id_Travaux INT,
-                         IdBienLouable INT,
-                         PRIMARY KEY(Id_Travaux, IdBienLouable),
+                         IdBien INT,
+                         PRIMARY KEY(Id_Travaux, IdBien),
                          FOREIGN KEY(Id_Travaux) REFERENCES Travaux(Id_Travaux),
-                         FOREIGN KEY(IdBienLouable) REFERENCES BienLouable(IdBienLouable)
+                         FOREIGN KEY(IdBien) REFERENCES Bien(IdBien)
 );
 
 DELIMITER $$
