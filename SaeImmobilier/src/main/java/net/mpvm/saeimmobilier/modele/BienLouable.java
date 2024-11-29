@@ -1,7 +1,15 @@
 package net.mpvm.saeimmobilier.modele;
 
 
+import net.mpvm.saeimmobilier.sql.QueryElement.QueryElement;
+import net.mpvm.saeimmobilier.sql.QueryElement.SelectQueryElement;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
+
+import static net.mpvm.saeimmobilier.modele.Locataire.SELECT_QUERY;
 
 public class BienLouable extends Bien {
 	private int idBienLouable;
@@ -161,4 +169,5 @@ public class BienLouable extends Bien {
 	public void setNbPieces(int nbPieces) {
 		this.nbPieces = nbPieces;
 	}
+
 }
