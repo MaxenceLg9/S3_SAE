@@ -7,5 +7,22 @@ AnchorPane{
     -fx-background-color: #F9F9F9;
 }
 .backgroundColor{
-    -fx-background-color: linear-gradient(to left,#F9F9F9,#F24589);
+    -fx-background-color: radial-gradient(focus-distance 0% , center 50% 50% , radius 80% , #e8e8ef, #d6dcdc);
+}
+
+* {
+    -fx-secondary-color: #f2f3f6;
+    -fx-grey-color: #b9b9b9;
+
+    -fx-focus-color: -fx-secondary-color;
+}
+
+.text-field {
+    -fx-accent: -fx-primary-color;
+    -fx-background-color: -fx-grey-color, white;
+    -fx-background-insets: 0, 0 0 1 0;
+    -fx-background-radius: 20px;
+}
+.text-field:focused {
+
 }

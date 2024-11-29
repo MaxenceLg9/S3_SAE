@@ -38,6 +38,7 @@ public class VueNewBien extends Application {
 
             // Afficher la fenêtre
             stage.show();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
