@@ -30,15 +30,15 @@
          </top>
          <bottom>
             <GridPane alignment="TOP_CENTER" BorderPane.alignment="CENTER">
-              <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-              </rowConstraints>
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               </rowConstraints>
                <children>
                   <Button fx:id="btnAnnuler" mnemonicParsing="false" onAction="#Annuler" style="-fx-background-color: #FF7043;" text="Annuler" textAlignment="RIGHT" textFill="WHITE">
                      <GridPane.margin>
@@ -100,8 +100,8 @@
                         <Font size="13.0" />
                      </font>
                   </TextField>
-      
-                              <Label text="Nouveau Mot de Passe" AnchorPane.leftAnchor="150.0" AnchorPane.topAnchor="50.0">
+
+                  <Label text="Nouveau Mot de Passe" AnchorPane.leftAnchor="150.0" AnchorPane.topAnchor="50.0">
                      <font>
                         <Font name="Calibri" size="14.0" />
                      </font>
@@ -130,14 +130,14 @@
                         <Font size="13.0" />
                      </font>
                   </TextField>
-      
-                              <Label text="Confirmation" AnchorPane.leftAnchor="150.0" AnchorPane.topAnchor="100.0">
+
+                  <Label text="Confirmation" AnchorPane.leftAnchor="150.0" AnchorPane.topAnchor="100.0">
                      <font>
                         <Font name="Calibri" size="14.0" />
                      </font>
                   </Label>
-      
-                              <CheckBox fx:id="checkBoxVisibilite" mnemonicParsing="false" onAction="#setupVisibility" text="Visibilité Mot de Passe" AnchorPane.leftAnchor="150.0" AnchorPane.topAnchor="150.0">
+
+                  <CheckBox fx:id="checkBoxVisibilite" mnemonicParsing="false" onAction="#setupVisibility" text="Visibilité Mot de Passe" AnchorPane.leftAnchor="150.0" AnchorPane.topAnchor="150.0">
                      <font>
                         <Font name="Calibri" size="13.0" />
                      </font>
