@@ -3,6 +3,7 @@ package net.mpvm.saeimmobilier.controleur;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import net.mpvm.saeimmobilier.modele.*;
 import net.mpvm.saeimmobilier.util.JfxUtil;
@@ -69,7 +70,6 @@ public class CtrlNewBien {
 
     @FXML
     public void initialize() {
-
         fieldsetup();
 
         LocalDate currentDate = LocalDate.now();

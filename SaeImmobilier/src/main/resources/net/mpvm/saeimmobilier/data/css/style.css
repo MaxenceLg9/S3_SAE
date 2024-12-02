@@ -7,7 +7,7 @@ AnchorPane{
     -fx-background-color: #F9F9F9;
 }
 .backgroundColor{
-    -fx-background-color: radial-gradient(focus-distance 0% , center 50% 50% , radius 80% , #e8e8ef, #d6dcdc);
+    -fx-background-color: linear-gradient(to right bottom, #faefb1, #a3e88d);;
 }
 
 * {
@@ -21,7 +21,7 @@ AnchorPane{
     -fx-accent: -fx-primary-color;
     -fx-background-color: -fx-grey-color, white;
     -fx-background-insets: 0, 0 0 1 0;
-    -fx-background-radius: 20px;
+    -fx-background-radius: 8px;
 }
 .text-field:focused {
 
