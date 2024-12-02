@@ -3,6 +3,7 @@ import net.mpvm.saeimmobilier.sql.Connection.BD;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -149,6 +150,12 @@ public class Proprietaire {
 	public void save() throws ProprietaireException {
 		try {
 			if (this.getIdProprietaire() == -1) {
+				// Vérification préalable : si l'adresse e-mail existe déjà
+				if (emailAlreadyExists(this.getEmail())) {
+					throw new ProprietaireException("Cette adresse e-mail est déjà utilisée.");
+				}
+
+				// Si l'adresse n'existe pas, insertion
 				new UpdateQueryElement(INSERT_QUERY, true)
 						.setArgs(
 								Map.of(
@@ -157,17 +164,48 @@ public class Proprietaire {
 								))
 						.execute();
 			} else {
-				throw new ProprietaireException("Le propriétaire existe déjà dans la table");
+				throw new ProprietaireException("Le propriétaire existe déjà dans la table.");
 			}
 		} catch (QueryElement.QueryException sqlE) {
-			throw new ProprietaireException("Erreur lors de l'ajout du propriétaire");
+			throw new ProprietaireException("Erreur lors de l'ajout du propriétaire : " + sqlE.getMessage());
 		}
 	}
-	public static class ProprietaireException extends Exception{
-		public ProprietaireException(String message){
+
+	/**
+	 * Vérifie si l'e-mail existe déjà dans la base de données.
+	 * @param email Adresse e-mail à vérifier.
+	 * @return true si l'e-mail existe déjà, sinon false.
+	 * @throws ProprietaireException si une erreur SQL survient.
+	 */
+	private boolean emailAlreadyExists(String email) throws ProprietaireException {
+		try {
+			// Remplacez SELECT_COUNT_QUERY par la requête SQL réelle pour vérifier l'existence de l'e-mail
+			final String SELECT_COUNT_QUERY = "SELECT COUNT(*) AS count FROM proprietaire WHERE email = ?";
+			SelectQueryElement queryElement = (SelectQueryElement) new SelectQueryElement(SELECT_COUNT_QUERY)
+					.setArgs(Map.of(1, email));
+
+			// Exécution de la requête et récupération des résultats
+			List<Map<String, Object>> results = (List<Map<String, Object>>) queryElement.execute();
+			if (!results.isEmpty()) {
+				// Récupération du champ "count" dans le premier résultat
+				int count = (int) results.get(0).get("count");
+				return count > 0;
+			}
+
+			return false;
+		} catch (QueryElement.QueryException e) {
+			throw new ProprietaireException("Erreur lors de la vérification de l'adresse e-mail : " + e.getMessage());
+		}
+	}
+
+
+	// Classe interne pour les exceptions liées au propriétaire
+	public static class ProprietaireException extends Exception {
+		public ProprietaireException(String message) {
 			super(message);
 		}
 	}
+
 
 }
 

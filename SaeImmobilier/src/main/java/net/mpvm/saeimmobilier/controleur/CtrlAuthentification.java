@@ -5,8 +5,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import net.mpvm.saeimmobilier.modele.Proprietaire;
 
-
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 public class CtrlAuthentification {
 
@@ -15,16 +15,22 @@ public class CtrlAuthentification {
 
     @FXML
     public Button btnAnnuler;
+
     @FXML
     public PasswordField fieldConfirmation;
+
     @FXML
     public TextField fieldConfirmationVisible;
+
     @FXML
     public TextField fieldNewPasswordVisible;
+
     @FXML
     public PasswordField fieldNewPassword;
+
     @FXML
     public CheckBox checkBoxVisibilite;
+
     @FXML
     public TextField fieldMail;
 
@@ -70,9 +76,39 @@ public class CtrlAuthentification {
         alert.showAndWait();
     }
 
+    private void alertInvalidEmail() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Erreur");
+        alert.setHeaderText("Adresse e-mail invalide");
+        alert.setContentText("Veuillez saisir une adresse e-mail valide.");
+        alert.showAndWait();
+    }
+
+    private void alertInvalidPassword() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Erreur");
+        alert.setHeaderText("Mot de passe invalide");
+        alert.setContentText("Le mot de passe doit contenir au moins 8 caractères.");
+        alert.showAndWait();
+    }
+
     @FXML
     public void Valider(ActionEvent event) {
+        fieldNewPassword.setText(fieldNewPasswordVisible.getText());
+        fieldConfirmation.setText(fieldConfirmationVisible.getText());
+        fieldConfirmationVisible.setText(fieldConfirmation.getText());
+        fieldNewPasswordVisible.setText(fieldNewPassword.getText());
         if (fieldsNotEmpty()) {
+            if (!isValidEmail(fieldMail.getText())) {
+                alertInvalidEmail();
+                return;
+            }
+
+            if (!isValidPassword(fieldNewPassword.getText())) {
+                alertInvalidPassword();
+                return;
+            }
+
             if (MDPIdentique()) {
                 try {
                     new Proprietaire(fieldMail.getText(), fieldNewPassword.getText()).save();
@@ -119,31 +155,35 @@ public class CtrlAuthentification {
         return fieldNewPassword.getText().equals(fieldConfirmation.getText());
     }
 
+    private boolean isValidEmail(String email) {
+        String emailRegex = "^[\\w-\\.]+@[\\w-\\.]+\\.\\w{2,}$";
+        return Pattern.matches(emailRegex, email);
+    }
+
+    private boolean isValidPassword(String password) {
+        return password.length() >= 8;
+    }
+
     @FXML
-    private void setupVisibility(javafx.event.ActionEvent actionEventS) {
+    private void setupVisibility(ActionEvent actionEventS) {
         if (checkBoxVisibilite.isSelected()) {
-            // Afficher les mots de passe en texte clair (TextField visible)
+            // Show passwords in plain text (visible TextField)
             fieldNewPasswordVisible.setText(fieldNewPassword.getText());
-            System.out.println(fieldNewPasswordVisible.getText());// Copier le texte
             fieldNewPasswordVisible.setVisible(true);
             fieldNewPassword.setVisible(false);
 
-            fieldConfirmationVisible.setText(fieldConfirmation.getText()); // Copier le texte
+            fieldConfirmationVisible.setText(fieldConfirmation.getText());
             fieldConfirmationVisible.setVisible(true);
             fieldConfirmation.setVisible(false);
         } else {
-            // Cacher les champs en texte clair et restaurer les PasswordField
-            fieldNewPassword.setText(fieldNewPasswordVisible.getText()); // Copier le texte masqué dans le PasswordField
+            // Hide plain text fields and restore PasswordField
+            fieldNewPassword.setText(fieldNewPasswordVisible.getText());
             fieldNewPassword.setVisible(true);
             fieldNewPasswordVisible.setVisible(false);
 
-
-            fieldConfirmation.setText(fieldConfirmationVisible.getText()); // Copier le texte masqué dans le PasswordField
+            fieldConfirmation.setText(fieldConfirmationVisible.getText());
             fieldConfirmation.setVisible(true);
             fieldConfirmationVisible.setVisible(false);
         }
     }
-
-
-
 }

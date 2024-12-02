@@ -26,3 +26,6 @@ AnchorPane{
 .text-field:focused {
 
 }
+.root {
+    -fx-primary-color: #0078D7; /* Exemple de couleur bleue */
+}
