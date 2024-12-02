@@ -13,10 +13,10 @@ public class VueNewBien extends Application {
     public void start(Stage stage) throws Exception {
 
         JfxUtil.applicationInit(stage, "newbien.fxml", "Ajouter un Bien");
-        stage.setMinWidth(1300);
-        stage.setMinHeight(900);
-        stage.setHeight(900);
-        stage.setWidth(1300);
+        stage.setMinWidth(800);
+        stage.setMinHeight(750);
+        stage.setHeight(750);
+        stage.setWidth(800);
     }
 
     public void show() {

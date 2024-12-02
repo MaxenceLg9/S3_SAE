@@ -19,3 +19,4 @@ Drop Table Quittanceloyer;
 Drop Table RepartitionCharges;
 Drop Table taxesFonciere;
 Drop Table travaux;
+Drop Table immeuble;

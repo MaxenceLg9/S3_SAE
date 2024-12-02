@@ -3,12 +3,13 @@ package net.mpvm.saeimmobilier.controleur;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import net.mpvm.saeimmobilier.modele.*;
+import net.mpvm.saeimmobilier.sql.Query.Queryable;
 import net.mpvm.saeimmobilier.util.JfxUtil;
 
-import java.lang.reflect.Type;
+import javax.swing.text.html.ImageView;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -41,30 +42,6 @@ public class CtrlNewBien {
     private ChoiceBox<TypeBien> ListTypeBien;
     @FXML
     private List<TextField> fieldsLogement;
-
-
-    //TableView
-    @FXML
-    private TableView<Bien> TableLocataire;
-    @FXML
-    private TableColumn<Bien, String> ColNFisc;
-    @FXML
-    private TableColumn<Bien,TypeBien> ColType;
-    @FXML
-    private TableColumn<Bien,String> ColAdresse;
-    @FXML
-    private TableColumn<Bien,String> ColCodePostal;
-    @FXML
-    private TableColumn<Bien,String> ColVille;
-    @FXML
-    private TableColumn<Bien,Integer> ColNbP;
-    @FXML
-    private TableColumn<Bien,Float> ColSurface;
-    @FXML
-    private TableColumn<Bien,Integer> ColNbLoc;
-
-
-
 
 
 
@@ -102,7 +79,19 @@ public class CtrlNewBien {
 
         this.ListTypeBien.getItems().add(TypeBien.BIEN_LOUABLE);
         this.ListTypeBien.getItems().add(TypeBien.IMMEUBLE);
+        this.ListTypeBien.setValue(TypeBien.BIEN_LOUABLE);
 
+        this.ListTypeBien.setOnAction(actionEvent -> {
+            if(this.ListTypeBien.getValue()==TypeBien.IMMEUBLE){
+                this.FieldNbPieces.setDisable(true);
+                this.FieldNumFisc.setDisable(true);
+                this.FieldSurface.setDisable(true);
+            } else {
+                this.FieldNbPieces.setDisable(false);
+                this.FieldNumFisc.setDisable(false);
+                this.FieldSurface.setDisable(false);
+            }
+        });
 
 
     }
@@ -122,7 +111,7 @@ public class CtrlNewBien {
 
 
     @FXML
-    public void ajouterBien(ActionEvent actionEvent) {
+    public void ajouterBien(ActionEvent actionEvent) throws Queryable.QueryableException {
         if (fieldsNotEmptyBienLouable()) {
             if (this.ListTypeBien.getItems().getFirst().getDesignation().equals(TypeBien.BIEN_LOUABLE.getDesignation())) {
                 new BienLouable(this.FieldVille.getText(),
@@ -131,12 +120,13 @@ public class CtrlNewBien {
                         Integer.parseInt(this.FieldNbPieces.getText()),
                         Integer.parseInt(this.FieldNumFisc.getText()),
                         Float.parseFloat(this.FieldSurface.getText()),
-                        this.listImmeubles.getItems().getFirst());
+                        this.listImmeubles.getItems().getFirst()).save();
+
             } else {
                 if(fieldsNotEmptyBien()) {
-                    new Bien(this.FieldVille.getText(),
+                    new Immeuble(this.FieldVille.getText(),
                             Integer.parseInt(this.FieldCodePostal.getText()),
-                            this.FieldAdresse.getText());
+                            this.FieldAdresse.getText()).save();
                 }
             }
 
@@ -202,6 +192,13 @@ public class CtrlNewBien {
         stage.close();
     }
 
+
+    public void Accueil(ActionEvent actionEvent) {
+
+    }
+
+    public void Deconnexion(ActionEvent actionEvent) {
+    }
 
 }
 

@@ -10,6 +10,8 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import net.mpvm.saeimmobilier.modele.Bien;
+import net.mpvm.saeimmobilier.modele.BienLouable;
+import net.mpvm.saeimmobilier.sql.Query.Queryable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -96,8 +98,8 @@ public class CtrlViewBiens {
     private void deleteBien(int id) {
         try {
             biens.get(id).delete();
-        } catch (Bien.BienException e) {
-            // TODO: handle exception with visual feedback
+        } catch (Bien.QueryableException e) {
+            throw new RuntimeException(e);
         }
         afficheBiens();
     }

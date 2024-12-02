@@ -1,15 +1,20 @@
 package net.mpvm.saeimmobilier.modele;
 
 import net.mpvm.saeimmobilier.sql.Connection.BD;
+import net.mpvm.saeimmobilier.sql.Query.QueryElement;
+import net.mpvm.saeimmobilier.sql.Query.Queryable;
+import net.mpvm.saeimmobilier.sql.Query.UpdateQueryElement;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
-public class Bien {
+public class Bien implements Queryable {
+
     private int IdBien;
     private String adresse;
     private String ville;
@@ -71,7 +76,7 @@ public class Bien {
     }
     public static List<Bien> findAll() throws BienException {
         List<Bien> biens = new ArrayList<>();
-        String query = "SELECT * FROM Bien"; // Assurez-vous que cette table existe dans votre BDD.
+        String query = "SELECT * FROM bienlouable"; // Assurez-vous que cette table existe dans votre BDD.
         try (Connection connection = BD.getConnection(true);
              PreparedStatement statement = connection.prepareStatement(query)) {
             ResultSet rs = statement.executeQuery();
@@ -90,15 +95,24 @@ public class Bien {
         return biens;
     }
 
-    public void delete() throws BienException {
-        String query = "DELETE FROM Bien WHERE IdBien = ?";
+    @Override
+    public void save() throws QueryableException {
+    }
+
+    @Override
+    public void modify() throws QueryableException {
+
+    }
+
+    public void delete() throws QueryableException {
+        String query = "DELETE FROM bienlouable WHERE IdBienLouable = ?";
 
         try (Connection connection = BD.getConnection(true);
              PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, this.IdBien);
             statement.executeUpdate();
         } catch (Exception e) {
-            throw new BienException("Erreur lors de la suppression du bien", e);
+            throw new QueryableException("Erreur lors de la suppression du bien");
         }
     }
 

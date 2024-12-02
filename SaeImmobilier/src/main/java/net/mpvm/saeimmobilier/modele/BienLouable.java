@@ -1,9 +1,21 @@
 package net.mpvm.saeimmobilier.modele;
 
 
+import net.mpvm.saeimmobilier.sql.Query.QueryElement;
+import net.mpvm.saeimmobilier.sql.Query.Queryable;
+import net.mpvm.saeimmobilier.sql.Query.UpdateQueryElement;
+
 import java.util.ArrayList;
+import java.util.Map;
 
 public class BienLouable extends Bien {
+
+	public static final String INSERT_QUERY = "INSERT INTO bienLouable (Lieu_Immeuble, Adresse, Ville, CodePostal, TypeBien, Surface, NombrePieces, NumeroFiscal, DateAjout) VALUES (?, ?, ?, ?, ?,?,?,?,?)";
+	public static final String SELECT_QUERY = "SELECT * FROM bienLouable";
+	public static final String DELETE_QUERY = "DELETE FROM bienLouable WHERE idBienLouable = ?";
+	public static final String UPDATE_QUERY = "UPDATE bienLouable SET Lieu_Immeuble = ?, Adresse = ?, Ville = ?, CodePostal = ?, TypeBien = ?, Surface = ?, NombrePieces = ? , NumeroFiscal = ? , DateAjout = ?";
+
+
 	private int idBienLouable;
 	private String lieuImmeuble;
 	private ArrayList<Travaux> travaux;
@@ -127,7 +139,7 @@ public class BienLouable extends Bien {
 
 	public void setNumeroFiscal(String numeroFiscal) {
 		if (numeroFiscal == null || numeroFiscal.length() != 12) {
-			throw new IllegalArgumentException("Le numéro fiscal doit être de 12 caractères.");
+				throw new IllegalArgumentException("Le numéro fiscal doit être de 12 caractères.");
 		}
 		this.numeroFiscal = numeroFiscal;
 	}
@@ -162,4 +174,23 @@ public class BienLouable extends Bien {
 		this.nbPieces = nbPieces;
 	}
 
+	@Override
+	public void save() throws QueryableException {
+		if(this.getIdBien() != -1)
+			throw new Queryable.QueryableException("Le bien existe déjà dans la table");
+		try{
+			new UpdateQueryElement(INSERT_QUERY, true)
+					.setArgs(
+							Map.of(1, this.get(),
+									2, this.getPrenom(),
+									3, this.getEmail(),
+									4, Character.toString(this.getSexe()),
+									5, this.getTelephone()))
+					.execute();
+		}
+		catch (QueryElement.QueryException sqlE){
+			throw new Locataire.LocataireException("Erreur lors de l'ajout du bien");
+		}
+
+	}
 }
