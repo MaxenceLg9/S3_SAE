@@ -72,7 +72,7 @@ public class Bien {
     public static List<Bien> findAll() throws BienException {
         List<Bien> biens = new ArrayList<>();
         String query = "SELECT * FROM Bien"; // Assurez-vous que cette table existe dans votre BDD.
-        try (Connection connection = BD.getConnection();
+        try (Connection connection = BD.getConnection(true);
              PreparedStatement statement = connection.prepareStatement(query)) {
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
@@ -93,7 +93,7 @@ public class Bien {
     public void delete() throws BienException {
         String query = "DELETE FROM Bien WHERE IdBien = ?";
 
-        try (Connection connection = BD.getConnection();
+        try (Connection connection = BD.getConnection(true);
              PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, this.IdBien);
             statement.executeUpdate();
