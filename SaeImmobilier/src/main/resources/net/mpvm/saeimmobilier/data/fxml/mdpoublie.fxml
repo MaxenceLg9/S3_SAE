@@ -6,6 +6,7 @@
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
@@ -21,18 +22,27 @@
             <TextField fx:id="FieldEmail" alignment="CENTER" prefHeight="30.0" prefWidth="316.0" promptText="Entrez votre email" styleClass="text-field" stylesheets="@../css/style.css" />
             <PasswordField fx:id="FieldNewPwd1" alignment="CENTER" prefHeight="30.0" prefWidth="316.0" promptText="Entrez votre nouveau mot de passe" styleClass="text-field" stylesheets="@../css/style.css" />
             <PasswordField fx:id="FieldNewPwd2" alignment="CENTER" prefHeight="30.0" prefWidth="316.0" promptText="Entrez à nouveau le nouveau mot de passe" styleClass="text-field" stylesheets="@../css/style.css" />
-            <Button fx:id="btnModifier" onAction="#Modifier" prefHeight="30.0" prefWidth="80.0" style="-fx-background-radius: 10px;" text="Modifier" />
+            <HBox prefHeight="100.0" prefWidth="319.0">
+               <children>
+                  <Button fx:id="BtnQuitter" minHeight="35.0" minWidth="125.0" mnemonicParsing="false" onAction="#Quitter" style="-fx-background-color: #e12816; -fx-background-radius: 10px;" text="Annuler" textFill="#fffdfd">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="10.0" right="47.0" top="20.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button fx:id="btnModifier" minWidth="125.0" onAction="#Modifier" prefHeight="35.0" prefWidth="80.0" style="-fx-background-radius: 10px; -fx-background-color: #5DADEC;" text="Modifier" textFill="WHITE">
+                     <HBox.margin>
+                        <Insets top="20.0" />
+                     </HBox.margin>
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Button>
+               </children>
+            </HBox>
          </children>
       </VBox>
    </center>
-   <bottom>
-      <Button fx:id="BtnQuitter" minHeight="35.0" minWidth="125.0" mnemonicParsing="false" onAction="#Quitter" style="-fx-background-color: #E74C3C; -fx-background-radius: 10px;" text="Annuler" BorderPane.alignment="CENTER_LEFT">
-         <BorderPane.margin>
-            <Insets bottom="10.0" left="10.0" />
-         </BorderPane.margin>
-         <font>
-            <Font name="System Bold" size="14.0" />
-         </font>
-      </Button>
-   </bottom>
 </BorderPane>
