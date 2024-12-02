@@ -17,8 +17,8 @@ public class BienLouable extends Bien {
 	private int nbPieces;
 	private int codePostal;
 
-	private BienLouable( String ville, int codePostal, String adresse,
-						 int idBienLouable,int nbPieces, int NumeroFiscal, Immeuble immeuble, float surface) {
+	BienLouable(String ville, int codePostal, String adresse,
+                int idBienLouable, int nbPieces, int NumeroFiscal, Immeuble immeuble, float surface) {
 		super( ville, codePostal, adresse); // Initialisation des attributs hérités de Bien
 		this.idBienLouable = idBienLouable;
 		this.lieuImmeuble = lieuImmeuble;
