@@ -228,7 +228,6 @@ CREATE TABLE Réaliser(
                          FOREIGN KEY(IdBien) REFERENCES Bien(IdBien)
 );
 
-DELIMITER $$
 
 -- Trigger pour calculer TotalCharges dans la table Bail
 CREATE TRIGGER CalculTotalCharges
@@ -242,7 +241,7 @@ BEGIN
         WHERE Bail.IdBail = NEW.IdBail
     )
     WHERE IdBail = NEW.IdBail;
-END $$
+END;
 
 -- Trigger pour calculer MontantADeclarer dans la table Travaux
 CREATE TRIGGER CalculMontantADeclarer
@@ -252,7 +251,7 @@ BEGIN
     UPDATE Travaux
     SET MontantADeclarer = (NEW.Montant - NEW.MontantNonDéductible) * (1 - NEW.Réduction)
     WHERE Travaux.Id_Travaux = NEW.Id_Travaux;
-END $$
+END;
 
 
 
@@ -264,7 +263,4 @@ BEGIN
     UPDATE Assurance
     SET TotalPrime = NEW.ProtectionJuridique + NEW.Prime
     WHERE Id_Assurance = NEW.Id_Assurance;
-END $$
-
-DELIMITER ;
-
+END ;
