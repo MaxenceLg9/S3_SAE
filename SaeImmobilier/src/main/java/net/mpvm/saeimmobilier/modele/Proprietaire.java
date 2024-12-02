@@ -146,19 +146,18 @@ public class Proprietaire {
 	public void setBiensPossedes(ArrayList<Bien> biensPossedes) {
 		this.biensPossedes = biensPossedes;
 	}
+
 	public void save() throws ProprietaireException {
+		if (this.getIdProprietaire() != -1)
+			throw new ProprietaireException("Le propriétaire existe déjà dans la table");
 		try {
-			if (this.getIdProprietaire() == -1) {
-				new UpdateQueryElement(INSERT_QUERY, true)
-						.setArgs(
-								Map.of(
-										1, this.getEmail(),
-										2, this.getMotDePasse()
-								))
-						.execute();
-			} else {
-				throw new ProprietaireException("Le propriétaire existe déjà dans la table");
-			}
+			new UpdateQueryElement(INSERT_QUERY, true)
+					.setArgs(
+							Map.of(
+									1, this.getEmail(),
+									2, this.getMotDePasse()
+							))
+					.execute();
 		} catch (QueryElement.QueryException sqlE) {
 			throw new ProprietaireException("Erreur lors de l'ajout du propriétaire");
 		}
