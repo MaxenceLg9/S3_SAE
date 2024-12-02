@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.Glow?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -11,88 +13,15 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #E0F7FA;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.mpvm.saeimmobilier.controleur.CtrlAuthentification">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #E0F7FA;" styleClass="backgroundColor" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.mpvm.saeimmobilier.controleur.CtrlAuthentification">
    <children>
-      <BorderPane layoutX="227.0" layoutY="-1.0" prefHeight="286.0" prefWidth="367.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <center>
-            <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
-               <children>
-                  <Label text="Adresse Mail">
-                     <VBox.margin>
-                        <Insets left="150.0" top="22.0" />
-                     </VBox.margin>
-                     <font>
-                        <Font name="Calibri" size="14.0" />
-                     </font>
-                  </Label>
-                  <TextField fx:id="fieldMail" promptText="Adresse Mail">
-                     <VBox.margin>
-                        <Insets left="150.0" right="180.0" top="2.0" />
-                     </VBox.margin>
-                     <padding>
-                        <Insets bottom="2.0" left="5.0" top="2.0" />
-                     </padding>
-                     <font>
-                        <Font size="13.0" />
-                     </font>
-                  </TextField>
-                  <Label text="Nouveau Mot de Passe">
-                     <VBox.margin>
-                        <Insets left="150.0" top="15.0" />
-                     </VBox.margin>
-                     <font>
-                        <Font name="Calibri" size="14.0" />
-                     </font>
-                  </Label>
-                  <TextField fx:id="fieldNewPassword" promptText="Nouveau Mot de Passe">
-                     <padding>
-                        <Insets bottom="2.0" left="5.0" top="2.0" />
-                     </padding>
-                     <VBox.margin>
-                        <Insets bottom="4.0" left="150.0" right="180.0" top="1.0" />
-                     </VBox.margin>
-                     <font>
-                        <Font size="13.0" />
-                     </font>
-                  </TextField>
-                  <CheckBox fx:id="checkVisibilite" mnemonicParsing="false" onAction="#Visible" text="Visibilité Mot de Passe">
-                     <VBox.margin>
-                        <Insets left="280.0" />
-                     </VBox.margin>
-                     <font>
-                        <Font name="Calibri" size="13.0" />
-                     </font>
-                  </CheckBox>
-                  <Label text="Confirmation">
-                     <VBox.margin>
-                        <Insets left="150.0" />
-                     </VBox.margin>
-                     <font>
-                        <Font name="Calibri" size="14.0" />
-                     </font>
-                  </Label>
-                  <TextField fx:id="fieldConfirmation" promptText="Confirmation">
-                     <VBox.margin>
-                        <Insets left="150.0" right="180.0" top="1.0" />
-                     </VBox.margin>
-                     <padding>
-                        <Insets bottom="2.0" left="5.0" top="2.0" />
-                     </padding>
-                     <font>
-                        <Font size="13.0" />
-                     </font>
-                  </TextField>
-               </children>
-            </VBox>
-         </center>
+      <BorderPane layoutX="227.0" layoutY="-1.0" prefHeight="454.0" prefWidth="600.0" stylesheets="@../css/style.css" AnchorPane.bottomAnchor="-54.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
             <Label text="Authentification" textAlignment="CENTER" textFill="#0d47a1" BorderPane.alignment="CENTER">
                <BorderPane.margin>
-                  <Insets top="80.0" />
+                  <Insets bottom="10.0" top="80.0" />
                </BorderPane.margin>
                <font>
                   <Font name="Calibri Bold" size="23.0" />
@@ -100,7 +29,7 @@
             </Label>
          </top>
          <bottom>
-            <GridPane BorderPane.alignment="CENTER">
+            <GridPane alignment="TOP_CENTER" BorderPane.alignment="CENTER">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -113,13 +42,13 @@
                <children>
                   <Button fx:id="btnAnnuler" mnemonicParsing="false" onAction="#Annuler" style="-fx-background-color: #FF7043;" text="Annuler" textAlignment="RIGHT" textFill="WHITE">
                      <GridPane.margin>
-                        <Insets left="130.0" right="75.0" />
+                        <Insets bottom="20.0" left="130.0" right="75.0" />
                      </GridPane.margin>
                      <padding>
                         <Insets bottom="7.0" left="20.0" right="20.0" top="7.0" />
                      </padding>
                      <font>
-                        <Font name="Calibri Bold" size="12.0" />
+                        <Font name="Calibri Bold" size="14.0" />
                      </font>
                      <effect>
                         <Glow level="0.1" />
@@ -127,21 +56,112 @@
                   </Button>
                   <Button fx:id="btnValider" mnemonicParsing="false" onAction="#Valider" style="-fx-background-color: #0D47A1;" text="Valider" textFill="WHITE" GridPane.columnIndex="1">
                      <GridPane.margin>
-                        <Insets left="80.0" />
+                        <Insets bottom="20.0" left="80.0" />
                      </GridPane.margin>
                      <padding>
                         <Insets bottom="7.0" left="20.0" right="20.0" top="7.0" />
                      </padding>
                      <font>
-                        <Font name="Calibri Bold" size="12.0" />
+                        <Font name="Calibri Bold" size="14.0" />
                      </font>
                      <effect>
                         <Glow level="0.1" />
                      </effect>
                   </Button>
                </children>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <BorderPane.margin>
+                  <Insets bottom="30.0" />
+               </BorderPane.margin>
+               <padding>
+                  <Insets bottom="30.0" />
+               </padding>
             </GridPane>
          </bottom>
+         <styleClass>
+            <String fx:value="backgroundColor" />
+            <String fx:value="text-field" />
+         </styleClass>
+         <center>
+            <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Label text="Adresse Mail" AnchorPane.leftAnchor="150.0" AnchorPane.topAnchor="0.0">
+                     <font>
+                        <Font name="Calibri" size="14.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="fieldMail" promptText="Adresse Mail" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="150.0" AnchorPane.topAnchor="20.0">
+                     <padding>
+                        <Insets bottom="2.0" left="5.0" top="2.0" />
+                     </padding>
+                     <font>
+                        <Font size="13.0" />
+                     </font>
+                  </TextField>
+      
+                              <Label text="Nouveau Mot de Passe" AnchorPane.leftAnchor="150.0" AnchorPane.topAnchor="50.0">
+                     <font>
+                        <Font name="Calibri" size="14.0" />
+                     </font>
+                  </Label>
+                  <PasswordField fx:id="fieldNewPassword" maxHeight="-Infinity" maxWidth="200.0" minWidth="200.0" prefWidth="200.0" promptText="Nouveau Mot de Passe" AnchorPane.leftAnchor="150.0" AnchorPane.topAnchor="70.0">
+                     <padding>
+                        <Insets bottom="2.0" left="5.0" top="2.0" />
+                     </padding>
+                     <font>
+                        <Font size="13.0" />
+                     </font>
+                  </PasswordField>
+                  <PasswordField fx:id="fieldConfirmation" promptText="Confirmation" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="150.0" AnchorPane.topAnchor="120.0">
+                     <padding>
+                        <Insets bottom="2.0" left="5.0" top="2.0" />
+                     </padding>
+                     <font>
+                        <Font size="13.0" />
+                     </font>
+                  </PasswordField>
+                  <TextField fx:id="fieldConfirmationVisible" promptText="Confirmation" visible="false" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="150.0" AnchorPane.topAnchor="120.0">
+                     <padding>
+                        <Insets bottom="2.0" left="5.0" top="2.0" />
+                     </padding>
+                     <font>
+                        <Font size="13.0" />
+                     </font>
+                  </TextField>
+      
+                              <Label text="Confirmation" AnchorPane.leftAnchor="150.0" AnchorPane.topAnchor="100.0">
+                     <font>
+                        <Font name="Calibri" size="14.0" />
+                     </font>
+                  </Label>
+      
+                              <CheckBox fx:id="checkBoxVisibilite" mnemonicParsing="false" onAction="#setupVisibility" text="Visibilité Mot de Passe" AnchorPane.leftAnchor="150.0" AnchorPane.topAnchor="150.0">
+                     <font>
+                        <Font name="Calibri" size="13.0" />
+                     </font>
+                  </CheckBox>
+                  <TextField fx:id="fieldNewPasswordVisible" promptText="Nouveau Mot de Passe" text="dfesfdsf" visible="false" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="150.0" AnchorPane.topAnchor="70.0">
+                     <padding>
+                        <Insets bottom="2.0" left="5.0" top="2.0" />
+                     </padding>
+                     <font>
+                        <Font size="13.0" />
+                     </font>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                  </TextField>
+               </children>
+               <BorderPane.margin>
+                  <Insets bottom="30.0" top="30.0" />
+               </BorderPane.margin>
+               <padding>
+                  <Insets bottom="10.0" top="10.0" />
+               </padding>
+            </AnchorPane>
+         </center>
       </BorderPane>
    </children>
 </AnchorPane>

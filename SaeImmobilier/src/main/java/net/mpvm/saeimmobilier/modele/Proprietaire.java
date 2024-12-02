@@ -1,13 +1,20 @@
 package net.mpvm.saeimmobilier.modele;
-import net.mpvm.saeimmobilier.sql.BD;
+import net.mpvm.saeimmobilier.sql.Connection.BD;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import net.mpvm.saeimmobilier.sql.QueryElement.QueryElement;
+import net.mpvm.saeimmobilier.sql.QueryElement.SelectQueryElement;
+import net.mpvm.saeimmobilier.sql.QueryElement.UpdateQueryElement;
 
 public class Proprietaire {
+	public static final String INSERT_QUERY = "INSERT INTO Proprietaire (Email,MotDePasse) VALUES (?, ?)";
+	public static final String SELECT_QUERY = "SELECT * FROM Proprietaire";
+	public static final String DELETE_QUERY = "DELETE FROM Proprietaire WHERE IdProprietaire = ?";
+
 	private String Nom;
 	private String Prenom;
 	private String Telephone;
@@ -18,7 +25,7 @@ public class Proprietaire {
 	private String Adresse;
 	private ArrayList<Bien> biensPossedes;
 	private int IdProprietaire;
-	private Proprietaire(int IdProprietaire,String Email,String MotDePasse) {
+	private Proprietaire(int IdProprietaire,String Email,String MotDePasse) throws IllegalArgumentException {
 		Pattern pattern = Pattern.compile("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$");
 		Matcher matcher = pattern.matcher(Email);
 		if (!matcher.matches()) {
@@ -139,14 +146,28 @@ public class Proprietaire {
 	public void setBiensPossedes(ArrayList<Bien> biensPossedes) {
 		this.biensPossedes = biensPossedes;
 	}
-	public void save() {
-		Map<String, String> params = Map.of("Email", this.Email, "MotDePasse", this.MotDePasse);
-		try{
-			BD.insertInto(Proprietaire, params, true);
+	public void save() throws ProprietaireException {
+		try {
+			if (this.getIdProprietaire() == -1) {
+				new UpdateQueryElement(INSERT_QUERY, true)
+						.setArgs(
+								Map.of(
+										1, this.getEmail(),
+										2, this.getMotDePasse()
+								))
+						.execute();
+			} else {
+				throw new ProprietaireException("Le propriétaire existe déjà dans la table");
+			}
+		} catch (QueryElement.QueryException sqlE) {
+			throw new ProprietaireException("Erreur lors de l'ajout du propriétaire");
 		}
-		catch (SQLException sqlE){
-			sqlE.printStackTrace();
+	}
+	public static class ProprietaireException extends Exception{
+		public ProprietaireException(String message){
+			super(message);
 		}
 	}
 
 }
+
