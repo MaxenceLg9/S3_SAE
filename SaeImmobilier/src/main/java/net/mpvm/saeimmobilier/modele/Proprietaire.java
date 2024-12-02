@@ -1,14 +1,11 @@
 package net.mpvm.saeimmobilier.modele;
-import net.mpvm.saeimmobilier.sql.Connection.BD;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import net.mpvm.saeimmobilier.sql.QueryElement.QueryElement;
-import net.mpvm.saeimmobilier.sql.QueryElement.SelectQueryElement;
-import net.mpvm.saeimmobilier.sql.QueryElement.UpdateQueryElement;
+import net.mpvm.saeimmobilier.sql.Query.QueryElement;
+import net.mpvm.saeimmobilier.sql.Query.UpdateQueryElement;
 
 public class Proprietaire {
 	public static final String INSERT_QUERY = "INSERT INTO Proprietaire (Email,MotDePasse) VALUES (?, ?)";

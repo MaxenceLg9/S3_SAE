@@ -1,4 +1,6 @@
 package net.mpvm.saeimmobilier.modele;
+import net.mpvm.saeimmobilier.sql.Query.Queryable;
+
 import java.util.ArrayList;
 import java.util.List;
 

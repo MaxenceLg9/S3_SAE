@@ -1,4 +1,4 @@
-package net.mpvm.saeimmobilier.sql.QueryElement;
+package net.mpvm.saeimmobilier.sql.Query;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -93,7 +93,7 @@ public final class SelectQueryElement extends QueryElement<ResultSet> {
     * @return boolean : true if the resultSet is closed && the superclass {@code QueryElement} too, false otherwise
     * @parameters none
     * @description check if the SelectQueryElement is closed
-     * @throws net.mpvm.saeimmobilier.sql.QueryElement.QueryElement.QueryException
+     * @throws net.mpvm.saeimmobilier.sql.Query.QueryElement.QueryException
      */
     public boolean isClosed() throws QueryException {
         try {

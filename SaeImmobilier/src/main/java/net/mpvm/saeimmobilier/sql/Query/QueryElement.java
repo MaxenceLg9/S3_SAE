@@ -1,8 +1,7 @@
-package net.mpvm.saeimmobilier.sql.QueryElement;
+package net.mpvm.saeimmobilier.sql.Query;
 
 import net.mpvm.saeimmobilier.sql.Connection.BD;
 
-import javax.management.Query;
 import java.io.Closeable;
 import java.io.IOException;
 import java.sql.Connection;
