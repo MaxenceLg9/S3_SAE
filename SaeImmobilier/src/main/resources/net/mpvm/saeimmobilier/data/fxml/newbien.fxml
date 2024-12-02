@@ -35,7 +35,7 @@
             </Label>
          </top>
          <center>
-            <GridPane alignment="TOP_CENTER" BorderPane.alignment="CENTER">
+            <GridPane alignment="TOP_CENTER" prefWidth="300.0" BorderPane.alignment="CENTER">
               <columnConstraints>
                 <ColumnConstraints fillWidth="false" halignment="LEFT" hgrow="SOMETIMES" percentWidth="28.0" />
                 <ColumnConstraints fillWidth="false" halignment="LEFT" percentWidth="72.0" />
@@ -219,7 +219,7 @@
       </GridPane>
    </bottom>
    <top>
-      <MenuBar prefWidth="738.0" styleClass="menuAccueil" useSystemMenuBar="true" BorderPane.alignment="CENTER">
+      <MenuBar prefWidth="738.0" useSystemMenuBar="true" BorderPane.alignment="CENTER">
         <menus>
           <Menu mnemonicParsing="false" text="Accueil">
             <items>

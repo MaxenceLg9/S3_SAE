@@ -170,4 +170,7 @@ public class BienLouable extends Bien {
 		this.nbPieces = nbPieces;
 	}
 
+	public void save() {
+
+	}
 }
