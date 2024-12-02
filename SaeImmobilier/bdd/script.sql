@@ -226,6 +226,14 @@ CREATE TABLE Réaliser(
                          PRIMARY KEY(Id_Travaux, IdBien),
                          FOREIGN KEY(Id_Travaux) REFERENCES Travaux(Id_Travaux),
                          FOREIGN KEY(IdBien) REFERENCES Bien(IdBien)
+                     );
+
+CREATE TABLE Immeuble(
+    idImmeuble INT auto_increment,
+    Adresse VARCHAR(50),
+    Ville VARCHAR(50),
+    CodePostal CHAR(5),
+    PRIMARY KEY (idImmeuble)
 );
 
 

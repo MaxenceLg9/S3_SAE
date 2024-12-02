@@ -3,12 +3,14 @@ package net.mpvm.saeimmobilier.controleur;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.stage.Stage;
 import net.mpvm.saeimmobilier.modele.Proprietaire;
+import net.mpvm.saeimmobilier.util.JfxUtil;
 
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
-public class CtrlAuthentification {
+public class CtrlInscription {
 
     @FXML
     public Button btnValider;
@@ -133,13 +135,11 @@ public class CtrlAuthentification {
 
     @FXML
     public void Annuler(ActionEvent event) {
-        // Clear all fields
-        fieldMail.clear();
-        fieldNewPassword.clear();
-        fieldConfirmation.clear();
-        fieldNewPasswordVisible.clear();
-        fieldConfirmationVisible.clear();
-        checkBoxVisibilite.setSelected(false);
+        Stage stage1 = new Stage();
+        JfxUtil.applicationInit(stage1, "accueil.fxml", "Accueil");
+        stage1.show();
+        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+        stage.close();
     }
 
     private boolean fieldsNotEmpty() {

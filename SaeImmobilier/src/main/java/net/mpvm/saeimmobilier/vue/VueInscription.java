@@ -7,13 +7,13 @@ import net.mpvm.saeimmobilier.util.JfxUtil;
 
 
 
-public class VueAuthentification extends Application {
+public class VueInscription extends Application {
     public static void main(String[] args) {
         launch(args);
     }
 
     @Override
     public void start(Stage primaryStage) {
-        JfxUtil.applicationInit(primaryStage, "authentification.fxml","Page d'authentification'");
+        JfxUtil.applicationInit(primaryStage, "inscription.fxml","Page d'authentification'");
     }
 }

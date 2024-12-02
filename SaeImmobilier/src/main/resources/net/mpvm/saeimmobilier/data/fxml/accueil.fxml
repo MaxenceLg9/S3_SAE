@@ -8,29 +8,23 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="445.0" prefWidth="700.0" styleClass="backgroundColor" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.mpvm.saeimmobilier.controleur.CtrlAccueil">
+<BorderPane prefHeight="445.0" prefWidth="700.0" styleClass="backgroundColor" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/22.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.mpvm.saeimmobilier.controleur.CtrlAccueil">
    <bottom>
-      <Button fx:id="BtwQuitter" minHeight="35.0" minWidth="125.0" mnemonicParsing="false" onAction="#Quitter" style="-fx-background-color: #E74C3C; -fx-background-radius: 10px;" text="Quitter" BorderPane.alignment="CENTER_LEFT">
+      <Button fx:id="BtwQuitter" minHeight="40.0" minWidth="140.0" mnemonicParsing="false" onAction="#Quitter" style="-fx-background-color: #FF6F61; -fx-background-radius: 20px; -fx-text-fill: white; -fx-font-size: 14px; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0.2, 0, 2);" text="Quitter" BorderPane.alignment="CENTER_LEFT">
          <BorderPane.margin>
-            <Insets bottom="10.0" left="10.0" />
+            <Insets bottom="15.0" left="15.0" />
          </BorderPane.margin>
-         <font>
-            <Font name="System Bold" size="14.0" />
-         </font>
       </Button>
    </bottom>
    <top>
       <VBox alignment="CENTER" fillWidth="false" BorderPane.alignment="CENTER">
          <children>
-            <Label fx:id="welcomeText" alignment="CENTER" contentDisplay="CENTER" text="Bienvenue sur l'application" textAlignment="CENTER" textFill="WHITE">
+            <Label fx:id="welcomeText" alignment="CENTER" contentDisplay="CENTER" text="Bienvenue sur l'application" textAlignment="CENTER" textFill="#FFFFFF">
                <font>
-                  <Font name="System Bold" size="36.0" />
+                  <Font name="Arial Black" size="36.0" />
                </font>
             </Label>
-            <Label prefHeight="110.0" prefWidth="700.0" text="Veuillez pour connecter ou vous inscrire pour continuer et accéder au reste de l'application" textAlignment="CENTER" textFill="WHITE" wrapText="true">
-               <font>
-                  <Font size="18.0" />
-               </font>
+            <Label prefHeight="110.0" prefWidth="700.0" text="Veuillez vous connecter ou vous inscrire pour continuer et accéder au reste de l'application." textAlignment="CENTER" textFill="#DDDDDD" wrapText="true" style="-fx-font-size: 18px;">
             </Label>
          </children>
          <BorderPane.margin>
@@ -39,19 +33,13 @@
       </VBox>
    </top>
    <center>
-      <VBox alignment="CENTER" fillWidth="false" spacing="20.0" BorderPane.alignment="TOP_CENTER">
+      <VBox alignment="CENTER" fillWidth="false" spacing="30.0" BorderPane.alignment="TOP_CENTER">
          <children>
-            <HBox prefHeight="36.0" prefWidth="290.0" spacing="50.0">
+            <HBox spacing="20.0">
                <children>
-                  <Button fx:id="btnConnexion" minHeight="30.0" minWidth="120.0" onAction="#Connexion" text="Se connecter" textFill="WHITE">
-                     <font>
-                        <Font name="System Bold" size="14.0" />
-                     </font>
+                  <Button fx:id="btnConnexion" minHeight="40.0" minWidth="140.0" onAction="#Connexion" text="Se connecter" style="-fx-background-color: #3498DB; -fx-background-radius: 20px; -fx-text-fill: white; -fx-font-size: 14px; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0.2, 0, 2);">
                   </Button>
-                  <Button fx:id="btnInscription" minHeight="30.0" minWidth="120.0" onAction="#Inscription" text="S'inscrire" textFill="WHITE">
-                     <font>
-                        <Font name="System Bold" size="14.0" />
-                     </font>
+                  <Button fx:id="btnInscription" minHeight="40.0" minWidth="140.0" onAction="#Inscription" text="S'inscrire" style="-fx-background-color: #2ECC71; -fx-background-radius: 20px; -fx-text-fill: white; -fx-font-size: 14px; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0.2, 0, 2);">
                   </Button>
                </children>
             </HBox>

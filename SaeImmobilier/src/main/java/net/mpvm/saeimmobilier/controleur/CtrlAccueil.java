@@ -2,11 +2,13 @@ package net.mpvm.saeimmobilier.controleur;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.stage.Stage;
+import javafx.scene.control.*;
 import net.mpvm.saeimmobilier.util.JfxUtil;
 
-import javax.swing.plaf.basic.BasicButtonUI;
 import java.awt.*;
+import java.util.regex.Pattern;
 
 
 public class CtrlAccueil {
@@ -25,7 +27,7 @@ public class CtrlAccueil {
             Stage stage = new Stage();
 
             // Initialiser la fenêtre avec l'utilitaire existant
-            JfxUtil.applicationInit(stage, "connexion.fxml", "Connexion");
+            JfxUtil.applicationInit(stage, "inscription.fxml", "Inscription");
 
             Stage stage2 = (Stage) ((javafx.scene.control.Button) actionEvent.getSource()).getScene().getWindow();
             // Fermer la fenêtre
@@ -55,5 +57,6 @@ public class CtrlAccueil {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
     }
 }

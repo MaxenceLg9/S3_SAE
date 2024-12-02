@@ -6,6 +6,7 @@ import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import net.mpvm.saeimmobilier.modele.*;
+import net.mpvm.saeimmobilier.sql.Query.Queryable;
 import net.mpvm.saeimmobilier.util.JfxUtil;
 
 import javax.swing.text.html.ImageView;
@@ -110,7 +111,7 @@ public class CtrlNewBien {
 
 
     @FXML
-    public void ajouterBien(ActionEvent actionEvent) {
+    public void ajouterBien(ActionEvent actionEvent) throws Queryable.QueryableException {
         if (fieldsNotEmptyBienLouable()) {
             if (this.ListTypeBien.getItems().getFirst().getDesignation().equals(TypeBien.BIEN_LOUABLE.getDesignation())) {
                 new BienLouable(this.FieldVille.getText(),
@@ -123,9 +124,9 @@ public class CtrlNewBien {
 
             } else {
                 if(fieldsNotEmptyBien()) {
-                    new Bien(this.FieldVille.getText(),
+                    new Immeuble(this.FieldVille.getText(),
                             Integer.parseInt(this.FieldCodePostal.getText()),
-                            this.FieldAdresse.getText());
+                            this.FieldAdresse.getText()).save();
                 }
             }
 
