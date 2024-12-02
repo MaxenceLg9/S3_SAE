@@ -107,25 +107,24 @@ public class Locataire implements Queryable {
 	public void save() throws LocataireException{
 		if(this.getIdLocataire() != -1)
 			throw new LocataireException("Le locataire existe déjà dans la table");
-		try{
-			new UpdateQueryElement(INSERT_QUERY, true)
-					.setArgs(
+		try(UpdateQueryElement query =new UpdateQueryElement(INSERT_QUERY, true)){
+					query.setArgs(
 							Map.of(1, this.getNom(),
 									2, this.getPrenom(),
 									3, this.getEmail(),
 									4, Character.toString(this.getSexe()),
 									5, this.getTelephone()))
 					.execute();
-		}
+        }
 		catch (QueryElement.QueryException sqlE){
-			throw new LocataireException("Erreur lors de l'ajout du locataire");
+			throw new LocataireException("Erreur lors de l'ajout du locataire",sqlE);
 		}
 	}
 
 	public void delete() throws LocataireException {
-		try(QueryElement<Integer> query = new UpdateQueryElement(DELETE_QUERY, true).setArgs(Map.of(1,this.getIdLocataire()))){
-			query.execute();
-		}
+		try(UpdateQueryElement query = new UpdateQueryElement(DELETE_QUERY, true)){
+			query.setArgs(Map.of(1,this.getIdLocataire())).execute();
+        }
 		catch (QueryElement.QueryException e) {
 			throw new LocataireException("Erreur lors de la suppression du locataire");
 		}
@@ -134,16 +133,14 @@ public class Locataire implements Queryable {
 	public void modify() throws LocataireException{
 		if(this.getIdLocataire() == -1)
 			throw new LocataireException("Vous ne pouvez pas modifier un locataire qui n'existe pas");
-		try{
-			new UpdateQueryElement(UPDATE_QUERY, true)
-					.setArgs(
-							Map.of(1, this.getNom(),
+		try(UpdateQueryElement query = new UpdateQueryElement(UPDATE_QUERY, true)){
+			query.setArgs(
+					Map.of(1, this.getNom(),
 									2, this.getPrenom(),
 									3, this.getEmail(),
 									4, Character.toString(this.getSexe()),
 									5, this.getTelephone(),
-									6, this.getIdLocataire()))
-					.execute();
+									6, this.getIdLocataire())).execute();
 		}catch(QueryElement.QueryException e){
 			throw new LocataireException("Erreur lors de la modification du locataire");
 		}
@@ -156,8 +153,7 @@ public class Locataire implements Queryable {
 	public static List<Locataire> findALl() throws LocataireException {
 		List<Locataire> l = new ArrayList<>();
 
-		try{
-			QueryElement<ResultSet> query = new SelectQueryElement(SELECT_QUERY);
+		try(SelectQueryElement query = new SelectQueryElement(SELECT_QUERY)){
 			ResultSet rs = query.execute();
 			while (rs.next()) {
 				l.add(
@@ -178,6 +174,9 @@ public class Locataire implements Queryable {
 	public static class LocataireException extends QueryableException{
 		public LocataireException(String message){
 			super(message);
+		}
+		public LocataireException(String message, Throwable cause){
+			super(message,cause);
 		}
 	}
 }

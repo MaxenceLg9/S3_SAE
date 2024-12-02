@@ -10,5 +10,9 @@ public interface Queryable {
         public QueryableException(String message) {
             super(message);
         }
+        public QueryableException(String message, Throwable cause) {
+            super(message,cause);
+        }
+
     }
 }
