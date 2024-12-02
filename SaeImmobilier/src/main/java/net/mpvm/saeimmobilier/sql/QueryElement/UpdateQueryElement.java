@@ -10,7 +10,7 @@ public final class UpdateQueryElement extends QueryElement<Integer> {
 
     @Override
     public Integer execute() throws QueryException {
-        int row = 0;
+        int row;
         try {
             row = preparedStatement.executeUpdate();
         } catch (SQLException e) {

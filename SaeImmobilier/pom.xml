@@ -159,7 +159,7 @@
                 <directory>src/main/resources</directory>
             </resource>
         </resources>
-        <sourceDirectory>src/main/java</sourceDirectory>
+        <sourceDirectory>./src/main/java</sourceDirectory>
         <testSourceDirectory>src/main/test</testSourceDirectory>
     </build>
 </project>

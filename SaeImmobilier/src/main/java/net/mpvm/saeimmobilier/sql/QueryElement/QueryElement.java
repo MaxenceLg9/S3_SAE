@@ -2,6 +2,7 @@ package net.mpvm.saeimmobilier.sql.QueryElement;
 
 import net.mpvm.saeimmobilier.sql.Connection.BD;
 
+import javax.management.Query;
 import java.io.Closeable;
 import java.io.IOException;
 import java.sql.Connection;
@@ -24,11 +25,11 @@ public abstract class QueryElement<T> implements Closeable {
             this.connection = BD.getConnection(commit);
             this.preparedStatement = this.prepareStatement();
         } catch (SQLException e) {
-            throw new QueryException("Error creating connection or Statement", e);
+            throw new QueryException("Cannot create the query : Statement  or Connection problem", e);
         }
     }
 
-    public long getArgs(){
+    public long getNArgs(){
         return this.nArgs;
     }
 
@@ -42,6 +43,18 @@ public abstract class QueryElement<T> implements Closeable {
 
     public String getQuery(){
         return this.query;
+    }
+
+    /*
+    *
+     */
+    public boolean isClosed() throws QueryException{
+        try{
+            return this.connection.isClosed() && this.preparedStatement.isClosed();
+        }
+        catch(SQLException e){
+            throw new QueryException("error when checking if the queryElement is closed");
+        }
     }
 
     public QueryElement<T> setArgs(Map<Integer,Object> args) throws QueryException {

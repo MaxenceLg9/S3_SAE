@@ -25,15 +25,14 @@ public final class SelectQueryElement extends QueryElement<ResultSet> {
     @Override
     public QueryElement<ResultSet> setArgs(Map<Integer,Object> args) throws QueryException {
         //adding the args for the fake query
-        if(args.size() != getArgs())
+        if(args.size() != getNArgs())
             throw new QueryException("Error, wrong number of args");
-        for(Map.Entry<Integer,Object> entry : args.entrySet()) {
+        for(Map.Entry<Integer,Object> entry : args.entrySet())
             try {
                 fakeStatement.setObject(entry.getKey(), entry.getValue());
             } catch (SQLException e) {
                 throw new QueryException("Error setting args", e);
             }
-        }
         //executing the overrided method
         return super.setArgs(args);
     }
@@ -51,7 +50,7 @@ public final class SelectQueryElement extends QueryElement<ResultSet> {
         return rs;
     }
 
-    public int setRowCount() throws QueryException {
+    private int setRowCount() throws QueryException {
         //get the false resultset
         try(ResultSet rs2 = this.executeFakeStatement()) {
             int rows = 0;
@@ -67,6 +66,19 @@ public final class SelectQueryElement extends QueryElement<ResultSet> {
         }
     }
 
+    public ResultSet getResultSet() throws QueryException {
+        if(rs == null)
+            throw new QueryException("Result is null, maybe you should try executing the query first");
+        try{
+            if(rs.isClosed())
+                throw new QueryException("ResultSet is closed");
+        }
+        catch(SQLException e){
+            throw new QueryException("Error : cannot get the resultSet");
+        }
+        return this.rs;
+    }
+
     public void close() throws QueryException {
         try {
             if(rs != null)
@@ -74,6 +86,20 @@ public final class SelectQueryElement extends QueryElement<ResultSet> {
             super.close();
         }catch (SQLException e){
             throw new QueryException("Error closing resultSet", e);
+        }
+    }
+
+    /**
+    * @return boolean : true if the resultSet is closed && the superclass {@code QueryElement} too, false otherwise
+    * @parameters none
+    * @description check if the SelectQueryElement is closed
+     * @throws net.mpvm.saeimmobilier.sql.QueryElement.QueryElement.QueryException
+     */
+    public boolean isClosed() throws QueryException {
+        try {
+            return super.isClosed() && rs.isClosed();
+        }catch(SQLException s){
+            throw new QueryException("Error checking if the ResultSet is closed", s);
         }
     }
 
