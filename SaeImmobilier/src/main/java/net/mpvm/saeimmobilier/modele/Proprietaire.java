@@ -1,6 +1,9 @@
 package net.mpvm.saeimmobilier.modele;
-import net.mpvm.saeimmobilier.sql.BD;
+import net.mpvm.saeimmobilier.sql.Connection.BD;
+import net.mpvm.saeimmobilier.sql.QueryElement.QueryElement;
+import net.mpvm.saeimmobilier.sql.QueryElement.UpdateQueryElement;
 
+import java.awt.color.ProfileDataException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Map;
@@ -139,14 +142,20 @@ public class Proprietaire {
 	public void setBiensPossedes(ArrayList<Bien> biensPossedes) {
 		this.biensPossedes = biensPossedes;
 	}
-	public void save() {
-		Map<String, String> params = Map.of("Email", this.Email, "MotDePasse", this.MotDePasse);
+	public void save() throws ProprietaireException {
+		Map<Integer, Object> params = Map.of(1, this.Email, 2, this.MotDePasse);
 		try{
-			BD.insertInto(Proprietaire, params, true);
+			new UpdateQueryElement("INSERT INTO Proprietaire (Email, MotDePasse) VALUES (?, ?)", false).setArgs(params).execute();
+		} catch (QueryElement.QueryException e) {
+            throw new ProprietaireException("Erreur lors de l'ajout du propriétaire", e);
+        }
+    }
+	public static class ProprietaireException extends Exception {
+		public ProprietaireException(String message) {
+			super(message);
 		}
-		catch (SQLException sqlE){
-			sqlE.printStackTrace();
+		public ProprietaireException(String message, Throwable cause) {
+			super(message,cause);
 		}
 	}
-
 }

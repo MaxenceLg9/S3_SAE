@@ -91,7 +91,11 @@ public class CtrlAuthentification {
     public void ajouterLocataire(){
         if(fieldsNotEmpty()) {
 
-            new Proprietaire(fieldMail.getText(), fieldNewPassword.getText()).save();
+            try {
+                new Proprietaire(fieldMail.getText(), fieldNewPassword.getText()).save();
+            } catch (Proprietaire.ProprietaireException e) {
+                //TODO : handle exception
+            }
         }
         else{
             alertFieldsEmpty();
