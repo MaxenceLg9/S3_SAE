@@ -1,28 +1,24 @@
-#labelTitle{
-    -fx-font-size: 18px;
-    -fx-font-weight: 800;
-}
+    #labelTitle{
+        -fx-font-size: 18px;
+        -fx-font-weight: 800;
+    }
 
-AnchorPane{
-    -fx-background-color: #F9F9F9;
-}
-.backgroundColor{
-    -fx-background-color: linear-gradient(to right bottom, #faefb1, #a3e88d);;
-}
+    AnchorPane{
+        -fx-background-color: #F9F9F9;
+    }
+    .backgroundColor{
+        -fx-background-color: #2b3b50;
+    }
 
-* {
-    -fx-secondary-color: #f2f3f6;
-    -fx-grey-color: #b9b9b9;
+    * {
+        -fx-secondary-color: #f2f3f6;
+        -fx-grey-color: #b9b9b9;
+        -fx-focus-color: -fx-secondary-color;
+    }
 
-    -fx-focus-color: -fx-secondary-color;
-}
-
-.text-field {
-    -fx-accent: -fx-primary-color;
-    -fx-background-color: -fx-grey-color, white;
-    -fx-background-insets: 0, 0 0 1 0;
-    -fx-background-radius: 8px;
-}
-.text-field:focused {
-
-}
+    .text-field {
+        -fx-accent: -fx-primary-color;
+        -fx-background-color: -fx-grey-color, white;
+        -fx-background-insets: 0, 0 0 1 0;
+        -fx-background-radius: 5px;
+    }

@@ -3,12 +3,11 @@ package net.mpvm.saeimmobilier.controleur;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import net.mpvm.saeimmobilier.modele.*;
 import net.mpvm.saeimmobilier.util.JfxUtil;
 
-import java.lang.reflect.Type;
+import javax.swing.text.html.ImageView;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -41,6 +40,7 @@ public class CtrlNewBien {
     private ChoiceBox<TypeBien> ListTypeBien;
     @FXML
     private List<TextField> fieldsLogement;
+    
 
 
     //TableView
@@ -102,7 +102,6 @@ public class CtrlNewBien {
 
         this.ListTypeBien.getItems().add(TypeBien.BIEN_LOUABLE);
         this.ListTypeBien.getItems().add(TypeBien.IMMEUBLE);
-
 
 
     }
@@ -203,5 +202,11 @@ public class CtrlNewBien {
     }
 
 
+    public void Accueil(ActionEvent actionEvent) {
+
+    }
+
+    public void Deconnexion(ActionEvent actionEvent) {
+    }
 }
 

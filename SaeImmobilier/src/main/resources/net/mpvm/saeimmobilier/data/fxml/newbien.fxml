@@ -5,86 +5,22 @@
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1100.0" styleClass="backgroundColor" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.mpvm.saeimmobilier.controleur.CtrlNewBien">
-   <left>
-      <BorderPane prefHeight="200.0" prefWidth="198.0">
-         <left>
-            <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
-               <children>
-                  <ImageView fitHeight="75.0" fitWidth="101.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../images/icon_immobilier.png" />
-                     </image>
-                     <VBox.margin>
-                        <Insets left="30.0" top="10.0" />
-                     </VBox.margin>
-                  </ImageView>
-                  <Button minHeight="40.0" minWidth="120.0" mnemonicParsing="false" style="-fx-background-radius: 8px; -fx-background-color: #F7CA18;" text="Retour à l'accueil">
-                     <VBox.margin>
-                        <Insets left="20.0" top="10.0" />
-                     </VBox.margin>
-                  </Button>
-                  <Button minHeight="40.0" minWidth="120.0" mnemonicParsing="false" style="-fx-background-radius: 8px; -fx-background-color: #F7CA18;" text="Liste des locataires">
-                     <VBox.margin>
-                        <Insets left="20.0" top="10.0" />
-                     </VBox.margin>
-                  </Button>
-                  <Button minHeight="40.0" minWidth="120.0" mnemonicParsing="false" style="-fx-background-radius: 8px; -fx-background-color: #F39C12;" text="Liste des Biens">
-                     <VBox.margin>
-                        <Insets left="20.0" top="10.0" />
-                     </VBox.margin>
-                  </Button>
-                  <Button minHeight="40.0" minWidth="120.0" mnemonicParsing="false" style="-fx-background-radius: 8px; -fx-background-color: #5DADEC;" text="Liste des Baux">
-                     <VBox.margin>
-                        <Insets left="20.0" top="10.0" />
-                     </VBox.margin>
-                  </Button>
-                  <Button minHeight="40.0" minWidth="120.0" mnemonicParsing="false" style="-fx-background-radius: 8px; -fx-background-color: #87D37C;" text="Archives">
-                     <VBox.margin>
-                        <Insets left="20.0" top="10.0" />
-                     </VBox.margin>
-                  </Button>
-               </children>
-               <BorderPane.margin>
-                  <Insets right="20.0" />
-               </BorderPane.margin>
-            </VBox>
-         </left>
-      </BorderPane>
-   </left>
-   <right>
-      <TableView fx:id="TableLocataire" prefHeight="623.0" prefWidth="542.0" BorderPane.alignment="CENTER">
-        <columns>
-          <TableColumn fx:id="ColNFisc" prefWidth="91.99999696016312" text="NuméroFiscale" />
-          <TableColumn fx:id="ColType" prefWidth="58.4000244140625" text="Type" />
-            <TableColumn fx:id="ColAdresse" prefWidth="75.0" text="Adresse" />
-            <TableColumn fx:id="ColCodeP" prefWidth="75.0" text="CodePostal" />
-            <TableColumn fx:id="ColVille" prefWidth="75.0" text="Ville" />
-            <TableColumn fx:id="ColNbP" prefWidth="75.0" text="NbPièces" />
-            <TableColumn fx:id="ColSurface" prefWidth="75.0" text="Surface Hab" />
-            <TableColumn fx:id="ColNbLoc" prefWidth="75.0" text="NbLocataire" />
-        </columns>
-         <BorderPane.margin>
-            <Insets bottom="50.0" left="10.0" right="30.0" top="50.0" />
-         </BorderPane.margin>
-      </TableView>
-   </right>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" styleClass="backgroundColor" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.mpvm.saeimmobilier.controleur.CtrlNewBien">
    <center>
-      <BorderPane minHeight="600.0" prefHeight="600.0" prefWidth="963.0" BorderPane.alignment="CENTER">
+      <BorderPane BorderPane.alignment="CENTER">
          <top>
          <Label fx:id="labelTitle" contentDisplay="CENTER" prefHeight="54.0" prefWidth="252.0" text="Ajout d'un bien" textFill="WHITE" BorderPane.alignment="CENTER">
                <font>
@@ -99,23 +35,23 @@
             </Label>
          </top>
          <center>
-            <GridPane>
+            <GridPane alignment="TOP_CENTER" BorderPane.alignment="CENTER">
               <columnConstraints>
-                <ColumnConstraints fillWidth="false" halignment="LEFT" hgrow="SOMETIMES" maxWidth="110.39996337890625" minWidth="150.0" percentWidth="50.0" prefWidth="99.200048828125" />
-                <ColumnConstraints fillWidth="false" halignment="LEFT" maxWidth="101.599951171875" minWidth="150.0" percentWidth="50.0" />
+                <ColumnConstraints fillWidth="false" halignment="LEFT" hgrow="SOMETIMES" percentWidth="28.0" />
+                <ColumnConstraints fillWidth="false" halignment="LEFT" percentWidth="72.0" />
               </columnConstraints>
               <rowConstraints>
-                <RowConstraints maxHeight="32.0" minHeight="30.0" prefHeight="40.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="32.0" minHeight="30.0" prefHeight="40.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="32.0" minHeight="30.0" prefHeight="40.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="32.0" minHeight="30.0" prefHeight="40.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="32.0" minHeight="30.0" prefHeight="40.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="32.0" minHeight="30.0" prefHeight="40.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="32.0" minHeight="30.0" prefHeight="40.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="32.0" minHeight="30.0" prefHeight="40.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="32.0" minHeight="30.0" prefHeight="40.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="32.0" minHeight="30.0" prefHeight="40.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="48.800018310546875" minHeight="45.0" prefHeight="48.800018310546875" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="50.0" minHeight="30.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="50.0" minHeight="30.0" prefHeight="40.0" vgrow="ALWAYS" />
+                <RowConstraints maxHeight="50.0" minHeight="30.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="50.0" minHeight="30.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="50.0" minHeight="30.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="50.0" minHeight="30.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="50.0" minHeight="30.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="50.0" minHeight="0.0" prefHeight="33.20001220703125" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="50.0" minHeight="3.999969482421875" prefHeight="128.79998779296875" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="50.0" minHeight="30.0" prefHeight="60.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="50.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
                <Label prefHeight="17.0" prefWidth="206.0" text="Adresse du bien :" textFill="WHITE" GridPane.halignment="LEFT" GridPane.valignment="BOTTOM">
@@ -131,7 +67,7 @@
                         <Font size="14.0" />
                      </font>
                   </Label>
-               <TextField fx:id="FieldAdresse" minHeight="30.0" minWidth="100.0" prefHeight="26.0" prefWidth="159.0" promptText="Adresse" GridPane.rowIndex="1">
+               <TextField fx:id="FieldAdresse" minHeight="30.0" promptText="Adresse" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
                      <GridPane.margin>
                         <Insets right="10.0" />
                      </GridPane.margin>
@@ -164,22 +100,22 @@
                         <Font size="14.0" />
                      </font>
                   </Label>
-               <ChoiceBox fx:id="ListTypeBien" minWidth="140.0" style="-fx-background-radius: 10px;" GridPane.rowIndex="7">
+               <ChoiceBox fx:id="ListTypeBien" minWidth="140.0" style="-fx-background-radius: 5px;" GridPane.rowIndex="7">
                      <GridPane.margin>
                         <Insets right="10.0" />
                      </GridPane.margin>
                   </ChoiceBox>
-               <Label prefHeight="17.0" prefWidth="206.0" text="Sélectionner l'Immeuble du bien : " textFill="WHITE" GridPane.halignment="LEFT" GridPane.rowIndex="8" GridPane.valignment="BOTTOM">
+               <Label prefHeight="20.0" prefWidth="222.0" text="Sélectionner l'Immeuble du bien : " textFill="WHITE" GridPane.halignment="LEFT" GridPane.rowIndex="8" GridPane.valignment="BOTTOM">
                      <font>
                         <Font size="14.0" />
                      </font>
                   </Label>
-               <ChoiceBox fx:id="listImmeubles" minWidth="140.0" style="-fx-background-radius: 10px;" GridPane.rowIndex="9">
+               <ChoiceBox fx:id="listImmeubles" minWidth="140.0" style="-fx-background-radius: 5px;" GridPane.rowIndex="9">
                      <GridPane.margin>
                         <Insets right="10.0" />
                      </GridPane.margin>
                   </ChoiceBox>
-               <Button fx:id="btnajouterLocataire" minHeight="30.0" minWidth="140.0" mnemonicParsing="false" onAction="#AddLocataire" style="-fx-background-color: #5DADEC; -fx-background-radius: 10px;" text="Ajouter un locataire" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="10">
+               <Button fx:id="btnajouterLocataire" minHeight="30.0" minWidth="140.0" mnemonicParsing="false" onAction="#AddLocataire" prefHeight="38.0" prefWidth="167.0" style="-fx-background-color: #5DADEC; -fx-background-radius: 5px;" text="Ajouter un locataire" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="10">
                      <GridPane.margin>
                         <Insets />
                      </GridPane.margin>
@@ -187,7 +123,7 @@
                         <Font name="System Bold" size="13.0" />
                      </font>
                   </Button>
-               <ComboBox fx:id="comboLocataires" minWidth="140.0" prefWidth="140.0" style="-fx-background-radius: 10px;" GridPane.columnIndex="1" GridPane.rowIndex="9">
+               <ComboBox fx:id="comboLocataires" minWidth="140.0" prefWidth="140.0" style="-fx-background-radius: 5px;" GridPane.columnIndex="1" GridPane.rowIndex="9">
                      <GridPane.margin>
                         <Insets right="10.0" />
                      </GridPane.margin>
@@ -197,7 +133,7 @@
                         <Font size="14.0" />
                      </font>
                   </Label>
-               <Label fx:id="LabelDate" minHeight="30.0" prefHeight="18.0" prefWidth="206.0" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+               <Label fx:id="LabelDate" minHeight="30.0" prefHeight="18.0" prefWidth="206.0" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="7" />
                <Label prefHeight="17.0" prefWidth="206.0" text="Date d'ajout du bien :" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="6" GridPane.valignment="BOTTOM">
                      <font>
                         <Font size="14.0" />
@@ -216,12 +152,12 @@
                         <Font size="14.0" />
                      </font>
                   </Label>
-               <TextField fx:id="FieldNumFisc" minHeight="30.0" minWidth="100.0" promptText="Numéro fiscale" GridPane.columnIndex="1" GridPane.rowIndex="3">
+               <TextField fx:id="FieldNumFisc" minHeight="30.0" minWidth="100.0" promptText="Numéro fiscal" GridPane.columnIndex="1" GridPane.rowIndex="3">
                      <GridPane.margin>
                         <Insets right="10.0" />
                      </GridPane.margin>
                   </TextField>
-               <Label prefHeight="17.0" prefWidth="206.0" text="Numéro fiscale du bien :" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
+               <Label prefHeight="17.0" prefWidth="206.0" text="Numéro fiscal du bien :" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -236,56 +172,90 @@
                   <Insets />
                </opaqueInsets>
                <BorderPane.margin>
-                  <Insets left="50.0" right="20.0" />
+                  <Insets left="10.0" />
                </BorderPane.margin>
             </GridPane>
          </center>
       </BorderPane>
    </center>
    <bottom>
-      <HBox alignment="CENTER" BorderPane.alignment="CENTER">
+      <GridPane prefHeight="30.0" prefWidth="738.0" BorderPane.alignment="CENTER">
+        <columnConstraints>
+          <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
          <children>
-            <BorderPane>
-               <left>
-                  <Button fx:id="BtnDisconnect" alignment="CENTER" contentDisplay="BOTTOM" minHeight="35.0" minWidth="150.0" mnemonicParsing="false" style="-fx-background-color: #e12816; -fx-background-radius: 10px;" text="Déconnexion" BorderPane.alignment="CENTER">
-                     <font>
-                        <Font name="System Bold" size="14.0" />
-                     </font>
-                     <BorderPane.margin>
-                        <Insets right="10.0" />
-                     </BorderPane.margin>
-                  </Button>
-               </left>
-               <right>
-                  <HBox alignment="CENTER_RIGHT" BorderPane.alignment="CENTER_RIGHT">
-                     <children>
-                     <Button fx:id="btwAnnuler" alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" onAction="#Annuler" prefHeight="35.0" prefWidth="150.0" style="-fx-background-color: #e12816; -fx-background-radius: 10px;" text="Annuler" textFill="WHITE">
-                           <font>
-                              <Font name="System Bold" size="14.0" />
-                           </font>
-                           <HBox.margin>
-                              <Insets />
-                           </HBox.margin>
-                        </Button>
-                     <Button fx:id="BtwAddBien" mnemonicParsing="false" onAction="#ajouterBien" prefHeight="35.0" prefWidth="150.0" style="-fx-background-color: #5DADEC; -fx-background-radius: 10px;" text="Ajouter le bien" textFill="WHITE">
-                           <font>
-                              <Font name="System Bold" size="14.0" />
-                           </font>
-                           <HBox.margin>
-                              <Insets left="10.0" />
-                           </HBox.margin>
-                        </Button>
-                     </children>
-                  </HBox>
-               </right>
-               <HBox.margin>
-                  <Insets bottom="10.0" />
-               </HBox.margin>
-            </BorderPane>
+         <Button fx:id="BtwAddBien" minHeight="35.0" minWidth="200.0" mnemonicParsing="false" onAction="#ajouterBien" style="-fx-background-color: #5DADEC; -fx-background-radius: 5px;" text="Ajouter le bien" textFill="WHITE" GridPane.columnIndex="1">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+               <GridPane.margin>
+                  <Insets bottom="30.0" right="220.0" />
+               </GridPane.margin>
+            </Button>
+            <Button fx:id="btnAnnuler" contentDisplay="BOTTOM" minHeight="35.0" minWidth="200.0" mnemonicParsing="false" onAction="#Annuler" style="-fx-background-color: #e12816;" text="Annuler" textFill="WHITE" GridPane.columnIndex="1">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+               <GridPane.margin>
+                  <Insets bottom="30.0" right="10.0" />
+               </GridPane.margin>
+            </Button>
+         <Button fx:id="btnDeconnexion" alignment="CENTER" contentDisplay="TOP" minHeight="35.0" minWidth="200.0" mnemonicParsing="false" onAction="#Deconnexion" style="-fx-background-color: #e12816; -fx-background-radius: 5px;" text="Déconnexion">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <GridPane.margin>
+                  <Insets bottom="30.0" left="10.0" />
+               </GridPane.margin>
+            </Button>
+         </children>
+      </GridPane>
+   </bottom>
+   <top>
+      <MenuBar prefWidth="738.0" styleClass="menuAccueil" useSystemMenuBar="true" BorderPane.alignment="CENTER">
+        <menus>
+          <Menu mnemonicParsing="false" text="Accueil">
+            <items>
+              <MenuItem fx:id="menuAccueil" mnemonicParsing="false" onAction="#Accueil" text="Retour à l'acceuil" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Edit">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Liste des locataires" />
+                  <MenuItem mnemonicParsing="false" text="Liste des Biens" />
+                  <MenuItem mnemonicParsing="false" text="Liste des baux" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Archives">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Afficher les documents archivés" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+   </top>
+   <left>
+      <VBox BorderPane.alignment="CENTER">
+         <children>
+            <ImageView fx:id="imgLogo" fitHeight="100.0" fitWidth="149.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/logo_without_background.png" />
+               </image>
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+            </ImageView>
          </children>
          <BorderPane.margin>
-            <Insets />
+            <Insets right="20.0" />
          </BorderPane.margin>
-      </HBox>
-   </bottom>
+      </VBox>
+   </left>
 </BorderPane>
