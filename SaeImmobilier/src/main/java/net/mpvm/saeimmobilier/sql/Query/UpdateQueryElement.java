@@ -1,4 +1,4 @@
-package net.mpvm.saeimmobilier.sql.QueryElement;
+package net.mpvm.saeimmobilier.sql.Query;
 
 import java.sql.SQLException;
 
@@ -10,7 +10,7 @@ public final class UpdateQueryElement extends QueryElement<Integer> {
 
     @Override
     public Integer execute() throws QueryException {
-        int row = 0;
+        int row;
         try {
             row = preparedStatement.executeUpdate();
         } catch (SQLException e) {
