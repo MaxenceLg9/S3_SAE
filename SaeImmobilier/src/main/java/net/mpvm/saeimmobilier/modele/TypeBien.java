@@ -1,14 +1,10 @@
 package net.mpvm.saeimmobilier.modele;
 
 public enum TypeBien {
-    BIEN_LOUABLE("Bien_Louable"),IMMEUBLE("Immeuble");
+    HABITATION,GARAGE, IMMEUBLE;
 
     private String designation;
-    TypeBien(String designation) {
+    TypeBien() {
         this.designation = designation;
-    }
-
-    public String getDesignation() {
-        return this.designation;
     }
 }

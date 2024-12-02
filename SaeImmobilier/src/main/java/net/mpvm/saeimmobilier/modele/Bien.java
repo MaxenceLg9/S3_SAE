@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class Bien implements Queryable {
+public abstract class Bien implements Queryable {
 
     private int IdBien;
     private String adresse;
@@ -21,8 +21,9 @@ public class Bien implements Queryable {
     private int codePostal;
     private Assurance assurance;
     private float iR; // Taux d'intérêt ou autre valeur
-    private Bien(int IdBien, String ville,int CodePostal,String adresse) {
-        this.IdBien = IdBien;
+
+    Bien(String ville,int CodePostal,String adresse, int idBien) {
+        this.IdBien = idBien;
         this.ville = ville;
         this.codePostal = CodePostal;
         this.adresse = adresse;
@@ -74,46 +75,46 @@ public class Bien implements Queryable {
     public void setiR(float iR) {
         this.iR = iR;
     }
+
     public static List<Bien> findAll() throws BienException {
         List<Bien> biens = new ArrayList<>();
-        String query = "SELECT * FROM bienlouable"; // Assurez-vous que cette table existe dans votre BDD.
+        String query = "SELECT * FROM bien"; // Assurez-vous que cette table existe dans votre BDD.
         try (Connection connection = BD.getConnection(true);
              PreparedStatement statement = connection.prepareStatement(query)) {
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
-                Bien bien = new Bien(
-                        rs.getInt("IdBien"),
-                        rs.getString("Ville"),
-                        rs.getInt("CodePostal"),
-                        rs.getString("Adresse")
-                );
-                biens.add(bien);
+                TypeBien.HABITATION.name();
+                switch (TypeBien.valueOf(rs.getString("TypeBien"))){
+                        case TypeBien.HABITATION :
+                            biens.add(new Habitation(rs.getString("Ville"),
+                                    rs.getInt("CodePostal"),
+                                    rs.getString("Adresse"),
+                                    rs.getInt("NombrebPieces"),
+                                    rs.getInt("NumeroFiscal"),
+                                    (Immeuble) rs.getObject("Immeuble"),
+                                    rs.getFloat("Surface")));
+                            break;
+                    case TypeBien.GARAGE :
+                        biens.add(new Garage(rs.getString("Ville"),
+                                rs.getInt("CodePostal"),
+                                rs.getString("Adresse"),
+                                rs.getInt("NombrebPieces"),
+                                rs.getInt("NumeroFiscal"),
+                                (Immeuble) rs.getObject("Immeuble"),
+                                rs.getFloat("Surface")));
+                        break;
+                    case TypeBien.IMMEUBLE:
+                        biens.add(new Immeuble(rs.getString("Ville"),
+                                rs.getInt("CodePostal"),
+                                rs.getString("Adresse")));
+                        break;
+
+                }
             }
         } catch (Exception e) {
             throw new BienException("Erreur lors de la récupération des biens", e);
         }
         return biens;
-    }
-
-    @Override
-    public void save() throws QueryableException {
-    }
-
-    @Override
-    public void modify() throws QueryableException {
-
-    }
-
-    public void delete() throws QueryableException {
-        String query = "DELETE FROM bienlouable WHERE IdBienLouable = ?";
-
-        try (Connection connection = BD.getConnection(true);
-             PreparedStatement statement = connection.prepareStatement(query)) {
-            statement.setInt(1, this.IdBien);
-            statement.executeUpdate();
-        } catch (Exception e) {
-            throw new QueryableException("Erreur lors de la suppression du bien");
-        }
     }
 
     public String getTypeBien() {

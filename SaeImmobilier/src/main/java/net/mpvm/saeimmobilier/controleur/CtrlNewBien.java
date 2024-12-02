@@ -77,19 +77,23 @@ public class CtrlNewBien {
             this.comboLocataires.getItems().add(loc);
         }
 
-        this.ListTypeBien.getItems().add(TypeBien.BIEN_LOUABLE);
-        this.ListTypeBien.getItems().add(TypeBien.IMMEUBLE);
-        this.ListTypeBien.setValue(TypeBien.BIEN_LOUABLE);
+        for (TypeBien b : TypeBien.values()){
+            this.ListTypeBien.getItems().add(b);
+        }
 
         this.ListTypeBien.setOnAction(actionEvent -> {
             if(this.ListTypeBien.getValue()==TypeBien.IMMEUBLE){
                 this.FieldNbPieces.setDisable(true);
                 this.FieldNumFisc.setDisable(true);
                 this.FieldSurface.setDisable(true);
+                this.listImmeubles.setDisable(true);
+                this.comboLocataires.setDisable(true);
             } else {
                 this.FieldNbPieces.setDisable(false);
                 this.FieldNumFisc.setDisable(false);
                 this.FieldSurface.setDisable(false);
+                this.listImmeubles.setDisable(false);
+                this.comboLocataires.setDisable(true);
             }
         });
 
@@ -111,26 +115,45 @@ public class CtrlNewBien {
 
 
     @FXML
-    public void ajouterBien(ActionEvent actionEvent) throws Queryable.QueryableException {
+    public void ajouterBien(ActionEvent actionEvent) {
         if (fieldsNotEmptyBienLouable()) {
-            if (this.ListTypeBien.getItems().getFirst().getDesignation().equals(TypeBien.BIEN_LOUABLE.getDesignation())) {
-                new BienLouable(this.FieldVille.getText(),
-                        Integer.parseInt(this.FieldCodePostal.getText()),
-                        this.FieldAdresse.getText(),
-                        Integer.parseInt(this.FieldNbPieces.getText()),
-                        Integer.parseInt(this.FieldNumFisc.getText()),
-                        Float.parseFloat(this.FieldSurface.getText()),
-                        this.listImmeubles.getItems().getFirst()).save();
+                try {
+                    switch (this.ListTypeBien.getValue()){
+                        case TypeBien.HABITATION :
+                            new Habitation(this.FieldVille.getText(),
+                                    Integer.parseInt(this.FieldCodePostal.getText()),
+                                    this.FieldAdresse.getText(),
+                                    Integer.parseInt(this.FieldNbPieces.getText()),
+                                    Integer.parseInt(this.FieldNumFisc.getText()),
+                                    this.listImmeubles.getItems().getFirst(),
+                                    Float.parseFloat(this.FieldSurface.getText())).save();
+                            break;
 
-            } else {
-                if(fieldsNotEmptyBien()) {
-                    new Immeuble(this.FieldVille.getText(),
-                            Integer.parseInt(this.FieldCodePostal.getText()),
-                            this.FieldAdresse.getText()).save();
+
+                        case TypeBien.GARAGE:
+                            new Garage(this.FieldVille.getText(),
+                                Integer.parseInt(this.FieldCodePostal.getText()),
+                                this.FieldAdresse.getText(),
+                                Integer.parseInt(this.FieldNbPieces.getText()),
+                                Integer.parseInt(this.FieldNumFisc.getText()),
+                                this.listImmeubles.getItems().getFirst(),
+                                Float.parseFloat(this.FieldSurface.getText())).save();
+                            break;
+
+                        case TypeBien.IMMEUBLE:
+                            new Immeuble(this.FieldVille.getText(),
+                                    Integer.parseInt(this.FieldCodePostal.getText()),
+                                    this.FieldAdresse.getText()).save();
+                            break;
+                    }
+
+                } catch (Queryable.QueryableException e) {
+                    e.printStackTrace();
                 }
-            }
+                System.out.print("Bouh ! ");
 
-        } else {
+            }
+        else {
             alertFieldsEmpty();
         }
     }
@@ -145,6 +168,7 @@ public class CtrlNewBien {
         }
         return true;
         }
+
 
     private boolean fieldsNotEmptyBien(){
         for (int i = 0; i < 3; i++) {

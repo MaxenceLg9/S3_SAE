@@ -1,3 +1,6 @@
+CREATE DATABASE bdImmo;
+Use bdImmo;
+
 CREATE TABLE Locataire(
                           Id_Locataire INT auto_increment,
                           Nom VARCHAR(50),
@@ -63,12 +66,11 @@ CREATE TABLE Bien(
                             Adresse VARCHAR(50),
                             Ville VARCHAR(50),
                             CodePostal CHAR(5),
-                            TypeBien VARCHAR(50),
+                            TypeBien VARCHAR(20),
                             Surface DOUBLE,
                             NombrePieces INT,
                             NumeroFiscal VARCHAR(50),
                             DateAjout DATE,
-                            TypeBien varchar(20),
                             Id_Assurance INT NOT NULL,
                             Id_Propriétaire INT NOT NULL,
                             PRIMARY KEY(IdBien),
