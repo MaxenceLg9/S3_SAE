@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import net.mpvm.saeimmobilier.sql.Query.QueryElement;
+import net.mpvm.saeimmobilier.sql.Query.SelectQueryElement;
 import net.mpvm.saeimmobilier.sql.Query.UpdateQueryElement;
 
 public class Proprietaire {
