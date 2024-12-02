@@ -1,11 +1,10 @@
 package net.mpvm.saeimmobilier.modele;
-import net.mpvm.saeimmobilier.sql.Connection.BD;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class Immeuble extends Bien{
 	private int idImmeuble;
@@ -49,31 +48,16 @@ public class Immeuble extends Bien{
 	public void setTravauxAssocies(List<Travaux> travauxAssocies) {
 		this.travauxAssocies = travauxAssocies;
 	}
+	static Immeuble mapResultSetToImmeuble(ResultSet resultSet) throws SQLException, SQLException {
+		int idImmeuble = resultSet.getInt("IdBien"); // Si IdBien correspond à l'identifiant unique de l'immeuble
+		String ville = resultSet.getString("Ville");
+		int codePostal = resultSet.getInt("CodePostal");
+		String adresse = resultSet.getString("Adresse");
 
-	public List<BienLouable> getBiensAssocies() throws BienException {
-		String query = "SELECT * FROM BienLouable WHERE IdImmeuble = ?";
-		try (Connection connection = BD.getConnection();
-			 PreparedStatement statement = connection.prepareStatement(query)) {
-			statement.setInt(1, this.idImmeuble);
-			ResultSet rs = statement.executeQuery();
-			while (rs.next()) {
-				BienLouable bien = new BienLouable(
-						rs.getString("Ville"),
-						rs.getInt("CodePostal"),
-						rs.getString("Adresse"),
-						rs.getInt("IdBienLouable"),
-						rs.getInt("NbPieces"),
-						rs.getInt("NumeroFiscal"),
-						null, // Vous pouvez ajouter l'immeuble actuel
-						rs.getFloat("Surface")
-				);
-				biensAssocies.add(bien);
-			}
-		} catch (Exception e) {
-			throw new BienException("Erreur lors de la récupération des biens associés", e);
-		}
-		return biensAssocies;
+		return new Immeuble(ville, codePostal, adresse, idImmeuble);
 	}
+
+	// Méthode : récupérer les biens louables d’un immeuble
 	@Override
 	public String toString(){
 		return this.getAdresse() + " " + this.getVille() + ", " + this.getCodePostal();

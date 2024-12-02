@@ -8,7 +8,7 @@ import net.mpvm.saeimmobilier.modele.Proprietaire;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
-public class CtrlAuthentification {
+public class CtrlInscription {
 
     @FXML
     public Button btnValider;

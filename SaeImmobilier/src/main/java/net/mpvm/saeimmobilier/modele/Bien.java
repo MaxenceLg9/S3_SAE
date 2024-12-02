@@ -1,15 +1,21 @@
 package net.mpvm.saeimmobilier.modele;
 
-import net.mpvm.saeimmobilier.sql.Connection.BD;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+
+import net.mpvm.saeimmobilier.sql.QueryElement.QueryElement;
+import static net.mpvm.saeimmobilier.modele.Immeuble.mapResultSetToImmeuble;
 
 
 public class Bien {
+    public static final String INSERT_QUERY = "INSERT INTO Bien (adresse, ville, codePostal, typeBien, surface, nombrePieces) VALUES (?, ?, ?, ?, ?, ?)";
+    public static final String DELETE_QUERY = "DELETE FROM Bien WHERE IdBien = ?";
+    public static final String SELECT_QUERY = "SELECT * FROM Bien";
+
     private int IdBien;
     private String adresse;
     private String ville;
@@ -28,6 +34,10 @@ public class Bien {
         this.codePostal = CodePostal;
         this.adresse = adresse;
     }
+
+
+
+
     public int getIdBien() {
         return IdBien;
     }
@@ -69,38 +79,6 @@ public class Bien {
     public void setiR(float iR) {
         this.iR = iR;
     }
-    public static List<Bien> findAll() throws BienException {
-        List<Bien> biens = new ArrayList<>();
-        String query = "SELECT * FROM Bien"; // Assurez-vous que cette table existe dans votre BDD.
-        try (Connection connection = BD.getConnection(true);
-             PreparedStatement statement = connection.prepareStatement(query)) {
-            ResultSet rs = statement.executeQuery();
-            while (rs.next()) {
-                Bien bien = new Bien(
-                        rs.getInt("IdBien"),
-                        rs.getString("Ville"),
-                        rs.getInt("CodePostal"),
-                        rs.getString("Adresse")
-                );
-                biens.add(bien);
-            }
-        } catch (Exception e) {
-            throw new BienException("Erreur lors de la récupération des biens", e);
-        }
-        return biens;
-    }
-
-    public void delete() throws BienException {
-        String query = "DELETE FROM Bien WHERE IdBien = ?";
-
-        try (Connection connection = BD.getConnection(true);
-             PreparedStatement statement = connection.prepareStatement(query)) {
-            statement.setInt(1, this.IdBien);
-            statement.executeUpdate();
-        } catch (Exception e) {
-            throw new BienException("Erreur lors de la suppression du bien", e);
-        }
-    }
 
     public String getTypeBien() {
         Bien bien = this;
@@ -132,7 +110,60 @@ public class Bien {
             return -1; // Retourner une valeur indiquant que le nombre de pièces n'est pas disponible
         }
     }
+    public static List<Bien> findByImmeuble(int idImmeuble) {
+        String query = "SELECT * FROM Bien WHERE Lieu_Immeuble = ?";
+        try (QueryElement<List<Bien>> queryElement = new QueryElement<>(query, true) {
+            @Override
+            public List<Bien> execute() throws QueryException {
+                List<Bien> biens = new ArrayList<>();
+                try (ResultSet resultSet = getPreparedStatement().executeQuery()) {
+                    while (resultSet.next()) {
+                        Bien bien = mapResultSetToBien(resultSet);
+                        biens.add(bien);
+                    }
+                } catch (SQLException e) {
+                    throw new QueryException("Error executing query", e);
+                }
+                return biens;
+            }
+        }) {
+            queryElement.setArgs(Map.of(1, idImmeuble));
+            return queryElement.execute();
+        } catch (QueryElement.QueryException e) {
+            throw new RuntimeException("Failed to fetch biens for immeuble " + idImmeuble, e);
+        }
+    }
+    public static List<Immeuble> findAllImmeubles() {
+        String query = "SELECT * FROM Bien WHERE TypeBien = 'Immeuble'";
+        try (QueryElement<List<Immeuble>> queryElement = new QueryElement<>(query, true) {
+            @Override
+            public List<Immeuble> execute() throws QueryException {
+                List<Immeuble> immeubles = new ArrayList<>();
+                try (ResultSet resultSet = getPreparedStatement().executeQuery()) {
+                    while (resultSet.next()) {
+                        ResultSet ResultSet = null;
+                        Immeuble immeuble = mapResultSetToImmeuble(ResultSet);
+                        immeubles.add(immeuble);
+                    }
+                } catch (SQLException e) {
+                    throw new QueryException("Error executing query", e);
+                }
+                return immeubles;
+            }
+        }) {
+            return queryElement.execute();
+        } catch (QueryElement.QueryException e) {
+            throw new RuntimeException("Failed to fetch immeubles", e);
+        }
+    }
+    private static Bien mapResultSetToBien(ResultSet resultSet) throws SQLException {
+        int idBien = resultSet.getInt("IdBien");
+        String ville = resultSet.getString("Ville");
+        int codePostal = resultSet.getInt("CodePostal");
+        String adresse = resultSet.getString("Adresse");
 
+        return new Bien(idBien, ville, codePostal, adresse);
+    }
 
 
 
