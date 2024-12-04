@@ -6,14 +6,15 @@ import net.mpvm.saeimmobilier.sql.Query.Queryable;
 import net.mpvm.saeimmobilier.sql.Query.UpdateQueryElement;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Map;
 
 public abstract class BienLouable extends Bien {
 
-	public static final String INSERT_QUERY = "INSERT INTO bienlouable (Lieu_Immeuble, Adresse, Ville, CodePostal, TypeBien, Surface, NombrePieces, NumeroFiscal, DateAjout) VALUES (?, ?, ?, ?, ?,?,?,?,?)";
-	public static final String SELECT_QUERY = "SELECT * FROM bienlouable";
-	public static final String DELETE_QUERY = "DELETE FROM bienlouable WHERE idBienLouable = ?";
-	public static final String UPDATE_QUERY = "UPDATE bienlouable SET Lieu_Immeuble = ?, Adresse = ?, Ville = ?, CodePostal = ?, TypeBien = ?, Surface = ?, NombrePieces = ? , NumeroFiscal = ? , DateAjout = ?";
+	public static final String INSERT_QUERY = "INSERT INTO bien (Lieu_Immeuble, Adresse, Ville, CodePostal, TypeBien, Surface, NombrePieces, NumeroFiscal, DateAjout) VALUES (?, ?, ?, ?, ?,?,?,?,?)";
+	public static final String SELECT_QUERY = "SELECT * FROM bien";
+	public static final String DELETE_QUERY = "DELETE FROM bien WHERE IdBien = ?";
+	public static final String UPDATE_QUERY = "UPDATE bien SET Lieu_Immeuble = ?, Adresse = ?, Ville = ?, CodePostal = ?, TypeBien = ?, Surface = ?, NombrePieces = ? , NumeroFiscal = ? , DateAjout = ?";
 
 
 	private String lieuImmeuble;
@@ -32,27 +33,27 @@ public abstract class BienLouable extends Bien {
 		return DateAjout;
 	}
 
-	public void setDateAjout(Date dateAjout) {
+	public void setDateAjout(java.sql.Date dateAjout) {
 		DateAjout = dateAjout;
 	}
 
-	private Date DateAjout;
+	private java.sql.Date DateAjout;
 
 
-	BienLouable(String ville, int codePostal, String adresse, int nbPieces, int NumeroFiscal, Immeuble immeuble, float surface, int idBienLouable,Date dateAjout) {// Initialisation des attributs hérités de Bien
+	BienLouable(String ville, int codePostal, String adresse, int nbPieces, String NumeroFiscal, Immeuble immeuble, float surface, int idBienLouable, java.sql.Date dateAjout) {// Initialisation des attributs hérités de Bien
 		super(ville, codePostal, adresse, -1);
 		this.lieuImmeuble = lieuImmeuble;
 		this.immeuble = immeuble;
 		this.surface = surface;
 		this.nbPieces = nbPieces;
 		this.codePostal = codePostal;
-		this.numeroFiscal = numeroFiscal;
+		this.numeroFiscal = NumeroFiscal;
 		this.travaux = new ArrayList<>();
 		this.baux = new ArrayList<>();
 		this.DateAjout = dateAjout;
 	}
 
-	public BienLouable(String ville, int codePostal, String adresse, int nbPieces, int NumeroFiscal, Immeuble immeuble, float surface,Date dateAjout) {
+	public BienLouable(String ville, int codePostal, String adresse, int nbPieces, String NumeroFiscal, Immeuble immeuble, float surface, java.sql.Date dateAjout) {
 		this(ville,codePostal,adresse,nbPieces,NumeroFiscal,immeuble,surface,-1,dateAjout);
 	}
 
@@ -170,11 +171,11 @@ public abstract class BienLouable extends Bien {
 			throw new Queryable.QueryableException("Le bien existe déjà dans la table");
 		try(UpdateQueryElement query = new UpdateQueryElement(INSERT_QUERY, true)){
 			query.setArgs(
-					Map.of(1, this.getLieuImmeuble(),
+					Map.of(1, "A",
 							2, this.getAdresse(),
 							3, this.getVille(),
 							4, this.getCodePostal(),
-							5, this.getTypeBien(),
+							5, this.getTypeBienString(),
 							6, this.getSurface(),
 							7, this.getNbPieces(),
 							8, this.getNumeroFiscal(),

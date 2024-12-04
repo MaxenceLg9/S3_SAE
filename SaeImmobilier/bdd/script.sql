@@ -70,16 +70,15 @@ CREATE TABLE Bien(
                             NombrePieces INT,
                             NumeroFiscal VARCHAR(50),
                             DateAjout DATE,
-                            Id_Assurance INT NOT NULL,
-                            Id_Propriétaire INT NOT NULL,
-                            PRIMARY KEY(IdBien),
-                            FOREIGN KEY(Id_Assurance) REFERENCES Assurance(Id_Assurance),
-                            FOREIGN KEY(Id_Propriétaire) REFERENCES Propriétaire(Id_Propriétaire)
+                            Id_Assurance INT default 0,
+                            Id_Propriétaire INT default 0,
+                            PRIMARY KEY(IdBien)
 );
+
 
 Alter table Bien
 Add constraint check_type_bien
-CHECK ( Bien.TypeBien IN('BienLouable','Immeuble') );
+CHECK ( Bien.TypeBien IN('HABITATION','GARAGE','IMMEUBLE') );
 
 CREATE TABLE Bail(
                      IdBail INT auto_increment,

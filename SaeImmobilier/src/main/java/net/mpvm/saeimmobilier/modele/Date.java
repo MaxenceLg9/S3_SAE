@@ -2,6 +2,7 @@ package net.mpvm.saeimmobilier.modele;
 
 
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
 public class Date {
@@ -135,6 +136,14 @@ public class Date {
 		int mois = currentDate.getMonthValue();
 		int jour = currentDate.getDayOfMonth();
 		return new Date(annee, mois, jour);
+	}
+
+	public long getCurrentDateAsLong() {
+		// Obtenir la date actuelle
+		LocalDate currentDate = LocalDate.now();
+		// Convertir en Instant (à minuit de ce jour-là, par défaut UTC)
+		long epochMillis = currentDate.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli();
+		return epochMillis;
 	}
 
 }

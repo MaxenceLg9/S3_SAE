@@ -44,6 +44,11 @@ public class Immeuble extends Bien{
 		return TypeBien.IMMEUBLE;
 	}
 
+	@Override
+	public String getTypeBienString() {
+		return "IMMEUBLE";
+	}
+
 
 	// Getters et Setters
 
@@ -90,20 +95,20 @@ public class Immeuble extends Bien{
 							rs.getInt("CodePostal"),
 							rs.getString("Adresse"),
 							rs.getInt("NbPieces"),
-							rs.getInt("NumeroFiscal"),
+							rs.getString("NumeroFiscal"),
 							null,
 							rs.getFloat("Surface"),
-							(Date)rs.getObject("DateAjout"));
+							rs.getDate("DateAjout"));
 					biensAssocies.add(bien);
 				}else{
 					bien = new Garage(rs.getString("Ville"),
 							rs.getInt("CodePostal"),
 							rs.getString("Adresse"),
 							rs.getInt("NbPieces"),
-							rs.getInt("NumeroFiscal"),
+							rs.getString("NumeroFiscal"),
 							null,
 							rs.getFloat("Surface"),
-							(Date)rs.getObject("DateAjout"));
+							rs.getDate("DateAjout"));
 					biensAssocies.add(bien);
 				}
 			}

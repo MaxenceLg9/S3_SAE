@@ -91,10 +91,10 @@ public abstract class Bien implements Queryable {
                                     rs.getInt("CodePostal"),
                                     rs.getString("Adresse"),
                                     rs.getInt("NombrebPieces"),
-                                    rs.getInt("NumeroFiscal"),
+                                    rs.getString("NumeroFiscal"),
                                     (Immeuble) rs.getObject("Immeuble"),
                                     rs.getFloat("Surface"),
-                                    (Date)rs.getObject("DateAjout"))
+                                    rs.getDate("DateAjout"))
                                     );
                             break;
                     case TypeBien.GARAGE :
@@ -102,10 +102,10 @@ public abstract class Bien implements Queryable {
                                 rs.getInt("CodePostal"),
                                 rs.getString("Adresse"),
                                 rs.getInt("NombrebPieces"),
-                                rs.getInt("NumeroFiscal"),
+                                rs.getString("NumeroFiscal"),
                                 (Immeuble) rs.getObject("Immeuble"),
                                 rs.getFloat("Surface"),
-                                (Date)rs.getObject("DateAjout")));
+                                rs.getDate("DateAjout")));
                         break;
                     case TypeBien.IMMEUBLE:
                         biens.add(new Immeuble(rs.getString("Ville"),
@@ -122,6 +122,7 @@ public abstract class Bien implements Queryable {
     }
 
     public abstract TypeBien getTypeBien();
+    public abstract String getTypeBienString();
 
     public float getSurface() {
         Bien bien = this;

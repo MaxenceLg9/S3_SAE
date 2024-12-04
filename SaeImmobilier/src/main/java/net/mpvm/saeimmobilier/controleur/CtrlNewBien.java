@@ -24,6 +24,8 @@ public class CtrlNewBien {
     @FXML
     private ChoiceBox<Immeuble> listImmeubles;
 
+    private java.sql.Date datesql;
+
     @FXML
     private Label LabelDate;
     @FXML
@@ -50,6 +52,7 @@ public class CtrlNewBien {
     @FXML
     public void initialize() {
         this.currentDate = new Date(1,1,1);
+        this.datesql = new java.sql.Date(currentDate.getCurrentDateAsLong());
         fieldsetup();
 
         LocalDate currentDate = LocalDate.now();
@@ -127,9 +130,9 @@ public class CtrlNewBien {
                                     Integer.parseInt(this.FieldCodePostal.getText()),
                                     this.FieldAdresse.getText(),
                                     Integer.parseInt(this.FieldNbPieces.getText()),
-                                    Integer.parseInt(this.FieldNumFisc.getText()),
+                                    this.FieldNumFisc.getText(),
                                     this.listImmeubles.getItems().getFirst(),
-                                    Float.parseFloat(this.FieldSurface.getText()),this.currentDate.getCurrentDate()).save();
+                                    Float.parseFloat(this.FieldSurface.getText()),this.datesql).save();
                             break;
 
 
@@ -138,9 +141,9 @@ public class CtrlNewBien {
                                 Integer.parseInt(this.FieldCodePostal.getText()),
                                 this.FieldAdresse.getText(),
                                 Integer.parseInt(this.FieldNbPieces.getText()),
-                                Integer.parseInt(this.FieldNumFisc.getText()),
+                                this.FieldNumFisc.getText(),
                                 this.listImmeubles.getItems().getFirst(),
-                                Float.parseFloat(this.FieldSurface.getText()), this.currentDate.getCurrentDate()).save();
+                                Float.parseFloat(this.FieldSurface.getText()), this.datesql).save();
                             break;
 
                         case TypeBien.IMMEUBLE:
