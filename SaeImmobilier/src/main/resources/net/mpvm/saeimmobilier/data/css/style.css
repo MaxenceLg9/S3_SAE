@@ -35,7 +35,7 @@ AnchorPane {
 
 /* GridPane des locataires */
 .locataire-gridpane {
-    -fx-background-color: #2F3061;
+    -fx-background-color: #3E505B;
     -fx-padding: 10;
     -fx-border-color: #ffffff;
     -fx-border-width: 1;
@@ -49,11 +49,25 @@ AnchorPane {
     -fx-font-size: 14;
 }
 .locataire-button{
-    -fx-background-color: #e12816;
+    -fx-background-color: #92140C;
     -fx-border-radius: 5;
     -fx-border-color: #ffffff;
     -fx-font-family: calibri;
     -fx-font-size: 14;
     -fx-text-fill: #ffffff;
 
+}
+
+.button {
+    -fx-font-family: "Arial";
+    -fx-padding: 10px 20px;
+    -fx-cursor: hand;
+    -fx-transition: 0.3s;
+    -fx-background-radius: 20px;
+}
+
+.button:hover {
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+    -fx-opacity: 0.9;
 }

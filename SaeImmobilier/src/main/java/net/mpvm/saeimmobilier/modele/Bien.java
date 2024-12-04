@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import net.mpvm.saeimmobilier.sql.QueryElement.QueryElement;
+import net.mpvm.saeimmobilier.sql.Query.QueryElement;
 import static net.mpvm.saeimmobilier.modele.Immeuble.mapResultSetToImmeuble;
 
 

@@ -57,6 +57,7 @@ public class CtrlViewLocataires {
             telephone.getStyleClass().add("locataire-label");
             sexe.getStyleClass().add("locataire-label");
             button.getStyleClass().add("locataire-button");
+            button.getStyleClass().add("button");
             gp.add(nom, 0, 0);
             gp.add(prenom, 0, 1);
             gp.add(email, 1, 1);
