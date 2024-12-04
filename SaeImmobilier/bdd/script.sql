@@ -1,4 +1,3 @@
-CREATE DATABASE bdImmo;
 Use bdImmo;
 
 CREATE TABLE Locataire(
@@ -239,38 +238,46 @@ CREATE TABLE Immeuble(
 );
 
 
+
 -- Trigger pour calculer TotalCharges dans la table Bail
+DELIMITER //
 CREATE TRIGGER CalculTotalCharges
-    AFTER INSERT ON Bail
-    FOR EACH ROW
+AFTER INSERT ON Bail
+FOR EACH ROW
 BEGIN
     UPDATE Bail
     SET TotalCharges = (
         SELECT IFNULL(SUM(Montant), 0)
         FROM Charges
-        WHERE Bail.IdBail = NEW.IdBail
+        WHERE Charges.IdBail = NEW.IdBail
     )
-    WHERE IdBail = NEW.IdBail;
+    WHERE Bail.IdBail = NEW.IdBail;
 END;
+//
+DELIMITER ;
 
 -- Trigger pour calculer MontantADeclarer dans la table Travaux
+DELIMITER //
 CREATE TRIGGER CalculMontantADeclarer
-    AFTER INSERT ON Travaux
-    FOR EACH ROW
+AFTER INSERT ON Travaux
+FOR EACH ROW
 BEGIN
     UPDATE Travaux
     SET MontantADeclarer = (NEW.Montant - NEW.MontantNonDéductible) * (1 - NEW.Réduction)
     WHERE Travaux.Id_Travaux = NEW.Id_Travaux;
 END;
-
-
+//
+DELIMITER ;
 
 -- Trigger pour calculer TotalPrime dans la table Assurance
+DELIMITER //
 CREATE TRIGGER CalculTotalPrime
-    AFTER INSERT ON Assurance
-    FOR EACH ROW
+AFTER INSERT ON Assurance
+FOR EACH ROW
 BEGIN
     UPDATE Assurance
     SET TotalPrime = NEW.ProtectionJuridique + NEW.Prime
-    WHERE Id_Assurance = NEW.Id_Assurance;
-END ;
+    WHERE Assurance.Id_Assurance = NEW.Id_Assurance;
+END;
+//
+DELIMITER ;

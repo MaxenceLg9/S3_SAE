@@ -10,10 +10,10 @@ import java.util.Map;
 
 public abstract class BienLouable extends Bien {
 
-	public static final String INSERT_QUERY = "INSERT INTO bienLouable (Lieu_Immeuble, Adresse, Ville, CodePostal, TypeBien, Surface, NombrePieces, NumeroFiscal, DateAjout) VALUES (?, ?, ?, ?, ?,?,?,?,?)";
-	public static final String SELECT_QUERY = "SELECT * FROM bienLouable";
-	public static final String DELETE_QUERY = "DELETE FROM bienLouable WHERE idBienLouable = ?";
-	public static final String UPDATE_QUERY = "UPDATE bienLouable SET Lieu_Immeuble = ?, Adresse = ?, Ville = ?, CodePostal = ?, TypeBien = ?, Surface = ?, NombrePieces = ? , NumeroFiscal = ? , DateAjout = ?";
+	public static final String INSERT_QUERY = "INSERT INTO bienlouable (Lieu_Immeuble, Adresse, Ville, CodePostal, TypeBien, Surface, NombrePieces, NumeroFiscal, DateAjout) VALUES (?, ?, ?, ?, ?,?,?,?,?)";
+	public static final String SELECT_QUERY = "SELECT * FROM bienlouable";
+	public static final String DELETE_QUERY = "DELETE FROM bienlouable WHERE idBienLouable = ?";
+	public static final String UPDATE_QUERY = "UPDATE bienlouable SET Lieu_Immeuble = ?, Adresse = ?, Ville = ?, CodePostal = ?, TypeBien = ?, Surface = ?, NombrePieces = ? , NumeroFiscal = ? , DateAjout = ?";
 
 
 	private String lieuImmeuble;
@@ -181,6 +181,7 @@ public abstract class BienLouable extends Bien {
 					)).execute();
 		}
 		catch (QueryElement.QueryException sqlE){
+			sqlE.getCause().printStackTrace();
 			throw new Locataire.LocataireException("Erreur lors de l'ajout du bien");
 		}
 

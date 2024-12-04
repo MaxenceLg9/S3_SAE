@@ -93,7 +93,7 @@ public class CtrlNewBien {
                 this.FieldNumFisc.setDisable(false);
                 this.FieldSurface.setDisable(false);
                 this.listImmeubles.setDisable(false);
-                this.comboLocataires.setDisable(true);
+                this.comboLocataires.setDisable(false);
             }
         });
 
