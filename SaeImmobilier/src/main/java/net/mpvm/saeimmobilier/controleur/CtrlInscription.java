@@ -2,7 +2,9 @@ package net.mpvm.saeimmobilier.controleur;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
+import javafx.scene.layout.GridPane;
 import net.mpvm.saeimmobilier.modele.Proprietaire;
 
 import java.util.ArrayList;

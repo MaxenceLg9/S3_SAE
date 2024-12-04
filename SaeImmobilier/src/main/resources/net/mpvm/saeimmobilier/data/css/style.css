@@ -1,31 +1,59 @@
-#labelTitle{
+/* Style général */
+.root {
+    -fx-primary-color: #0078D7;
+    -fx-secondary-color: #f2f3f6;
+    -fx-grey-color: #b9b9b9;
+    -fx-focus-color: -fx-secondary-color;
+}
+
+/* Fond principal */
+AnchorPane {
+    -fx-background-color: #F9F9F9;
+}
+
+.backgroundColor {
+    -fx-background-color: linear-gradient(to right bottom, #faefb1, #a3e88d);
+}
+
+/* Label de titre */
+#labelTitle {
     -fx-font-size: 18px;
     -fx-font-weight: 800;
 }
 
-AnchorPane{
-    -fx-background-color: #F9F9F9;
-}
-.backgroundColor{
-    -fx-background-color: linear-gradient(to right bottom, #faefb1, #a3e88d);;
-}
-
-* {
-    -fx-secondary-color: #f2f3f6;
-    -fx-grey-color: #b9b9b9;
-
-    -fx-focus-color: -fx-secondary-color;
-}
-
+/* Champs texte */
 .text-field {
     -fx-accent: -fx-primary-color;
     -fx-background-color: -fx-grey-color, white;
     -fx-background-insets: 0, 0 0 1 0;
     -fx-background-radius: 8px;
 }
-.text-field:focused {
 
+.text-field:focused {
+    -fx-border-color: -fx-primary-color;
 }
-.root {
-    -fx-primary-color: #0078D7; /* Exemple de couleur bleue */
+
+/* GridPane des locataires */
+.locataire-gridpane {
+    -fx-background-color: #2F3061;
+    -fx-padding: 10;
+    -fx-border-color: #ffffff;
+    -fx-border-width: 1;
+    -fx-border-radius: 10;
+}
+
+/* Labels des locataires */
+.locataire-label {
+    -fx-text-fill: #ffffff;
+    -fx-font-family: Calibri;
+    -fx-font-size: 14;
+}
+.locataire-button{
+    -fx-background-color: #e12816;
+    -fx-border-radius: 5;
+    -fx-border-color: #ffffff;
+    -fx-font-family: calibri;
+    -fx-font-size: 14;
+    -fx-text-fill: #ffffff;
+
 }
