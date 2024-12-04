@@ -1,3 +1,5 @@
+
+/*
 package net.mpvm.saeimmobilier.controleur;
 
 import javafx.event.ActionEvent;
@@ -261,3 +263,4 @@ public class CtrlNewBien {
 
 }
 
+*/
