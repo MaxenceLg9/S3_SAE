@@ -2,9 +2,9 @@ package net.mpvm.saeimmobilier.tests;
 
 import net.mpvm.saeimmobilier.modele.Locataire;
 import net.mpvm.saeimmobilier.sql.Connection.BD;
-import net.mpvm.saeimmobilier.sql.QueryElement.QueryElement;
-import net.mpvm.saeimmobilier.sql.QueryElement.SelectQueryElement;
-import net.mpvm.saeimmobilier.sql.QueryElement.UpdateQueryElement;
+import net.mpvm.saeimmobilier.sql.Query.QueryElement;
+import net.mpvm.saeimmobilier.sql.Query.SelectQueryElement;
+import net.mpvm.saeimmobilier.sql.Query.UpdateQueryElement;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

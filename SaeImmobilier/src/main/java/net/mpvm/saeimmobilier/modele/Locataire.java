@@ -1,8 +1,9 @@
 package net.mpvm.saeimmobilier.modele;
 
-import net.mpvm.saeimmobilier.sql.QueryElement.QueryElement;
-import net.mpvm.saeimmobilier.sql.QueryElement.SelectQueryElement;
-import net.mpvm.saeimmobilier.sql.QueryElement.UpdateQueryElement;
+import net.mpvm.saeimmobilier.sql.Query.QueryElement;
+import net.mpvm.saeimmobilier.sql.Query.SelectQueryElement;
+import net.mpvm.saeimmobilier.sql.Query.UpdateQueryElement;
+import net.mpvm.saeimmobilier.sql.Query.Queryable;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,11 +11,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class Locataire {
+public class Locataire implements Queryable {
 
 	public static final String INSERT_QUERY = "INSERT INTO Locataire (nom, prenom, email, sexe, telephone) VALUES (?, ?, ?, ?, ?)";
 	public static final String SELECT_QUERY = "SELECT * FROM Locataire";
 	public static final String DELETE_QUERY = "DELETE FROM Locataire WHERE IdLocataire = ?";
+	public static final String UPDATE_QUERY = "UPDATE Locataire SET nom = ?, prenom = ?, email = ?, sexe = ?, telephone = ? WHERE IdLocataire = ?";
 
 	private final int IdLocataire;
 	private char sexe;
@@ -103,38 +105,55 @@ public class Locataire {
 
 
 	public void save() throws LocataireException{
-
-		try{
-			if(this.getIdLocataire() == -1)
-				new UpdateQueryElement(INSERT_QUERY, true)
-						.setArgs(
-								Map.of(1, this.getNom(),
-										2, this.getPrenom(),
-										3, this.getEmail(),
-										4, Character.toString(this.getSexe()),
-										5, this.getTelephone()))
-						.execute();
-			else
-				throw new LocataireException("Le locataire existe déjà dans la table");
-		}
+		if(this.getIdLocataire() != -1)
+			throw new LocataireException("Le locataire existe déjà dans la table");
+		try(UpdateQueryElement query =new UpdateQueryElement(INSERT_QUERY, true)){
+					query.setArgs(
+							Map.of(1, this.getNom(),
+									2, this.getPrenom(),
+									3, this.getEmail(),
+									4, Character.toString(this.getSexe()),
+									5, this.getTelephone()))
+					.execute();
+        }
 		catch (QueryElement.QueryException sqlE){
-			throw new LocataireException("Erreur lors de l'ajout du locataire");
+			throw new LocataireException("Erreur lors de l'ajout du locataire",sqlE);
 		}
 	}
 
 	public void delete() throws LocataireException {
-		try(QueryElement<Integer> query = new UpdateQueryElement(DELETE_QUERY, true).setArgs(Map.of(1,this.getIdLocataire()))){
-			query.execute();
-		}
+		try(UpdateQueryElement query = new UpdateQueryElement(DELETE_QUERY, true)){
+			query.setArgs(Map.of(1,this.getIdLocataire())).execute();
+        }
 		catch (QueryElement.QueryException e) {
 			throw new LocataireException("Erreur lors de la suppression du locataire");
 		}
 	}
 
+	public void modify() throws LocataireException{
+		if(this.getIdLocataire() == -1)
+			throw new LocataireException("Vous ne pouvez pas modifier un locataire qui n'existe pas");
+		try(UpdateQueryElement query = new UpdateQueryElement(UPDATE_QUERY, true)){
+			query.setArgs(
+					Map.of(1, this.getNom(),
+									2, this.getPrenom(),
+									3, this.getEmail(),
+									4, Character.toString(this.getSexe()),
+									5, this.getTelephone(),
+									6, this.getIdLocataire())).execute();
+		}catch(QueryElement.QueryException e){
+			throw new LocataireException("Erreur lors de la modification du locataire");
+		}
+	}
+
+	public String toString(){
+		return "Nom : " + this.getNom() + ", Prenom : " + this.getPrenom() + ", Email : " + this.getEmail();
+	}
+
 	public static List<Locataire> findALl() throws LocataireException {
 		List<Locataire> l = new ArrayList<>();
 
-		try(QueryElement<ResultSet> query = new SelectQueryElement(SELECT_QUERY)) {
+		try(SelectQueryElement query = new SelectQueryElement(SELECT_QUERY)){
 			ResultSet rs = query.execute();
 			while (rs.next()) {
 				l.add(
@@ -149,17 +168,16 @@ public class Locataire {
 		catch (QueryElement.QueryException | SQLException queryException){
 			throw new LocataireException("Erreur lors de la récupération des locataires");
 		}
-        return l;
+		return l;
 	}
 
-	public static class LocataireException extends Exception{
+	public static class LocataireException extends QueryableException{
 		public LocataireException(String message){
 			super(message);
 		}
-	}
-
-	public String toString(){
-		return "Nom : " + this.getNom() + ", Prenom : " + this.getPrenom() + ", Email : " + this.getEmail();
+		public LocataireException(String message, Throwable cause){
+			super(message,cause);
+		}
 	}
 }
 

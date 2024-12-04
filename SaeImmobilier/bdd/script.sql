@@ -1,3 +1,5 @@
+Use bdImmo;
+
 CREATE TABLE Locataire(
                           Id_Locataire INT auto_increment,
                           Nom VARCHAR(50),
@@ -63,12 +65,11 @@ CREATE TABLE Bien(
                             Adresse VARCHAR(50),
                             Ville VARCHAR(50),
                             CodePostal CHAR(5),
-                            TypeBien VARCHAR(50),
+                            TypeBien VARCHAR(20),
                             Surface DOUBLE,
                             NombrePieces INT,
                             NumeroFiscal VARCHAR(50),
                             DateAjout DATE,
-                            TypeBien varchar(20),
                             Id_Assurance INT NOT NULL,
                             Id_Propriétaire INT NOT NULL,
                             PRIMARY KEY(IdBien),
@@ -226,45 +227,57 @@ CREATE TABLE Réaliser(
                          PRIMARY KEY(Id_Travaux, IdBien),
                          FOREIGN KEY(Id_Travaux) REFERENCES Travaux(Id_Travaux),
                          FOREIGN KEY(IdBien) REFERENCES Bien(IdBien)
+                     );
+
+CREATE TABLE Immeuble(
+    idImmeuble INT auto_increment,
+    Adresse VARCHAR(50),
+    Ville VARCHAR(50),
+    CodePostal CHAR(5),
+    PRIMARY KEY (idImmeuble)
 );
 
-DELIMITER $$
+
 
 -- Trigger pour calculer TotalCharges dans la table Bail
+DELIMITER //
 CREATE TRIGGER CalculTotalCharges
-    AFTER INSERT ON Bail
-    FOR EACH ROW
+AFTER INSERT ON Bail
+FOR EACH ROW
 BEGIN
     UPDATE Bail
     SET TotalCharges = (
         SELECT IFNULL(SUM(Montant), 0)
         FROM Charges
-        WHERE Bail.IdBail = NEW.IdBail
+        WHERE Charges.IdBail = NEW.IdBail
     )
-    WHERE IdBail = NEW.IdBail;
-END $$
+    WHERE Bail.IdBail = NEW.IdBail;
+END;
+//
+DELIMITER ;
 
 -- Trigger pour calculer MontantADeclarer dans la table Travaux
+DELIMITER //
 CREATE TRIGGER CalculMontantADeclarer
-    AFTER INSERT ON Travaux
-    FOR EACH ROW
+AFTER INSERT ON Travaux
+FOR EACH ROW
 BEGIN
     UPDATE Travaux
     SET MontantADeclarer = (NEW.Montant - NEW.MontantNonDéductible) * (1 - NEW.Réduction)
     WHERE Travaux.Id_Travaux = NEW.Id_Travaux;
-END $$
-
-
+END;
+//
+DELIMITER ;
 
 -- Trigger pour calculer TotalPrime dans la table Assurance
+DELIMITER //
 CREATE TRIGGER CalculTotalPrime
-    AFTER INSERT ON Assurance
-    FOR EACH ROW
+AFTER INSERT ON Assurance
+FOR EACH ROW
 BEGIN
     UPDATE Assurance
     SET TotalPrime = NEW.ProtectionJuridique + NEW.Prime
-    WHERE Id_Assurance = NEW.Id_Assurance;
-END $$
-
+    WHERE Assurance.Id_Assurance = NEW.Id_Assurance;
+END;
+//
 DELIMITER ;
-

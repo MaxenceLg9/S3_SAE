@@ -1,15 +1,10 @@
 package net.mpvm.saeimmobilier.tests;
 
-import net.mpvm.saeimmobilier.sql.QueryElement.QueryElement;
-import net.mpvm.saeimmobilier.sql.QueryElement.SelectQueryElement;
-import net.mpvm.saeimmobilier.sql.QueryElement.UpdateQueryElement;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import net.mpvm.saeimmobilier.sql.Connection.BD;
