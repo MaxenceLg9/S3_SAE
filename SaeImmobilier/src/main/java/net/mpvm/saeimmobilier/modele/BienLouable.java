@@ -39,7 +39,7 @@ public abstract class BienLouable extends Bien {
 	private Date DateAjout;
 
 
-	BienLouable(String ville, int codePostal, String adresse, int nbPieces, int NumeroFiscal, Immeuble immeuble, float surface, int idBienLouable) {// Initialisation des attributs hérités de Bien
+	BienLouable(String ville, int codePostal, String adresse, int nbPieces, int NumeroFiscal, Immeuble immeuble, float surface, int idBienLouable,Date dateAjout) {// Initialisation des attributs hérités de Bien
 		super(ville, codePostal, adresse, -1);
 		this.lieuImmeuble = lieuImmeuble;
 		this.immeuble = immeuble;
@@ -49,10 +49,11 @@ public abstract class BienLouable extends Bien {
 		this.numeroFiscal = numeroFiscal;
 		this.travaux = new ArrayList<>();
 		this.baux = new ArrayList<>();
+		this.DateAjout = dateAjout;
 	}
 
-	public BienLouable(String ville, int codePostal, String adresse, int nbPieces, int NumeroFiscal, Immeuble immeuble, float surface) {
-		this(ville,codePostal,adresse,nbPieces,NumeroFiscal,immeuble,surface,-1);
+	public BienLouable(String ville, int codePostal, String adresse, int nbPieces, int NumeroFiscal, Immeuble immeuble, float surface,Date dateAjout) {
+		this(ville,codePostal,adresse,nbPieces,NumeroFiscal,immeuble,surface,-1,dateAjout);
 	}
 
 	// Getters et Setters pour tous les champs

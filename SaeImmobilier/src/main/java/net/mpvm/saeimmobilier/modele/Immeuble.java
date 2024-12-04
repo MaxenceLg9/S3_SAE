@@ -39,6 +39,11 @@ public class Immeuble extends Bien{
 		this.travauxAssocies = new ArrayList<>();
 	}
 
+	@Override
+	public TypeBien getTypeBien() {
+		return TypeBien.IMMEUBLE;
+	}
+
 
 	// Getters et Setters
 
@@ -87,7 +92,8 @@ public class Immeuble extends Bien{
 							rs.getInt("NbPieces"),
 							rs.getInt("NumeroFiscal"),
 							null,
-							rs.getFloat("Surface"));
+							rs.getFloat("Surface"),
+							(Date)rs.getObject("DateAjout"));
 					biensAssocies.add(bien);
 				}else{
 					bien = new Garage(rs.getString("Ville"),
@@ -96,7 +102,8 @@ public class Immeuble extends Bien{
 							rs.getInt("NbPieces"),
 							rs.getInt("NumeroFiscal"),
 							null,
-							rs.getFloat("Surface"));
+							rs.getFloat("Surface"),
+							(Date)rs.getObject("DateAjout"));
 					biensAssocies.add(bien);
 				}
 			}

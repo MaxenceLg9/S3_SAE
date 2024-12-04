@@ -44,9 +44,12 @@ public class CtrlNewBien {
     private List<TextField> fieldsLogement;
 
 
+    private Date currentDate;
+
 
     @FXML
     public void initialize() {
+        this.currentDate = new Date(1,1,1);
         fieldsetup();
 
         LocalDate currentDate = LocalDate.now();
@@ -126,7 +129,7 @@ public class CtrlNewBien {
                                     Integer.parseInt(this.FieldNbPieces.getText()),
                                     Integer.parseInt(this.FieldNumFisc.getText()),
                                     this.listImmeubles.getItems().getFirst(),
-                                    Float.parseFloat(this.FieldSurface.getText())).save();
+                                    Float.parseFloat(this.FieldSurface.getText()),this.currentDate.getCurrentDate()).save();
                             break;
 
 
@@ -137,7 +140,7 @@ public class CtrlNewBien {
                                 Integer.parseInt(this.FieldNbPieces.getText()),
                                 Integer.parseInt(this.FieldNumFisc.getText()),
                                 this.listImmeubles.getItems().getFirst(),
-                                Float.parseFloat(this.FieldSurface.getText())).save();
+                                Float.parseFloat(this.FieldSurface.getText()), this.currentDate.getCurrentDate()).save();
                             break;
 
                         case TypeBien.IMMEUBLE:

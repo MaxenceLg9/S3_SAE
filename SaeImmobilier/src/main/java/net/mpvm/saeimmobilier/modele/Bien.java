@@ -22,6 +22,7 @@ public abstract class Bien implements Queryable {
     private Assurance assurance;
     private float iR; // Taux d'intérêt ou autre valeur
 
+
     Bien(String ville,int CodePostal,String adresse, int idBien) {
         this.IdBien = idBien;
         this.ville = ville;
@@ -92,7 +93,9 @@ public abstract class Bien implements Queryable {
                                     rs.getInt("NombrebPieces"),
                                     rs.getInt("NumeroFiscal"),
                                     (Immeuble) rs.getObject("Immeuble"),
-                                    rs.getFloat("Surface")));
+                                    rs.getFloat("Surface"),
+                                    (Date)rs.getObject("DateAjout"))
+                                    );
                             break;
                     case TypeBien.GARAGE :
                         biens.add(new Garage(rs.getString("Ville"),
@@ -101,7 +104,8 @@ public abstract class Bien implements Queryable {
                                 rs.getInt("NombrebPieces"),
                                 rs.getInt("NumeroFiscal"),
                                 (Immeuble) rs.getObject("Immeuble"),
-                                rs.getFloat("Surface")));
+                                rs.getFloat("Surface"),
+                                (Date)rs.getObject("DateAjout")));
                         break;
                     case TypeBien.IMMEUBLE:
                         biens.add(new Immeuble(rs.getString("Ville"),
@@ -117,16 +121,7 @@ public abstract class Bien implements Queryable {
         return biens;
     }
 
-    public String getTypeBien() {
-        Bien bien = this;
-
-        if (bien instanceof BienLouable) {
-            return "Bien Louable"; // Si l'objet est une instance de BienLouable
-        } else {
-            return "Immeuble"; // Si l'objet est une instance de Immeuble
-        }
-    }
-
+    public abstract TypeBien getTypeBien();
 
     public float getSurface() {
         Bien bien = this;

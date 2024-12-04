@@ -1,6 +1,9 @@
 package net.mpvm.saeimmobilier.modele;
 
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 public class Date {
 	private Integer annee;
 	private Integer mois;
@@ -125,4 +128,13 @@ public class Date {
 	public String toString() {
 		return this.dateComplete;
 	}
+
+	public Date getCurrentDate() {
+		LocalDate currentDate = LocalDate.now();
+		int annee = currentDate.getYear();
+		int mois = currentDate.getMonthValue();
+		int jour = currentDate.getDayOfMonth();
+		return new Date(annee, mois, jour);
+	}
+
 }
