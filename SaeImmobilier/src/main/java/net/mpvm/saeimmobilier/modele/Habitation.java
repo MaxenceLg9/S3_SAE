@@ -18,3 +18,4 @@ public class Habitation extends BienLouable {
         super(ville,codePostal,adresse, nbPieces,NumeroFiscal,immeuble,surface,dateAjout);
     }
 }
+

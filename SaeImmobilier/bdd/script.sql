@@ -80,6 +80,27 @@ Alter table Bien
 Add constraint check_type_bien
 CHECK ( Bien.TypeBien IN('HABITATION','GARAGE','IMMEUBLE') );
 
+CREATE TABLE ArchiverBien(
+                     IdBien INT auto_increment,
+                     Lieu_Immeuble VARCHAR(50),
+                     Adresse VARCHAR(50),
+                     Ville VARCHAR(50),
+                     CodePostal CHAR(5),
+                     TypeBien VARCHAR(20),
+                     Surface DOUBLE,
+                     NombrePieces INT,
+                     NumeroFiscal VARCHAR(50),
+                     DateAjout DATE,
+                     Id_Assurance INT NOT NULL,
+                     Id_Propriétaire INT NOT NULL,
+                     PRIMARY KEY(IdBien),
+                     FOREIGN KEY(Id_Assurance) REFERENCES Assurance(Id_Assurance),
+                     FOREIGN KEY(Id_Propriétaire) REFERENCES Propriétaire(Id_Propriétaire)
+);
+
+Alter table ArchiverBien
+Add constraint check_type_bien
+CHECK ( Bien.TypeBien IN('BienLouable','Immeuble') );
 CREATE TABLE Bail(
                      IdBail INT auto_increment,
                      NbMoisLoues INT,

@@ -35,30 +35,37 @@ public class CtrlViewLocataires {
         }
         vBoxContent.getChildren().clear();
         for(Locataire l : locataires.values()) {
-            GridPane gp = new GridPane(1, 1);
+            GridPane gp = new GridPane();
             ColumnConstraints col1 = new ColumnConstraints();
             col1.setPrefWidth(100);
             col1.setMinWidth(20);
-            col1.setHgrow(Priority.SOMETIMES); // 25% for column 1
+            col1.setHgrow(Priority.SOMETIMES);
 
-            gp.getColumnConstraints().addAll(col1,col1);
+            gp.getColumnConstraints().addAll(col1, col1);
 
             Label nom = new Label("Nom : " + l.getNom());
             Label prenom = new Label("Prenom : " + l.getPrenom());
-            Label email = new Label("Email " + l.getEmail());
-            Label telephone = new Label("N° tel." + l.getTelephone());
-            Label sexe = new Label("Sexe :" + l.getSexe());
+            Label email = new Label("Email : " + l.getEmail());
+            Label telephone = new Label("N° tel. : " + l.getTelephone());
+            Label sexe = new Label("Sexe : " + l.getSexe());
             Button button = new Button("Supprimer le locataire");
             button.setOnAction(event -> askForDelete(l.getIdLocataire()));
 
-            gp.add(nom,0,0);
-            gp.add(prenom,0,1);
-            gp.add(email,1,1);
-            gp.add(telephone,1,0);
-            gp.add(sexe,2,2);
+            nom.getStyleClass().add("locataire-label");
+            prenom.getStyleClass().add("locataire-label");
+            email.getStyleClass().add("locataire-label");
+            telephone.getStyleClass().add("locataire-label");
+            sexe.getStyleClass().add("locataire-label");
+            button.getStyleClass().add("locataire-button");
+            button.getStyleClass().add("button");
+            gp.add(nom, 0, 0);
+            gp.add(prenom, 0, 1);
+            gp.add(email, 1, 1);
+            gp.add(telephone, 1, 0);
+            gp.add(sexe, 2, 2);
 
             button.setId(String.valueOf(l.getIdLocataire()));
-            gp.add(button,2,1);
+            gp.add(button, 2, 1);
 
             gp.setAlignment(Pos.TOP_CENTER);
 
@@ -73,14 +80,12 @@ public class CtrlViewLocataires {
             GridPane.setValignment(telephone, VPos.CENTER);
             GridPane.setValignment(sexe, VPos.CENTER);
 
-            gp.setStyle("-fx-background-color: #FFFFFF; -fx-padding: 10; -fx-border-color: #ccc; -fx-border-width: 1;");
-            gp.setHgap(10); // Horizontal gap between columns
-            gp.setVgap(5);  // Vertical gap between rows
+            gp.getStyleClass().add("locataire-gridpane");
+            gp.setHgap(10);
+            gp.setVgap(5);
 
-            // Make sure the GridPane takes the full width of the VBox
             gp.setPrefWidth(Region.USE_COMPUTED_SIZE);
             gp.setMaxWidth(Region.USE_COMPUTED_SIZE);
-            GridPane.setHgrow(gp, Priority.SOMETIMES);
 
             vBoxContent.getChildren().add(gp);
         }
@@ -101,7 +106,7 @@ public class CtrlViewLocataires {
         try {
             locataires.get(id).delete();
         } catch (Locataire.LocataireException e) {
-            //TODO : handle exception with visual
+            // TODO: handle exception with visual
         }
         afficheLocataires();
     }
