@@ -131,9 +131,8 @@ public class Locataire implements Queryable {
 					.execute();
 		}
 		catch (QueryElement.QueryException sqlE){
-			throw new LocataireException("Erreur lors de l'ajout du locataire",sqlE);
+			throw new LocataireException("Erreur lors de l'ajout du locataire",sqlE.getSqlException());
 		}
-
 	}
 
 	public void delete() throws LocataireException {
