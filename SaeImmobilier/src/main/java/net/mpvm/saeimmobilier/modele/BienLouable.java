@@ -2,17 +2,21 @@ package net.mpvm.saeimmobilier.modele;
 
 
 import net.mpvm.saeimmobilier.sql.Query.QueryElement;
-import net.mpvm.saeimmobilier.sql.Query.SelectQueryElement;
+import net.mpvm.saeimmobilier.sql.Query.Queryable;
+import net.mpvm.saeimmobilier.sql.Query.UpdateQueryElement;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Date;
+import java.util.Map;
 
-import static net.mpvm.saeimmobilier.modele.Locataire.SELECT_QUERY;
+public abstract class BienLouable extends Bien {
 
-public class BienLouable extends Bien {
-	private int idBienLouable;
+	public static final String INSERT_QUERY = "INSERT INTO bien (Lieu_Immeuble, Adresse, Ville, CodePostal, TypeBien, Surface, NombrePieces, NumeroFiscal, DateAjout) VALUES (?, ?, ?, ?, ?,?,?,?,?)";
+	public static final String SELECT_QUERY = "SELECT * FROM bien";
+	public static final String DELETE_QUERY = "DELETE FROM bien WHERE IdBien = ?";
+	public static final String UPDATE_QUERY = "UPDATE bien SET Lieu_Immeuble = ?, Adresse = ?, Ville = ?, CodePostal = ?, TypeBien = ?, Surface = ?, NombrePieces = ? , NumeroFiscal = ? , DateAjout = ?";
+
+
 	private String lieuImmeuble;
 	private ArrayList<Travaux> travaux;
 	private ArrayList<Bail> baux;
@@ -25,44 +29,35 @@ public class BienLouable extends Bien {
 	private int nbPieces;
 	private int codePostal;
 
-	private BienLouable(String ville, int codePostal, String adresse,
-                int idBienLouable, int nbPieces, int NumeroFiscal, Immeuble immeuble, float surface) {
-		super( ville, codePostal, adresse); // Initialisation des attributs hérités de Bien
-		this.idBienLouable = idBienLouable;
+	public Date getDateAjout() {
+		return DateAjout;
+	}
+
+	public void setDateAjout(java.sql.Date dateAjout) {
+		DateAjout = dateAjout;
+	}
+
+	private java.sql.Date DateAjout;
+
+
+	BienLouable(String ville, int codePostal, String adresse, int nbPieces, String NumeroFiscal, Immeuble immeuble, float surface, int idBienLouable, java.sql.Date dateAjout) {// Initialisation des attributs hérités de Bien
+		super(ville, codePostal, adresse, -1);
 		this.lieuImmeuble = lieuImmeuble;
 		this.immeuble = immeuble;
 		this.surface = surface;
 		this.nbPieces = nbPieces;
 		this.codePostal = codePostal;
-		this.numeroFiscal = numeroFiscal;
+		this.numeroFiscal = NumeroFiscal;
 		this.travaux = new ArrayList<>();
 		this.baux = new ArrayList<>();
+		this.DateAjout = dateAjout;
 	}
 
-	public BienLouable(String ville, int codePostal, String adresse,int nbPieces, int NumeroFiscal,float surface, Immeuble immeuble) {
-		super(ville, codePostal, adresse); // Utilisation du constructeur de Bien pour initier ville, codePostal, adresse
-		this.lieuImmeuble = lieuImmeuble;
-		this.immeuble = immeuble;
-		this.surface = surface;
-		this.nbPieces = nbPieces;
-		this.codePostal = codePostal;
-		this.numeroFiscal = numeroFiscal;
-		this.travaux = new ArrayList<>();
-		this.baux = new ArrayList<>();
+	public BienLouable(String ville, int codePostal, String adresse, int nbPieces, String NumeroFiscal, Immeuble immeuble, float surface, java.sql.Date dateAjout) {
+		this(ville,codePostal,adresse,nbPieces,NumeroFiscal,immeuble,surface,-1,dateAjout);
 	}
-
-
-
 
 	// Getters et Setters pour tous les champs
-
-	public int getIdBienLouable() {
-		return idBienLouable;
-	}
-
-	public void setIdBienLouable(int idBienLouable) {
-		this.idBienLouable = idBienLouable;
-	}
 
 	public String getLieuImmeuble() {
 		return lieuImmeuble;
@@ -170,4 +165,37 @@ public class BienLouable extends Bien {
 		this.nbPieces = nbPieces;
 	}
 
+	@Override
+	public void save() throws QueryableException {
+		if(this.getIdBien() != -1)
+			throw new Queryable.QueryableException("Le bien existe déjà dans la table");
+		try(UpdateQueryElement query = new UpdateQueryElement(INSERT_QUERY, true)){
+			query.setArgs(
+					Map.of(1, "A",
+							2, this.getAdresse(),
+							3, this.getVille(),
+							4, this.getCodePostal(),
+							5, this.getTypeBienString(),
+							6, this.getSurface(),
+							7, this.getNbPieces(),
+							8, this.getNumeroFiscal(),
+							9, this.getDateAjout()
+					)).execute();
+		}
+		catch (QueryElement.QueryException sqlE){
+			sqlE.getCause().printStackTrace();
+			throw new Locataire.LocataireException("Erreur lors de l'ajout du bien");
+		}
+
+	}
+
+	@Override
+	public void modify() throws QueryableException {
+
+	}
+
+	@Override
+	public void delete() throws QueryableException {
+
+	}
 }

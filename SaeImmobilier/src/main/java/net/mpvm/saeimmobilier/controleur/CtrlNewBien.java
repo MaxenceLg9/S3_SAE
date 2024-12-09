@@ -1,11 +1,8 @@
-
-/*
 package net.mpvm.saeimmobilier.controleur;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import net.mpvm.saeimmobilier.modele.*;
 import net.mpvm.saeimmobilier.sql.Query.Queryable;
@@ -25,6 +22,8 @@ public class CtrlNewBien {
     private ComboBox<Locataire> comboLocataires;
     @FXML
     private ChoiceBox<Immeuble> listImmeubles;
+
+    private java.sql.Date datesql;
 
     @FXML
     private Label LabelDate;
@@ -46,9 +45,13 @@ public class CtrlNewBien {
     private List<TextField> fieldsLogement;
 
 
+    private Date currentDate;
+
 
     @FXML
     public void initialize() {
+        this.currentDate = new Date(1,1,1);
+        this.datesql = new java.sql.Date(currentDate.getCurrentDateAsLong());
         fieldsetup();
 
         LocalDate currentDate = LocalDate.now();
@@ -119,42 +122,42 @@ public class CtrlNewBien {
     @FXML
     public void ajouterBien(ActionEvent actionEvent) {
         if (fieldsNotEmptyBienLouable()) {
-                try {
-                    switch (this.ListTypeBien.getValue()){
-                        case TypeBien.HABITATION :
-                            new Habitation(this.FieldVille.getText(),
-                                    Integer.parseInt(this.FieldCodePostal.getText()),
-                                    this.FieldAdresse.getText(),
-                                    Integer.parseInt(this.FieldNbPieces.getText()),
-                                    Integer.parseInt(this.FieldNumFisc.getText()),
-                                    this.listImmeubles.getItems().getFirst(),
-                                    Float.parseFloat(this.FieldSurface.getText())).save();
-                            break;
-
-
-                        case TypeBien.GARAGE:
-                            new Garage(this.FieldVille.getText(),
+            try {
+                switch (this.ListTypeBien.getValue()){
+                    case TypeBien.HABITATION :
+                        new Habitation(this.FieldVille.getText(),
                                 Integer.parseInt(this.FieldCodePostal.getText()),
                                 this.FieldAdresse.getText(),
                                 Integer.parseInt(this.FieldNbPieces.getText()),
-                                Integer.parseInt(this.FieldNumFisc.getText()),
+                                this.FieldNumFisc.getText(),
                                 this.listImmeubles.getItems().getFirst(),
-                                Float.parseFloat(this.FieldSurface.getText())).save();
-                            break;
+                                Float.parseFloat(this.FieldSurface.getText()),this.datesql).save();
+                        break;
 
-                        case TypeBien.IMMEUBLE:
-                            new Immeuble(this.FieldVille.getText(),
-                                    Integer.parseInt(this.FieldCodePostal.getText()),
-                                    this.FieldAdresse.getText()).save();
-                            break;
-                    }
 
-                } catch (Queryable.QueryableException e) {
-                    e.printStackTrace();
+                    case TypeBien.GARAGE:
+                        new Garage(this.FieldVille.getText(),
+                                Integer.parseInt(this.FieldCodePostal.getText()),
+                                this.FieldAdresse.getText(),
+                                Integer.parseInt(this.FieldNbPieces.getText()),
+                                this.FieldNumFisc.getText(),
+                                this.listImmeubles.getItems().getFirst(),
+                                Float.parseFloat(this.FieldSurface.getText()), this.datesql).save();
+                        break;
+
+                    case TypeBien.IMMEUBLE:
+                        new Immeuble(this.FieldVille.getText(),
+                                Integer.parseInt(this.FieldCodePostal.getText()),
+                                this.FieldAdresse.getText()).save();
+                        break;
                 }
-                System.out.print("Bouh ! ");
 
+            } catch (Queryable.QueryableException e) {
+                e.printStackTrace();
             }
+            System.out.print("Bouh ! ");
+
+        }
         else {
             alertFieldsEmpty();
         }
@@ -169,7 +172,7 @@ public class CtrlNewBien {
             }
         }
         return true;
-        }
+    }
 
 
     private boolean fieldsNotEmptyBien(){
@@ -220,12 +223,40 @@ public class CtrlNewBien {
 
 
     public void Accueil(ActionEvent actionEvent) {
+        try {
+            // Créer une nouvelle fenêtre (Stage)
+            Stage stage = new Stage();
 
+            // Initialiser la fenêtre avec l'utilitaire existant
+            JfxUtil.applicationInit(stage, "accueil.fxml", "Page d'accueil");
+
+            Stage stage2 = (Stage) ((MenuItem) actionEvent.getTarget()).getParentPopup().getOwnerWindow();            // Fermer la fenêtre
+            stage2.close();
+
+            // Afficher la fenêtre
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void Deconnexion(ActionEvent actionEvent) {
+        try {
+            // Créer une nouvelle fenêtre (Stage)
+            Stage stage = new Stage();
+
+            // Initialiser la fenêtre avec l'utilitaire existant
+            JfxUtil.applicationInit(stage, "connexion.fxml", "Ajouter un Locataire");
+
+            Stage stage2 = (Stage) ((MenuItem) actionEvent.getSource()).getParentPopup().getScene().getWindow();
+            // Fermer la fenêtre
+            stage2.close();
+
+            // Afficher la fenêtre
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }
-
-*/
