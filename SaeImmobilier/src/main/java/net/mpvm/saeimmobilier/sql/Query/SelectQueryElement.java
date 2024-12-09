@@ -90,10 +90,10 @@ public final class SelectQueryElement extends QueryElement<ResultSet> {
     }
 
     /**
-    * @return boolean : true if the resultSet is closed && the superclass {@code QueryElement} too, false otherwise
-    * @parameters none
-    * @description check if the SelectQueryElement is closed
-     * @throws net.mpvm.saeimmobilier.sql.Query.QueryElement.QueryException
+     * @return boolean : true if the resultSet is closed && the superclass {@code QueryElement} too, false otherwise
+     * @parameters none
+     * @description check if the SelectQueryElement is closed
+     * @throws SQLException
      */
     public boolean isClosed() throws QueryException {
         try {
