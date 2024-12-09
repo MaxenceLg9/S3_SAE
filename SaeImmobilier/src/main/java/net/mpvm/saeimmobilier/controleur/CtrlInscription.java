@@ -6,6 +6,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import net.mpvm.saeimmobilier.modele.Proprietaire;
+import net.mpvm.saeimmobilier.sql.Query.Queryable;
 
 import java.util.ArrayList;
 import java.util.regex.Pattern;
@@ -114,7 +115,7 @@ public class CtrlInscription {
             if (MDPIdentique()) {
                 try {
                     new Proprietaire(fieldMail.getText(), fieldNewPassword.getText()).save();
-                } catch (Proprietaire.ProprietaireException e) {
+                } catch (Queryable.QueryableException e) {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Erreur");
                     alert.setHeaderText("Erreur lors de la sauvegarde");
