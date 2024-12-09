@@ -4,10 +4,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import net.mpvm.saeimmobilier.modele.Bien;
 import net.mpvm.saeimmobilier.modele.Immeuble;
-import net.mpvm.saeimmobilier.sql.Query.Queryable;
 import net.mpvm.saeimmobilier.vue.VueBiensLouables;
 
 import java.util.List;
@@ -20,12 +18,12 @@ public class CtrlViewImmeubles {
     @FXML
     private GridPane gridPaneImmeubles;
 
-  public void initialize() throws Queryable.QueryableException {
+  public void initialize() throws Bien.BienException {
         // Chargement initial des immeubles
         afficheImmeubles();
     }
 
-    private void afficheImmeubles() throws Queryable.QueryableException {
+    private void afficheImmeubles() throws Bien.BienException {
         List<Immeuble> immeubles = Bien.findAllImmeubles(); // Une méthode spécifique pour les immeubles
         gridPaneImmeubles.getChildren().clear();
 
@@ -38,7 +36,6 @@ public class CtrlViewImmeubles {
 
     private void afficheBiensPourImmeuble(int idImmeuble) {
         // Transition vers la fenêtre "Biens Louables" pour cet immeuble
-        Stage stage = new Stage();
-        new VueBiensLouables().startForImmeuble(stage,idImmeuble);
+        new VueBiensLouables().startForImmeuble(idImmeuble);
     }
 }
