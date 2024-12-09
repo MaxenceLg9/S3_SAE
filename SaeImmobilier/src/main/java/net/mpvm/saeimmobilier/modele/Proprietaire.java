@@ -1,5 +1,7 @@
 package net.mpvm.saeimmobilier.modele;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -195,6 +197,36 @@ import net.mpvm.saeimmobilier.sql.Query.UpdateQueryElement;
 				return false;
 			} catch (QueryElement.QueryException e) {
 				throw new Queryable.QueryableException("Erreur lors de la vérification de l'adresse e-mail : " + e.getMessage());
+			}
+		}
+		public static List<Proprietaire> findALl() throws Proprietaire.ProprietaireException {
+			List<Proprietaire> p = new ArrayList<>();
+
+			try(SelectQueryElement query = new SelectQueryElement(SELECT_QUERY)){
+				ResultSet rs = query.execute();
+				while (rs.next()) {
+					p.add(
+							new Proprietaire(rs.getString("Nom"),
+									rs.getString("Prenom"),
+									rs.getString("Telephone"),
+									rs.getString("Email"),
+									rs.getString("MotDePasse"),
+									rs.getString("Ville"),
+									rs.getString("CodePostal"),
+									rs.getString("Adresse")));
+				}
+			}
+			catch (QueryElement.QueryException | SQLException queryException){
+				throw new Proprietaire.ProprietaireException("Erreur lors de la récupération des propriétaires");
+			}
+			return p;
+		}
+		public static class ProprietaireException extends Queryable.QueryableException {
+			public ProprietaireException(String message){
+				super(message);
+			}
+			public ProprietaireException(String message, Throwable cause){
+				super(message,cause);
 			}
 		}
 	}
