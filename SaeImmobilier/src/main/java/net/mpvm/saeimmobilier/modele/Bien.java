@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 public abstract class Bien implements Queryable {
@@ -36,7 +37,7 @@ public abstract class Bien implements Queryable {
         this.adresse = adresse;
     }
 
-    public static List<Immeuble> findAllImmeubles() throws Queryable.QueryableException {
+    public static List<Immeuble> findAllImmeubles() throws QueryableException {
         List<Immeuble> immeubles = new ArrayList<>();
         String query = "SELECT * FROM bien WHERE TypeBien = 'IMMEUBLE'";
 
@@ -53,15 +54,15 @@ public abstract class Bien implements Queryable {
                 );
                 immeubles.add(immeuble);
             }
-        } catch (SQLException e) {
-            throw new Queryable.QueryableException("Erreur lors de la récupération des immeubles", e);
+        } catch (Exception e) {
+            throw new QueryableException("Erreur lors de la récupération des immeubles", e);
         }
         return immeubles;
     }
 
     public static List<Bien> findByImmeuble(int idImmeuble) throws Queryable.QueryableException {
         List<Bien> biens = new ArrayList<>();
-        String query = "SELECT * FROM bien WHERE ImmeubleId = ?";
+        String query = "SELECT * FROM bien WHERE Id_Immeuble = ?";
 
         try (Connection connection = BD.getConnection(true);
              PreparedStatement statement = connection.prepareStatement(query)) {
@@ -173,9 +174,11 @@ public abstract class Bien implements Queryable {
              PreparedStatement statement = connection.prepareStatement(query)) {
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
+                TypeBien.HABITATION.name();
                 switch (TypeBien.valueOf(rs.getString("TypeBien"))){
                     case TypeBien.HABITATION :
-                        biens.add(new Habitation(rs.getString("Lieu_Immeuble"),
+                        biens.add(new Habitation(
+                                rs.getString("Lieu_Immeuble"),
                                 rs.getString("Ville"),
                                 rs.getInt("CodePostal"),
                                 rs.getString("Adresse"),
@@ -187,7 +190,8 @@ public abstract class Bien implements Queryable {
                         );
                         break;
                     case TypeBien.GARAGE:
-                        biens.add(new Garage(rs.getString("Lieu_Immeuble"),rs.getString("Ville"),
+                        biens.add(new Garage(
+                                rs.getString("Lieu_Immeuble"),rs.getString("Ville"),
                                 rs.getInt("CodePostal"),
                                 rs.getString("Adresse"),
                                 rs.getInt("NombrebPieces"),

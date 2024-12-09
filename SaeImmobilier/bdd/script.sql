@@ -1,7 +1,3 @@
-DROP DATABASE IF EXISTS bdImmo;
-
-CREATE DATABASE IF NOT EXISTS bdImmo;
-
 Use bdImmo;
 
 CREATE TABLE Locataire(
@@ -103,7 +99,7 @@ CREATE TABLE ArchiverBien(
 );
 
 Alter table ArchiverBien
-Add constraint check_type_bienArchive
+Add constraint check_type_bien
 CHECK ( Bien.TypeBien IN('BienLouable','Immeuble') );
 CREATE TABLE Bail(
                      IdBail INT auto_increment,
@@ -148,8 +144,6 @@ CREATE TABLE ChargesEau(
                            UNIQUE(Id_Charges),
                            FOREIGN KEY(Id_Charges) REFERENCES Charges(Id_Charges)
 );
-
-
 
 CREATE TABLE Paiement(
                          Id_Paiement INT auto_increment,
