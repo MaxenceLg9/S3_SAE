@@ -35,6 +35,94 @@ public abstract class Bien implements Queryable {
         this.codePostal = CodePostal;
         this.adresse = adresse;
     }
+
+    public static List<Immeuble> findAllImmeubles() throws BienException {
+        List<Immeuble> immeubles = new ArrayList<>();
+        String query = "SELECT * FROM bien WHERE TypeBien = 'IMMEUBLE'";
+
+        try (Connection connection = BD.getConnection(true);
+             PreparedStatement statement = connection.prepareStatement(query)) {
+
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                Immeuble immeuble = new Immeuble(
+                        rs.getString("Ville"),
+                        rs.getInt("CodePostal"),
+                        rs.getString("Adresse"),
+                        rs.getInt("IdBien") // Ajout de l'IdBien s'il est nécessaire dans le constructeur
+                );
+                immeubles.add(immeuble);
+            }
+        } catch (Exception e) {
+            throw new BienException("Erreur lors de la récupération des immeubles", e);
+        }
+        return immeubles;
+    }
+
+    public static List<Bien> findByImmeuble(int idImmeuble) throws BienException {
+        List<Bien> biens = new ArrayList<>();
+        String query = "SELECT * FROM bien WHERE ImmeubleId = ?";
+
+        try (Connection connection = BD.getConnection(true);
+             PreparedStatement statement = connection.prepareStatement(query)) {
+
+            // Remplacez le paramètre par l'id de l'immeuble
+            statement.setInt(1, idImmeuble);
+
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                // Identifiez le type de bien et créez l'objet correspondant
+                String typeBien = rs.getString("TypeBien");
+
+                switch (TypeBien.valueOf(typeBien)) {
+                    case HABITATION:
+                        biens.add(new Habitation(
+                                rs.getString("Ville"),
+                                rs.getInt("CodePostal"),
+                                rs.getString("Adresse"),
+                                rs.getInt("NombrePieces"),
+                                rs.getString("NumeroFiscal"),
+                                new Immeuble(rs.getString("Ville"), rs.getInt("CodePostal"), rs.getString("Adresse")), // Exemple d'association avec l'immeuble
+                                rs.getFloat("Surface"),
+                                rs.getDate("DateAjout")
+                        ));
+                        break;
+
+                    case GARAGE:
+                        biens.add(new Garage(
+                                rs.getString("Ville"),
+                                rs.getInt("CodePostal"),
+                                rs.getString("Adresse"),
+                                rs.getInt("NombrePieces"),
+                                rs.getString("NumeroFiscal"),
+                                new Immeuble(rs.getString("Ville"), rs.getInt("CodePostal"), rs.getString("Adresse")), // Exemple d'association avec l'immeuble
+                                rs.getFloat("Surface"),
+                                rs.getDate("DateAjout")
+                        ));
+                        break;
+
+                    case IMMEUBLE:
+                        biens.add(new Immeuble(
+                                rs.getString("Ville"),
+                                rs.getInt("CodePostal"),
+                                rs.getString("Adresse"),
+                                rs.getInt("IdBien")
+                        ));
+                        break;
+
+                    default:
+                        throw new BienException("Type de bien inconnu : " + typeBien, null);
+                }
+            }
+        } catch (Exception e) {
+            throw new BienException("Erreur lors de la récupération des biens pour l'immeuble ID " + idImmeuble, e);
+        }
+
+        return biens;
+    }
+
+
+
     public int getIdBien() {
         return IdBien;
     }
@@ -143,6 +231,8 @@ public abstract class Bien implements Queryable {
             return -1; // Retourner une valeur indiquant que le nombre de pièces n'est pas disponible
         }
     }
+
+
 
 
 

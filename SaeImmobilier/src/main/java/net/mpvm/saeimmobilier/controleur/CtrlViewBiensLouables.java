@@ -18,12 +18,12 @@ public class CtrlViewBiensLouables {
 
     private int idImmeuble;
 
-    public void setIdImmeuble(int idImmeuble) {
+    public void setIdImmeuble(int idImmeuble) throws Bien.BienException {
         this.idImmeuble = idImmeuble;
         afficheBiens();
     }
 
-    private void afficheBiens() {
+    private void afficheBiens() throws Bien.BienException {
         List<Bien> biens = Bien.findByImmeuble(idImmeuble); // Méthode pour filtrer les biens
         gridPaneBiensLouables.getChildren().clear();
 
