@@ -17,7 +17,7 @@ public class Immeuble extends Bien{
 	public static final String SELECT_WHERE_QUERY = "SELECT * FROM immeuble WHERE Adresse = ? AND Ville = ? AND CodePostal = ?";
 	public static final String DELETE_QUERY = "DELETE FROM immeuble WHERE idImmeuble = ?";
 	public static final String UPDATE_QUERY = "UPDATE immeuble SET Adresse = ?, Ville = ?, CodePostal = ?";
-	public static final String SELECT_FROM_BIENLOUABLE = "SELECT * FROM bienlouable";
+	public static final String SELECT_FROM_BIEN = "SELECT * FROM bien";
 
 
 	private int idImmeuble;
@@ -82,7 +82,7 @@ public class Immeuble extends Bien{
 	}
 
 	public List<BienLouable> getBiensAssocies() throws BienException {
-		try (SelectQueryElement query = new SelectQueryElement(SELECT_FROM_BIENLOUABLE)) {
+		try (SelectQueryElement query = new SelectQueryElement(SELECT_FROM_BIEN)) {
 			query.setArgs(Map.of(1, this.idImmeuble));
 			ResultSet rs = query.execute();
 			while (rs.next()) {
