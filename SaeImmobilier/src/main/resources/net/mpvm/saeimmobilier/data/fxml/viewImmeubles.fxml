@@ -10,6 +10,7 @@
         <VBox fx:id="vBoxImmeubles" alignment="TOP_CENTER" spacing="10" style="-fx-background-color: #2b3b50;">
             <children>
                 <Label style="-fx-font-size: 18; -fx-font-weight: bold;" text="Liste des Immeubles" textFill="WHITE" />
+                <!-- Les immeubles seront chargés dynamiquement ici -->
                 <GridPane fx:id="gridPaneImmeubles" hgap="10" vgap="10" />
             </children>
         </VBox>
