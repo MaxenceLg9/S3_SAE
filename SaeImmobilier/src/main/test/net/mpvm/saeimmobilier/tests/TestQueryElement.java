@@ -50,7 +50,7 @@ public class TestQueryElement {
     }
 
     @Test
-    public void     testUpdateQueryBehaviour() throws QueryElement.QueryException, SQLException {
+    public void testUpdateQueryBehaviour() throws QueryElement.QueryException, SQLException {
         updateQueryElement = new UpdateQueryElement(Locataire.INSERT_QUERY, false);
         updateQueryElement.setArgs(Map.of(1, "nom", 2, "prenom", 3, "email", 4, "M", 5, "telephone"));
         updateQueryElement.execute();
@@ -76,7 +76,7 @@ public class TestQueryElement {
     @Test
     public void testExecuteUpdateWithSelectQuery() throws QueryElement.QueryException {
         selectQueryElement = new SelectQueryElement(Locataire.INSERT_QUERY);
-        selectQueryElement.setArgs(Map.of(1, "nom", 2, "prenom", 3, "email", 4, 'M', 5, "telephone"));
+        selectQueryElement.setArgs(Map.of(1, "nom", 2, "prenom", 3, 'M', 4, "telephone", 5, "email"));
         assertThrows(QueryElement.QueryException.class, () -> {
             selectQueryElement.execute();
         });
@@ -94,7 +94,7 @@ public class TestQueryElement {
     public void testUpdateQueryWithTooManyArgs() throws QueryElement.QueryException {
         updateQueryElement = new UpdateQueryElement(Locataire.SELECT_QUERY, false);
         assertThrows(QueryElement.QueryException.class, () -> {
-            updateQueryElement.setArgs(Map.of(1, "nom", 2, "prenom", 3, "email", 4, 'M', 5, "telephone"));
+            updateQueryElement.setArgs(Map.of(1, "nom", 2, "prenom", 3, 'M', 4, "telephone", 5, "email"));
             updateQueryElement.execute();
         });
     }
@@ -103,7 +103,7 @@ public class TestQueryElement {
     public void testSelectQueryWithTooManyArgs() throws QueryElement.QueryException {
         selectQueryElement = new SelectQueryElement(Locataire.SELECT_QUERY);
         assertThrows(QueryElement.QueryException.class, () -> {
-            selectQueryElement.setArgs(Map.of(1, "nom", 2, "prenom", 3, "email", 4, 'M', 5, "telephone"));
+            selectQueryElement.setArgs(Map.of(1, "nom", 2, "prenom", 3, 'M', 4, "telephone", 5, "email"));
             selectQueryElement.execute();
         });
     }
