@@ -14,8 +14,8 @@ public class Habitation extends BienLouable {
     }
 
 
-    public Habitation(String ville, int codePostal, String adresse, int nbPieces, String NumeroFiscal, Immeuble immeuble, float surface, Date dateAjout) {
-        super(ville,codePostal,adresse, nbPieces,NumeroFiscal,immeuble,surface,dateAjout);
+    public Habitation(String lieuImmeuble,String ville, int codePostal, String adresse, int nbPieces, String NumeroFiscal, Immeuble immeuble, float surface, Date dateAjout) {
+        super(lieuImmeuble,ville,codePostal,adresse, nbPieces,NumeroFiscal,immeuble,surface,dateAjout);
     }
 }
 

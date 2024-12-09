@@ -42,7 +42,7 @@ public abstract class BienLouable extends Bien {
 	private java.sql.Date DateAjout;
 
 
-	BienLouable(String ville, int codePostal, String adresse, int nbPieces, String NumeroFiscal, Immeuble immeuble, float surface, int idBienLouable, java.sql.Date dateAjout) {// Initialisation des attributs hérités de Bien
+	BienLouable(String lieuImmeuble, String ville, int codePostal, String adresse, int nbPieces, String NumeroFiscal, Immeuble immeuble, float surface, int idBienLouable, java.sql.Date dateAjout) {// Initialisation des attributs hérités de Bien
 		super(ville, codePostal, adresse, -1);
 		this.lieuImmeuble = lieuImmeuble;
 		this.immeuble = immeuble;
@@ -55,8 +55,8 @@ public abstract class BienLouable extends Bien {
 		this.DateAjout = dateAjout;
 	}
 
-	public BienLouable(String ville, int codePostal, String adresse, int nbPieces, String NumeroFiscal, Immeuble immeuble, float surface, java.sql.Date dateAjout) {
-		this(ville,codePostal,adresse,nbPieces,NumeroFiscal,immeuble,surface,-1,dateAjout);
+	public BienLouable(String lieuImmeuble,String ville, int codePostal, String adresse, int nbPieces, String NumeroFiscal, Immeuble immeuble, float surface, java.sql.Date dateAjout) {
+		this(lieuImmeuble,ville,codePostal,adresse,nbPieces,NumeroFiscal,immeuble,surface,-1,dateAjout);
 	}
 
 	// Getters et Setters pour tous les champs
@@ -173,7 +173,7 @@ public abstract class BienLouable extends Bien {
 			throw new Queryable.QueryableException("Le bien existe déjà !");
 		try(UpdateQueryElement query = new UpdateQueryElement(INSERT_QUERY, true)){
 			query.setArgs(
-					Map.of(1, "A",
+					Map.of(1,this.getLieuImmeuble(),
 							2, this.getAdresse(),
 							3, this.getVille(),
 							4, this.getCodePostal(),
@@ -190,7 +190,7 @@ public abstract class BienLouable extends Bien {
 		}
 		try(UpdateQueryElement query = new UpdateQueryElement(INSERT_QUERY_ARCHIVER, true)){
 			query.setArgs(
-					Map.of(1, "A",
+					Map.of(1, this.getLieuImmeuble(),
 							2, this.getAdresse(),
 							3, this.getVille(),
 							4, this.getCodePostal(),
