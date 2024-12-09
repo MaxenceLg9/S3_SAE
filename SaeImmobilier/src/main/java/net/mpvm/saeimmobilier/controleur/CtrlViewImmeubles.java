@@ -20,12 +20,12 @@ public class CtrlViewImmeubles {
     @FXML
     private GridPane gridPaneImmeubles;
 
-    public void initialize() throws Bien.BienException {
+    public void initialize() throws Queryable.QueryableException {
         // Chargement initial des immeubles
         afficheImmeubles();
     }
 
-    private void afficheImmeubles() throws Bien.BienException {
+    private void afficheImmeubles() throws Queryable.QueryableException {
         List<Immeuble> immeubles = Bien.findAllImmeubles(); // Une méthode spécifique pour les immeubles
         gridPaneImmeubles.getChildren().clear();
 
