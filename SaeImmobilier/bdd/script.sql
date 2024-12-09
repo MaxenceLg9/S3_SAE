@@ -42,6 +42,7 @@ CREATE TABLE ArchiverLocataire(
                           TotalRevenus DOUBLE,
                           PRIMARY KEY(Id_Locataire)
 );
+
 CREATE TABLE Travaux(
                         Id_Travaux INT auto_increment,
                         NumeroFacture VARCHAR(50),

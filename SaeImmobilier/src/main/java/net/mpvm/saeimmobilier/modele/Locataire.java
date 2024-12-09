@@ -133,6 +133,18 @@ public class Locataire implements Queryable {
 		catch (QueryElement.QueryException sqlE){
 			throw new LocataireException("Erreur lors de l'ajout du locataire",sqlE);
 		}
+		try(UpdateQueryElement query =new UpdateQueryElement(INSERT_QUERY_ARCHIVER, true)){
+			query.setArgs(
+							Map.of(1, this.getNom(),
+									2, this.getPrenom(),
+									3, this.getEmail(),
+									4, Character.toString(this.getSexe()),
+									5, this.getTelephone()))
+					.execute();
+		}
+		catch (QueryElement.QueryException sqlE){
+			throw new LocataireException("Erreur lors de l'ajout du locataire",sqlE);
+		}
 	}
 
 	public void delete() throws LocataireException {
