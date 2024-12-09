@@ -19,7 +19,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="732.0" prefWidth="766.0" styleClass="backgroundColor" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/22.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.mpvm.saeimmobilier.controleur.CtrlNewBien">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="732.0" prefWidth="766.0" styleClass="backgroundColor" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.mpvm.saeimmobilier.controleur.CtrlNewBien">
    <center>
       <BorderPane BorderPane.alignment="CENTER">
          <top>
@@ -151,12 +151,12 @@
                         <Insets right="10.0" />
                      </GridPane.margin>
                   </TextField>
-                  <Label fx:id="LieuImmeuble" prefHeight="17.0" prefWidth="206.0" text="Lieu dans l'immeuble :" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="4">
+                  <Label fx:id="LieuImmeuble" prefHeight="17.0" prefWidth="206.0" text="Lieu de l'immeuble :" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="4">
                      <font>
                         <Font size="14.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="FieldLieuImmeuble" minHeight="30.0" promptText="Lieu dans l'immeuble" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+                  <TextField fx:id="FieldLieuImmeuble" minHeight="30.0" promptText="Lieu de l'immeuble" GridPane.columnIndex="2" GridPane.rowIndex="5" />
                </children>
                <opaqueInsets>
                   <Insets />

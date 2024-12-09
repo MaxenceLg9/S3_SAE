@@ -8,7 +8,7 @@ import net.mpvm.saeimmobilier.modele.*;
 import net.mpvm.saeimmobilier.sql.Query.Queryable;
 import net.mpvm.saeimmobilier.util.JfxUtil;
 
-
+import javax.swing.text.html.ImageView;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -222,7 +222,7 @@ public class CtrlNewBien {
             Stage stage = new Stage();
 
             // Initialiser la fenêtre avec l'utilitaire existant
-            JfxUtil.applicationInit(stage, "accueil.fxml", "Page d'accueil",750, 800);
+            JfxUtil.applicationInit(stage, "accueil.fxml", "Page d'accueil");
 
             Stage stage2 = (Stage) ((MenuItem) actionEvent.getTarget()).getParentPopup().getOwnerWindow();            // Fermer la fenêtre
             stage2.close();
@@ -240,7 +240,7 @@ public class CtrlNewBien {
             Stage stage = new Stage();
 
             // Initialiser la fenêtre avec l'utilitaire existant
-            JfxUtil.applicationInit(stage, "connexion.fxml", "Connexion",750, 800);
+            JfxUtil.applicationInit(stage, "connexion.fxml", "Connexion");
 
             Stage stage2 = (Stage) ((MenuItem) actionEvent.getSource()).getParentPopup().getScene().getWindow();
             // Fermer la fenêtre
