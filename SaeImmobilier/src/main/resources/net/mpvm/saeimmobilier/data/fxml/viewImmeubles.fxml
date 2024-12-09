@@ -5,13 +5,13 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.VBox?>
 
-<ScrollPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fitToHeight="true" fitToWidth="true">
+<ScrollPane fitToHeight="true" fitToWidth="true" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <content>
-        <VBox fx:id="vBoxImmeubles" spacing="10" alignment="TOP_CENTER">
+        <VBox fx:id="vBoxImmeubles" alignment="TOP_CENTER" spacing="10" style="-fx-background-color: #2b3b50;">
             <children>
-                <Label text="Liste des Immeubles" style="-fx-font-size: 18; -fx-font-weight: bold;"/>
+                <Label style="-fx-font-size: 18; -fx-font-weight: bold;" text="Liste des Immeubles" textFill="WHITE" />
                 <!-- Les immeubles seront chargés dynamiquement ici -->
-                <GridPane fx:id="gridPaneImmeubles" hgap="10" vgap="10"/>
+                <GridPane fx:id="gridPaneImmeubles" hgap="10" vgap="10" />
             </children>
         </VBox>
     </content>
