@@ -1,3 +1,4 @@
+
 Use bdImmo;
 
 CREATE TABLE Locataire(
@@ -72,9 +73,12 @@ CREATE TABLE Bien(
                             DateAjout DATE,
                             Id_Assurance INT default 0,
                             Id_Propriétaire INT default 0,
+                            Id_Immeuble INT default 0,
                             PRIMARY KEY(IdBien)
 );
-
+alter table bien
+    add constraint bien_immeuble_idImmeuble_fk
+        foreign key (Id_Immeuble) references immeuble (idImmeuble);
 
 Alter table Bien
 Add constraint check_type_bien
@@ -99,8 +103,8 @@ CREATE TABLE ArchiverBien(
 );
 
 Alter table ArchiverBien
-Add constraint check_type_bien
-CHECK ( Bien.TypeBien IN('BienLouable','Immeuble') );
+Add constraint check_type_bienarchive
+CHECK ( ArchiverBien.TypeBien IN('BienLouable','Immeuble') );
 CREATE TABLE Bail(
                      IdBail INT auto_increment,
                      NbMoisLoues INT,

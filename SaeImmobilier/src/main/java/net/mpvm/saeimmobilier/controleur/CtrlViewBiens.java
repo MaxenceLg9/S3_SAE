@@ -9,6 +9,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import net.mpvm.saeimmobilier.modele.Bien;
+import net.mpvm.saeimmobilier.sql.Query.Queryable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,7 +30,7 @@ public class CtrlViewBiens {
     private void afficheBiens() {
         try {
             biens = Bien.findAll().stream().collect(Collectors.toMap(Bien::getIdBien, Function.identity()));
-        } catch (Bien.BienException e) {
+        } catch (Queryable.QueryableException e) {
             biens = new HashMap<>();
         }
         vBoxContent.getChildren().clear();

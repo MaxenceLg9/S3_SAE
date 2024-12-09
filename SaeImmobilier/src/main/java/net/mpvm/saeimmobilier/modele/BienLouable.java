@@ -181,11 +181,13 @@ public abstract class BienLouable extends Bien {
 							6, this.getSurface(),
 							7, this.getNbPieces(),
 							8, this.getNumeroFiscal(),
-							9, this.getDateAjout()
+							9, this.getDateAjout(),
+							10,1
+
 					)).execute();
 		}
 		catch (QueryElement.QueryException sqlE){
-			sqlE.getCause().printStackTrace();
+			sqlE.printStackTrace();
 			throw new Locataire.LocataireException("Erreur lors de l'ajout du bien");
 		}
 		try(UpdateQueryElement query = new UpdateQueryElement(INSERT_QUERY_ARCHIVER, true)){
