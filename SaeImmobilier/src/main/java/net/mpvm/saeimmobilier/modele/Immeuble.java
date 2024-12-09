@@ -93,7 +93,8 @@ public class Immeuble extends Bien{
 			while (rs.next()) {
 				BienLouable bien;
 				if(rs.getString("TypeBien").equals("Habitation")) {
-					bien = new Habitation(rs.getString("Lieu_Immeuble"),
+					bien = new Habitation(
+                            rs.getString("Lieu_Immeuble"),
 							rs.getString("Ville"),
 							rs.getInt("CodePostal"),
 							rs.getString("Adresse"),
@@ -104,7 +105,8 @@ public class Immeuble extends Bien{
 							rs.getDate("DateAjout"));
 					biensAssocies.add(bien);
 				}else{
-					bien = new Garage(rs.getString("Lieu_Immeuble"),
+					bien = new Garage(
+                            rs.getString("Lieu_Immeuble"),
 							rs.getString("Ville"),
 							rs.getInt("CodePostal"),
 							rs.getString("Adresse"),
@@ -126,9 +128,10 @@ public class Immeuble extends Bien{
 		return this.getAdresse() + " " + this.getVille() + ", " + this.getCodePostal();
 	}
 
+
 	@Override
 	public void save() throws QueryableException {
-		if(this.getIdImmeuble() == -1)
+		if(this.getIdImmeuble() != -1)
 			throw new Bien.QueryableException("Le bien existe déjà dans la table");
 		try(UpdateQueryElement q = new UpdateQueryElement(INSERT_QUERY, true)){
 			q.setArgs(

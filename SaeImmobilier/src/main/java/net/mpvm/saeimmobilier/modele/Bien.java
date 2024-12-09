@@ -11,7 +11,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 
 public abstract class Bien implements Queryable {
@@ -37,7 +36,7 @@ public abstract class Bien implements Queryable {
         this.adresse = adresse;
     }
 
-    public static List<Immeuble> findAllImmeubles() throws BienException {
+    public static List<Immeuble> findAllImmeubles() throws Queryable.QueryableException {
         List<Immeuble> immeubles = new ArrayList<>();
         String query = "SELECT * FROM bien WHERE TypeBien = 'IMMEUBLE'";
 
@@ -54,13 +53,13 @@ public abstract class Bien implements Queryable {
                 );
                 immeubles.add(immeuble);
             }
-        } catch (Exception e) {
-            throw new BienException("Erreur lors de la récupération des immeubles", e);
+        } catch (SQLException e) {
+            throw new Queryable.QueryableException("Erreur lors de la récupération des immeubles", e);
         }
         return immeubles;
     }
 
-    public static List<Bien> findByImmeuble(int idImmeuble) throws BienException {
+    public static List<Bien> findByImmeuble(int idImmeuble) throws Queryable.QueryableException {
         List<Bien> biens = new ArrayList<>();
         String query = "SELECT * FROM bien WHERE ImmeubleId = ?";
 
@@ -112,11 +111,11 @@ public abstract class Bien implements Queryable {
                         break;
 
                     default:
-                        throw new BienException("Type de bien inconnu : " + typeBien, null);
+                        throw new Queryable.QueryableException("Type de bien inconnu : " + typeBien, null);
                 }
             }
-        } catch (Exception e) {
-            throw new BienException("Erreur lors de la récupération des biens pour l'immeuble ID " + idImmeuble, e);
+        } catch (SQLException e) {
+            throw new Queryable.QueryableException("Erreur lors de la récupération des biens pour l'immeuble ID " + idImmeuble, e);
         }
 
         return biens;
