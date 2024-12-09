@@ -4,9 +4,16 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import net.mpvm.saeimmobilier.modele.Locataire;
+import net.mpvm.saeimmobilier.modele.Proprietaire;
+import net.mpvm.saeimmobilier.sql.Query.Queryable;
 import net.mpvm.saeimmobilier.util.JfxUtil;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Function;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class CtrlConnexion {
     @FXML
@@ -17,6 +24,8 @@ public class CtrlConnexion {
     private Label welcomeText;
     @FXML
     private Button BtwQuitter;
+
+    private Map<String,Proprietaire> proprietaires;
 
     @FXML
     protected void onHelloButtonClick() {
@@ -53,6 +62,26 @@ public class CtrlConnexion {
         }else if(isPwdNull()){
             alertPwdEmpty();
         } else if (isValidEmail(this.FieldMail.getText())){
+                try {
+                    this.proprietaires = Proprietaire.findALl().stream().filter(proprietaire -> proprietaire.getEmail().equals(this.FieldMail.getText())).collect(Collectors.toMap(Proprietaire::getMotDePasse, Function.identity()));
+                    System.out.println(this.FieldPwd.getText());
+                    for(Proprietaire p : proprietaires.values()) {
+                        System.out.println(this.FieldPwd.getText());
+                        System.out.println(p.getMotDePasse());
+                        if (this.FieldPwd.getText().equals(p.getMotDePasse())){
+                            Stage stage = new Stage();
+                            JfxUtil.applicationInit(stage, "newbien.fxml", "Création d'un bien");
+
+                            Stage stageActu = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
+                            stageActu.close();
+
+                            stage.show();
+                        }
+                        alertIncorrectEmpty();
+                    }
+                } catch (Proprietaire.ProprietaireException e) {
+                    proprietaires = new HashMap<>();
+                }
 
         }else {alertFormatMail();
         }
@@ -111,5 +140,6 @@ public class CtrlConnexion {
         String emailRegex = "^[\\w-\\.]+@[\\w-\\.]+\\.\\w{2,}$";
         return Pattern.matches(emailRegex, email);
     }
+
 
 }
