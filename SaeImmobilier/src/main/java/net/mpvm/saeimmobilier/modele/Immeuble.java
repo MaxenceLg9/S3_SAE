@@ -83,7 +83,7 @@ public class Immeuble extends Bien{
 		this.travauxAssocies = travauxAssocies;
 	}
 
-	public List<BienLouable> getBiensAssocies() throws BienException {
+	public List<BienLouable> getBiensAssocies() throws Queryable.QueryableException {
 		try (SelectQueryElement query = new SelectQueryElement(SELECT_FROM_BIENLOUABLE)) {
 			query.setArgs(Map.of(1, this.idImmeuble));
 			ResultSet rs = query.execute();
@@ -112,8 +112,8 @@ public class Immeuble extends Bien{
 					biensAssocies.add(bien);
 				}
 			}
-		} catch (QueryElement.QueryException | SQLException e) {
-			throw new BienException("Erreur lors de la récupération des biens associés", e);
+		} catch (SQLException | QueryElement.QueryException e) {
+			throw new Queryable.QueryableException("Erreur lors de la récupération des biens associés", e);
 		}
 		return biensAssocies;
 	}
