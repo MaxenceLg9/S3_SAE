@@ -6,6 +6,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import net.mpvm.saeimmobilier.modele.Bien;
 import net.mpvm.saeimmobilier.modele.Immeuble;
+import net.mpvm.saeimmobilier.sql.Query.Queryable;
 import net.mpvm.saeimmobilier.vue.VueBiensLouables;
 
 import java.util.List;
@@ -18,12 +19,12 @@ public class CtrlViewImmeubles {
     @FXML
     private GridPane gridPaneImmeubles;
 
-    public void initialize() throws Bien.BienException {
+    public void initialize() throws Queryable.QueryableException {
         // Chargement initial des immeubles
         afficheImmeubles();
     }
 
-    private void afficheImmeubles() throws Bien.BienException {
+    private void afficheImmeubles() throws Queryable.QueryableException {
         List<Immeuble> immeubles = Bien.findAllImmeubles(); // Une méthode spécifique pour les immeubles
         gridPaneImmeubles.getChildren().clear();
 
