@@ -17,14 +17,12 @@ import java.util.List;
 public class CtrlNewBien {
 
     @FXML
-    private Button btnajouterLocataire;
-    @FXML
-    private ComboBox<Locataire> comboLocataires;
-    @FXML
     private ChoiceBox<Immeuble> listImmeubles;
 
     private java.sql.Date datesql;
 
+    @FXML
+    private TextField FieldLieuImmeuble;
     @FXML
     private Label LabelDate;
     @FXML
@@ -72,15 +70,7 @@ public class CtrlNewBien {
             System.out.println("ChoiceBox listImmeubles is not injected");
         }
 
-        List<Locataire> locataires = null;
-        try {
-            locataires = Locataire.findALl();
-        } catch (Locataire.LocataireException e) {
-            locataires = new ArrayList<>();
-        }
-        for (Locataire loc : locataires) {
-            this.comboLocataires.getItems().add(loc);
-        }
+
 
         for (TypeBien b : TypeBien.values()){
             this.ListTypeBien.getItems().add(b);
@@ -92,13 +82,12 @@ public class CtrlNewBien {
                 this.FieldNumFisc.setDisable(true);
                 this.FieldSurface.setDisable(true);
                 this.listImmeubles.setDisable(true);
-                this.comboLocataires.setDisable(true);
             } else {
                 this.FieldNbPieces.setDisable(false);
                 this.FieldNumFisc.setDisable(false);
                 this.FieldSurface.setDisable(false);
                 this.listImmeubles.setDisable(false);
-                this.comboLocataires.setDisable(false);
+
             }
         });
 
@@ -121,47 +110,54 @@ public class CtrlNewBien {
 
     @FXML
     public void ajouterBien(ActionEvent actionEvent) {
-        if (fieldsNotEmptyBienLouable()) {
-            try {
-                switch (this.ListTypeBien.getValue()){
-                    case TypeBien.HABITATION :
-                        new Habitation(this.FieldVille.getText(),
-                                Integer.parseInt(this.FieldCodePostal.getText()),
-                                this.FieldAdresse.getText(),
-                                Integer.parseInt(this.FieldNbPieces.getText()),
-                                this.FieldNumFisc.getText(),
-                                this.listImmeubles.getItems().getFirst(),
-                                Float.parseFloat(this.FieldSurface.getText()),this.datesql).save();
-                        break;
+                try {
+                    switch (this.ListTypeBien.getValue()) {
+                        case TypeBien.HABITATION:
+                            if (fieldsNotEmptyBienLouable()) {
+                                new Habitation(this.FieldLieuImmeuble.getText(),this.FieldVille.getText(),
+                                        Integer.parseInt(this.FieldCodePostal.getText()),
+                                        this.FieldAdresse.getText(),
+                                        Integer.parseInt(this.FieldNbPieces.getText()),
+                                        this.FieldNumFisc.getText(),
+                                        this.listImmeubles.getItems().getFirst(),
+                                        Float.parseFloat(this.FieldSurface.getText()), this.datesql).save();
+                            }else {
+                                alertFieldsEmptybienLouable();
+                            }
+                            break;
 
 
-                    case TypeBien.GARAGE:
-                        new Garage(this.FieldVille.getText(),
-                                Integer.parseInt(this.FieldCodePostal.getText()),
-                                this.FieldAdresse.getText(),
-                                Integer.parseInt(this.FieldNbPieces.getText()),
-                                this.FieldNumFisc.getText(),
-                                this.listImmeubles.getItems().getFirst(),
-                                Float.parseFloat(this.FieldSurface.getText()), this.datesql).save();
-                        break;
+                        case TypeBien.GARAGE:
+                            if (fieldsNotEmptyBienLouable()) {
+                                new Garage(this.FieldLieuImmeuble.getText(),this.FieldVille.getText(),
+                                        Integer.parseInt(this.FieldCodePostal.getText()),
+                                        this.FieldAdresse.getText(),
+                                        Integer.parseInt(this.FieldNbPieces.getText()),
+                                        this.FieldNumFisc.getText(),
+                                        this.listImmeubles.getItems().getFirst(),
+                                        Float.parseFloat(this.FieldSurface.getText()), this.datesql).save();
+                            } else {
+                                alertFieldsEmptybienLouable();
+                            }
+                            break;
 
-                    case TypeBien.IMMEUBLE:
-                        new Immeuble(this.FieldVille.getText(),
-                                Integer.parseInt(this.FieldCodePostal.getText()),
-                                this.FieldAdresse.getText()).save();
-                        break;
+                        case TypeBien.IMMEUBLE:
+                            if (fieldsNotEmptyImmeuble()){
+                                new Immeuble(this.FieldVille.getText(),
+                                        Integer.parseInt(this.FieldCodePostal.getText()),
+                                        this.FieldAdresse.getText()).save();
+                    }else {
+                                alertFieldsEmpty();
+                            }
+                    break;
+                    }
+
+                } catch (Queryable.QueryableException e) {
+                   e.printStackTrace();
                 }
-
-            } catch (Queryable.QueryableException e) {
-                e.printStackTrace();
-            }
-            System.out.print("Bouh ! ");
-
-        }
-        else {
-            alertFieldsEmpty();
-        }
+                System.out.print("Bouh ! ");
     }
+
 
 
 
@@ -172,10 +168,10 @@ public class CtrlNewBien {
             }
         }
         return true;
-    }
+        }
 
 
-    private boolean fieldsNotEmptyBien(){
+    private boolean fieldsNotEmptyImmeuble(){
         for (int i = 0; i < 3; i++) {
             if (this.fieldsLogement.get(i).getText().isEmpty()) {
                 return false;
@@ -184,34 +180,32 @@ public class CtrlNewBien {
         return true;
     }
 
-    private void alertFieldsEmpty() {
+    private void alertFieldsEmptybienLouable() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Erreur");
         alert.setHeaderText("Champs vides");
-        alert.setContentText("Veuillez remplir tous les champs");
+        alert.setContentText("Veuillez remplir tous les champs pour un bien louable");
+        alert.showAndWait();
+    }
+
+    private void alertFieldsEmpty(){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Erreur");
+        alert.setHeaderText("Champs vides");
+        alert.setContentText("Veuillez remplir tous les champs pour un Immeuble");
+        alert.showAndWait();
+    }
+
+    private void alertTypeEmpty() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Erreur");
+        alert.setHeaderText("Champs vides");
+        alert.setContentText("Veuillez choisir un type de bien !");
         alert.showAndWait();
     }
 
 
-    @FXML
-    public void AddLocataire(ActionEvent actionEvent) {
-        try {
-            // Créer une nouvelle fenêtre (Stage)
-            Stage stage = new Stage();
 
-            // Initialiser la fenêtre avec l'utilitaire existant
-            JfxUtil.applicationInit(stage, "newlocataire.fxml", "Ajouter un Locataire");
-
-            Stage stage2 = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
-            // Fermer la fenêtre
-            stage2.close();
-
-            // Afficher la fenêtre
-            stage.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     @FXML
     public void Annuler(ActionEvent actionEvent) {
@@ -246,7 +240,7 @@ public class CtrlNewBien {
             Stage stage = new Stage();
 
             // Initialiser la fenêtre avec l'utilitaire existant
-            JfxUtil.applicationInit(stage, "connexion.fxml", "Ajouter un Locataire");
+            JfxUtil.applicationInit(stage, "connexion.fxml", "Connexion");
 
             Stage stage2 = (Stage) ((MenuItem) actionEvent.getSource()).getParentPopup().getScene().getWindow();
             // Fermer la fenêtre
@@ -260,3 +254,4 @@ public class CtrlNewBien {
     }
 
 }
+

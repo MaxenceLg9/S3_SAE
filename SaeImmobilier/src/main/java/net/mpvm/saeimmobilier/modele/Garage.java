@@ -16,8 +16,8 @@ public class Garage extends BienLouable {
 	}
 
 
-	public Garage(String ville, int codePostal, String adresse, int nbPieces, String NumeroFiscal, Immeuble immeuble, float surface, Date dateAjout) {
-		super(ville,codePostal,adresse, nbPieces,NumeroFiscal,immeuble,surface,dateAjout);
+	public Garage(String lieuImmeuble,String ville, int codePostal, String adresse, int nbPieces, String NumeroFiscal, Immeuble immeuble, float surface, Date dateAjout) {
+		super(lieuImmeuble,ville,codePostal,adresse, nbPieces,NumeroFiscal,immeuble,surface,dateAjout);
 	}
 
 }

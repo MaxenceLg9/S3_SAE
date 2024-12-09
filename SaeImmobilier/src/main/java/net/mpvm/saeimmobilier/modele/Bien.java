@@ -86,19 +86,20 @@ public abstract class Bien implements Queryable {
             while (rs.next()) {
                 TypeBien.HABITATION.name();
                 switch (TypeBien.valueOf(rs.getString("TypeBien"))){
-                    case TypeBien.HABITATION :
-                        biens.add(new Habitation(rs.getString("Ville"),
-                                rs.getInt("CodePostal"),
-                                rs.getString("Adresse"),
-                                rs.getInt("NombrebPieces"),
-                                rs.getString("NumeroFiscal"),
-                                (Immeuble) rs.getObject("Immeuble"),
-                                rs.getFloat("Surface"),
-                                rs.getDate("DateAjout"))
-                        );
-                        break;
+                        case TypeBien.HABITATION :
+                            biens.add(new Habitation(rs.getString("Lieu_Immeuble"),
+                                            rs.getString("Ville"),
+                                    rs.getInt("CodePostal"),
+                                    rs.getString("Adresse"),
+                                    rs.getInt("NombrebPieces"),
+                                    rs.getString("NumeroFiscal"),
+                                    (Immeuble) rs.getObject("Immeuble"),
+                                    rs.getFloat("Surface"),
+                                    rs.getDate("DateAjout"))
+                                    );
+                            break;
                     case TypeBien.GARAGE :
-                        biens.add(new Garage(rs.getString("Ville"),
+                        biens.add(new Garage(rs.getString("Lieu_Immeuble"),rs.getString("Ville"),
                                 rs.getInt("CodePostal"),
                                 rs.getString("Adresse"),
                                 rs.getInt("NombrebPieces"),
