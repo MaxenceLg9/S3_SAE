@@ -18,7 +18,7 @@ public class CtrlViewBiensLouables {
 
     private int idImmeuble;
 
-    public void setIdImmeuble(int idImmeuble) throws Queryable.QueryableException {
+    public void setIdImmeuble(int idImmeuble) {
         this.idImmeuble = idImmeuble;
         afficheBiens();
     }

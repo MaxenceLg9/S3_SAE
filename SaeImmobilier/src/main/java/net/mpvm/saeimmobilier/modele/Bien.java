@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 public abstract class Bien implements Queryable {
@@ -166,7 +167,6 @@ public abstract class Bien implements Queryable {
     }
 
     public static List<Bien> findAll() throws BienException {
-        //TODO : utiliser les findALl des sous classes
         List<Bien> biens = new ArrayList<>();
         String query = "SELECT * FROM bien"; // Assurez-vous que cette table existe dans votre BDD.
         try (Connection connection = BD.getConnection(true);
@@ -319,9 +319,6 @@ public abstract class Bien implements Queryable {
 
         return biens;
     }
-
-
-
 
 
     // Classe d'exception personnalisée
