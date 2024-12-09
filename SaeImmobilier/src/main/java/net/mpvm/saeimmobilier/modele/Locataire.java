@@ -14,6 +14,8 @@ import java.util.Map;
 public class Locataire implements Queryable {
 
 	public static final String INSERT_QUERY = "INSERT INTO Locataire (nom, prenom, email, sexe, telephone) VALUES (?, ?, ?, ?, ?)";
+	public static final String INSERT_QUERY_ARCHIVER = "INSERT INTO ArchiverLocataire (nom, prenom, email, sexe, telephone) VALUES (?, ?, ?, ?, ?)";
+
 	public static final String SELECT_QUERY = "SELECT * FROM Locataire";
 	public static final String DELETE_QUERY = "DELETE FROM Locataire WHERE IdLocataire = ?";
 	public static final String UPDATE_QUERY = "UPDATE Locataire SET nom = ?, prenom = ?, email = ?, sexe = ?, telephone = ? WHERE IdLocataire = ?";
@@ -116,6 +118,18 @@ public class Locataire implements Queryable {
 									5, this.getTelephone()))
 					.execute();
         }
+		catch (QueryElement.QueryException sqlE){
+			throw new LocataireException("Erreur lors de l'ajout du locataire",sqlE);
+		}
+		try(UpdateQueryElement query =new UpdateQueryElement(INSERT_QUERY_ARCHIVER, true)){
+			query.setArgs(
+							Map.of(1, this.getNom(),
+									2, this.getPrenom(),
+									3, this.getEmail(),
+									4, Character.toString(this.getSexe()),
+									5, this.getTelephone()))
+					.execute();
+		}
 		catch (QueryElement.QueryException sqlE){
 			throw new LocataireException("Erreur lors de l'ajout du locataire",sqlE);
 		}
