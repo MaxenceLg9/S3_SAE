@@ -1,6 +1,5 @@
 package net.mpvm.saeimmobilier.modele;
 
-import net.mpvm.saeimmobilier.sql.Connection.BD;
 import net.mpvm.saeimmobilier.sql.Query.QueryElement;
 import net.mpvm.saeimmobilier.sql.Query.Queryable;
 import net.mpvm.saeimmobilier.sql.Query.UpdateQueryElement;
@@ -11,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 public abstract class Bien implements Queryable {
@@ -61,7 +61,7 @@ public abstract class Bien implements Queryable {
 
     public static List<Bien> findByImmeuble(int idImmeuble) throws Queryable.QueryableException {
         List<Bien> biens = new ArrayList<>();
-        String query = "SELECT * FROM bien WHERE Id_Immeuble = ?";
+        String query = "SELECT * FROM bien WHERE ImmeubleId = ?";
 
         try (Connection connection = BD.getConnection(true);
              PreparedStatement statement = connection.prepareStatement(query)) {
