@@ -21,7 +21,27 @@ CREATE TABLE Locataire(
                           TotalRevenus DOUBLE,
                           PRIMARY KEY(IdLocataire)
 );
-
+CREATE TABLE ArchiverLocataire(
+                          Id_Locataire INT auto_increment,
+                          Nom VARCHAR(50),
+                          Prenom VARCHAR(50),
+                          Sexe CHAR(1),
+                          Telephone CHAR(10),
+                          Email VARCHAR(50),
+                          DateDepart DATE,
+                          MotifDepart VARCHAR(50),
+                          MontantSoldeCompte DOUBLE,
+                          DateNaissance DATE,
+                          LieuNaissance VARCHAR(50),
+                          SituationFamiliale VARCHAR(50),
+                          Employeur VARCHAR(50),
+                          Profession VARCHAR(50),
+                          TypeContrat VARCHAR(4),
+                          RemunerationMensuelle DOUBLE,
+                          AutresRevenus DOUBLE,
+                          TotalRevenus DOUBLE,
+                          PRIMARY KEY(Id_Locataire)
+);
 CREATE TABLE Travaux(
                         Id_Travaux INT auto_increment,
                         NumeroFacture VARCHAR(50),
