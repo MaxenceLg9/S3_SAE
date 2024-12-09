@@ -37,7 +37,7 @@ public abstract class Bien implements Queryable {
         this.adresse = adresse;
     }
 
-    public static List<Immeuble> findAllImmeubles() throws QueryableException {
+    public static List<Immeuble> findAllImmeubles() throws Queryable.QueryableException {
         List<Immeuble> immeubles = new ArrayList<>();
         String query = "SELECT * FROM bien WHERE TypeBien = 'IMMEUBLE'";
 
@@ -54,15 +54,15 @@ public abstract class Bien implements Queryable {
                 );
                 immeubles.add(immeuble);
             }
-        } catch (Exception e) {
-            throw new QueryableException("Erreur lors de la récupération des immeubles", e);
+        } catch (SQLException e) {
+            throw new Queryable.QueryableException("Erreur lors de la récupération des immeubles", e);
         }
         return immeubles;
     }
 
     public static List<Bien> findByImmeuble(int idImmeuble) throws Queryable.QueryableException {
         List<Bien> biens = new ArrayList<>();
-        String query = "SELECT * FROM bien WHERE Id_Immeuble = ?";
+        String query = "SELECT * FROM bien WHERE ImmeubleId = ?";
 
         try (Connection connection = BD.getConnection(true);
              PreparedStatement statement = connection.prepareStatement(query)) {
