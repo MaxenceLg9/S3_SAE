@@ -42,7 +42,7 @@ public abstract class BienLouable extends Bien {
 	private java.sql.Date DateAjout;
 
 
-	BienLouable(String complementAdresse, String ville, int codePostal, String adresse, int nbPieces, String NumeroFiscal, Immeuble immeuble, float surface, int idBienLouable, java.sql.Date dateAjout) {// Initialisation des attributs hérités de Bien
+	BienLouable(String complementAdresse, String ville, int codePostal, String adresse, int nbPieces, String NumeroFiscal, Immeuble immeuble, float surface, java.sql.Date dateAjout, int idBienLouable) {// Initialisation des attributs hérités de Bien
 		super(ville, codePostal, adresse, idBienLouable);
 		this.lieuImmeuble = complementAdresse;
 		this.immeuble = immeuble;
@@ -56,7 +56,7 @@ public abstract class BienLouable extends Bien {
 	}
 
 	public BienLouable(String complementAdresse,String ville, int codePostal, String adresse, int nbPieces, String NumeroFiscal, Immeuble immeuble, float surface, java.sql.Date dateAjout) {
-		this(complementAdresse,ville,codePostal,adresse,nbPieces,NumeroFiscal,immeuble,surface,-1,dateAjout);
+		this(complementAdresse,ville,codePostal,adresse,nbPieces,NumeroFiscal,immeuble,surface,dateAjout, -1);
 	}
 
 	// Getters et Setters pour tous les champs
@@ -181,7 +181,9 @@ public abstract class BienLouable extends Bien {
 							6, this.getSurface(),
 							7, this.getNbPieces(),
 							8, this.getNumeroFiscal(),
-							9, this.getDateAjout()
+							9, this.getDateAjout(),
+							10,1
+
 					)).execute();
 		}
 		catch (QueryElement.QueryException sqlE){
