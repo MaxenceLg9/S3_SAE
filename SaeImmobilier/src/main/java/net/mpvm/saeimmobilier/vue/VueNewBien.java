@@ -17,31 +17,8 @@ public class VueNewBien extends Application {
         stage.setMinHeight(750);
         stage.setHeight(750);
         stage.setWidth(800);
+        stage.setResizable(false);
     }
 
-    public void show() {
-        try {
-            // Charger le fichier FXML associé à la vue
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("newbien.fxml"));
-            Parent root = loader.load();
-
-            // Créer une nouvelle scène avec des dimensions explicites
-            Scene scene = new Scene(root, 1300, 900);
-
-            // Créer et configurer le stage
-            Stage stage = new Stage();
-            stage.setMinWidth(1300);
-            stage.setMinHeight(900);
-
-            stage.setTitle("Ajouter un Bien");
-            stage.setScene(scene);
-
-            // Afficher la fenêtre
-            stage.show();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 }
 
