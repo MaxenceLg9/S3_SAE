@@ -5,7 +5,6 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import net.mpvm.saeimmobilier.modele.Bien;
-import net.mpvm.saeimmobilier.sql.Query.Queryable;
 
 import java.util.List;
 
