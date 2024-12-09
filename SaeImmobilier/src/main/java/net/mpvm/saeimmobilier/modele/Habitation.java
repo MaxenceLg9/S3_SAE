@@ -1,9 +1,21 @@
 package net.mpvm.saeimmobilier.modele;
 
-public class Habitation extends BienLouable {
+import java.sql.Date;
 
-    public Habitation(String ville, int codePostal, String adresse, int nbPieces, int NumeroFiscal, Immeuble immeuble,float surface) {
-        super(ville,codePostal,adresse, nbPieces,NumeroFiscal, surface, immeuble);
+public class Habitation extends BienLouable {
+    @Override
+    public TypeBien getTypeBien() {
+        return TypeBien.HABITATION;
+    }
+
+    @Override
+    public String getTypeBienString() {
+        return "GARAGE";
+    }
+
+
+    public Habitation(String ville, int codePostal, String adresse, int nbPieces, String NumeroFiscal, Immeuble immeuble, float surface, Date dateAjout) {
+        super(ville,codePostal,adresse, nbPieces,NumeroFiscal,immeuble,surface,dateAjout);
     }
 }
 

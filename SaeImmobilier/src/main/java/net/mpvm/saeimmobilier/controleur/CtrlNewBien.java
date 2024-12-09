@@ -1,5 +1,3 @@
-
-/*
 package net.mpvm.saeimmobilier.controleur;
 
 import javafx.event.ActionEvent;
@@ -124,42 +122,42 @@ public class CtrlNewBien {
     @FXML
     public void ajouterBien(ActionEvent actionEvent) {
         if (fieldsNotEmptyBienLouable()) {
-                try {
-                    switch (this.ListTypeBien.getValue()){
-                        case TypeBien.HABITATION :
-                            new Habitation(this.FieldVille.getText(),
-                                    Integer.parseInt(this.FieldCodePostal.getText()),
-                                    this.FieldAdresse.getText(),
-                                    Integer.parseInt(this.FieldNbPieces.getText()),
-                                    this.FieldNumFisc.getText(),
-                                    this.listImmeubles.getItems().getFirst(),
-                                    Float.parseFloat(this.FieldSurface.getText()),this.datesql).save();
-                            break;
+            try {
+                switch (this.ListTypeBien.getValue()){
+                    case TypeBien.HABITATION :
+                        new Habitation(this.FieldVille.getText(),
+                                Integer.parseInt(this.FieldCodePostal.getText()),
+                                this.FieldAdresse.getText(),
+                                Integer.parseInt(this.FieldNbPieces.getText()),
+                                this.FieldNumFisc.getText(),
+                                this.listImmeubles.getItems().getFirst(),
+                                Float.parseFloat(this.FieldSurface.getText()),this.datesql).save();
+                        break;
 
 
-                        case TypeBien.GARAGE:
-                            new Garage(this.FieldVille.getText(),
+                    case TypeBien.GARAGE:
+                        new Garage(this.FieldVille.getText(),
                                 Integer.parseInt(this.FieldCodePostal.getText()),
                                 this.FieldAdresse.getText(),
                                 Integer.parseInt(this.FieldNbPieces.getText()),
                                 this.FieldNumFisc.getText(),
                                 this.listImmeubles.getItems().getFirst(),
                                 Float.parseFloat(this.FieldSurface.getText()), this.datesql).save();
-                            break;
+                        break;
 
-                        case TypeBien.IMMEUBLE:
-                            new Immeuble(this.FieldVille.getText(),
-                                    Integer.parseInt(this.FieldCodePostal.getText()),
-                                    this.FieldAdresse.getText()).save();
-                            break;
-                    }
-
-                } catch (Queryable.QueryableException e) {
-                    e.printStackTrace();
+                    case TypeBien.IMMEUBLE:
+                        new Immeuble(this.FieldVille.getText(),
+                                Integer.parseInt(this.FieldCodePostal.getText()),
+                                this.FieldAdresse.getText()).save();
+                        break;
                 }
-                System.out.print("Bouh ! ");
 
+            } catch (Queryable.QueryableException e) {
+                e.printStackTrace();
             }
+            System.out.print("Bouh ! ");
+
+        }
         else {
             alertFieldsEmpty();
         }
@@ -174,7 +172,7 @@ public class CtrlNewBien {
             }
         }
         return true;
-        }
+    }
 
 
     private boolean fieldsNotEmptyBien(){
@@ -262,5 +260,3 @@ public class CtrlNewBien {
     }
 
 }
-
-*/
