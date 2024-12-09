@@ -312,7 +312,7 @@ DELIMITER ;
 
 -- Trigger pour calculer TotalPrime dans la table Assurance
 DELIMITER //
-CREATE TRIGGER CalculTotalPrime
+/*CREATE TRIGGER CalculTotalPrime
 AFTER INSERT ON Assurance
 FOR EACH ROW
 BEGIN
@@ -320,5 +320,7 @@ BEGIN
     SET TotalPrime = NEW.ProtectionJuridique + NEW.Prime
     WHERE Assurance.Id_Assurance = NEW.Id_Assurance;
 END;
+  */
+
 //
 DELIMITER ;
