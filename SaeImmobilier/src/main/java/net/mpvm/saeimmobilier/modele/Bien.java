@@ -11,7 +11,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 
 public abstract class Bien implements Queryable {
@@ -37,7 +36,7 @@ public abstract class Bien implements Queryable {
         this.adresse = adresse;
     }
 
-    public static List<Immeuble> findAllImmeubles() throws QueryableException {
+    public static List<Immeuble> findAllImmeubles() throws Queryable.QueryableException {
         List<Immeuble> immeubles = new ArrayList<>();
         String query = "SELECT * FROM bien WHERE TypeBien = 'IMMEUBLE'";
 
@@ -54,15 +53,15 @@ public abstract class Bien implements Queryable {
                 );
                 immeubles.add(immeuble);
             }
-        } catch (Exception e) {
-            throw new QueryableException("Erreur lors de la récupération des immeubles", e);
+        } catch (SQLException e) {
+            throw new Queryable.QueryableException("Erreur lors de la récupération des immeubles", e);
         }
         return immeubles;
     }
 
     public static List<Bien> findByImmeuble(int idImmeuble) throws Queryable.QueryableException {
         List<Bien> biens = new ArrayList<>();
-        String query = "SELECT * FROM bien WHERE Id_Immeuble = ?";
+        String query = "SELECT * FROM bien WHERE ImmeubleId = ?";
 
         try (Connection connection = BD.getConnection(true);
              PreparedStatement statement = connection.prepareStatement(query)) {
@@ -112,7 +111,7 @@ public abstract class Bien implements Queryable {
                         break;
 
                     default:
-                        throw new QueryableException("Type de bien inconnu : " + typeBien, null);
+                        throw new Queryable.QueryableException("Type de bien inconnu : " + typeBien, null);
                 }
             }
         } catch (SQLException e) {
@@ -166,7 +165,7 @@ public abstract class Bien implements Queryable {
         this.iR = iR;
     }
 
-    public static List<Bien> findAll() throws QueryableException {
+    public static List<Bien> findAll() throws BienException {
         List<Bien> biens = new ArrayList<>();
         String query = "SELECT * FROM bien"; // Assurez-vous que cette table existe dans votre BDD.
         try (Connection connection = BD.getConnection(true);
@@ -179,7 +178,7 @@ public abstract class Bien implements Queryable {
                         biens.add(new Habitation(rs.getString("Ville"),
                                 rs.getInt("CodePostal"),
                                 rs.getString("Adresse"),
-                                rs.getInt("NombrePieces"),
+                                rs.getInt("NombrebPieces"),
                                 rs.getString("NumeroFiscal"),
                                 (Immeuble) rs.getObject("Immeuble"),
                                 rs.getFloat("Surface"),
@@ -205,7 +204,7 @@ public abstract class Bien implements Queryable {
                 }
             }
         } catch (Exception e) {
-            throw new QueryableException("Erreur lors de la récupération des biens", e);
+            throw new BienException("Erreur lors de la récupération des biens", e);
         }
         return biens;
     }
