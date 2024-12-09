@@ -5,10 +5,8 @@ import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
-import javafx.stage.Stage;
 import net.mpvm.saeimmobilier.modele.Proprietaire;
 import net.mpvm.saeimmobilier.sql.Query.Queryable;
-import net.mpvm.saeimmobilier.util.JfxUtil;
 
 import java.util.ArrayList;
 import java.util.regex.Pattern;
@@ -38,19 +36,6 @@ public class CtrlInscription {
 
     @FXML
     public TextField fieldMail;
-    @FXML
-    public TextField fieldPrenom;
-    @FXML
-    public TextField fieldNom;
-    @FXML
-    public TextField fieldTelephone;
-    @FXML
-    public TextField fieldVille;
-    @FXML
-    public TextField fieldCodePostal;
-    @FXML
-    public TextField fieldAdresse;
-
 
     private ArrayList<TextField> fieldsMDP;
 
@@ -129,7 +114,7 @@ public class CtrlInscription {
 
             if (MDPIdentique()) {
                 try {
-                    new Proprietaire(fieldNom.getText(),fieldPrenom.getText(),fieldTelephone.getText(),fieldMail.getText(), fieldNewPassword.getText(),fieldVille.getText(),fieldCodePostal.getText(),fieldAdresse.getText()).save();
+                    new Proprietaire(fieldMail.getText(), fieldNewPassword.getText()).save();
                 } catch (Queryable.QueryableException e) {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Erreur");
@@ -151,11 +136,13 @@ public class CtrlInscription {
 
     @FXML
     public void Annuler(ActionEvent event) {
-        Stage stage1 = new Stage();
-        JfxUtil.applicationInit(stage1, "accueil.fxml", "Accueil",750, 800);
-        stage1.show();
-        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-        stage.close();
+        // Clear all fields
+        fieldMail.clear();
+        fieldNewPassword.clear();
+        fieldConfirmation.clear();
+        fieldNewPasswordVisible.clear();
+        fieldConfirmationVisible.clear();
+        checkBoxVisibilite.setSelected(false);
     }
 
     private boolean fieldsNotEmpty() {

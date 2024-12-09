@@ -1,7 +1,5 @@
 package net.mpvm.saeimmobilier.modele;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -13,9 +11,9 @@ import net.mpvm.saeimmobilier.sql.Query.SelectQueryElement;
 import net.mpvm.saeimmobilier.sql.Query.UpdateQueryElement;
 
 	public class Proprietaire {
-		public static final String INSERT_QUERY = "INSERT INTO propriétaire (Email,MotDePasse) VALUES (?, ?)";
-		public static final String SELECT_QUERY = "SELECT * FROM propriétaire";
-		public static final String DELETE_QUERY = "DELETE FROM propriétaire WHERE Id_Propriétaire = ?";
+		public static final String INSERT_QUERY = "INSERT INTO Proprietaire (Email,MotDePasse) VALUES (?, ?)";
+		public static final String SELECT_QUERY = "SELECT * FROM Proprietaire";
+		public static final String DELETE_QUERY = "DELETE FROM Proprietaire WHERE IdProprietaire = ?";
 
 		private String Nom;
 		private String Prenom;
@@ -23,7 +21,7 @@ import net.mpvm.saeimmobilier.sql.Query.UpdateQueryElement;
 		private String Email;
 		private String MotDePasse;
 		private String Ville;
-		private String CodePostal;
+		private Integer CodePostal;
 		private String Adresse;
 		private ArrayList<Bien> biensPossedes;
 		private int IdProprietaire;
@@ -57,24 +55,13 @@ import net.mpvm.saeimmobilier.sql.Query.UpdateQueryElement;
 			this.biensPossedes = new ArrayList<>();
 		}
 
-		public Proprietaire(String nom, String Prenom, String Telephone,String Email,String MotDePasse, String Ville,String CodePostal, String Adresse) throws IllegalArgumentException {
-			this.Nom = nom;
-			this.Prenom = Prenom;
-			this.Telephone = Telephone;
-			this.Email = Email;
-			this.MotDePasse = MotDePasse;
-			this.Ville = Ville;
-			this.CodePostal = CodePostal;
-			this.Adresse = Adresse;
-		}
-
 		// Getters et setters pour les propriétés
 
 		public String getAdresse() {
 			return this.Adresse;
 		}
 
-		public String getCodePostal() {
+		public Integer getCodePostal() {
 			return this.CodePostal;
 		}
 
@@ -106,7 +93,7 @@ import net.mpvm.saeimmobilier.sql.Query.UpdateQueryElement;
 			this.Adresse = adresse;
 		}
 
-		public void setCodePostal(String codePostal) {
+		public void setCodePostal(Integer codePostal) {
 			this.CodePostal = codePostal;
 		}
 
@@ -166,7 +153,9 @@ import net.mpvm.saeimmobilier.sql.Query.UpdateQueryElement;
 		public void save() throws Queryable.QueryableException {
 			if (this.getIdProprietaire() == -1)
 				throw new Queryable.QueryableException("Le propriétaire exite déjà !");
-
+			if (emailAlreadyExists(this.getEmail())) {
+				throw new Queryable.QueryableException("Cette adresse e-mail est déjà utilisée.");
+			}
 			try (UpdateQueryElement query = new UpdateQueryElement(INSERT_QUERY, true)) {
 				query.setArgs(
 								Map.of(
@@ -190,44 +179,13 @@ import net.mpvm.saeimmobilier.sql.Query.UpdateQueryElement;
 				List<Map<String, Object>> results = (List<Map<String, Object>>) queryElement.execute();
 				if (!results.isEmpty()) {
 					// Récupération du champ "count" dans le premier résultat
-					int count = (int) results.getFirst().get("count");
+					int count = (int) results.get(0).get("count");
 					return count > 0;
 				}
 
 				return false;
 			} catch (QueryElement.QueryException e) {
 				throw new Queryable.QueryableException("Erreur lors de la vérification de l'adresse e-mail : " + e.getMessage());
-			}
-		}
-		public static List<Proprietaire> findALl() throws Proprietaire.ProprietaireException {
-			List<Proprietaire> p = new ArrayList<>();
-
-			try(SelectQueryElement query = new SelectQueryElement(SELECT_QUERY)){
-				ResultSet rs = query.execute();
-				while (rs.next()) {
-					p.add(
-							new Proprietaire(rs.getString("Nom"),
-									rs.getString("Prenom"),
-									rs.getString("Telephone"),
-									rs.getString("Email"),
-									rs.getString("MotDePasse"),
-									rs.getString("Ville"),
-									rs.getString("CodePostal"),
-									rs.getString("Adresse")));
-				}
-			}
-			catch (QueryElement.QueryException | SQLException queryException){
-				throw new Proprietaire.ProprietaireException("Erreur lors de la récupération des propriétaires");
-			}
-			System.out.println("fin");
-			return p;
-		}
-		public static class ProprietaireException extends Queryable.QueryableException {
-			public ProprietaireException(String message){
-				super(message);
-			}
-			public ProprietaireException(String message, Throwable cause){
-				super(message,cause);
 			}
 		}
 	}

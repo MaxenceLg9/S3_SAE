@@ -1,8 +1,16 @@
 .backgroundColor {
-    -fx-background-color: linear-gradient(to right bottom, #33435c, #1e2d3e);
+    -fx-background-color: linear-gradient(to right bottom, #2b3b50, #212f40);
 }
+
+/* Label de titre */
+#labelTitle {
+    -fx-font-size: 18px;
+    -fx-font-weight: 800;
+}
+
 /* Champs texte */
 .text-field {
+
     -fx-background-insets: 0, 0 0 1 0;
     -fx-background-radius: 8px;
 }
