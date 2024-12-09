@@ -3,7 +3,6 @@ package net.mpvm.saeimmobilier.controleur;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import net.mpvm.saeimmobilier.modele.*;
 import net.mpvm.saeimmobilier.sql.Query.Queryable;
@@ -224,10 +223,40 @@ public class CtrlNewBien {
 
 
     public void Accueil(ActionEvent actionEvent) {
+        try {
+            // Créer une nouvelle fenêtre (Stage)
+            Stage stage = new Stage();
 
+            // Initialiser la fenêtre avec l'utilitaire existant
+            JfxUtil.applicationInit(stage, "accueil.fxml", "Page d'accueil");
+
+            Stage stage2 = (Stage) ((MenuItem) actionEvent.getTarget()).getParentPopup().getOwnerWindow();            // Fermer la fenêtre
+            stage2.close();
+
+            // Afficher la fenêtre
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void Deconnexion(ActionEvent actionEvent) {
+        try {
+            // Créer une nouvelle fenêtre (Stage)
+            Stage stage = new Stage();
+
+            // Initialiser la fenêtre avec l'utilitaire existant
+            JfxUtil.applicationInit(stage, "connexion.fxml", "Ajouter un Locataire");
+
+            Stage stage2 = (Stage) ((MenuItem) actionEvent.getSource()).getParentPopup().getScene().getWindow();
+            // Fermer la fenêtre
+            stage2.close();
+
+            // Afficher la fenêtre
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

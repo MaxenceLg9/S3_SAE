@@ -19,6 +19,7 @@ public class CtrlAccueil {
     private Button btnInscription;
 
     public void Quitter(ActionEvent actionEvent) {
+        System.exit(0);
     }
 
     public void Inscription(ActionEvent actionEvent) {
