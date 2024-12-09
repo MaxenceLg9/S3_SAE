@@ -30,7 +30,7 @@ public class CtrlViewBiens {
     private void afficheBiens() {
         try {
             biens = Bien.findAll().stream().collect(Collectors.toMap(Bien::getIdBien, Function.identity()));
-        } catch (Queryable.QueryableException e) {
+        } catch (Bien.BienException e) {
             biens = new HashMap<>();
         }
         vBoxContent.getChildren().clear();
