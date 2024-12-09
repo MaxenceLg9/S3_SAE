@@ -18,12 +18,12 @@ public class CtrlViewImmeubles {
     @FXML
     private GridPane gridPaneImmeubles;
 
-    public void initialize() {
+  /*  public void initialize() {
         // Chargement initial des immeubles
         afficheImmeubles();
-    }
+    }*/
 
-    private void afficheImmeubles() {
+   /* private void afficheImmeubles() {
         List<Immeuble> immeubles = Bien.findAllImmeubles(); // Une méthode spécifique pour les immeubles
         gridPaneImmeubles.getChildren().clear();
 
@@ -32,7 +32,7 @@ public class CtrlViewImmeubles {
             label.setOnMouseClicked(event -> afficheBiensPourImmeuble(immeuble.getIdBien()));
             gridPaneImmeubles.add(label, 0, gridPaneImmeubles.getChildren().size());
         }
-    }
+    }*/
 
     private void afficheBiensPourImmeuble(int idImmeuble) {
         // Transition vers la fenêtre "Biens Louables" pour cet immeuble

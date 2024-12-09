@@ -170,7 +170,7 @@ public abstract class BienLouable extends Bien {
 	@Override
 	public void save() throws QueryableException {
 		if(this.getIdBien() != -1)
-			throw new Queryable.QueryableException("Le bien existe déjà dans la table");
+			throw new Queryable.QueryableException("Le bien existe déjà !");
 		try(UpdateQueryElement query = new UpdateQueryElement(INSERT_QUERY, true)){
 			query.setArgs(
 					Map.of(1, "A",
@@ -186,7 +186,7 @@ public abstract class BienLouable extends Bien {
 		}
 		catch (QueryElement.QueryException sqlE){
 			sqlE.getCause().printStackTrace();
-			throw new Locataire.LocataireException("Erreur lors de l'ajout du bien");
+			throw new Queryable.QueryableException("Erreur lors de l'ajout du bien");
 		}
 		try(UpdateQueryElement query = new UpdateQueryElement(INSERT_QUERY_ARCHIVER, true)){
 			query.setArgs(
@@ -202,7 +202,7 @@ public abstract class BienLouable extends Bien {
 					)).execute();
 		}
 		catch (QueryElement.QueryException sqlE){
-			sqlE.getCause().printStackTrace();
+			sqlE.printStackTrace();
 			throw new Locataire.LocataireException("Erreur lors de l'ajout du bien");
 		}
 

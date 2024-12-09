@@ -18,12 +18,12 @@ public class CtrlViewBiensLouables {
 
     private int idImmeuble;
 
-    public void setIdImmeuble(int idImmeuble) {
+   /* public void setIdImmeuble(int idImmeuble) {
         this.idImmeuble = idImmeuble;
         afficheBiens();
-    }
+    }*/
 
-    private void afficheBiens() {
+ /*   private void afficheBiens() {
         List<Bien> biens = Bien.findByImmeuble(idImmeuble); // Méthode pour filtrer les biens
         gridPaneBiensLouables.getChildren().clear();
 
@@ -31,5 +31,5 @@ public class CtrlViewBiensLouables {
             Label label = new Label(bien.getAdresse());
             gridPaneBiensLouables.add(label, 0, gridPaneBiensLouables.getChildren().size());
         }
-    }
+    }*/
 }

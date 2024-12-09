@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
@@ -178,6 +179,10 @@
                </BorderPane.margin>
             </GridPane>
          </center>
+         <styleClass>
+            <String fx:value="backgroundColor" />
+            <String fx:value="text-field" />
+         </styleClass>
       </BorderPane>
    </center>
    <bottom>
