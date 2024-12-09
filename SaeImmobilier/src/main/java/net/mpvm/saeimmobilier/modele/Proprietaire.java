@@ -21,7 +21,7 @@ import net.mpvm.saeimmobilier.sql.Query.UpdateQueryElement;
 		private String Email;
 		private String MotDePasse;
 		private String Ville;
-		private Integer CodePostal;
+		private String CodePostal;
 		private String Adresse;
 		private ArrayList<Bien> biensPossedes;
 		private int IdProprietaire;
@@ -55,13 +55,24 @@ import net.mpvm.saeimmobilier.sql.Query.UpdateQueryElement;
 			this.biensPossedes = new ArrayList<>();
 		}
 
+		public Proprietaire(String nom, String Prenom, String Telephone,String Email,String MotDePasse, String Ville,String CodePostal, String Adresse) throws IllegalArgumentException {
+			this.Nom = nom;
+			this.Prenom = Prenom;
+			this.Telephone = Telephone;
+			this.Email = Email;
+			this.MotDePasse = MotDePasse;
+			this.Ville = Ville;
+			this.CodePostal = CodePostal;
+			this.Adresse = Adresse;
+		}
+
 		// Getters et setters pour les propriétés
 
 		public String getAdresse() {
 			return this.Adresse;
 		}
 
-		public Integer getCodePostal() {
+		public String getCodePostal() {
 			return this.CodePostal;
 		}
 
@@ -93,7 +104,7 @@ import net.mpvm.saeimmobilier.sql.Query.UpdateQueryElement;
 			this.Adresse = adresse;
 		}
 
-		public void setCodePostal(Integer codePostal) {
+		public void setCodePostal(String codePostal) {
 			this.CodePostal = codePostal;
 		}
 
@@ -153,9 +164,7 @@ import net.mpvm.saeimmobilier.sql.Query.UpdateQueryElement;
 		public void save() throws Queryable.QueryableException {
 			if (this.getIdProprietaire() == -1)
 				throw new Queryable.QueryableException("Le propriétaire exite déjà !");
-			if (emailAlreadyExists(this.getEmail())) {
-				throw new Queryable.QueryableException("Cette adresse e-mail est déjà utilisée.");
-			}
+
 			try (UpdateQueryElement query = new UpdateQueryElement(INSERT_QUERY, true)) {
 				query.setArgs(
 								Map.of(
