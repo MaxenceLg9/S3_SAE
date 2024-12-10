@@ -13,9 +13,9 @@ import net.mpvm.saeimmobilier.sql.Query.SelectQueryElement;
 import net.mpvm.saeimmobilier.sql.Query.UpdateQueryElement;
 
 	public class Proprietaire {
-		public static final String INSERT_QUERY = "INSERT INTO Proprietaire (Email,MotDePasse) VALUES (?, ?)";
-		public static final String SELECT_QUERY = "SELECT * FROM Proprietaire";
-		public static final String DELETE_QUERY = "DELETE FROM Proprietaire WHERE IdProprietaire = ?";
+		public static final String INSERT_QUERY = "INSERT INTO propriétaire (Email,MotDePasse) VALUES (?, ?)";
+		public static final String SELECT_QUERY = "SELECT * FROM propriétaire";
+		public static final String DELETE_QUERY = "DELETE FROM propriétaire WHERE Id_Propriétaire = ?";
 
 		private String Nom;
 		private String Prenom;
@@ -190,7 +190,7 @@ import net.mpvm.saeimmobilier.sql.Query.UpdateQueryElement;
 				List<Map<String, Object>> results = (List<Map<String, Object>>) queryElement.execute();
 				if (!results.isEmpty()) {
 					// Récupération du champ "count" dans le premier résultat
-					int count = (int) results.get(0).get("count");
+					int count = (int) results.getFirst().get("count");
 					return count > 0;
 				}
 
@@ -204,6 +204,7 @@ import net.mpvm.saeimmobilier.sql.Query.UpdateQueryElement;
 
 			try(SelectQueryElement query = new SelectQueryElement(SELECT_QUERY)){
 				ResultSet rs = query.execute();
+
 				while (rs.next()) {
 					p.add(
 							new Proprietaire(rs.getString("Nom"),
