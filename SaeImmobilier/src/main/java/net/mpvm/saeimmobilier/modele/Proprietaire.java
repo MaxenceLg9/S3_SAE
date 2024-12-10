@@ -190,7 +190,7 @@ import net.mpvm.saeimmobilier.sql.Query.UpdateQueryElement;
 				List<Map<String, Object>> results = (List<Map<String, Object>>) queryElement.execute();
 				if (!results.isEmpty()) {
 					// Récupération du champ "count" dans le premier résultat
-					int count = (int) results.getFirst().get("count");
+					int count = (int) results.get(0).get("count");
 					return count > 0;
 				}
 
