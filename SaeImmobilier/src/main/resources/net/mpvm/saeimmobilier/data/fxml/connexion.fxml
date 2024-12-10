@@ -22,7 +22,10 @@
          <TextField fx:id="FieldMail" alignment="CENTER" prefHeight="25.0" prefWidth="316.0" promptText="Entrez votre identifiant ou votre email" />
           <PasswordField fx:id="FieldPwd" alignment="CENTER" prefHeight="25.0" prefWidth="316.0" promptText="Entrez votre mot de passe" />
           <Button fx:id="btnConnexion" onAction="#Connexion" style="-fx-background-color: #2ECC71;" text="Connexion" />
-         <Hyperlink fx:id="hyperLinkmdpOublie" onAction="#mdpOublie" text="Mot de passe oublié ?" />
+         <Hyperlink fx:id="hyperLinkmdpOublie" onAction="#mdpOublie" text="Mot de passe oublié ?" textFill="#38d7ff">
+            <font>
+               <Font size="14.0" />
+            </font></Hyperlink>
       
       </VBox>
    </center>

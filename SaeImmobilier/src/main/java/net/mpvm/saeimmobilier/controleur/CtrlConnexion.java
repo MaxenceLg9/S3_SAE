@@ -4,12 +4,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-import net.mpvm.saeimmobilier.modele.Locataire;
 import net.mpvm.saeimmobilier.modele.Proprietaire;
-import net.mpvm.saeimmobilier.sql.Query.Queryable;
 import net.mpvm.saeimmobilier.util.JfxUtil;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.regex.Pattern;
@@ -24,8 +21,6 @@ public class CtrlConnexion {
     private Label welcomeText;
     @FXML
     private Button BtwQuitter;
-
-    private Map<String,Proprietaire> proprietaires;
 
     @FXML
     protected void onHelloButtonClick() {
@@ -45,9 +40,8 @@ public class CtrlConnexion {
             // Créer une nouvelle fenêtre (Stage)
             Stage stage = new Stage();
 
-            // Initialiser la fenêtre avec l'utilitaire existant
             JfxUtil.applicationInit(stage, "mdpoublie.fxml", "Modifier son mot de passe");
-            Stage stageActu = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
+            Stage stageActu = (Stage) ((Hyperlink) actionEvent.getSource()).getScene().getWindow();
 
             // Afficher la fenêtre
             stage.show();
@@ -63,11 +57,10 @@ public class CtrlConnexion {
             alertPwdEmpty();
         } else if (isValidEmail(this.FieldMail.getText())){
                 try {
-                    this.proprietaires = Proprietaire.findALl().stream().filter(proprietaire -> proprietaire.getEmail().equals(this.FieldMail.getText())).collect(Collectors.toMap(Proprietaire::getMotDePasse, Function.identity()));
-                    System.out.println(this.FieldPwd.getText());
+                    Map<String,Proprietaire> proprietaires = Proprietaire.findALl().stream().filter(proprietaire -> proprietaire.getEmail().equals(this.FieldMail.getText())).collect(Collectors.toMap(Proprietaire::getMotDePasse, Function.identity()));
                     for(Proprietaire p : proprietaires.values()) {
-                        System.out.println(this.FieldPwd.getText());
                         System.out.println(p.getMotDePasse());
+                        System.out.println(this.FieldPwd.getText() + " le label");
                         if (this.FieldPwd.getText().equals(p.getMotDePasse())){
                             Stage stage = new Stage();
                             JfxUtil.applicationInit(stage, "newbien.fxml", "Création d'un bien");
@@ -80,7 +73,7 @@ public class CtrlConnexion {
                         alertIncorrectEmpty();
                     }
                 } catch (Proprietaire.ProprietaireException e) {
-                    proprietaires = new HashMap<>();
+                    e.printStackTrace();
                 }
 
         }else {alertFormatMail();
@@ -89,19 +82,11 @@ public class CtrlConnexion {
     }
 
     public boolean isMailNull(){
-        if(this.FieldMail.getText()==null){
-            return true;
-        }else {
-            return false;
-        }
+        return this.FieldMail.getText() == null;
     }
 
     public boolean isPwdNull(){
-        if(this.FieldPwd.getText()==null){
-            return true;
-        }else {
-            return false;
-        }
+        return this.FieldPwd.getText()== null;
     }
 
     private void alertFormatMail() {
@@ -137,7 +122,7 @@ public class CtrlConnexion {
     }
 
     private boolean isValidEmail(String email) {
-        String emailRegex = "^[\\w-\\.]+@[\\w-\\.]+\\.\\w{2,}$";
+        String emailRegex = "^[\\w-.]+@[\\w-.]+\\.\\w{2,}$";
         return Pattern.matches(emailRegex, email);
     }
 
