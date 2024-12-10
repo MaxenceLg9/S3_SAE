@@ -14,7 +14,7 @@
    <center>
       <VBox alignment="CENTER" fillWidth="false" prefHeight="550.0" prefWidth="700.0" spacing="20.0">
          <children>
-            <Label fx:id="welcomeText" text="Modifier votre mot de passe">
+            <Label fx:id="welcomeText" text="Modifier votre mot de passe" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="24.0" />
                </font>
