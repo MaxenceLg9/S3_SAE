@@ -226,7 +226,7 @@ import net.mpvm.saeimmobilier.sql.Query.UpdateQueryElement;
 				super(message);
 			}
 			public ProprietaireException(String message, Throwable cause){
-				super(message,cause);
+				super(message, (SQLException) cause);
 			}
 		}
 	}

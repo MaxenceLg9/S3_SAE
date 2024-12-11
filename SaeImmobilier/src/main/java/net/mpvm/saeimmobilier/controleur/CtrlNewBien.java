@@ -84,12 +84,24 @@ public class CtrlNewBien {
                 this.FieldNumFisc.setDisable(true);
                 this.FieldSurface.setDisable(true);
                 this.listImmeubles.setDisable(true);
+
             } else {
                 this.FieldNbPieces.setDisable(false);
                 this.FieldNumFisc.setDisable(false);
                 this.FieldSurface.setDisable(false);
                 this.listImmeubles.setDisable(false);
+            }
+        });
 
+        this.listImmeubles.setOnAction(actionEvent -> {
+            if (listImmeubles.getValue().getTypeBien() == TypeBien.IMMEUBLE) {
+                this.FieldAdresse.setText(listImmeubles.getItems().getFirst().getAdresse());
+                this.FieldCodePostal.setText(String.valueOf(listImmeubles.getItems().getFirst().getCodePostal()));
+                this.FieldVille.setText(listImmeubles.getItems().getFirst().getVille());
+            } else {
+                this.FieldAdresse.setText(null);
+                this.FieldCodePostal.setText(null);
+                this.FieldVille.setText(null);
             }
         });
 

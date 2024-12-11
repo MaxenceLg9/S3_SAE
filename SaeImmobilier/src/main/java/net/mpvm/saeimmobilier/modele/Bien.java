@@ -132,8 +132,7 @@ public abstract class Bien implements Queryable {
                 Immeuble immeuble = new Immeuble(
                         rs.getString("Ville"),
                         rs.getInt("CodePostal"),
-                        rs.getString("Adresse"),
-                        rs.getInt("IdBien") // Ajout de l'IdBien s'il est nécessaire dans le constructeur
+                        rs.getString("Adresse")
                 );
                 immeubles.add(immeuble);
             }
@@ -207,8 +206,7 @@ public abstract class Bien implements Queryable {
                         biens.add(new Immeuble(
                                 rs.getString("Ville"),
                                 rs.getInt("CodePostal"),
-                                rs.getString("Adresse"),
-                                rs.getInt("IdBien")
+                                rs.getString("Adresse")
                         ));
                         break;
 
