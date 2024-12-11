@@ -84,12 +84,14 @@ public class CtrlNewBien {
                 this.FieldNumFisc.setDisable(true);
                 this.FieldSurface.setDisable(true);
                 this.listImmeubles.setDisable(true);
+                this.FieldLieuImmeuble.setDisable(true);
 
             } else {
                 this.FieldNbPieces.setDisable(false);
                 this.FieldNumFisc.setDisable(false);
                 this.FieldSurface.setDisable(false);
                 this.listImmeubles.setDisable(false);
+                this.FieldLieuImmeuble.setDisable(false);
             }
         });
 
