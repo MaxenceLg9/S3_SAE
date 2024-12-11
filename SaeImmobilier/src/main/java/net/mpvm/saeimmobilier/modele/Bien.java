@@ -1,16 +1,13 @@
 package net.mpvm.saeimmobilier.modele;
 
 import net.mpvm.saeimmobilier.sql.Connection.BD;
-import net.mpvm.saeimmobilier.sql.Query.QueryElement;
 import net.mpvm.saeimmobilier.sql.Query.Queryable;
-import net.mpvm.saeimmobilier.sql.Query.UpdateQueryElement;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 
 public abstract class Bien implements Queryable {
@@ -84,7 +81,6 @@ public abstract class Bien implements Queryable {
              PreparedStatement statement = connection.prepareStatement(query)) {
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
-                TypeBien.HABITATION.name();
                 switch (TypeBien.valueOf(rs.getString("TypeBien"))){
                         case TypeBien.HABITATION :
                             biens.add(new Habitation(rs.getString("Lieu_Immeuble"),
@@ -125,13 +121,7 @@ public abstract class Bien implements Queryable {
     public abstract TypeBien getTypeBien();
     public abstract String getTypeBienString();
 
-    public float getSurface() {
-        Bien bien = this;
-        if (bien instanceof BienLouable){
-            return bien.getSurface();
-        }else{
-            return 0;}
-    }
+    public abstract float getSurface();
 
     public int getNombrePieces() {
         Bien bien = this;

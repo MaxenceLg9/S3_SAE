@@ -47,6 +47,11 @@ public class Immeuble extends Bien{
 		return "IMMEUBLE";
 	}
 
+	@Override
+	public float getSurface() {
+		return 0;
+	}
+
 
 	// Getters et Setters
 
