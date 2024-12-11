@@ -1,9 +1,15 @@
 package net.mpvm.saeimmobilier.modele;
 
 
+import net.mpvm.saeimmobilier.sql.Query.QueryElement;
+import net.mpvm.saeimmobilier.sql.Query.Queryable;
+import net.mpvm.saeimmobilier.sql.Query.UpdateQueryElement;
+
+import java.util.Map;
 import java.util.Optional;
 
 public class Assurance {
+
     private int idAssurance;
     private float quotiteJurisprudence;
     private float protectionJuridique;
@@ -127,5 +133,64 @@ public class Assurance {
 
     public void setBien(Optional<Bien> bien) {
         this.bien = bien;
+    }
+    public void save() throws AssuranceException {
+        // Valider les données de l'assurance avant l'insertion
+        if (this.getProtectionJuridique() < 0) {
+            throw new AssuranceException("La protection juridique ne peut pas être négative.");
+        }
+        if (this.getQuotiteJurisprudence() < 0) {
+            throw new AssuranceException("La quotité juridique ne peut pas être négative.");
+        }
+        if (this.getPrime() < 0) {
+            throw new AssuranceException("La prime ne peut pas être négative.");
+        }
+        if (this.getTypeContrat() == null) {
+            throw new AssuranceException("Le type de contrat est obligatoire.");
+        }
+
+        try (UpdateQueryElement query = new UpdateQueryElement(
+                "INSERT INTO Assurance (ProtectionJuridique, QuotitéJuridique, Prime, AugmentationAnnuelle, TypeContrat) VALUES (?, ?, ?, ?, ?)",
+                true)) {
+
+            // Préparer les paramètres de la requête
+            query.setArgs(Map.of(
+                    1, this.getProtectionJuridique(),
+                    2, this.getQuotiteJurisprudence(),
+                    3, this.getPrime(),
+                    4, this.getAugmentationAnnuelle(),
+                    5, this.getTypeContrat().toString()
+            ));
+
+            // Log des données pour vérification
+            System.out.println("Tentative d'insertion dans la table Assurance :");
+            System.out.println("ProtectionJuridique = " + this.getProtectionJuridique());
+            System.out.println("QuotitéJuridique = " + this.getQuotiteJurisprudence());
+            System.out.println("Prime = " + this.getPrime());
+            System.out.println("AugmentationAnnuelle = " + this.getAugmentationAnnuelle());
+            System.out.println("TypeContrat = " + this.getTypeContrat().toString());
+
+            // Exécution de la requête
+            query.execute();
+
+            System.out.println("Insertion réussie. Le déclencheur CalculTotalPrime mettra à jour TotalPrime.");
+
+        } catch (QueryElement.QueryException e) {
+            // Gestion d'une erreur SQL et affichage du contexte
+            String errorMessage = String.format(
+                    "Erreur lors de l'ajout de l'assurance : ProtectionJuridique=%f, QuotitéJuridique=%f, Prime=%f, AugmentationAnnuelle=%f, TypeContrat=%s",
+                    this.getProtectionJuridique(), this.getQuotiteJurisprudence(), this.getPrime(), this.getAugmentationAnnuelle(), this.getTypeContrat().toString()
+            );
+            throw new AssuranceException(errorMessage, e);
+        }
+    }
+
+    public static class AssuranceException extends Queryable.QueryableException {
+        public AssuranceException(String message){
+            super(message);
+        }
+        public AssuranceException(String message, Throwable cause){
+            super(message,cause);
+        }
     }
 }
