@@ -7,11 +7,11 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<ScrollPane fitToHeight="true" fitToWidth="true" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<ScrollPane fitToHeight="true" fitToWidth="true" xmlns="http://javafx.com/javafx/22.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <content>
       <VBox fx:id="vBoxBiensLouables" alignment="TOP_CENTER" spacing="10" styleClass="backgroundColor" stylesheets="@../css/style.css">
          <children>
-            <Label fx:id="Titre" style="-fx-font-size: 36; -fx-font-family: 'Calibri'; -fx-font-weight: bold;" text="Vue Location" textFill="WHITE" />
+            <Label fx:id="Titre" style="-fx-font-size: 36; -fx-font-family: 'Calibri'; -fx-font-weight: bold;" text="Vue Bails" textFill="WHITE" />
             <GridPane fx:id="gridPaneBiensLouables" hgap="10" styleClass="gridPaneStyle" vgap="10" />
          </children>
       </VBox>

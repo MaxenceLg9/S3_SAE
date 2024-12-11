@@ -1,86 +1,149 @@
 package net.mpvm.saeimmobilier.controleur;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ComboBox;
+import javafx.scene.control.*;
+import javafx.stage.Stage;
 import net.mpvm.saeimmobilier.modele.Assurance;
 import net.mpvm.saeimmobilier.modele.TypeContrat;
+import net.mpvm.saeimmobilier.util.JfxUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CtrlNewAssurance {
 
     @FXML
-    private TextField txtProtectionJuridique;
-
+    private TextField fieldProtectionJuridique;
     @FXML
-    private TextField txtQuotiteJuridique;
-
-    @FXML
-    private TextField txtPrime;
-
-    @FXML
-    private TextField txtAugmentationAnnuelle;
-
+    private TextField fieldQuotiteJuridique;
     @FXML
     private ComboBox<TypeContrat> comboTypeContrat;
 
     @FXML
-    private Button btnAjouterAssurance;
+    private List<TextField> fieldsAssurance;
 
-    @FXML
-    private void initialize() {
-        // Populate the ComboBox with enum values
-        comboTypeContrat.getItems().setAll(TypeContrat.values());
-
-        // Select the first item by default (if applicable)
-        if (!comboTypeContrat.getItems().isEmpty()) {
-            comboTypeContrat.getSelectionModel().select(0);
-        }
+    // Le constructeur est optionnel dans un contrôleur JavaFX, mais si nécessaire, il pourrait être ajouté ici
+    public CtrlNewAssurance() {
+        // Ce constructeur est généralement utilisé pour des initialisations autres que JavaFX
+        // Par exemple, injection de dépendances ou initialisation des valeurs si cela est requis
+        System.out.println("Constructeur de CtrlNewAssurance appelé");
     }
 
     @FXML
-    private void ajouterAssurance() {
-        try {
-            // Validate and retrieve inputs
-            float protectionJuridique = Float.parseFloat(txtProtectionJuridique.getText());
-            float quotiteJuridique = Float.parseFloat(txtQuotiteJuridique.getText());
-            float prime = Float.parseFloat(txtPrime.getText());
-            float augmentationAnnuelle = Float.parseFloat(txtAugmentationAnnuelle.getText());
+    public void initialize() {
+        fieldSetup();
+        setupComboBox();
+    }
 
-            TypeContrat typeContrat = comboTypeContrat.getValue();
-            if (typeContrat == null) {
-                throw new IllegalArgumentException("Veuillez sélectionner un type de contrat.");
+    private void fieldSetup() {
+        setFieldsPromptText();
+
+        fieldsAssurance = new ArrayList<>() {
+            {
+                add(fieldProtectionJuridique);
+                add(fieldQuotiteJuridique);
             }
+        };
+    }
 
-            // Create Assurance instance
-            Assurance nouvelleAssurance = new Assurance(typeContrat);
-            nouvelleAssurance.setProtectionJuridique(protectionJuridique);
-            nouvelleAssurance.setQuotiteJurisprudence(quotiteJuridique);
-            nouvelleAssurance.setPrime(prime);
-            nouvelleAssurance.setAugmentationAnnuelle(augmentationAnnuelle);
+    private void setFieldsPromptText() {
+        fieldProtectionJuridique.setPromptText("Protection Juridique ");
+        fieldQuotiteJuridique.setPromptText("Quotité Juridique (en %)");
+    }
 
-            nouvelleAssurance.save();
+    private void setupComboBox() {
+        comboTypeContrat.getItems().addAll(TypeContrat.values());
+        comboTypeContrat.setPromptText("Type de Contrat");
+    }
 
-            afficherMessage("Succès", "L'assurance a été ajoutée avec succès.", Alert.AlertType.INFORMATION);
+    @FXML
+    public void ajouterAssurance(ActionEvent event) {
+        if (fieldsNotEmpty()) {
+            try {
+                float protectionJuridique = Float.parseFloat(fieldProtectionJuridique.getText());
+                float quotiteJuridique = Float.parseFloat(fieldQuotiteJuridique.getText());
+                TypeContrat typeContrat = comboTypeContrat.getValue();
 
+                if (typeContrat == null) {
+                    alertError("Type de contrat manquant", "Veuillez sélectionner un type de contrat.");
+                    return;
+                }
 
+                // Enregistrement de l'assurance dans la base de données
+                Assurance assurance = new Assurance(typeContrat);
+                assurance.setProtectionJuridique(protectionJuridique);
+                assurance.setQuotiteJurisprudence(quotiteJuridique);
+                assurance.save();
 
-        } catch (NumberFormatException e) {
-            afficherMessage("Erreur", "Veuillez saisir des valeurs numériques valides.", Alert.AlertType.ERROR);
-        } catch (IllegalArgumentException e) {
-            afficherMessage("Erreur", e.getMessage(), Alert.AlertType.ERROR);
-        } catch (Assurance.AssuranceException e) {
-            afficherMessage("Erreur", "Une erreur est survenue lors de l'ajout de l'assurance: " + e.getMessage(), Alert.AlertType.ERROR);
+            } catch (NumberFormatException e) {
+                alertError("Format des champs invalide", "Veuillez saisir des valeurs numériques pour les champs appropriés.");
+            } catch (Assurance.AssuranceException e) {
+                e.printStackTrace();
+                alertError("Erreur lors de l'enregistrement", "Une erreur est survenue lors de l'ajout de l'assurance.");
+            }
+        } else {
+            alertFieldsEmpty();
+        }
+
+        try {
+            // Création d'une nouvelle fenêtre
+            Stage stage = new Stage();
+            JfxUtil.applicationInit(stage, "newbien.fxml", "Ajouter un Bien");
+            stage.setWidth(1300);
+            stage.setHeight(900);
+            stage.setResizable(false);
+
+            // Fermeture de la fenêtre actuelle
+            Stage currentStage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+            currentStage.close();
+
+            // Affichage de la nouvelle fenêtre
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
-    private void afficherMessage(String titre, String contenu, Alert.AlertType type) {
-        Alert alert = new Alert(type);
-        alert.setTitle(titre);
-        alert.setContentText(contenu);
+    private void alertFieldsEmpty() {
+        alertError("Champs vides", "Veuillez remplir tous les champs avant de valider.");
+    }
+
+    private void alertError(String header, String content) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Erreur");
+        alert.setHeaderText(header);
+        alert.setContentText(content);
         alert.showAndWait();
     }
 
+    private boolean fieldsNotEmpty() {
+        for (TextField textField : fieldsAssurance) {
+            if (textField.getText().isEmpty()) {
+                return false;
+            }
+        }
+        return true;
+    }
 
+    @FXML
+    public void annuler(ActionEvent actionEvent) {
+        try {
+            // Création d'une nouvelle fenêtre
+            Stage stage = new Stage();
+            JfxUtil.applicationInit(stage, "newbien.fxml", "Ajouter un Bien");
+            stage.setWidth(1300);
+            stage.setHeight(900);
+            stage.setResizable(false);
+
+            // Fermeture de la fenêtre actuelle
+            Stage currentStage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
+            currentStage.close();
+
+            // Affichage de la nouvelle fenêtre
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

@@ -8,7 +8,7 @@ import javafx.scene.layout.HBox;
 
 import java.util.List;
 
-public class CtrlViewLocation {
+public class CtrlViewBails {
     @FXML
     private Label Titre;
 

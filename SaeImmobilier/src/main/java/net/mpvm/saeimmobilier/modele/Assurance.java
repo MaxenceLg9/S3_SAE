@@ -11,12 +11,14 @@ import java.util.Optional;
 public class Assurance {
 
     private int idAssurance;
+    private int Annee;
     private float quotiteJurisprudence;
     private float protectionJuridique;
     private float prime;
     private TypeContrat typeContrat; // Type Propriétaire ou aide juridique, pour une des règles métier
     private float augmentationAnnuelle;
     private Optional<Bien> bien; // Bien lié à l'assurance
+
 
     private Assurance(int IdAssurance,TypeContrat typeContrat){
         if (typeContrat == null) {
@@ -150,7 +152,7 @@ public class Assurance {
         }
 
         try (UpdateQueryElement query = new UpdateQueryElement(
-                "INSERT INTO Assurance (ProtectionJuridique, QuotitéJuridique, Prime, AugmentationAnnuelle, TypeContrat) VALUES (?, ?, ?, ?, ?)",
+                "INSERT INTO Assurance (ProtectionJuridique, QuotitéJuridique, Prime, TypeContrat) VALUES (?, ?, ?, ?)",
                 true)) {
 
             // Préparer les paramètres de la requête
@@ -158,31 +160,29 @@ public class Assurance {
                     1, this.getProtectionJuridique(),
                     2, this.getQuotiteJurisprudence(),
                     3, this.getPrime(),
-                    4, this.getAugmentationAnnuelle(),
-                    5, this.getTypeContrat().toString()
+                    4, this.getTypeContrat().toString()
             ));
-
-            // Log des données pour vérification
-            System.out.println("Tentative d'insertion dans la table Assurance :");
-            System.out.println("ProtectionJuridique = " + this.getProtectionJuridique());
-            System.out.println("QuotitéJuridique = " + this.getQuotiteJurisprudence());
-            System.out.println("Prime = " + this.getPrime());
-            System.out.println("AugmentationAnnuelle = " + this.getAugmentationAnnuelle());
-            System.out.println("TypeContrat = " + this.getTypeContrat().toString());
 
             // Exécution de la requête
             query.execute();
-
             System.out.println("Insertion réussie. Le déclencheur CalculTotalPrime mettra à jour TotalPrime.");
 
         } catch (QueryElement.QueryException e) {
             // Gestion d'une erreur SQL et affichage du contexte
             String errorMessage = String.format(
-                    "Erreur lors de l'ajout de l'assurance : ProtectionJuridique=%f, QuotitéJuridique=%f, Prime=%f, AugmentationAnnuelle=%f, TypeContrat=%s",
-                    this.getProtectionJuridique(), this.getQuotiteJurisprudence(), this.getPrime(), this.getAugmentationAnnuelle(), this.getTypeContrat().toString()
+                    "Erreur lors de l'ajout de l'assurance : ProtectionJuridique=%f, QuotitéJuridique=%f, Prime=%f, TypeContrat=%s",
+                    this.getProtectionJuridique(), this.getQuotiteJurisprudence(), this.getPrime(), this.getTypeContrat().toString()
             );
             throw new AssuranceException(errorMessage, e);
         }
+    }
+
+    public int getAnnee() {
+        return Annee;
+    }
+
+    public void setAnnee(int annee) {
+        Annee = annee;
     }
 
     public static class AssuranceException extends Queryable.QueryableException {
