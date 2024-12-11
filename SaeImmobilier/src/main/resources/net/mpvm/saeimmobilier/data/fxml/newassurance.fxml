@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="TOP_CENTER" spacing="10" styleClass="backgroundColor" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.mpvm.saeimmobilier.controleur.CtrlNewAssurance">
+    <children>
+        <Label style="-fx-font-size: 24; -fx-font-weight: bold;" text="Ajouter une Assurance" textFill="WHITE" />
+        <GridPane hgap="10" vgap="10">
+            <children>
+                <!-- Protection Juridique -->
+                <Label text="Protection Juridique :" textFill="WHITE" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                <TextField fx:id="txtProtectionJuridique" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+                <!-- Quotité Juridique -->
+                <Label text="Quotité Juridique :" textFill="WHITE" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                <TextField fx:id="txtQuotiteJuridique" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+                <!-- Prime -->
+                <Label text="Prime :" textFill="WHITE" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                <TextField fx:id="txtPrime" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+                <!-- Augmentation Annuelle -->
+                <Label text="Augmentation Annuelle :" textFill="WHITE" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                <TextField fx:id="txtAugmentationAnnuelle" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Label text="Type de Contrat :" textFill="WHITE" GridPane.rowIndex="4" />
+            <ComboBox fx:id="comboTypeContrat" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            </children>
+         <columnConstraints>
+            <ColumnConstraints />
+            <ColumnConstraints />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" />
+         </rowConstraints>
+        </GridPane>
+        <Button fx:id="btnAjouterAssurance" onAction="#ajouterAssurance" style="-fx-font-size: 16;" stylesheets="@../css/style.css" text="Ajouter Assurance" />
+    </children>
+</VBox>

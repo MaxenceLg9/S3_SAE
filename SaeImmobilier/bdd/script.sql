@@ -55,7 +55,6 @@ CREATE TABLE Travaux(
                         Nature VARCHAR(50),
                         PRIMARY KEY(Id_Travaux)
 );
-
 CREATE TABLE Assurance(
                           Id_Assurance INT auto_increment,
                           ProtectionJuridique DOUBLE,
@@ -63,6 +62,7 @@ CREATE TABLE Assurance(
                           Prime DOUBLE,
                           AugmentationAnnuelle DOUBLE,
                           TotalPrime DOUBLE,
+                          TypeContrat VARCHAR(20),
                           PRIMARY KEY(Id_Assurance)
 );
 
@@ -314,7 +314,7 @@ DELIMITER ;
 
 -- Trigger pour calculer TotalPrime dans la table Assurance
 DELIMITER //
-/*CREATE TRIGGER CalculTotalPrime
+CREATE TRIGGER CalculTotalPrime
 AFTER INSERT ON Assurance
 FOR EACH ROW
 BEGIN
@@ -322,7 +322,7 @@ BEGIN
     SET TotalPrime = NEW.ProtectionJuridique + NEW.Prime
     WHERE Assurance.Id_Assurance = NEW.Id_Assurance;
 END;
-  */
+
 
 //
 DELIMITER ;
