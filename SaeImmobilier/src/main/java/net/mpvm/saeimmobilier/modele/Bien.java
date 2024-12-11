@@ -60,7 +60,7 @@ public abstract class Bien implements Queryable {
 
     public static List<Bien> findByImmeuble(int idImmeuble) throws Queryable.QueryableException {
         List<Bien> biens = new ArrayList<>();
-        String query = "SELECT * FROM bien WHERE ImmeubleId = ?";
+        String query = "SELECT * FROM bien WHERE Id_Immeuble = ?";
 
         try (Connection connection = BD.getConnection(true);
              PreparedStatement statement = connection.prepareStatement(query)) {
