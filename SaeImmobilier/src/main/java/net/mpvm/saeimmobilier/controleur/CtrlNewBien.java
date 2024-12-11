@@ -7,6 +7,8 @@ import javafx.stage.Stage;
 import net.mpvm.saeimmobilier.modele.*;
 import net.mpvm.saeimmobilier.sql.Query.Queryable;
 import net.mpvm.saeimmobilier.util.JfxUtil;
+import net.mpvm.saeimmobilier.vue.VueAccueil;
+import net.mpvm.saeimmobilier.vue.VueConnexion;
 
 
 import java.time.LocalDate;
@@ -252,8 +254,6 @@ public class CtrlNewBien {
             Stage stage2 = (Stage) ((MenuItem) actionEvent.getTarget()).getParentPopup().getOwnerWindow();            // Fermer la fenêtre
             stage2.close();
 
-            // Afficher la fenêtre
-            stage.show();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -270,8 +270,6 @@ public class CtrlNewBien {
             // Fermer la fenêtre
             stage2.close();
 
-            // Afficher la fenêtre
-            stage.show();
         } catch (Exception e) {
             e.printStackTrace();
         }

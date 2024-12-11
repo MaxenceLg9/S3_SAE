@@ -219,7 +219,6 @@ import net.mpvm.saeimmobilier.sql.Query.UpdateQueryElement;
 			catch (QueryElement.QueryException | SQLException queryException){
 				throw new Proprietaire.ProprietaireException("Erreur lors de la récupération des propriétaires");
 			}
-			System.out.println("fin");
 			return p;
 		}
 		public static class ProprietaireException extends Queryable.QueryableException {
