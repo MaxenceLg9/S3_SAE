@@ -114,7 +114,7 @@ public class Immeuble extends Bien{
 
 	@Override
 	public void save() throws QueryableException {
-		if(this.getIdImmeuble() != -1)
+		if(this.getIdImmeuble() == -1)
 			throw new Bien.QueryableException("Le bien existe déjà dans la table");
 		try(UpdateQueryElement q = new UpdateQueryElement(INSERT_QUERY, true)){
 			q.setArgs(

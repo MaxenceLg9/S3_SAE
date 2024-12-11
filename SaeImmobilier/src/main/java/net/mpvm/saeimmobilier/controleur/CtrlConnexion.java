@@ -68,7 +68,7 @@ public class CtrlConnexion {
                             if (this.FieldPwd.getText().equals(p.getMotDePasse())) {
                                 Stage stage = new Stage();
                                 VueNewBien.showWindow(stage);
-                                Stage stageActuel = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                                Stage stageActuel = (Stage) ((PasswordField) event.getSource()).getScene().getWindow();
                                 stageActuel.close();
                             }
                         }else {
