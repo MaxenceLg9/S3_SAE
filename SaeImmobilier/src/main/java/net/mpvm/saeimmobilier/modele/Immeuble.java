@@ -24,7 +24,7 @@ public class Immeuble extends Bien{
 	private List<BienLouable> biensAssocies;
 	private List<Travaux> travauxAssocies;
 
-	Immeuble( String ville, int codePostal, String adresse, int idImmeuble) {
+	private Immeuble( String ville, int codePostal, String adresse, int idImmeuble) {
 		super( ville, codePostal, adresse); // Initialisation des attributs hérités de Bien
 		this.idImmeuble = idImmeuble;
 		this.biensAssocies = new ArrayList<>();
@@ -58,20 +58,6 @@ public class Immeuble extends Bien{
 	public int getIdImmeuble() {
 		return idImmeuble;
 	}
-
-	public void setIdImmeuble(int idImmeuble) {
-		try(SelectQueryElement query= new SelectQueryElement(SELECT_WHERE_QUERY)){
-			query.setArgs(
-					Map.of(
-							1,this.getAdresse(),
-							2,this.getVille(),
-							3,this.getCodePostal()
-					)).execute().getInt("idImmeuble");
-		} catch (QueryElement.QueryException | SQLException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
 
 
 	public void setBiensAssocies(List<BienLouable> biensAssocies) {

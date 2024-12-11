@@ -76,6 +76,7 @@ public abstract class Bien implements Queryable {
     }
 
     public static List<Bien> findAll() throws BienException {
+        //TODO : utiliser les findALl des sous classes
         List<Bien> biens = new ArrayList<>();
         String query = "SELECT * FROM bien"; // Assurez-vous que cette table existe dans votre BDD.
         try (Connection connection = BD.getConnection(true);
@@ -95,7 +96,7 @@ public abstract class Bien implements Queryable {
                                     rs.getDate("DateAjout"))
                                     );
                             break;
-                    case TypeBien.GARAGE :
+                    case TypeBien.GARAGE:
                         biens.add(new Garage(rs.getString("Lieu_Immeuble"),rs.getString("Ville"),
                                 rs.getInt("CodePostal"),
                                 rs.getString("Adresse"),
