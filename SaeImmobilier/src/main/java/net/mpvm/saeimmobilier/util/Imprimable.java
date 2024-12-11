@@ -1,4 +1,4 @@
-package net.mpvm.saeimmobilier.printable;
+package net.mpvm.saeimmobilier.util;
 
 public interface Imprimable {
 
