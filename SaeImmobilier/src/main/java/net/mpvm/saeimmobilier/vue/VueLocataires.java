@@ -12,6 +12,6 @@ public class VueLocataires extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        JfxUtil.applicationInit(primaryStage, "viewlocataires.fxml","Vision des locataires");
+        JfxUtil.applicationInit(primaryStage, "viewlocataires.fxml","Vision des locataires",750, 800);
     }
 }

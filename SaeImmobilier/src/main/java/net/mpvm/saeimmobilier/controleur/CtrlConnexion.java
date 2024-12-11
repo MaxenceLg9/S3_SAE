@@ -29,7 +29,7 @@ public class CtrlConnexion {
 
     public void Quitter(javafx.event.ActionEvent actionEvent) {
         Stage stage1 = new Stage();
-        JfxUtil.applicationInit(stage1, "accueil.fxml", "Accueil");
+        JfxUtil.applicationInit(stage1, "accueil.fxml", "Accueil",750, 800);
         stage1.show();
         Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
         stage.close();
@@ -40,7 +40,7 @@ public class CtrlConnexion {
             // Créer une nouvelle fenêtre (Stage)
             Stage stage = new Stage();
 
-            JfxUtil.applicationInit(stage, "mdpoublie.fxml", "Modifier son mot de passe");
+            JfxUtil.applicationInit(stage, "mdpoublie.fxml", "Modifier son mot de passe",750, 800);
             Stage stageActu = (Stage) ((Hyperlink) actionEvent.getSource()).getScene().getWindow();
 
             // Afficher la fenêtre
@@ -57,23 +57,25 @@ public class CtrlConnexion {
             alertPwdEmpty();
         } else if (isValidEmail(this.FieldMail.getText())){
                 try {
-                    Map<String,Proprietaire> proprietaires = Proprietaire.findALl().stream().filter(proprietaire -> proprietaire.getEmail().equals(this.FieldMail.getText())).collect(Collectors.toMap(Proprietaire::getMotDePasse, Function.identity()));
+                    Map<String,Proprietaire> proprietaires = Proprietaire.findALl().stream().collect(Collectors.toMap(Proprietaire::getMotDePasse, Function.identity()));
                     for(Proprietaire p : proprietaires.values()) {
-                        System.out.println(p.getMotDePasse());
-                        System.out.println(this.FieldPwd.getText() + " le label");
-                        if (this.FieldPwd.getText().equals(p.getMotDePasse())){
-                            Stage stage = new Stage();
-                            JfxUtil.applicationInit(stage, "newbien.fxml", "Création d'un bien");
+                        System.out.println(this.FieldMail.getText());
+                        System.out.println(p.getEmail());
+                        if (this.FieldMail.getText().equals(p.getEmail())) {
+                            if (this.FieldPwd.getText().equals(p.getMotDePasse())) {
+                                Stage stage = new Stage();
+                                JfxUtil.applicationInit(stage, "newbien.fxml", "Création d'un bien",750, 800);
+                                Stage stageActu = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
+                                stageActu.close();
 
-                            Stage stageActu = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
-                            stageActu.close();
-
-                            stage.show();
+                                stage.show();
+                            }
+                        }else {
+                            alertIncorrectEmpty();
                         }
-                        alertIncorrectEmpty();
                     }
                 } catch (Proprietaire.ProprietaireException e) {
-                    e.printStackTrace();
+                    alertIncorrectEmpty();
                 }
 
         }else {alertFormatMail();
