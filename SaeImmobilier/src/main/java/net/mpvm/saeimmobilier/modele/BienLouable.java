@@ -5,6 +5,7 @@ import net.mpvm.saeimmobilier.sql.Query.QueryElement;
 import net.mpvm.saeimmobilier.sql.Query.Queryable;
 import net.mpvm.saeimmobilier.sql.Query.UpdateQueryElement;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Map;
@@ -184,10 +185,11 @@ public abstract class BienLouable extends Bien {
 							9, this.getDateAjout()
 					)).execute();
 		}
-		catch (QueryElement.QueryException sqlE){
-			sqlE.getCause().printStackTrace();
-			throw new Queryable.QueryableException("Erreur lors de l'ajout du bien");
+		catch (QueryElement.QueryException queryException){
+			queryException.getSqlException().printStackTrace();
+			throw new BienLouableException("Erreur lors de l'ajout du bien", queryException.getSqlException());
 		}
+		//TODO : plus de table "Archiver" la con de sa race
 		try(UpdateQueryElement query = new UpdateQueryElement(INSERT_QUERY_ARCHIVER, true)){
 			query.setArgs(
 					Map.of(1, this.getLieuImmeuble(),
@@ -201,9 +203,9 @@ public abstract class BienLouable extends Bien {
 							9, this.getDateAjout()
 					)).execute();
 		}
-		catch (QueryElement.QueryException sqlE){
-			sqlE.printStackTrace();
-			throw new Locataire.LocataireException("Erreur lors de l'ajout du bien");
+		catch (QueryElement.QueryException queryException){
+			queryException.getSqlException().printStackTrace();
+			throw new BienLouableException("Erreur lors de l'ajout du bien", queryException.getSqlException());
 		}
 
 	}
@@ -216,5 +218,14 @@ public abstract class BienLouable extends Bien {
 	@Override
 	public void delete() throws QueryableException {
 
+	}
+
+	public static class BienLouableException extends Queryable.QueryableException {
+		public BienLouableException(String message) {
+			this(message, null);
+		}
+		public BienLouableException(String message, SQLException e) {
+			super(message, e);
+		}
 	}
 }

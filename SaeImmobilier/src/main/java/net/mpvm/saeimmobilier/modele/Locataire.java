@@ -116,8 +116,8 @@ public class Locataire implements Queryable {
 									5, this.getTelephone()))
 					.execute();
         }
-		catch (QueryElement.QueryException sqlE){
-			throw new LocataireException("Erreur lors de l'ajout du locataire",sqlE);
+		catch (QueryElement.QueryException queryException){
+			throw new LocataireException("Erreur lors de l'ajout du locataire",queryException.getSqlException());
 		}
 	}
 
@@ -141,8 +141,8 @@ public class Locataire implements Queryable {
 									4, Character.toString(this.getSexe()),
 									5, this.getTelephone(),
 									6, this.getIdLocataire())).execute();
-		}catch(QueryElement.QueryException e){
-			throw new LocataireException("Erreur lors de la modification du locataire");
+		}catch(QueryElement.QueryException queryException){
+			throw new LocataireException("Erreur lors de la modification du locataire", queryException.getSqlException());
 		}
 	}
 
@@ -165,18 +165,20 @@ public class Locataire implements Queryable {
 								rs.getInt("IdLocataire")));
 			}
 		}
-		catch (QueryElement.QueryException | SQLException queryException){
-			throw new LocataireException("Erreur lors de la récupération des locataires");
+		catch (QueryElement.QueryException | SQLException e){
+			throw new LocataireException("Erreur lors de la récupération des locataires", e instanceof SQLException ? (SQLException) e : ((QueryElement.QueryException) e).getSqlException());
 		}
 		return l;
 	}
 
 	public static class LocataireException extends QueryableException{
+
 		public LocataireException(String message){
-			super(message);
+			this(message,null);
 		}
-		public LocataireException(String message, Throwable cause){
-			super(message,cause);
+
+		public LocataireException(String message, SQLException sqlException){
+			super(message,sqlException);
 		}
 	}
 }
