@@ -12,7 +12,7 @@ public class VueNewLocataire extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        JfxUtil.applicationInit(primaryStage, "newlocataire.fxml", "Ajouter un locataire");
+        JfxUtil.applicationInit(primaryStage, "newlocataire.fxml", "Ajouter un locataire",750, 800);
     }
 
 

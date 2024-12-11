@@ -152,7 +152,7 @@ public class CtrlInscription {
     @FXML
     public void Annuler(ActionEvent event) {
         Stage stage1 = new Stage();
-        JfxUtil.applicationInit(stage1, "accueil.fxml", "Accueil");
+        JfxUtil.applicationInit(stage1, "accueil.fxml", "Accueil",750, 800);
         stage1.show();
         Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         stage.close();

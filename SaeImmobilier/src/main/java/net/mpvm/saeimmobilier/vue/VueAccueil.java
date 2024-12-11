@@ -15,7 +15,7 @@ public class VueAccueil extends Application{
 
         @Override
         public void start(Stage primaryStage) {
-            JfxUtil.applicationInit(primaryStage, "accueil.fxml","Accueil");
+            JfxUtil.applicationInit(primaryStage, "accueil.fxml","Accueil",750, 800);
         }
     }
 

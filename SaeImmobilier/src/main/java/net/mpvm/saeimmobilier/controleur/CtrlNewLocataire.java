@@ -79,7 +79,7 @@ public class CtrlNewLocataire {
             Stage stage = new Stage();
 
             // Initialiser la fenêtre avec l'utilitaire existant
-            JfxUtil.applicationInit(stage, "newbien.fxml", "Ajouter un Bien");
+            JfxUtil.applicationInit(stage, "newbien.fxml", "Ajouter un Bien",750, 800);
 
             stage.setWidth(1300);
             stage.setHeight(900);
@@ -121,7 +121,7 @@ public class CtrlNewLocataire {
             Stage stage = new Stage();
 
             // Initialiser la fenêtre avec l'utilitaire existant
-            JfxUtil.applicationInit(stage, "newbien.fxml", "Ajouter un Bien");
+            JfxUtil.applicationInit(stage, "newbien.fxml", "Ajouter un Bien",750, 800);
 
             stage.setWidth(1300);
             stage.setHeight(900);

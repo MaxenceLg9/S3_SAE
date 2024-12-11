@@ -8,11 +8,11 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class JfxUtil {
-    public static void applicationInit(Stage primaryStage, String fxmlFile, String nomPage) {
+    public static void applicationInit(Stage primaryStage, String fxmlFile, String nomPage, double height, double width) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(JfxUtil.class.getResource("/net/mpvm/saeimmobilier/data/fxml/" + fxmlFile));
 
-            Scene scene = new Scene(fxmlLoader.load(), 700, 550);
+            Scene scene = new Scene(fxmlLoader.load(), height, width);
             scene.getStylesheets().add(JfxUtil.class.getResource("/net/mpvm/saeimmobilier/data/css/style.css").toExternalForm());
 
             Image icon = new Image(JfxUtil.class.getResource("/net/mpvm/saeimmobilier/data/images/icon_immobilier.png").toString());

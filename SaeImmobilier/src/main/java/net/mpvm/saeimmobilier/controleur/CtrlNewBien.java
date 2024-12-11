@@ -222,7 +222,7 @@ public class CtrlNewBien {
             Stage stage = new Stage();
 
             // Initialiser la fenêtre avec l'utilitaire existant
-            JfxUtil.applicationInit(stage, "accueil.fxml", "Page d'accueil");
+            JfxUtil.applicationInit(stage, "accueil.fxml", "Page d'accueil",750, 800);
 
             Stage stage2 = (Stage) ((MenuItem) actionEvent.getTarget()).getParentPopup().getOwnerWindow();            // Fermer la fenêtre
             stage2.close();
@@ -240,7 +240,7 @@ public class CtrlNewBien {
             Stage stage = new Stage();
 
             // Initialiser la fenêtre avec l'utilitaire existant
-            JfxUtil.applicationInit(stage, "connexion.fxml", "Connexion");
+            JfxUtil.applicationInit(stage, "connexion.fxml", "Connexion",750, 800);
 
             Stage stage2 = (Stage) ((MenuItem) actionEvent.getSource()).getParentPopup().getScene().getWindow();
             // Fermer la fenêtre

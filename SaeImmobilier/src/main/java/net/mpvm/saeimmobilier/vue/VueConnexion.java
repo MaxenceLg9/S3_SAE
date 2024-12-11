@@ -13,7 +13,7 @@ public class VueConnexion extends Application {
 
         @Override
         public void start(Stage primaryStage) {
-            JfxUtil.applicationInit(primaryStage, "connexion.fxml","Page de connexion");
+            JfxUtil.applicationInit(primaryStage, "connexion.fxml","Page de connexion",750, 800);
         }
     }
 

@@ -13,6 +13,6 @@ public class VueImmeubles extends Application {
     @Override
     public void start(Stage primaryStage) {
         // Utilisation de JfxUtil pour initialiser la fenêtre
-        JfxUtil.applicationInit(primaryStage, "viewImmeubles.fxml", "Liste des Immeubles");
+        JfxUtil.applicationInit(primaryStage, "viewImmeubles.fxml", "Liste des Immeubles",750, 800);
     }
 }

@@ -11,6 +11,6 @@ public class VueBiens extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        JfxUtil.applicationInit(primaryStage, "viewbiens.fxml", "Liste des Biens");
+        JfxUtil.applicationInit(primaryStage, "viewbiens.fxml", "Liste des Biens",750, 800);
     }
 }

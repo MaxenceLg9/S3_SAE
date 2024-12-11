@@ -27,7 +27,7 @@ public class CtrlAccueil {
             Stage stage = new Stage();
 
             // Initialiser la fenêtre avec l'utilitaire existant
-            JfxUtil.applicationInit(stage, "inscription.fxml", "Inscription");
+            JfxUtil.applicationInit(stage, "inscription.fxml", "Inscription",750, 800);
 
             Stage stage2 = (Stage) ((javafx.scene.control.Button) actionEvent.getSource()).getScene().getWindow();
             // Fermer la fenêtre
@@ -46,7 +46,7 @@ public class CtrlAccueil {
             Stage stage = new Stage();
 
             // Initialiser la fenêtre avec l'utilitaire existant
-            JfxUtil.applicationInit(stage, "connexion.fxml", "Connexion");
+            JfxUtil.applicationInit(stage, "connexion.fxml", "Connexion",750, 800);
 
             Stage stage2 = (Stage) ((javafx.scene.control.Button) actionEvent.getSource()).getScene().getWindow();
             // Fermer la fenêtre
