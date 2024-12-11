@@ -75,11 +75,11 @@ public class Date {
 
 	// Retourne le nombre de jours dans un mois donné
 	private int getDaysInMonth(Integer annee, Integer mois) {
-        return switch (mois) {
-            case 2 -> isLeapYear(annee) ? 29 : 28;
-            case 4, 6, 9, 11 -> 30;
-            default -> 31;
-        };
+		return switch (mois) {
+			case 2 -> isLeapYear(annee) ? 29 : 28;
+			case 4, 6, 9, 11 -> 30;
+			default -> 31;
+		};
 	}
 	public Date addMonths(int months) {
 		int newMois = this.mois + months;
@@ -106,8 +106,8 @@ public class Date {
 		if (annee % 4 != 0) {
 			return false;
 		}
-        return annee % 100 != 0 || annee % 400 == 0;
-    }
+		return annee % 100 != 0 || annee % 400 == 0;
+	}
 
 	public String getDateComplete() {
 		return dateComplete;
@@ -135,7 +135,7 @@ public class Date {
 		// Obtenir la date actuelle
 		LocalDate currentDate = LocalDate.now();
 		// Convertir en Instant (à minuit de ce jour-là, par défaut UTC)
-        return currentDate.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli();
+		return currentDate.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli();
 	}
 
 }
