@@ -64,6 +64,8 @@ CREATE TABLE Assurance(
                           AugmentationAnnuelle DOUBLE,
                           TotalPrime DOUBLE,
                           TypeContrat VARCHAR(20),
+                          Annee INT,
+                          PrimeAnneePrecedente DOUBLE,
                           PRIMARY KEY(Id_Assurance)
 );
 
@@ -310,17 +312,38 @@ END;
 //
 DELIMITER ;
 
--- Trigger pour calculer TotalPrime dans la table Assurance
 DELIMITER //
+
 CREATE TRIGGER CalculTotalPrime
-AFTER INSERT ON Assurance
-FOR EACH ROW
+    BEFORE INSERT ON Assurance
+    FOR EACH ROW
 BEGIN
-    UPDATE Assurance
-    SET TotalPrime = NEW.ProtectionJuridique + NEW.Prime
-    WHERE Assurance.Id_Assurance = NEW.Id_Assurance;
+    SET NEW.TotalPrime = NEW.ProtectionJuridique + NEW.Prime;
 END;
-
-
 //
 DELIMITER ;
+
+DROP TRIGGER CalculPourcentageAugmentation;
+DELIMITER //
+
+CREATE TRIGGER CalculPourcentageAugmentation
+    BEFORE INSERT ON Assurance
+    FOR EACH ROW
+BEGIN
+    IF NEW.PrimeAnneePrecedente IS NOT NULL AND NEW.PrimeAnneePrecedente > 0 THEN
+        SET NEW.AugmentationAnnuelle =
+                ((NEW.Prime - NEW.PrimeAnneePrecedente) / NEW.PrimeAnneePrecedente) * 100;
+    ELSE
+        SET NEW.AugmentationAnnuelle = 0;
+    END IF;
+END;
+//
+
+DELIMITER ;
+
+
+INSERT INTO Assurance (
+    ProtectionJuridique, QuotitéJuridique, Prime, PrimeAnneePrecedente, Annee, TypeContrat
+) VALUES (
+             1000.0, 500.0, 1500.0, 1400.0, 2024, 'PROPRIETAIRE'
+         );
