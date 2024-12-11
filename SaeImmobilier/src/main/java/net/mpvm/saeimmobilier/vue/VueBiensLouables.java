@@ -7,9 +7,13 @@ public class VueBiensLouables {
 
     private int idImmeuble;
 
-    public void startForImmeuble(int idImmeuble) {
+    public void startForImmeuble(Stage stage,int idImmeuble) {
         this.idImmeuble = idImmeuble;
-        Stage stage = new Stage();
         JfxUtil.applicationInit(stage, "viewbienslouables.fxml", "Biens Louables de l'Immeuble " + idImmeuble,750, 800);
+    }
+
+    public static void showWindow(Stage stage, int idImmeuble) throws Exception {
+        VueBiensLouables vue = new VueBiensLouables();
+        vue.startForImmeuble(stage,idImmeuble);
     }
 }

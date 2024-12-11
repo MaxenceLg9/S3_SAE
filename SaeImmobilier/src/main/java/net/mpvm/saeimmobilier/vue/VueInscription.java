@@ -14,12 +14,12 @@ public class VueInscription extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        JfxUtil.applicationInit(primaryStage, "inscription.fxml","Page d'authentification'",750, 800);
-        primaryStage.setMinWidth(800);
-        primaryStage.setMinHeight(800);
-        primaryStage.setHeight(800);
-        primaryStage.setWidth(800);
+        JfxUtil.applicationInit(primaryStage, "inscription.fxml","Page d'authentification'",80, 800);
         primaryStage.setResizable(false);
+    }
 
+    public static void showWindow(Stage stage) throws Exception {
+        VueInscription vue = new VueInscription();
+        vue.start(stage);
     }
 }

@@ -15,11 +15,7 @@ public class VueNewBien extends Application {
     @Override
     public void start(Stage stage) throws Exception {
 
-        JfxUtil.applicationInit(stage, "newbien.fxml", "Ajouter un Bien", 750, 800);
-        stage.setMinWidth(800);
-        stage.setMinHeight(750);
-        stage.setHeight(750);
-        stage.setWidth(800);
+        JfxUtil.applicationInit(stage, "newbien.fxml", "Ajouter un Bien", DEFAULT_HEIGHT, DEFAULT_WIDTH);
         stage.setResizable(false);
     }
 

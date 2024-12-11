@@ -6,8 +6,8 @@ import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import javafx.scene.control.*;
 import net.mpvm.saeimmobilier.util.JfxUtil;
-
-
+import net.mpvm.saeimmobilier.vue.VueConnexion;
+import net.mpvm.saeimmobilier.vue.VueInscription;
 
 
 public class CtrlAccueil {
@@ -27,14 +27,12 @@ public class CtrlAccueil {
             Stage stage = new Stage();
 
             // Initialiser la fenêtre avec l'utilitaire existant
-            JfxUtil.applicationInit(stage, "inscription.fxml", "Inscription",750, 800);
+            VueInscription.showWindow(stage);
 
             Stage stage2 = (Stage) ((javafx.scene.control.Button) actionEvent.getSource()).getScene().getWindow();
             // Fermer la fenêtre
             stage2.close();
 
-            // Afficher la fenêtre
-            stage.show();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -45,8 +43,7 @@ public class CtrlAccueil {
             // Créer une nouvelle fenêtre (Stage)
             Stage stage = new Stage();
 
-            // Initialiser la fenêtre avec l'utilitaire existant
-            JfxUtil.applicationInit(stage, "connexion.fxml", "Connexion",750, 800);
+            VueConnexion.showWindow(stage);
 
             Stage stage2 = (Stage) ((javafx.scene.control.Button) actionEvent.getSource()).getScene().getWindow();
             // Fermer la fenêtre

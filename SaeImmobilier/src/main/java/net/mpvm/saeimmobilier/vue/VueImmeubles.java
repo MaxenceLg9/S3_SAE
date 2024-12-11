@@ -15,4 +15,9 @@ public class VueImmeubles extends Application {
         // Utilisation de JfxUtil pour initialiser la fenêtre
         JfxUtil.applicationInit(primaryStage, "viewImmeubles.fxml", "Liste des Immeubles",750, 800);
     }
+
+    public static void showWindow(Stage stage) throws Exception {
+        VueImmeubles vue = new VueImmeubles();
+        vue.start(stage);
+    }
 }

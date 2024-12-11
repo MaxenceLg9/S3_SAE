@@ -9,6 +9,7 @@ import javafx.stage.Stage;
 import net.mpvm.saeimmobilier.modele.Proprietaire;
 import net.mpvm.saeimmobilier.sql.Query.Queryable;
 import net.mpvm.saeimmobilier.util.JfxUtil;
+import net.mpvm.saeimmobilier.vue.VueAccueil;
 
 import java.util.ArrayList;
 import java.util.regex.Pattern;
@@ -150,10 +151,9 @@ public class CtrlInscription {
     }
 
     @FXML
-    public void Annuler(ActionEvent event) {
+    public void Annuler(ActionEvent event) throws Exception {
         Stage stage1 = new Stage();
-        JfxUtil.applicationInit(stage1, "accueil.fxml", "Accueil",750, 800);
-        stage1.show();
+        VueAccueil.showWindow(stage1);
         Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         stage.close();
     }

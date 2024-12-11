@@ -17,6 +17,11 @@ public class VueAccueil extends Application{
         public void start(Stage primaryStage) {
             JfxUtil.applicationInit(primaryStage, "accueil.fxml","Accueil",750, 800);
         }
+
+    public static void showWindow(Stage stage) throws Exception {
+        VueAccueil vue = new VueAccueil();
+        vue.start(stage);
+    }
     }
 
 

@@ -15,4 +15,9 @@ public class VueMdpOublie extends Application {
         JfxUtil.applicationInit(primaryStage, "mdpoublie.fxml","Modification mot de passe",750, 800);
         primaryStage.setResizable(false);
     }
+
+    public static void showWindow(Stage stage) throws Exception {
+        VueMdpOublie vue = new VueMdpOublie();
+        vue.start(stage);
+    }
 }

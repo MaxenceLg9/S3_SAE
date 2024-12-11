@@ -6,6 +6,7 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import net.mpvm.saeimmobilier.modele.Locataire;
 import net.mpvm.saeimmobilier.util.JfxUtil;
+import net.mpvm.saeimmobilier.vue.VueNewBien;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,19 +79,11 @@ public class CtrlNewLocataire {
             // Créer une nouvelle fenêtre (Stage)
             Stage stage = new Stage();
 
-            // Initialiser la fenêtre avec l'utilitaire existant
-            JfxUtil.applicationInit(stage, "newbien.fxml", "Ajouter un Bien",750, 800);
-
-            stage.setWidth(1300);
-            stage.setHeight(900);
-            stage.setResizable(false);
+            VueNewBien.showWindow(stage);
 
             Stage stage2 = (Stage) ((Button) event.getSource()).getScene().getWindow();
             // Fermer la fenêtre
             stage2.close();
-
-            // Afficher la fenêtre
-            stage.show();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -120,20 +113,12 @@ public class CtrlNewLocataire {
             // Créer une nouvelle fenêtre (Stage)
             Stage stage = new Stage();
 
-            // Initialiser la fenêtre avec l'utilitaire existant
-            JfxUtil.applicationInit(stage, "newbien.fxml", "Ajouter un Bien",750, 800);
-
-            stage.setWidth(1300);
-            stage.setHeight(900);
-            stage.setResizable(false);
-
+            VueNewBien.showWindow(stage);
 
             Stage stage2 = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
             // Fermer la fenêtre
             stage2.close();
 
-            // Afficher la fenêtre
-            stage.show();
         } catch (Exception e) {
             e.printStackTrace();
         }

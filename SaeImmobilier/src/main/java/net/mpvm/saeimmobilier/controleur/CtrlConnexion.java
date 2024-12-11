@@ -2,10 +2,17 @@ package net.mpvm.saeimmobilier.controleur;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import net.mpvm.saeimmobilier.modele.Proprietaire;
 import net.mpvm.saeimmobilier.util.JfxUtil;
+
+import javafx.scene.input.KeyEvent;
+import net.mpvm.saeimmobilier.vue.VueAccueil;
+import net.mpvm.saeimmobilier.vue.VueMdpOublie;
+import net.mpvm.saeimmobilier.vue.VueNewBien;
 
 import java.util.Map;
 import java.util.function.Function;
@@ -27,10 +34,9 @@ public class CtrlConnexion {
         welcomeText.setText("Welcome to JavaFX Application!");
     }
 
-    public void Quitter(javafx.event.ActionEvent actionEvent) {
+    public void Quitter(javafx.event.ActionEvent actionEvent) throws Exception {
         Stage stage1 = new Stage();
-        JfxUtil.applicationInit(stage1, "accueil.fxml", "Accueil",750, 800);
-        stage1.show();
+        VueAccueil.showWindow(stage1);
         Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
         stage.close();
     }
@@ -40,35 +46,30 @@ public class CtrlConnexion {
             // Créer une nouvelle fenêtre (Stage)
             Stage stage = new Stage();
 
-            JfxUtil.applicationInit(stage, "mdpoublie.fxml", "Modifier son mot de passe",750, 800);
-            Stage stageActu = (Stage) ((Hyperlink) actionEvent.getSource()).getScene().getWindow();
+            VueMdpOublie.showWindow(stage);
 
-            // Afficher la fenêtre
-            stage.show();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void Connexion(ActionEvent actionEvent) {
-        if (isMailNull()){
-            alertMailEmpty();
-        }else if(isPwdNull()){
-            alertPwdEmpty();
-        } else if (isValidEmail(this.FieldMail.getText())){
+    @FXML
+    public void Connexion(KeyEvent event){
+        if (event.getCode() == KeyCode.ENTER) {
+            if (isMailNull()){
+                alertMailEmpty();
+            }else if(isPwdNull()){
+                alertPwdEmpty();
+            } else if (isValidEmail(this.FieldMail.getText())){
                 try {
                     Map<String,Proprietaire> proprietaires = Proprietaire.findALl().stream().collect(Collectors.toMap(Proprietaire::getMotDePasse, Function.identity()));
                     for(Proprietaire p : proprietaires.values()) {
-                        System.out.println(this.FieldMail.getText());
-                        System.out.println(p.getEmail());
                         if (this.FieldMail.getText().equals(p.getEmail())) {
                             if (this.FieldPwd.getText().equals(p.getMotDePasse())) {
                                 Stage stage = new Stage();
-                                JfxUtil.applicationInit(stage, "newbien.fxml", "Création d'un bien",750, 800);
-                                Stage stageActu = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
-                                stageActu.close();
-
-                                stage.show();
+                                VueNewBien.showWindow(stage);
+                                Stage stageActuel = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                                stageActuel.close();
                             }
                         }else {
                             alertIncorrectEmpty();
@@ -76,7 +77,44 @@ public class CtrlConnexion {
                     }
                 } catch (Proprietaire.ProprietaireException e) {
                     alertIncorrectEmpty();
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
                 }
+
+            }else {alertFormatMail();
+            }
+        }
+    }
+
+    @FXML
+    public void Connexion(ActionEvent actionEvent) {
+        if (isMailNull()){
+            alertMailEmpty();
+        }else if(isPwdNull()){
+            alertPwdEmpty();
+        } else if (isValidEmail(this.FieldMail.getText())){
+            try {
+                Map<String,Proprietaire> proprietaires = Proprietaire.findALl().stream().collect(Collectors.toMap(Proprietaire::getMotDePasse, Function.identity()));
+                for(Proprietaire p : proprietaires.values()) {
+                    System.out.println(this.FieldMail.getText());
+                    System.out.println(p.getEmail());
+                    if (this.FieldMail.getText().equals(p.getEmail())) {
+                        if (this.FieldPwd.getText().equals(p.getMotDePasse())) {
+                            Stage stage = new Stage();
+                            VueNewBien.showWindow(stage);
+                            Stage stageActu = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
+                            stageActu.close();
+
+                        }
+                    }else {
+                        alertIncorrectEmpty();
+                    }
+                }
+            } catch (Proprietaire.ProprietaireException e) {
+                alertIncorrectEmpty();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
 
         }else {alertFormatMail();
         }

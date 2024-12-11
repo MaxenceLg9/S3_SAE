@@ -13,4 +13,9 @@ public class VueBiens extends Application {
     public void start(Stage primaryStage) {
         JfxUtil.applicationInit(primaryStage, "viewbiens.fxml", "Liste des Biens",750, 800);
     }
+
+    public static void showWindow(Stage stage) throws Exception {
+        VueBiens vue = new VueBiens();
+        vue.start(stage);
+    }
 }

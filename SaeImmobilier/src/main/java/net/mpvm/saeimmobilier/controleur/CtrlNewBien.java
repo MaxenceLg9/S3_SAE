@@ -7,6 +7,8 @@ import javafx.stage.Stage;
 import net.mpvm.saeimmobilier.modele.*;
 import net.mpvm.saeimmobilier.sql.Query.Queryable;
 import net.mpvm.saeimmobilier.util.JfxUtil;
+import net.mpvm.saeimmobilier.vue.VueAccueil;
+import net.mpvm.saeimmobilier.vue.VueConnexion;
 
 
 import java.time.LocalDate;
@@ -221,14 +223,11 @@ public class CtrlNewBien {
             // Créer une nouvelle fenêtre (Stage)
             Stage stage = new Stage();
 
-            // Initialiser la fenêtre avec l'utilitaire existant
-            JfxUtil.applicationInit(stage, "accueil.fxml", "Page d'accueil",750, 800);
+            VueAccueil.showWindow(stage);
 
             Stage stage2 = (Stage) ((MenuItem) actionEvent.getTarget()).getParentPopup().getOwnerWindow();            // Fermer la fenêtre
             stage2.close();
 
-            // Afficher la fenêtre
-            stage.show();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -239,15 +238,12 @@ public class CtrlNewBien {
             // Créer une nouvelle fenêtre (Stage)
             Stage stage = new Stage();
 
-            // Initialiser la fenêtre avec l'utilitaire existant
-            JfxUtil.applicationInit(stage, "connexion.fxml", "Connexion",750, 800);
+            VueConnexion.showWindow(stage);
 
             Stage stage2 = (Stage) ((MenuItem) actionEvent.getSource()).getParentPopup().getScene().getWindow();
             // Fermer la fenêtre
             stage2.close();
 
-            // Afficher la fenêtre
-            stage.show();
         } catch (Exception e) {
             e.printStackTrace();
         }
