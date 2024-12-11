@@ -30,8 +30,8 @@ public final class SelectQueryElement extends QueryElement<ResultSet> {
         for(Map.Entry<Integer,Object> entry : args.entrySet())
             try {
                 fakeStatement.setObject(entry.getKey(), entry.getValue());
-            } catch (SQLException e) {
-                throw new QueryException("Error setting args", e);
+            } catch (SQLException sqlException) {
+                throw new QueryException("Error setting args", sqlException);
             }
         //executing the overrided method
         return super.setArgs(args);

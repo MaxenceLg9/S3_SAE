@@ -52,7 +52,7 @@ public abstract class QueryElement<T> implements Closeable {
             return this.connection.isClosed() && this.preparedStatement.isClosed();
         }
         catch(SQLException e){
-            throw new QueryException("error when checking if the queryElement is closed");
+            throw new QueryException("error when checking if the queryElement is closed", e);
         }
     }
 
@@ -116,11 +116,20 @@ public abstract class QueryElement<T> implements Closeable {
     public abstract T execute() throws QueryException;
 
     public static class QueryException extends IOException {
-        public QueryException(String message, Throwable cause) {
-            super(message, cause);
-        }
+
+        private final SQLException sqlException;
         public QueryException(String message) {
-            super(message);
+            this(message, null);
         }
+
+        public QueryException(String message, SQLException sqlException){
+            super(message);
+            this.sqlException = sqlException;
+        }
+
+        public SQLException getSqlException(){
+            return this.sqlException;
+        }
+
     }
 }
