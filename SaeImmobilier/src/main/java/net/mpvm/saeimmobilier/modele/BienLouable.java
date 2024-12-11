@@ -1,14 +1,11 @@
 package net.mpvm.saeimmobilier.modele;
 
 
-import net.mpvm.saeimmobilier.sql.Query.QueryElement;
 import net.mpvm.saeimmobilier.sql.Query.Queryable;
-import net.mpvm.saeimmobilier.sql.Query.UpdateQueryElement;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Map;
 
 public abstract class BienLouable extends Bien {
 
@@ -43,9 +40,9 @@ public abstract class BienLouable extends Bien {
 	private java.sql.Date DateAjout;
 
 
-	BienLouable(String lieuImmeuble, String ville, int codePostal, String adresse, int nbPieces, String NumeroFiscal, Immeuble immeuble, float surface, int idBienLouable, java.sql.Date dateAjout) {// Initialisation des attributs hérités de Bien
-		super(ville, codePostal, adresse, -1);
-		this.lieuImmeuble = lieuImmeuble;
+	BienLouable(String complementAdresse, String ville, int codePostal, String adresse, int nbPieces, String NumeroFiscal, Immeuble immeuble, float surface, int idBienLouable, java.sql.Date dateAjout) {// Initialisation des attributs hérités de Bien
+		super(ville, codePostal, adresse, idBienLouable);
+		this.lieuImmeuble = complementAdresse;
 		this.immeuble = immeuble;
 		this.surface = surface;
 		this.nbPieces = nbPieces;
@@ -56,8 +53,8 @@ public abstract class BienLouable extends Bien {
 		this.DateAjout = dateAjout;
 	}
 
-	public BienLouable(String lieuImmeuble,String ville, int codePostal, String adresse, int nbPieces, String NumeroFiscal, Immeuble immeuble, float surface, java.sql.Date dateAjout) {
-		this(lieuImmeuble,ville,codePostal,adresse,nbPieces,NumeroFiscal,immeuble,surface,-1,dateAjout);
+	public BienLouable(String complementAdresse,String ville, int codePostal, String adresse, int nbPieces, String NumeroFiscal, Immeuble immeuble, float surface, java.sql.Date dateAjout) {
+		this(complementAdresse,ville,codePostal,adresse,nbPieces,NumeroFiscal,immeuble,surface,-1,dateAjout);
 	}
 
 	// Getters et Setters pour tous les champs
@@ -168,47 +165,27 @@ public abstract class BienLouable extends Bien {
 		this.nbPieces = nbPieces;
 	}
 
-	@Override
-	public void save() throws QueryableException {
-		if(this.getIdBien() != -1)
-			throw new Queryable.QueryableException("Le bien existe déjà !");
-		try(UpdateQueryElement query = new UpdateQueryElement(INSERT_QUERY, true)){
-			query.setArgs(
-					Map.of(1,this.getLieuImmeuble(),
-							2, this.getAdresse(),
-							3, this.getVille(),
-							4, this.getCodePostal(),
-							5, this.getTypeBienString(),
-							6, this.getSurface(),
-							7, this.getNbPieces(),
-							8, this.getNumeroFiscal(),
-							9, this.getDateAjout()
-					)).execute();
-		}
-		catch (QueryElement.QueryException queryException){
-			queryException.getSqlException().printStackTrace();
-			throw new BienLouableException("Erreur lors de l'ajout du bien", queryException.getSqlException());
-		}
-		//TODO : plus de table "Archiver" la con de sa race
-		try(UpdateQueryElement query = new UpdateQueryElement(INSERT_QUERY_ARCHIVER, true)){
-			query.setArgs(
-					Map.of(1, this.getLieuImmeuble(),
-							2, this.getAdresse(),
-							3, this.getVille(),
-							4, this.getCodePostal(),
-							5, this.getTypeBienString(),
-							6, this.getSurface(),
-							7, this.getNbPieces(),
-							8, this.getNumeroFiscal(),
-							9, this.getDateAjout()
-					)).execute();
-		}
-		catch (QueryElement.QueryException queryException){
-			queryException.getSqlException().printStackTrace();
-			throw new BienLouableException("Erreur lors de l'ajout du bien", queryException.getSqlException());
-		}
-
-	}
+//		if(this.getIdBien() != -1)
+//			throw new Queryable.QueryableException("Le bien existe déjà !");
+//		try(UpdateQueryElement query = new UpdateQueryElement(INSERT_QUERY, true)){
+//			query.setArgs(
+//					Map.of(1,this.getLieuImmeuble(),
+//							2, this.getAdresse(),
+//							3, this.getVille(),
+//							4, this.getCodePostal(),
+//							5, this.getTypeBienString(),
+//							6, this.getSurface(),
+//							7, this.getNbPieces(),
+//							8, this.getNumeroFiscal(),
+//							9, this.getDateAjout()
+//					)).execute();
+//		}
+//		catch (QueryElement.QueryException queryException){
+//			queryException.getSqlException().printStackTrace();
+//			throw new BienLouableException("Erreur lors de l'ajout du bien", queryException.getSqlException());
+//		}
+//
+//	}
 
 	@Override
 	public void modify() throws QueryableException {
