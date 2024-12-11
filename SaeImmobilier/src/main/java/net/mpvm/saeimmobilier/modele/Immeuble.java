@@ -103,7 +103,7 @@ public class Immeuble extends Bien{
 				}
 			}
 		} catch (QueryElement.QueryException | SQLException e) {
-			throw new BienException("Erreur lors de la récupération des biens associés", e);
+			throw new BienException("Erreur lors de la récupération des biens associés", e instanceof SQLException ? (SQLException) e : ((QueryElement.QueryException) e).getSqlException());
 		}
 		return biensAssocies;
 	}
@@ -123,8 +123,8 @@ public class Immeuble extends Bien{
 									3, this.getCodePostal()))
 					.execute();
 		}
-		catch (QueryElement.QueryException sqlE){
-			throw new Queryable.QueryableException("Erreur lors de l'ajout du bien");
+		catch (QueryElement.QueryException queryException){
+			throw new ImmeubleException("Erreur lors de l'ajout du bien", queryException.getSqlException());
 		}
 	}
 
@@ -136,5 +136,14 @@ public class Immeuble extends Bien{
 	@Override
 	public void delete() throws QueryableException {
 
+	}
+
+	public static class ImmeubleException extends BienException {
+		public ImmeubleException(String message) {
+			this(message, null);
+		}
+		public ImmeubleException(String message, SQLException e) {
+			super(message, e);
+		}
 	}
 }

@@ -11,7 +11,7 @@ public interface Queryable {
     class QueryableException extends QueryElement.QueryException {
 
         public QueryableException(String message) {
-            super(message);
+            this(message,null);
         }
         public QueryableException(String message, SQLException sqlException) {
             super(message,sqlException);

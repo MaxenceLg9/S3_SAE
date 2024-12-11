@@ -86,7 +86,6 @@ public abstract class Bien implements Queryable {
              PreparedStatement statement = connection.prepareStatement(query)) {
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
-                TypeBien.HABITATION.name();
                 switch (TypeBien.valueOf(rs.getString("TypeBien"))){
                     case TypeBien.HABITATION :
                         biens.add(new Habitation(rs.getString("Lieu_Immeuble"),
@@ -118,13 +117,13 @@ public abstract class Bien implements Queryable {
 
                 }
             }
-        } catch (Exception e) {
-            throw new BienException("Erreur lors de la récupération des biens", e);
+        } catch (SQLException sqlException) {
+            throw new BienException("Erreur lors de la récupération des biens", sqlException);
         }
         return biens;
     }
 
-    public static List<Immeuble> findAllImmeubles() throws Queryable.QueryableException {
+    public static List<Immeuble> findAllImmeubles() throws BienException {
         List<Immeuble> immeubles = new ArrayList<>();
         String query = "SELECT * FROM bien WHERE TypeBien = 'IMMEUBLE'";
 
@@ -141,7 +140,7 @@ public abstract class Bien implements Queryable {
                 immeubles.add(immeuble);
             }
         } catch (SQLException e) {
-            throw new Queryable.QueryableException("Erreur lors de la récupération des immeubles", e);
+            throw new BienException("Erreur lors de la récupération des immeubles", e);
         }
         return immeubles;
     }
@@ -170,7 +169,7 @@ public abstract class Bien implements Queryable {
     }
 
 
-    public static List<Bien> findByImmeuble(int idImmeuble) throws Queryable.QueryableException {
+    public static List<Bien> findByImmeuble(int idImmeuble) throws Bien.BienException {
         List<Bien> biens = new ArrayList<>();
         String query = "SELECT * FROM immeuble WHERE idImmeuble = ?";
 
@@ -221,11 +220,11 @@ public abstract class Bien implements Queryable {
                         break;
 
                     default:
-                        throw new Queryable.QueryableException("Type de bien inconnu : " + typeBien, null);
+                        throw new BienException("Type de bien inconnu : " + typeBien, null);
                 }
             }
         } catch (SQLException e) {
-            throw new Queryable.QueryableException("Erreur lors de la récupération des biens pour l'immeuble ID " + idImmeuble, e);
+            throw new BienException("Erreur lors de la récupération des biens pour l'immeuble ID " + idImmeuble, e);
         }
 
         return biens;
@@ -234,9 +233,9 @@ public abstract class Bien implements Queryable {
 
 
     // Classe d'exception personnalisée
-    public static class BienException extends Exception {
-        public BienException(String message, Throwable cause) {
-            super(message, cause);
+    public static class BienException extends QueryableException {
+        public BienException(String message, SQLException sqlException) {
+            super(message, sqlException);
         }
     }
 }
