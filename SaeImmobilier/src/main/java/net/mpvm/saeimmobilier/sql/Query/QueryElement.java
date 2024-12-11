@@ -45,7 +45,7 @@ public abstract class QueryElement<T> implements Closeable {
     }
 
     /*
-    *
+     *
      */
     public boolean isClosed() throws QueryException{
         try{

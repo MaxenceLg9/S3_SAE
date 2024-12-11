@@ -108,14 +108,14 @@ public class Locataire implements Queryable {
 		if(this.getIdLocataire() != -1)
 			throw new LocataireException("Le locataire existe déjà dans la table");
 		try(UpdateQueryElement query =new UpdateQueryElement(INSERT_QUERY, true)){
-					query.setArgs(
+			query.setArgs(
 							Map.of(1, this.getNom(),
 									2, this.getPrenom(),
 									3, this.getEmail(),
 									4, Character.toString(this.getSexe()),
 									5, this.getTelephone()))
 					.execute();
-        }
+		}
 		catch (QueryElement.QueryException queryException){
 			throw new LocataireException("Erreur lors de l'ajout du locataire",queryException.getSqlException());
 		}
@@ -124,7 +124,7 @@ public class Locataire implements Queryable {
 	public void delete() throws LocataireException {
 		try(UpdateQueryElement query = new UpdateQueryElement(DELETE_QUERY, true)){
 			query.setArgs(Map.of(1,this.getIdLocataire())).execute();
-        }
+		}
 		catch (QueryElement.QueryException e) {
 			throw new LocataireException("Erreur lors de la suppression du locataire");
 		}
@@ -136,11 +136,11 @@ public class Locataire implements Queryable {
 		try(UpdateQueryElement query = new UpdateQueryElement(UPDATE_QUERY, true)){
 			query.setArgs(
 					Map.of(1, this.getNom(),
-									2, this.getPrenom(),
-									3, this.getEmail(),
-									4, Character.toString(this.getSexe()),
-									5, this.getTelephone(),
-									6, this.getIdLocataire())).execute();
+							2, this.getPrenom(),
+							3, this.getEmail(),
+							4, Character.toString(this.getSexe()),
+							5, this.getTelephone(),
+							6, this.getIdLocataire())).execute();
 		}catch(QueryElement.QueryException queryException){
 			throw new LocataireException("Erreur lors de la modification du locataire", queryException.getSqlException());
 		}
