@@ -3,7 +3,6 @@ package net.mpvm.saeimmobilier.modele;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 
 public class Date {
 	private Integer annee;
@@ -13,7 +12,7 @@ public class Date {
 
 	// Constructeur avec validation
 	public Date(Integer annee, Integer mois, Integer jour) {
-		if (!isValidDate(annee, mois, jour)) {
+		if (isNotValidDate(annee, mois, jour)) {
 			throw new IllegalArgumentException("Date invalide : " + jour + "/" + mois + "/" + annee);
 		}
 		this.annee = annee;
@@ -37,7 +36,7 @@ public class Date {
 
 	// Setters avec validation
 	public void setAnnee(Integer annee) {
-		if (!isValidDate(annee, this.mois, this.jour)) {
+		if (isNotValidDate(annee, this.mois, this.jour)) {
 			throw new IllegalArgumentException("Date invalide avec cette année : " + jour + "/" + mois + "/" + annee);
 		}
 		this.annee = annee;
@@ -45,7 +44,7 @@ public class Date {
 	}
 
 	public void setMois(Integer mois) {
-		if (!isValidDate(this.annee, mois, this.jour)) {
+		if (isNotValidDate(this.annee, mois, this.jour)) {
 			throw new IllegalArgumentException("Date invalide avec ce mois : " + jour + "/" + mois + "/" + annee);
 		}
 		this.mois = mois;
@@ -53,7 +52,7 @@ public class Date {
 	}
 
 	public void setJour(Integer jour) {
-		if (!isValidDate(this.annee, this.mois, jour)) {
+		if (isNotValidDate(this.annee, this.mois, jour)) {
 			throw new IllegalArgumentException("Date invalide avec ce jour : " + jour + "/" + mois + "/" + annee);
 		}
 		this.jour = jour;
@@ -66,24 +65,21 @@ public class Date {
 	}
 
 	// Méthode de validation des dates
-	private boolean isValidDate(Integer annee, Integer mois, Integer jour) {
+	private boolean isNotValidDate(Integer annee, Integer mois, Integer jour) {
 		if (mois < 1 || mois > 12 || jour < 1) {
-			return false;
+			return true;
 		}
 		int maxJour = getDaysInMonth(annee, mois);
-		return jour <= maxJour;
+		return jour > maxJour;
 	}
 
 	// Retourne le nombre de jours dans un mois donné
 	private int getDaysInMonth(Integer annee, Integer mois) {
-		switch (mois) {
-			case 2:
-				return isLeapYear(annee) ? 29 : 28;
-			case 4: case 6: case 9: case 11:
-				return 30;
-			default:
-				return 31;
-		}
+        return switch (mois) {
+            case 2 -> isLeapYear(annee) ? 29 : 28;
+            case 4, 6, 9, 11 -> 30;
+            default -> 31;
+        };
 	}
 	public Date addMonths(int months) {
 		int newMois = this.mois + months;
@@ -110,11 +106,8 @@ public class Date {
 		if (annee % 4 != 0) {
 			return false;
 		}
-		if (annee % 100 == 0 && annee % 400 != 0) {
-			return false;
-		}
-		return true;
-	}
+        return annee % 100 != 0 || annee % 400 == 0;
+    }
 
 	public String getDateComplete() {
 		return dateComplete;
@@ -130,7 +123,7 @@ public class Date {
 		return this.dateComplete;
 	}
 
-	public Date getCurrentDate() {
+	public static Date getCurrentDate() {
 		LocalDate currentDate = LocalDate.now();
 		int annee = currentDate.getYear();
 		int mois = currentDate.getMonthValue();
@@ -142,8 +135,7 @@ public class Date {
 		// Obtenir la date actuelle
 		LocalDate currentDate = LocalDate.now();
 		// Convertir en Instant (à minuit de ce jour-là, par défaut UTC)
-		long epochMillis = currentDate.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli();
-		return epochMillis;
+        return currentDate.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli();
 	}
 
 }
