@@ -52,7 +52,7 @@ public class TestQueryElement {
     @Test
     public void testUpdateQueryBehaviour() throws QueryElement.QueryException, SQLException {
         updateQueryElement = new UpdateQueryElement(Locataire.INSERT_QUERY, false);
-        updateQueryElement.setArgs(Map.of(1, "nom", 2, "prenom", 3, "email", 4, 'M', 5, "telephone"));
+        updateQueryElement.setArgs(Map.of(1, "nom", 2, "prenom", 3, "email", 4, "M", 5, "telephone"));
         updateQueryElement.execute();
         updateQueryElement.commit();
         updateQueryElement.close();

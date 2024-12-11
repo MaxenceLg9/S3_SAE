@@ -48,6 +48,11 @@ public class Habitation extends BienLouable {
             throw new BienLouableException("Erreur lors de l'ajout du bien", queryException.getSqlException());
         }
     }
+
+    @Override
+    public void save() throws QueryableException {
+
+    }
 }
 
 
