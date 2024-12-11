@@ -1,13 +1,10 @@
 package net.mpvm.saeimmobilier.modele;
 
 
-import net.mpvm.saeimmobilier.sql.Query.QueryElement;
 import net.mpvm.saeimmobilier.sql.Query.Queryable;
-import net.mpvm.saeimmobilier.sql.Query.UpdateQueryElement;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Map;
 
 public abstract class BienLouable extends Bien {
 
@@ -42,9 +39,9 @@ public abstract class BienLouable extends Bien {
 	private java.sql.Date DateAjout;
 
 
-	BienLouable(String lieuImmeuble, String ville, int codePostal, String adresse, int nbPieces, String NumeroFiscal, Immeuble immeuble, float surface, int idBienLouable, java.sql.Date dateAjout) {// Initialisation des attributs hérités de Bien
-		super(ville, codePostal, adresse, -1);
-		this.lieuImmeuble = lieuImmeuble;
+	BienLouable(String complementAdresse, String ville, int codePostal, String adresse, int nbPieces, String NumeroFiscal, Immeuble immeuble, float surface, int idBienLouable, java.sql.Date dateAjout) {// Initialisation des attributs hérités de Bien
+		super(ville, codePostal, adresse, idBienLouable);
+		this.lieuImmeuble = complementAdresse;
 		this.immeuble = immeuble;
 		this.surface = surface;
 		this.nbPieces = nbPieces;
@@ -55,8 +52,8 @@ public abstract class BienLouable extends Bien {
 		this.DateAjout = dateAjout;
 	}
 
-	public BienLouable(String lieuImmeuble,String ville, int codePostal, String adresse, int nbPieces, String NumeroFiscal, Immeuble immeuble, float surface, java.sql.Date dateAjout) {
-		this(lieuImmeuble,ville,codePostal,adresse,nbPieces,NumeroFiscal,immeuble,surface,-1,dateAjout);
+	public BienLouable(String complementAdresse,String ville, int codePostal, String adresse, int nbPieces, String NumeroFiscal, Immeuble immeuble, float surface, java.sql.Date dateAjout) {
+		this(complementAdresse,ville,codePostal,adresse,nbPieces,NumeroFiscal,immeuble,surface,-1,dateAjout);
 	}
 
 	// Getters et Setters pour tous les champs
