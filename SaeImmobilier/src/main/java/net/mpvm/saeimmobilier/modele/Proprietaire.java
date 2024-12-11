@@ -204,7 +204,6 @@ import net.mpvm.saeimmobilier.sql.Query.UpdateQueryElement;
 
 			try(SelectQueryElement query = new SelectQueryElement(SELECT_QUERY)){
 				ResultSet rs = query.execute();
-
 				while (rs.next()) {
 					p.add(
 							new Proprietaire(rs.getString("Nom"),
@@ -220,6 +219,7 @@ import net.mpvm.saeimmobilier.sql.Query.UpdateQueryElement;
 			catch (QueryElement.QueryException | SQLException queryException){
 				throw new Proprietaire.ProprietaireException("Erreur lors de la récupération des propriétaires");
 			}
+			System.out.println("fin");
 			return p;
 		}
 		public static class ProprietaireException extends Queryable.QueryableException {
