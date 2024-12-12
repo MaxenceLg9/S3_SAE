@@ -5,7 +5,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import net.mpvm.saeimmobilier.modele.Locataire;
-import net.mpvm.saeimmobilier.util.JfxUtil;
+import net.mpvm.saeimmobilier.vue.VueAccueil;
+import net.mpvm.saeimmobilier.vue.VueHome;
 import net.mpvm.saeimmobilier.vue.VueNewBien;
 
 import java.util.ArrayList;
@@ -109,19 +110,25 @@ public class CtrlNewLocataire {
 
     public void annuler(ActionEvent actionEvent) {
 
+        Stage stage = new Stage();
         try {
-            // Créer une nouvelle fenêtre (Stage)
-            Stage stage = new Stage();
-
-            VueNewBien.showWindow(stage);
-
-            Stage stage2 = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
-            // Fermer la fenêtre
-            stage2.close();
-
+            VueHome.showWindow(stage);
+            Stage stageActu = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
+            stageActu.close();
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
 
+    }
+
+    public void Accueil(ActionEvent actionEvent ) {
+        Stage stage = new Stage();
+        try {
+            VueHome.showWindow(stage);
+            Stage stageActu = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
+            stageActu.close();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }
