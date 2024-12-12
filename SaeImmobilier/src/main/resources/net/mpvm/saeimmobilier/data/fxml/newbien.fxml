@@ -25,7 +25,7 @@
             <top>
                 <Label fx:id="labelTitle" contentDisplay="CENTER" prefHeight="54.0" prefWidth="252.0" text="Ajout d'un bien" textFill="WHITE" BorderPane.alignment="CENTER">
                     <font>
-                        <Font name="System Bold" size="48.0" />
+                        <Font name="System Bold" size="32.0" />
                     </font>
                     <BorderPane.margin>
                         <Insets bottom="15.0" />
@@ -209,7 +209,7 @@
                         <Insets bottom="30.0" right="10.0" />
                     </GridPane.margin>
                 </Button>
-                <Button fx:id="btnDeconnexion" alignment="CENTER" contentDisplay="TOP" minHeight="35.0" minWidth="200.0" mnemonicParsing="false" onAction="#Deconnexion" style="-fx-background-color: #e12816;" text="Déconnexion">
+                <Button fx:id="btnDeconnexion" alignment="CENTER" contentDisplay="TOP" minHeight="35.0" minWidth="200.0" mnemonicParsing="false" onAction="#Deconnexion" style="-fx-background-color: #e12816;" text="Déconnexion" textFill="WHITE">
                     <font>
                         <Font name="System Bold" size="14.0" />
                     </font>
