@@ -188,7 +188,7 @@ public abstract class BienLouable extends Bien {
 		}
 		catch (QueryElement.QueryException sqlE){
 			sqlE.getCause().printStackTrace();
-			throw new Queryable.QueryableException("Erreur lors de l'ajout du bien");
+			throw new Locataire.LocataireException("Erreur lors de l'ajout du bien");
 		}
 		try(UpdateQueryElement query = new UpdateQueryElement(INSERT_QUERY_ARCHIVER, true)){
 			query.setArgs(

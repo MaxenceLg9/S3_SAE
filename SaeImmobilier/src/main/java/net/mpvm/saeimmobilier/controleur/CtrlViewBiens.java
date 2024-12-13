@@ -9,7 +9,6 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import net.mpvm.saeimmobilier.modele.Bien;
-import net.mpvm.saeimmobilier.modele.BienLouable;
 import net.mpvm.saeimmobilier.sql.Query.Queryable;
 
 import java.util.HashMap;

@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 public abstract class Bien implements Queryable {
@@ -207,8 +208,8 @@ public abstract class Bien implements Queryable {
 
                 }
             }
-        } catch (SQLException sqlException) {
-            throw new BienException("Erreur lors de la récupération des biens", sqlException);
+        } catch (Exception e) {
+            throw new BienException("Erreur lors de la récupération des biens", e);
         }
         return biens;
     }

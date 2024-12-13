@@ -5,7 +5,9 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import net.mpvm.saeimmobilier.modele.Bien;
+import net.mpvm.saeimmobilier.sql.Query.Queryable;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public class CtrlViewBiensLouables {
