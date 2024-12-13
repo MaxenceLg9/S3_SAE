@@ -22,6 +22,7 @@ CREATE TABLE Locataire(
                           TypeContrat VARCHAR(4),
                           RemunerationMensuelle DOUBLE,
                           AutresRevenus DOUBLE,
+                          Archive BOOLEAN,
                           TotalRevenus DOUBLE,
                           PRIMARY KEY(IdLocataire)
 );
@@ -104,7 +105,7 @@ BEGIN
     SELECT TypeBien INTO v_type FROM Bien WHERE IdBien = NEW.IdImmeuble;
     IF v_type != 'IMMEUBLE' THEN
         SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = 'Le type de bien doit être un immeuble';
+            SET MESSAGE_TEXT = 'Le type de bien doit être un immeuble';
     END IF;
 END;
 //
@@ -118,6 +119,7 @@ CREATE TABLE Bail(
                      TotalCharges DOUBLE,
                      DepotGaranti DOUBLE,
                      MontantLoyer DOUBLE,
+                     Archive BOOLEAN,
                      TypeBail VARCHAR(50),
                      Renouvelable BOOLEAN,
                      CheminDocument VARCHAR(50),
@@ -238,16 +240,6 @@ CREATE TABLE AssocieBailLocataire(
                                      PRIMARY KEY(IdLocataire, IdBail),
                                      FOREIGN KEY(IdLocataire) REFERENCES Locataire(IdLocataire),
                                      FOREIGN KEY(IdBail) REFERENCES Bail(IdBail)
-);
-
-CREATE TABLE Louer(
-                      IdLocataire INT,
-                      IdBien INT,
-                      DateDebut DATE,
-                      DateFin DATE,
-                      PRIMARY KEY(IdLocataire, IdBien),
-                      FOREIGN KEY(IdLocataire) REFERENCES Locataire(IdLocataire),
-                      FOREIGN KEY(IdBien) REFERENCES Bien(IdBien)
 );
 
 CREATE TABLE Realiser(
