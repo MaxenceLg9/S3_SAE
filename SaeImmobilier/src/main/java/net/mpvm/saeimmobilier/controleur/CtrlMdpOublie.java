@@ -6,6 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import net.mpvm.saeimmobilier.vue.VueHome;
 
 
 public class CtrlMdpOublie {
@@ -23,8 +24,12 @@ public class CtrlMdpOublie {
 
 
     public void Quitter(javafx.event.ActionEvent actionEvent) {
-        Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
-        stage.close();
+        Stage stage = new Stage();
+        try {
+            VueHome.showWindow(stage);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void Modifier(javafx.event.ActionEvent actionEvent) {

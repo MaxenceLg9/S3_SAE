@@ -10,9 +10,7 @@ import net.mpvm.saeimmobilier.modele.Proprietaire;
 import net.mpvm.saeimmobilier.util.JfxUtil;
 
 import javafx.scene.input.KeyEvent;
-import net.mpvm.saeimmobilier.vue.VueAccueil;
-import net.mpvm.saeimmobilier.vue.VueMdpOublie;
-import net.mpvm.saeimmobilier.vue.VueNewBien;
+import net.mpvm.saeimmobilier.vue.*;
 
 import java.util.Map;
 import java.util.function.Function;
@@ -101,7 +99,12 @@ public class CtrlConnexion {
                     if (this.FieldMail.getText().equals(p.getEmail())) {
                         if (this.FieldPwd.getText().equals(p.getMotDePasse())) {
                             Stage stage = new Stage();
-                            VueNewBien.showWindow(stage);
+                            try {
+                                VueHome.showWindow(stage);
+                            } catch (Exception e) {
+                                throw new RuntimeException(e);
+                            }
+
                             Stage stageActu = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
                             stageActu.close();
 

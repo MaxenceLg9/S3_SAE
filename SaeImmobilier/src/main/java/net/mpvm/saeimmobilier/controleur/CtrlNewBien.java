@@ -6,10 +6,9 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import net.mpvm.saeimmobilier.modele.*;
 import net.mpvm.saeimmobilier.sql.Query.Queryable;
-import net.mpvm.saeimmobilier.util.JfxUtil;
 import net.mpvm.saeimmobilier.vue.VueAccueil;
 import net.mpvm.saeimmobilier.vue.VueConnexion;
-
+import net.mpvm.saeimmobilier.vue.VueHome;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -230,25 +229,25 @@ public class CtrlNewBien {
 
     @FXML
     public void Annuler(ActionEvent actionEvent) {
-        // Obtenir la fenêtre actuelle (Stage) à partir de l'événement
-        Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
-        // Fermer la fenêtre
-        stage.close();
+        Stage stage = new Stage();
+        try {
+            VueHome.showWindow(stage);
+            Stage stageActu = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
+            stageActu.close();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
 
     public void Accueil(ActionEvent actionEvent) {
+        Stage stage = new Stage();
         try {
-            // Créer une nouvelle fenêtre (Stage)
-            Stage stage = new Stage();
-
-            VueAccueil.showWindow(stage);
-
-            Stage stage2 = (Stage) ((MenuItem) actionEvent.getTarget()).getParentPopup().getOwnerWindow();            // Fermer la fenêtre
-            stage2.close();
-
+            VueHome.showWindow(stage);
+            Stage stageActu = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
+            stageActu.close();
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
