@@ -55,10 +55,6 @@ public abstract class BienLouable extends Bien {
 		this.DateAjout = dateAjout;
 	}
 
-	public BienLouable(String complementAdresse,String ville, int codePostal, String adresse, int nbPieces, String NumeroFiscal, Immeuble immeuble, float surface, java.sql.Date dateAjout) {
-		this(complementAdresse,ville,codePostal,adresse,nbPieces,NumeroFiscal,immeuble,surface,dateAjout, -1);
-	}
-
 	// Getters et Setters pour tous les champs
 
 	public String getLieuImmeuble() {
