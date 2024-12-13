@@ -84,14 +84,6 @@ CREATE TABLE Bien(
 );
 
 
-alter table bien
-    add constraint FK_Bien_IdImmeuble
-        foreign key (IdImmeuble) references Bien(IdBien);
-
-Alter table Bien
-    add constraint FK_Bien_IdProprietaire
-        foreign key (IdProprietaire) references Proprietaire(IdProprietaire);
-
 Alter table Bien
     Add constraint CK_Type_Bien
         CHECK ( Bien.TypeBien IN('HABITATION','GARAGE','IMMEUBLE') );
