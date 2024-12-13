@@ -1,42 +1,45 @@
 package net.mpvm.saeimmobilier.modele;
 import net.mpvm.saeimmobilier.sql.Query.QueryElement;
-import net.mpvm.saeimmobilier.sql.Query.Queryable;
 import net.mpvm.saeimmobilier.sql.Query.SelectQueryElement;
 import net.mpvm.saeimmobilier.sql.Query.UpdateQueryElement;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class Immeuble extends Bien{
+public final class Immeuble extends Bien{
 
 	public static final String INSERT_QUERY = "INSERT INTO immeuble (Adresse, Ville, CodePostal) VALUES (?, ?, ?)";
 	public static final String SELECT_QUERY = "SELECT * FROM immeuble";
 	public static final String SELECT_WHERE_QUERY = "SELECT * FROM immeuble WHERE Adresse = ? AND Ville = ? AND CodePostal = ?";
 	public static final String DELETE_QUERY = "DELETE FROM immeuble WHERE idImmeuble = ?";
 	public static final String UPDATE_QUERY = "UPDATE immeuble SET Adresse = ?, Ville = ?, CodePostal = ?";
-	public static final String SELECT_FROM_BIEN = "SELECT * FROM bien";
+	public static final String SELECT_FROM_ID = "SELECT * FROM immeuble WHERE idImmeuble = ?";
+	public static final String SELECT_BIENS_IMMEUBLES = "SELECT * FROM immeuble WHERE idImmeuble = ?";
 
 
-	private int idImmeuble;
-	private List<BienLouable> biensAssocies;
 	private List<Travaux> travauxAssocies;
 
 	private Immeuble( String ville, int codePostal, String adresse, int idImmeuble) {
-		super( ville, codePostal, adresse); // Initialisation des attributs hérités de Bien
-		this.idImmeuble = idImmeuble;
-		this.biensAssocies = new ArrayList<>();
+		super(ville, codePostal, adresse, idImmeuble); // Initialisation des attributs hérités de Bien
 		this.travauxAssocies = new ArrayList<>();
 	}
 
 	public Immeuble(String ville, int codePostal, String adresse) {
+		this(ville, codePostal, adresse, -1); // Utilisation du constructeur de Bien
+	}
 
-		super(ville, codePostal, adresse); // Utilisation du constructeur de Bien
-		this.getIdImmeuble();
-		this.biensAssocies = new ArrayList<>();
-		this.travauxAssocies = new ArrayList<>();
+	public static Immeuble getFromId(int idImmeuble) throws ImmeubleException {
+		try(SelectQueryElement selectQueryElement = new SelectQueryElement(SELECT_FROM_ID)){
+			selectQueryElement.setArgs(Map.of(1, idImmeuble));
+			ResultSet rs = selectQueryElement.execute();
+			return new Immeuble(rs.getString("Ville"), rs.getInt("CodePostal"), rs.getString("Adresse"), rs.getInt("idImmeuble"));
+		}catch (QueryElement.QueryException | SQLException e){
+			throw new ImmeubleException("Erreur lors de la récupération de l'immeuble", e instanceof SQLException ? (SQLException) e : ((QueryElement.QueryException) e).getSqlException());
+		}
 	}
 
 	@Override
@@ -45,39 +48,8 @@ public class Immeuble extends Bien{
 	}
 
 	@Override
-	public String getTypeBienString() {
-		return "IMMEUBLE";
-	}
-
-	@Override
 	public float getSurface() {
 		return 0;
-	}
-
-
-	// Getters et Setters
-
-	public int getIdImmeuble() {
-		return idImmeuble;
-	}
-
-	public void setIdImmeuble(int idImmeuble) {
-		try(SelectQueryElement query= new SelectQueryElement(SELECT_WHERE_QUERY)){
-			query.setArgs(
-					Map.of(
-							1,this.getAdresse(),
-							2,this.getVille(),
-							3,this.getCodePostal()
-					)).execute().getInt("idImmeuble");
-		} catch (QueryElement.QueryException | SQLException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-
-
-	public void setBiensAssocies(List<BienLouable> biensAssocies) {
-		this.biensAssocies = biensAssocies;
 	}
 
 	public List<Travaux> getTravauxAssocies() {
@@ -88,42 +60,27 @@ public class Immeuble extends Bien{
 		this.travauxAssocies = travauxAssocies;
 	}
 
-	public List<BienLouable> getBiensAssocies() throws BienException {
-		try (SelectQueryElement query = new SelectQueryElement(SELECT_FROM_BIEN)) {
-			query.setArgs(Map.of(1, this.idImmeuble));
+	public List<BienLouable> getBiensAssocies() throws ImmeubleException {
+		List<BienLouable> bienLouablesAssocies = new LinkedList<>();
+		try (SelectQueryElement query = new SelectQueryElement(SELECT_BIENS_IMMEUBLES)) {
+			query.setArgs(Map.of(1, this.getIdBien()));
 			ResultSet rs = query.execute();
 			while (rs.next()) {
-				BienLouable bien;
-				if(rs.getString("TypeBien").equals("Habitation")) {
-					bien = new Habitation(
-                            rs.getString("Lieu_Immeuble"),
-							rs.getString("Ville"),
-							rs.getInt("CodePostal"),
-							rs.getString("Adresse"),
-							rs.getInt("NbPieces"),
-							rs.getString("NumeroFiscal"),
-							null,
-							rs.getFloat("Surface"),
-							rs.getDate("DateAjout"));
-					biensAssocies.add(bien);
-				}else{
-					bien = new Garage(
-                            rs.getString("Lieu_Immeuble"),
-							rs.getString("Ville"),
-							rs.getInt("CodePostal"),
-							rs.getString("Adresse"),
-							rs.getInt("NbPieces"),
-							rs.getString("NumeroFiscal"),
-							null,
-							rs.getFloat("Surface"),
-							rs.getDate("DateAjout"));
-					biensAssocies.add(bien);
+				switch(TypeBien.valueOf(rs.getString("TypeBien"))){
+					case HABITATION:
+						bienLouablesAssocies.add(new Habitation(rs));
+						break;
+					case GARAGE:
+						bienLouablesAssocies.add(new Garage(rs));
+						break;
+					default:
+						throw new BienException("Les immeubles ne peuvent pas être associés",null);
 				}
 			}
 		} catch (QueryElement.QueryException | SQLException e) {
-			throw new BienException("Erreur lors de la récupération des biens associés", e instanceof SQLException ? (SQLException) e : ((QueryElement.QueryException) e).getSqlException());
+			throw new ImmeubleException("Erreur lors de la récupération des biens associés", e instanceof SQLException ? (SQLException) e : ((QueryElement.QueryException) e).getSqlException());
 		}
-		return biensAssocies;
+		return bienLouablesAssocies;
 	}
 	@Override
 	public String toString(){
@@ -132,9 +89,9 @@ public class Immeuble extends Bien{
 
 
 	@Override
-	public void save() throws QueryableException {
-		if(this.getIdImmeuble() != -1)
-			throw new Bien.QueryableException("Le bien existe déjà dans la table");
+	public void save() throws ImmeubleException {
+		if(this.getIdBien() != -1)
+			throw new ImmeubleException("Le bien existe déjà dans la table");
 		try(UpdateQueryElement q = new UpdateQueryElement(INSERT_QUERY, true)){
 			q.setArgs(
 							Map.of(1, this.getAdresse(),
@@ -148,13 +105,30 @@ public class Immeuble extends Bien{
 	}
 
 	@Override
-	public void modify() throws QueryableException {
-
+	public void modify() throws ImmeubleException {
+		if(this.getIdBien() == -1)
+			throw new ImmeubleException("Le bien n'existe pas dans la table");
+		try(UpdateQueryElement query = new UpdateQueryElement(UPDATE_QUERY, true)){
+			query.setArgs(
+					Map.of(1, this.getAdresse(),
+							2, this.getVille(),
+							3, this.getCodePostal()))
+					.execute();
+		}catch(QueryElement.QueryException queryException){
+			throw new ImmeubleException("Erreur lors de la modification du bien", queryException.getSqlException());
+		}
 	}
 
 	@Override
-	public void delete() throws QueryableException {
-
+	public void delete() throws ImmeubleException {
+		if(this.getIdBien() == -1)
+			throw new ImmeubleException("Le bien n'existe pas dans la table");
+		try(UpdateQueryElement query = new UpdateQueryElement(DELETE_QUERY, true)){
+			query.setArgs(Map.of(1,this.getIdBien())).execute();
+		}
+		catch (QueryElement.QueryException e) {
+			throw new ImmeubleException("Erreur lors de la suppression du bien", e.getSqlException());
+		}
 	}
 
 	public static class ImmeubleException extends BienException {
