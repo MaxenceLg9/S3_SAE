@@ -19,13 +19,19 @@ public class CtrlViewBiensLouables {
 
     private int idImmeuble;
 
-    public void setIdImmeuble(int idImmeuble) throws Bien.BienException {
+    public void setIdImmeuble(int idImmeuble) {
         this.idImmeuble = idImmeuble;
         afficheBiens();
     }
 
-    private void afficheBiens() throws Bien.BienException, Queryable.QueryableException {
-        List<Bien> biens = Bien.findByImmeuble(idImmeuble); // Méthode pour filtrer les biens
+    private void afficheBiens() {
+        List<Bien> biens = null; // Méthode pour filtrer les biens
+        try {
+            biens = Bien.findByImmeuble(idImmeuble);
+        } catch (Bien.BienException e) {
+            e.printStackTrace();
+            e.getSqlException().printStackTrace();
+        }
         gridPaneBiensLouables.getChildren().clear();
 
         for (Bien bien : biens) {
