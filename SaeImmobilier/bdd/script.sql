@@ -53,7 +53,7 @@ CREATE TABLE Assurance(
                           PRIMARY KEY(IdAssurance)
 );
 
-CREATE TABLE Proprietaire(
+CREATE TABLE Propriétaire(
                              IdProprietaire INT auto_increment,
                              Email VARCHAR(50),
                              MotDePasse VARCHAR(50),

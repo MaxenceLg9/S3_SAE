@@ -102,7 +102,6 @@ public class CtrlConnexion {
                             } catch (Exception e) {
                                 throw new RuntimeException(e);
                             }
-
                             Stage stageActu = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
                             stageActu.close();
 

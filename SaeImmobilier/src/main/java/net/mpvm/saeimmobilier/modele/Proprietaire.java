@@ -58,8 +58,6 @@ public class Proprietaire {
 		this.biensPossedes = new ArrayList<>();
 	}
 
-
-
 	// Getters et setters pour les propriétés
 
 	public String getEmail() {

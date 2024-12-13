@@ -137,7 +137,6 @@ public class CtrlInscription {
 
     @FXML
     public void Annuler(ActionEvent event) {
-
         try {
             VueHome.showWindow(new Stage());
             Stage stageActuel = (Stage) ((Button) event.getSource()).getScene().getWindow();
