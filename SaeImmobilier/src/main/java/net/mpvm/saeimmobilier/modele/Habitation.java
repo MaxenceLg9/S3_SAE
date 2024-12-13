@@ -11,7 +11,7 @@ import java.util.Map;
 
 public final class Habitation extends BienLouable {
 
-    public static final String INSERT_QUERY = "INSERT INTO bien (Lieu_Immeuble, Adresse, Ville, CodePostal, TypeBien, Surface, NombrePieces, NumeroFiscal, DateAjout) VALUES (?, ?, ?, ?, ?,?,?,?,?)";
+    public static final String INSERT_QUERY = "INSERT INTO bien (ComplementAdresse, Adresse, Ville, CodePostal, TypeBien, Surface, NombrePieces, NumeroFiscal, DateAjout) VALUES (?, ?, ?, ?, ?,?,?,?,?)";
 
     @Override
     public TypeBien getTypeBien() {
@@ -46,7 +46,7 @@ public final class Habitation extends BienLouable {
             throw new Queryable.QueryableException("Le bien existe déjà !");
         try(UpdateQueryElement query = new UpdateQueryElement(INSERT_QUERY, true)){
             query.setArgs(
-                    Map.of(1,this.getLieuImmeuble(),
+                    Map.of(1,this.getComplementAdresse(),
                             2, this.getAdresse(),
                             3, this.getVille(),
                             4, this.getCodePostal(),

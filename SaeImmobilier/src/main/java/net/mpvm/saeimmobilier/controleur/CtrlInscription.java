@@ -32,7 +32,7 @@ public class CtrlInscription {
     public CheckBox checkBoxVisibilite;
 
     @FXML
-    private TextField fieldCodePostal,fieldAdresse,fieldVille,fieldPrenom,fieldNom,fieldMail,fieldTelephone;
+    private TextField fieldMail;
 
 
     private ArrayList<TextField> fieldsMDP;
@@ -112,7 +112,7 @@ public class CtrlInscription {
 
             if (MDPIdentique()) {
                 try {
-                        new Proprietaire(fieldNom.getText(),fieldPrenom.getText(),fieldTelephone.getText(),fieldMail.getText(),fieldNewPassword.getText(), fieldVille.getText(),fieldCodePostal.getText(),fieldAdresse.getText()).save();
+                        new Proprietaire(fieldMail.getText(),fieldNewPassword.getText()).save();
                 } catch (Proprietaire.ProprietaireException e) {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Erreur");

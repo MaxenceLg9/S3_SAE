@@ -13,7 +13,7 @@ import net.mpvm.saeimmobilier.sql.Query.SelectQueryElement;
 import net.mpvm.saeimmobilier.sql.Query.UpdateQueryElement;
 
 public class Proprietaire {
-	public static final String INSERT_QUERY = "INSERT INTO propriétaire (Nom,Prenom,Telephone,Email,MotDePasse,Ville,CodePostal,Adresse) VALUES (?, ?,?,?,?,?,?,?)";
+	public static final String INSERT_QUERY = "INSERT INTO propriétaire (Email,MotDePasse) VALUES (?, ?)";
 	public static final String SELECT_QUERY = "SELECT * FROM propriétaire";
 	public static final String DELETE_QUERY = "DELETE FROM propriétaire WHERE Id_Propriétaire = ?";
 	public static final String SELECT_COUNT_QUERY = "SELECT COUNT(*) AS count FROM proprietaire WHERE email = ?";
@@ -29,7 +29,7 @@ public class Proprietaire {
 	private ArrayList<Bien> biensPossedes;
 	private int IdProprietaire;
 
-	Proprietaire(int IdProprietaire, String nom, String Prenom, String Telephone, String Email, String MotDePasse, String Ville, String CodePostal, String Adresse) throws IllegalArgumentException {
+	Proprietaire(int IdProprietaire,String Email, String MotDePasse) throws IllegalArgumentException {
 		Pattern pattern = Pattern.compile("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$");
 		Matcher matcher = pattern.matcher(Email);
 		if (!matcher.matches()) {
@@ -40,18 +40,13 @@ public class Proprietaire {
 		}
 		this.Email = Email;
 		this.IdProprietaire = IdProprietaire;
-		this.Nom = nom;
-		this.Prenom = Prenom;
-		this.Telephone = Telephone;
-		this.Ville = Ville;
-		this.CodePostal = CodePostal;
 		this.Adresse = getAdresse();
 		this.MotDePasse = MotDePasse;
 		this.biensPossedes = new ArrayList<>();
 	}
 
-	public Proprietaire(String nom, String Prenom, String Telephone, String Email, String MotDePasse, String Ville, String CodePostal, String Adresse) throws IllegalArgumentException {
-		this(-1, nom, Prenom, Telephone, Email, MotDePasse, Ville, CodePostal, Adresse);
+	public Proprietaire(String Email, String MotDePasse) throws IllegalArgumentException {
+		this(-1, Email, MotDePasse);
 		Pattern pattern = Pattern.compile("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$");
 		Matcher matcher = pattern.matcher(Email);
 		if (!matcher.matches()) {
@@ -163,14 +158,8 @@ public class Proprietaire {
 		try (UpdateQueryElement query = new UpdateQueryElement(INSERT_QUERY, true)) {
 			query.setArgs(
 							Map.of(
-									1, this.getNom(),
-									2, this.getPrenom(),
-									3, this.getTelephone(),
-									4, this.getEmail(),
-									5, this.getMotDePasse(),
-									6, this.getVille(),
-									7, this.getCodePostal(),
-									8, this.getAdresse()
+									1, this.getEmail(),
+									2, this.getMotDePasse()
 							))
 					.execute();
 		} catch (QueryElement.QueryException sqlE) {
@@ -202,14 +191,10 @@ public class Proprietaire {
 			ResultSet rs = query.execute();
 			while (rs.next()) {
 				p.add(
-						new Proprietaire(rs.getString("Nom"),
-								rs.getString("Prenom"),
-								rs.getString("Telephone"),
+						new Proprietaire(
 								rs.getString("Email"),
-								rs.getString("MotDePasse"),
-								rs.getString("Ville"),
-								rs.getString("CodePostal"),
-								rs.getString("Adresse")));
+								rs.getString("MotDePasse")
+						));
 			}
 		}
 		catch (QueryElement.QueryException | SQLException queryException){
