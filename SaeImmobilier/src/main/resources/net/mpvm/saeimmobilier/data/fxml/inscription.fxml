@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
-<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.Glow?>
 <?import javafx.scene.image.Image?>
@@ -20,7 +18,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" styleClass="backgroundColor" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.mpvm.saeimmobilier.controleur.CtrlInscription">
    <children>
-      <BorderPane prefHeight="650.0" prefWidth="800.0" stylesheets="@../css/style.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <BorderPane prefHeight="650.0" prefWidth="800.0" styleClass="backgroundColor" stylesheets="@../css/style.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
             <Label text="Authentification" textAlignment="CENTER" textFill="WHITE" BorderPane.alignment="CENTER">
                <BorderPane.margin>
@@ -127,6 +125,7 @@
                      </font>
                   </Label>
                   <TextField fx:id="fieldNom" layoutX="212.0" layoutY="278.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="270.0" promptText="Nom" styleClass="text-field" AnchorPane.leftAnchor="210.0" AnchorPane.rightAnchor="200.0" />
+                  <TextField fx:id="fieldTelephone" layoutX="212.0" layoutY="323.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="270.0" promptText="Téléphone" styleClass="text-field" AnchorPane.leftAnchor="210.0" AnchorPane.rightAnchor="200.0" />
                   <TextField fx:id="fieldVille" layoutX="212.0" layoutY="366.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="3.0" prefWidth="270.0" promptText="Ville" styleClass="text-field" AnchorPane.leftAnchor="210.0" AnchorPane.rightAnchor="200.0" />
                   <Label layoutX="70.0" layoutY="369.0" prefHeight="17.0" prefWidth="107.0" text="Ville" textFill="WHITE">
                      <font>
@@ -138,7 +137,6 @@
                         <Font name="Calibri Bold" size="16.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="fieldTelephone" layoutX="212.0" layoutY="323.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="270.0" promptText="Téléphone" styleClass="text-field" AnchorPane.leftAnchor="210.0" AnchorPane.rightAnchor="200.0" />
                   <Label layoutX="70.0" layoutY="411.0" prefHeight="17.0" prefWidth="107.0" text="CodePostal" textFill="WHITE">
                      <font>
                         <Font name="Calibri Bold" size="16.0" />
@@ -151,21 +149,6 @@
                      </font>
                   </Label>
                   <TextField fx:id="fieldAdresse" layoutX="210.0" layoutY="446.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="270.0" promptText="Adresse" styleClass="text-field" AnchorPane.leftAnchor="210.0" AnchorPane.rightAnchor="200.0" />
-                  <RadioButton fx:id="radioButtonM" layoutX="371.0" layoutY="485.0" mnemonicParsing="false" text="Masculin" textFill="WHITE">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                  </RadioButton>
-                  <Label layoutX="70.0" layoutY="489.0" prefHeight="17.0" prefWidth="107.0" text="Sexe" textFill="WHITE">
-                     <font>
-                        <Font name="Calibri Bold" size="16.0" />
-                     </font>
-                  </Label>
-                  <RadioButton fx:id="radioButtonF" layoutX="252.0" layoutY="486.0" mnemonicParsing="false" text="Feminin" textFill="WHITE">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                  </RadioButton>
                </children>
                <BorderPane.margin>
                   <Insets bottom="30.0" top="30.0" />
@@ -219,10 +202,6 @@
                </BorderPane.margin>
             </GridPane>
          </bottom>
-         <styleClass>
-            <String fx:value="backgroundColor" />
-            <String fx:value="text-field" />
-         </styleClass>
       </BorderPane>
       <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
          <image>
