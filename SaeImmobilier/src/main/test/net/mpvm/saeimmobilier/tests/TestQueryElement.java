@@ -144,5 +144,4 @@ public class TestQueryElement {
         assertEquals(selectQueryElement.getNArgs(),0);
         assertEquals(updateQueryElement.getNArgs(),5);
     }
-
 }
