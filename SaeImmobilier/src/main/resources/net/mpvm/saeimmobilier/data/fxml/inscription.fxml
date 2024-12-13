@@ -91,7 +91,7 @@
                   </CheckBox>
 
                   <!-- TextField visible pour le mot de passe -->
-                  <TextField fx:id="fieldNewPasswordVisible" promptText="Nouveau Mot de Passe" style="-fx-background-color: #EBEAE8; -fx-text-fill: black;" visible="false" AnchorPane.leftAnchor="210.0" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="75.0">
+                  <TextField fx:id="fieldNewPasswordVisible" promptText="Nouveau Mot de Passe" style="-fx-background-color: #FFFFFF; -fx-text-fill: black;" visible="false" AnchorPane.leftAnchor="210.0" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="75.0">
                      <padding>
                         <Insets bottom="5.0" left="10.0" top="5.0" />
                      </padding>
@@ -101,7 +101,7 @@
                   </TextField>
 
                   <!-- TextField visible pour la confirmation -->
-                  <TextField fx:id="fieldConfirmationVisible" promptText="Confirmation" style="-fx-background-color: #EBEAE8; -fx-text-fill: black;" visible="false" AnchorPane.leftAnchor="210.0" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="135.0">
+                  <TextField fx:id="fieldConfirmationVisible" promptText="Confirmation" style="-fx-background-color: #FFFFFF; -fx-text-fill: black;" visible="false" AnchorPane.leftAnchor="210.0" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="135.0">
                      <padding>
                         <Insets bottom="5.0" left="10.0" top="5.0" />
                      </padding>
