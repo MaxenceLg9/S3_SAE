@@ -24,18 +24,42 @@ public final class Garage extends BienLouable {
 				rs.getInt("IdBien"));
 	}
 
-	public Garage(String complementAdresse, int nbPieces, String NumeroFiscal, Immeuble immeuble, float surface, Date dateAjout) {
-		this(complementAdresse, nbPieces,NumeroFiscal,immeuble,surface,dateAjout,-1);
+	public Garage(String complementAdresse,String ville, int codePostal, String adresse, int nbPieces, String NumeroFiscal, Immeuble immeuble, float surface, Date dateAjout) {
+		this(complementAdresse,ville,codePostal,adresse, nbPieces,NumeroFiscal,immeuble,surface,dateAjout,-1);
 	}
 
-	Garage(String complementAdresse, int nbPieces, String NumeroFiscal, Immeuble immeuble, float surface, Date dateAjout, int idBien) {
-		super(complementAdresse, nbPieces,NumeroFiscal,immeuble,surface,dateAjout,idBien);
+	Garage(String complementAdresse,String ville, int codePostal, String adresse, int nbPieces, String NumeroFiscal, Immeuble immeuble, float surface, Date dateAjout, int idBien) {
+		super(complementAdresse,ville,codePostal,adresse, nbPieces,NumeroFiscal,immeuble,surface,dateAjout,idBien);
 	}
 
 	@Override
 	public TypeBien getTypeBien() {
 		return TypeBien.GARAGE;
 	}
+
+    @Override
+    public void save() throws Garage.GarageException {
+
+        if(this.getIdBien() != -1)
+            throw new Garage.GarageException("Le bien existe déjà !");
+        try(UpdateQueryElement query = new UpdateQueryElement(INSERT_QUERY, true)){
+            query.setArgs(
+                    Map.of(1,this.getComplementAdresse(),
+                            2, this.getAdresse(),
+                            3, this.getVille(),
+                            4, this.getCodePostal(),
+                            5, this.getTypeBienString(),
+                            6, this.getSurface(),
+                            7, this.getNbPieces(),
+                            8, this.getNumeroFiscal(),
+                            9, this.getDateAjout()
+                    )).execute();
+        }
+        catch (QueryElement.QueryException queryException){
+            throw new GarageException("Erreur lors de l'ajout du bien", queryException.getSqlException());
+        }
+
+    }
 
 	public static class GarageException extends Bien.BienException {
 
@@ -48,5 +72,6 @@ public final class Garage extends BienLouable {
 		}
 	}
 }
+
 
 
