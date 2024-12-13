@@ -1,7 +1,11 @@
+DROP DATABASE IF EXISTS bdImmo;
+
+CREATE DATABASE IF NOT EXISTS bdImmo;
+
 Use bdImmo;
 
 CREATE TABLE Locataire(
-                          Id_Locataire INT auto_increment,
+                          IdLocataire INT auto_increment,
                           Nom VARCHAR(50),
                           Prenom VARCHAR(50),
                           Sexe CHAR(1),
@@ -19,7 +23,7 @@ CREATE TABLE Locataire(
                           RemunerationMensuelle DOUBLE,
                           AutresRevenus DOUBLE,
                           TotalRevenus DOUBLE,
-                          PRIMARY KEY(Id_Locataire)
+                          PRIMARY KEY(IdLocataire)
 );
 
 CREATE TABLE Travaux(
@@ -229,27 +233,27 @@ CREATE TABLE AssocieBailLocataire(
                                      DateEntree DATE,
                                      DateSortie DATE,
                                      PRIMARY KEY(Id_Locataire, IdBail),
-                                     FOREIGN KEY(Id_Locataire) REFERENCES Locataire(Id_Locataire),
+                                     FOREIGN KEY(Id_Locataire) REFERENCES Locataire(IdLocataire),
                                      FOREIGN KEY(IdBail) REFERENCES Bail(IdBail)
 );
 
 CREATE TABLE Louer(
-                      Id_Locataire INT,
-                      IdBien INT,
-                      DateDébut DATE,
-                      DateFin DATE,
-                      PRIMARY KEY(Id_Locataire, IdBien),
-                      FOREIGN KEY(Id_Locataire) REFERENCES Locataire(Id_Locataire),
-                      FOREIGN KEY(IdBien) REFERENCES Bien(IdBien)
+Id_Locataire INT,
+IdBien INT,
+DateDébut DATE,
+DateFin DATE,
+PRIMARY KEY(Id_Locataire, IdBien),
+FOREIGN KEY(Id_Locataire) REFERENCES Locataire(IdLocataire),
+FOREIGN KEY(IdBien) REFERENCES Bien(IdBien)
 );
 
 CREATE TABLE Réaliser(
-                         Id_Travaux INT,
-                         IdBien INT,
-                         PRIMARY KEY(Id_Travaux, IdBien),
-                         FOREIGN KEY(Id_Travaux) REFERENCES Travaux(Id_Travaux),
-                         FOREIGN KEY(IdBien) REFERENCES Bien(IdBien)
-                     );
+    Id_Travaux INT,
+    IdBien INT,
+    PRIMARY KEY(Id_Travaux, IdBien),
+    FOREIGN KEY(Id_Travaux) REFERENCES Travaux(Id_Travaux),
+    FOREIGN KEY(IdBien) REFERENCES Bien(IdBien)
+);
 
 CREATE TABLE Immeuble(
     idImmeuble INT auto_increment,
