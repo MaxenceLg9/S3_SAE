@@ -24,7 +24,7 @@ public class Immeuble extends Bien{
 	private List<BienLouable> biensAssocies;
 	private List<Travaux> travauxAssocies;
 
-	Immeuble(String ville, int codePostal, String adresse, int idImmeuble) {
+	private Immeuble( String ville, int codePostal, String adresse, int idImmeuble) {
 		super( ville, codePostal, adresse); // Initialisation des attributs hérités de Bien
 		this.idImmeuble = idImmeuble;
 		this.biensAssocies = new ArrayList<>();
@@ -32,7 +32,9 @@ public class Immeuble extends Bien{
 	}
 
 	public Immeuble(String ville, int codePostal, String adresse) {
-		super(ville, codePostal, adresse,-1);
+
+		super(ville, codePostal, adresse); // Utilisation du constructeur de Bien
+		this.getIdImmeuble();
 		this.biensAssocies = new ArrayList<>();
 		this.travauxAssocies = new ArrayList<>();
 	}
