@@ -258,8 +258,7 @@ public class CtrlNewBien {
             Stage stage = new Stage();
 
             VueConnexion.showWindow(stage);
-
-            Stage stage2 = (Stage) ((MenuItem) actionEvent.getSource()).getParentPopup().getScene().getWindow();
+            Stage stage2 = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
             // Fermer la fenêtre
             stage2.close();
 
