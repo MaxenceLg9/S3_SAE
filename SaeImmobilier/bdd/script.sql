@@ -55,12 +55,8 @@ CREATE TABLE Assurance(
 
 CREATE TABLE Proprietaire(
                              IdProprietaire INT auto_increment,
-                             Nom VARCHAR(50),
-                             Prenom VARCHAR(50),
-                             Telephone CHAR(10),
                              Email VARCHAR(50),
                              MotDePasse VARCHAR(50),
-
                              PRIMARY KEY(IdProprietaire)
 );
 
@@ -301,7 +297,7 @@ END;
 //
 DELIMITER ;
 
-DROP TRIGGER If Exists CalculPourcentageAugmentation;
+DROP TRIGGER IF EXISTS CalculPourcentageAugmentation;
 DELIMITER //
 
 CREATE TRIGGER CalculPourcentageAugmentation
