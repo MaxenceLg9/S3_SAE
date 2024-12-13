@@ -1,8 +1,11 @@
 package net.mpvm.saeimmobilier.modele;
 
+import net.mpvm.saeimmobilier.sql.Connection.BD;
 import net.mpvm.saeimmobilier.sql.Query.QueryElement;
 import net.mpvm.saeimmobilier.sql.Query.Queryable;
+import net.mpvm.saeimmobilier.sql.Query.SelectQueryElement;
 import net.mpvm.saeimmobilier.sql.Query.UpdateQueryElement;
+import org.jetbrains.annotations.NotNull;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -15,6 +18,7 @@ import java.util.Map;
 
 public abstract class Bien implements Queryable {
 
+    private static final String SELECT_QUERY = "SELECT * FROM bien";
     private int IdBien;
     private String adresse;
     private String ville;
@@ -29,21 +33,12 @@ public abstract class Bien implements Queryable {
         this.codePostal = CodePostal;
         this.adresse = adresse;
     }
-
-    public Bien(String ville, int CodePostal, String adresse) {
-        this.ville = ville;
-        this.codePostal = CodePostal;
-        this.adresse = adresse;
-    }
-
+/*
     public static List<Immeuble> findAllImmeubles() throws Queryable.QueryableException {
         List<Immeuble> immeubles = new ArrayList<>();
         String query = "SELECT * FROM bien WHERE TypeBien = 'IMMEUBLE'";
 
-        try (Connection connection = BD.getConnection(true);
-             PreparedStatement statement = connection.prepareStatement(query)) {
-
-            ResultSet rs = statement.executeQuery();
+        try (SelectQueryElement selectQueryElement = new SelectQueryElement(query)) {
             while (rs.next()) {
                 Immeuble immeuble = new Immeuble(
                         rs.getString("Ville"),
@@ -57,70 +52,7 @@ public abstract class Bien implements Queryable {
             throw new Queryable.QueryableException("Erreur lors de la récupération des immeubles", e);
         }
         return immeubles;
-    }
-
-    public static List<Bien> findByImmeuble(int idImmeuble) throws Queryable.QueryableException {
-        List<Bien> biens = new ArrayList<>();
-        String query = "SELECT * FROM bien WHERE Id_Immeuble = ?";
-
-        try (Connection connection = BD.getConnection(true);
-             PreparedStatement statement = connection.prepareStatement(query)) {
-
-            // Remplacez le paramètre par l'id de l'immeuble
-            statement.setInt(1, idImmeuble);
-
-            ResultSet rs = statement.executeQuery();
-            while (rs.next()) {
-                // Identifiez le type de bien et créez l'objet correspondant
-                String typeBien = rs.getString("TypeBien");
-
-                switch (TypeBien.valueOf(typeBien)) {
-                    case HABITATION:
-                        biens.add(new Habitation(
-                                rs.getString("Ville"),
-                                rs.getInt("CodePostal"),
-                                rs.getString("Adresse"),
-                                rs.getInt("NombrePieces"),
-                                rs.getString("NumeroFiscal"),
-                                new Immeuble(rs.getString("Ville"), rs.getInt("CodePostal"), rs.getString("Adresse")), // Exemple d'association avec l'immeuble
-                                rs.getFloat("Surface"),
-                                rs.getDate("DateAjout")
-                        ));
-                        break;
-
-                    case GARAGE:
-                        biens.add(new Garage(
-                                rs.getString("Ville"),
-                                rs.getInt("CodePostal"),
-                                rs.getString("Adresse"),
-                                rs.getInt("NombrePieces"),
-                                rs.getString("NumeroFiscal"),
-                                new Immeuble(rs.getString("Ville"), rs.getInt("CodePostal"), rs.getString("Adresse")), // Exemple d'association avec l'immeuble
-                                rs.getFloat("Surface"),
-                                rs.getDate("DateAjout")
-                        ));
-                        break;
-
-                    case IMMEUBLE:
-                        biens.add(new Immeuble(
-                                rs.getString("Ville"),
-                                rs.getInt("CodePostal"),
-                                rs.getString("Adresse"),
-                                rs.getInt("IdBien")
-                        ));
-                        break;
-
-                    default:
-                        throw new Queryable.QueryableException("Type de bien inconnu : " + typeBien, null);
-                }
-            }
-        } catch (SQLException e) {
-            throw new Queryable.QueryableException("Erreur lors de la récupération des biens pour l'immeuble ID " + idImmeuble, e);
-        }
-
-        return biens;
-    }
-
+    }*/
 
 
     public int getIdBien() {
@@ -167,47 +99,26 @@ public abstract class Bien implements Queryable {
 
     public static List<Bien> findAll() throws BienException {
         List<Bien> biens = new ArrayList<>();
-        String query = "SELECT * FROM bien"; // Assurez-vous que cette table existe dans votre BDD.
-        try (Connection connection = BD.getConnection(true);
-             PreparedStatement statement = connection.prepareStatement(query)) {
-            ResultSet rs = statement.executeQuery();
+        try(SelectQueryElement selectQueryElement = new SelectQueryElement(SELECT_QUERY)){
+            ResultSet rs = selectQueryElement.execute();
             while (rs.next()) {
                 TypeBien.HABITATION.name();
-                switch (TypeBien.valueOf(rs.getString("TypeBien"))){
-                    case TypeBien.HABITATION :
-                        biens.add(new Habitation(
-                                rs.getString("Lieu_Immeuble"),
-                                rs.getString("Ville"),
-                                rs.getInt("CodePostal"),
-                                rs.getString("Adresse"),
-                                rs.getInt("NombrebPieces"),
-                                rs.getString("NumeroFiscal"),
-                                (Immeuble) rs.getObject("Immeuble"),
-                                rs.getFloat("Surface"),
-                                rs.getDate("DateAjout"))
-                        );
+                switch (TypeBien.valueOf(rs.getString("TypeBien"))) {
+                    case TypeBien.HABITATION:
+                        biens.add(new Habitation(rs));
                         break;
                     case TypeBien.GARAGE:
-                        biens.add(new Garage(
-                                rs.getString("Lieu_Immeuble"),rs.getString("Ville"),
-                                rs.getInt("CodePostal"),
-                                rs.getString("Adresse"),
-                                rs.getInt("NombrebPieces"),
-                                rs.getString("NumeroFiscal"),
-                                (Immeuble) rs.getObject("Immeuble"),
-                                rs.getFloat("Surface"),
-                                rs.getDate("DateAjout")));
+                        biens.add(new Garage(rs));
                         break;
                     case TypeBien.IMMEUBLE:
                         biens.add(new Immeuble(rs.getString("Ville"),
                                 rs.getInt("CodePostal"),
                                 rs.getString("Adresse")));
                         break;
-
                 }
             }
-        } catch (Exception e) {
-            throw new BienException("Erreur lors de la récupération des biens", e);
+        } catch (SQLException | QueryElement.QueryException e) {
+            throw new BienException("Erreur lors de la récupération des biens", e instanceof SQLException ? (SQLException) e : ((QueryElement.QueryException) e).getSqlException());
         }
         return biens;
     }
@@ -235,7 +146,10 @@ public abstract class Bien implements Queryable {
     }
 
     public abstract TypeBien getTypeBien();
-    public abstract String getTypeBienString();
+
+    public String getTypeBienString(){
+        return getTypeBien().name();
+    };
 
     public float getSurface() {
         Bien bien = this;
@@ -262,20 +176,19 @@ public abstract class Bien implements Queryable {
         List<Bien> biens = new ArrayList<>();
         String query = "SELECT * FROM immeuble WHERE idImmeuble = ?";
 
-        try (Connection connection = BD.getConnection(true);
-             PreparedStatement statement = connection.prepareStatement(query)) {
+        try (SelectQueryElement selectQueryElement = new SelectQueryElement(query)) {
 
             // Remplacez le paramètre par l'id de l'immeuble
-            statement.setInt(1, idImmeuble);
+            selectQueryElement.setArgs(Map.of(1, idImmeuble));
 
-            ResultSet rs = statement.executeQuery();
+            ResultSet rs = selectQueryElement.execute();
             while (rs.next()) {
                 // Identifiez le type de bien et créez l'objet correspondant
                 String typeBien = rs.getString("TypeBien");
 
                 switch (TypeBien.valueOf(typeBien)) {
                     case HABITATION:
-                        biens.add(new Habitation(rs.getString("Lieu_Immeuble"),
+                        biens.add(new Habitation(rs.getString("complementAdresse"),
                                 rs.getString("Ville"),
                                 rs.getInt("CodePostal"),
                                 rs.getString("Adresse"),
@@ -312,8 +225,8 @@ public abstract class Bien implements Queryable {
                         throw new BienException("Type de bien inconnu : " + typeBien, null);
                 }
             }
-        } catch (SQLException e) {
-            throw new BienException("Erreur lors de la récupération des biens pour l'immeuble ID " + idImmeuble, e);
+        } catch (SQLException | QueryElement.QueryException e) {
+            throw new BienException("Erreur lors de la récupération des biens pour l'immeuble ID " + idImmeuble, e instanceof SQLException ? (SQLException) e : ((QueryElement.QueryException) e).getSqlException());
         }
 
         return biens;
