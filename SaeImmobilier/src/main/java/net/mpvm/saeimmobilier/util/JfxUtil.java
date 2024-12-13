@@ -25,7 +25,7 @@ public class JfxUtil {
             primaryStage.setResizable(true);
             primaryStage.show();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
     }
 }
