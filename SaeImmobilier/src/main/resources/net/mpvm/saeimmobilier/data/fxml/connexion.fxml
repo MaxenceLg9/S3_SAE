@@ -30,7 +30,7 @@
       </VBox>
    </center>
    <bottom>
-      <Button fx:id="BtwQuitter" minHeight="35.0" minWidth="125.0" mnemonicParsing="false" onAction="#Quitter" style="-fx-background-color: #E74C3C; -fx-background-radius: 10px;" text="Quitter" BorderPane.alignment="CENTER_LEFT">
+      <Button fx:id="BtwQuitter" minHeight="35.0" minWidth="125.0" mnemonicParsing="false" onAction="#Quitter" style="-fx-background-color: #FF6F61; -fx-background-radius: 10px;" text="Quitter" textFill="WHITE" BorderPane.alignment="CENTER_LEFT">
          <BorderPane.margin>
             <Insets bottom="10.0" left="10.0" />
          </BorderPane.margin>
