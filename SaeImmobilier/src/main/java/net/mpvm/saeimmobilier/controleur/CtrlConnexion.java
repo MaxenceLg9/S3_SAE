@@ -90,7 +90,7 @@ public class CtrlConnexion {
             alertPwdEmpty();
         } else if (isValidEmail(this.FieldMail.getText())){
             try {
-                Map<String,Proprietaire> proprietaires = Proprietaire.findAll().stream().filter(Proprietaire-> Proprietaire.getEmail().equals(this.FieldMail.getText())).collect(Collectors.toMap(Proprietaire::getMotDePasse, Function.identity()));
+                Map<String,Proprietaire> proprietaires = Proprietaire.findAll().stream().collect(Collectors.toMap(Proprietaire::getMotDePasse, Function.identity()));
                 for(Proprietaire p : proprietaires.values()) {
                     System.out.println(this.FieldMail.getText());
                     System.out.println(p.getEmail());
@@ -102,6 +102,7 @@ public class CtrlConnexion {
                             } catch (Exception e) {
                                 throw new RuntimeException(e);
                             }
+
                             Stage stageActu = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
                             stageActu.close();
 
