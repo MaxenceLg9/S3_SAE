@@ -5,6 +5,7 @@ import net.mpvm.saeimmobilier.sql.Query.Queryable;
 import net.mpvm.saeimmobilier.sql.Query.UpdateQueryElement;
 
 import java.sql.Date;
+import java.sql.SQLException;
 import java.util.Map;
 
 public class Habitation extends BienLouable {
@@ -45,13 +46,19 @@ public class Habitation extends BienLouable {
         }
         catch (QueryElement.QueryException queryException){
             queryException.getSqlException().printStackTrace();
-            throw new BienLouableException("Erreur lors de l'ajout du bien", queryException.getSqlException());
+            throw new Bien.BienException("Erreur lors de l'ajout du bien", queryException.getSqlException());
         }
     }
 
-    @Override
-    public void save() throws QueryableException {
+    public static class HabitationException extends BienException{
 
+        public HabitationException(String message) {
+            this(message,null);
+        }
+
+        public HabitationException(String message, SQLException sqlException) {
+            super(message, sqlException);
+        }
     }
 }
 

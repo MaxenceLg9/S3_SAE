@@ -6,6 +6,7 @@ import net.mpvm.saeimmobilier.sql.Query.Queryable;
 import net.mpvm.saeimmobilier.sql.Query.UpdateQueryElement;
 
 import java.sql.Date;
+import java.sql.SQLException;
 import java.util.Map;
 
 public class Garage extends BienLouable {
@@ -46,10 +47,20 @@ public class Garage extends BienLouable {
 		}
 		catch (QueryElement.QueryException queryException){
 			queryException.getSqlException().printStackTrace();
-			throw new BienLouableException("Erreur lors de l'ajout du bien", queryException.getSqlException());
+			throw new GarageException("Erreur lors de l'ajout du bien", queryException.getSqlException());
 		}
 
-    }
 	}
+	public static class GarageException extends BienException{
+
+		public GarageException(String message) {
+			this(message,null);
+		}
+
+		public GarageException(String message, SQLException sqlException) {
+			super(message, sqlException);
+		}
+	}
+}
 
 
