@@ -5,6 +5,7 @@ import net.mpvm.saeimmobilier.sql.Query.QueryElement;
 import net.mpvm.saeimmobilier.sql.Query.Queryable;
 import net.mpvm.saeimmobilier.sql.Query.UpdateQueryElement;
 
+import java.sql.SQLException;
 import java.util.Map;
 import java.util.Optional;
 
@@ -173,7 +174,7 @@ public class Assurance {
                     "Erreur lors de l'ajout de l'assurance : ProtectionJuridique=%f, QuotitéJuridique=%f, Prime=%f, TypeContrat=%s",
                     this.getProtectionJuridique(), this.getQuotiteJurisprudence(), this.getPrime(), this.getTypeContrat().toString()
             );
-            throw new AssuranceException(errorMessage, e);
+            throw new AssuranceException(errorMessage, e.getSqlException());
         }
     }
 
@@ -189,8 +190,8 @@ public class Assurance {
         public AssuranceException(String message){
             super(message);
         }
-        public AssuranceException(String message, Throwable cause){
-            super(message,cause);
+        public AssuranceException(String message, SQLException sqlException){
+            super(message,sqlException);
         }
     }
 }
