@@ -2,7 +2,6 @@ package net.mpvm.saeimmobilier.modele;
 
 
 import net.mpvm.saeimmobilier.sql.Query.QueryElement;
-import net.mpvm.saeimmobilier.sql.Query.Queryable;
 import net.mpvm.saeimmobilier.sql.Query.UpdateQueryElement;
 
 import java.util.ArrayList;
@@ -27,6 +26,7 @@ public abstract class BienLouable extends Bien {
 	private Immeuble immeuble;
 	private Proprietaire proprietaire;
 	private int nbPieces;
+	private int codePostal;
 
 	public Date getDateAjout() {
 		return DateAjout;

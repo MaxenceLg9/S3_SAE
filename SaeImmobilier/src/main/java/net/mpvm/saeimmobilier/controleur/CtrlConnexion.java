@@ -52,7 +52,7 @@ public class CtrlConnexion {
     }
 
     @FXML
-    public void Connexion1(KeyEvent event){
+    public void ConnexionEnter(KeyEvent event){
         if (event.getCode() == KeyCode.ENTER) {
             if (isMailNull()){
                 alertMailEmpty();

@@ -112,7 +112,7 @@ public class CtrlInscription {
 
             if (MDPIdentique()) {
                 try {
-                        new Proprietaire(fieldNom.getText(),fieldPrenom.getText(),fieldTelephone.getText(),fieldMail.getText(),fieldNewPassword.getText()).save();
+                    new Proprietaire(fieldNom.getText(),fieldPrenom.getText(),fieldTelephone.getText(),fieldMail.getText(),fieldNewPassword.getText()).save();
                 } catch (Proprietaire.ProprietaireException proprietaireException) {
                     proprietaireException.getSqlException().printStackTrace();
                     Alert alert = new Alert(Alert.AlertType.ERROR);
