@@ -171,9 +171,9 @@ public final class Immeuble extends Bien{
 			throw new ImmeubleException("Le bien n'existe pas dans la table");
 		try(UpdateQueryElement query = new UpdateQueryElement(UPDATE_QUERY, true)){
 			query.setArgs(
-					Map.of(1, this.getAdresse(),
-							2, this.getVille(),
-							3, this.getCodePostal()))
+							Map.of(1, this.getAdresse(),
+									2, this.getVille(),
+									3, this.getCodePostal()))
 					.execute();
 		}catch(QueryElement.QueryException queryException){
 			throw new ImmeubleException("Erreur lors de la modification du bien", queryException.getSqlException());
