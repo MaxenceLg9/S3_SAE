@@ -3,7 +3,9 @@ package net.mpvm.saeimmobilier.controleur;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.stage.Stage;
 import net.mpvm.saeimmobilier.modele.Proprietaire;
+import net.mpvm.saeimmobilier.vue.VueHome;
 
 import java.util.ArrayList;
 import java.util.regex.Pattern;
@@ -135,12 +137,15 @@ public class CtrlInscription {
 
     @FXML
     public void Annuler(ActionEvent event) {
-        fieldMail.clear();
-        fieldNewPassword.clear();
-        fieldConfirmation.clear();
-        fieldNewPasswordVisible.clear();
-        fieldConfirmationVisible.clear();
-        checkBoxVisibilite.setSelected(false);
+
+        try {
+            VueHome.showWindow(new Stage());
+            Stage stageActuel = (Stage) ((Button) event.getSource()).getScene().getWindow();
+            stageActuel.close();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     private boolean fieldsNotEmpty() {

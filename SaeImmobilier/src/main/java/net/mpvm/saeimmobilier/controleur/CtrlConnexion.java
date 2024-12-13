@@ -60,7 +60,7 @@ public class CtrlConnexion {
                 alertPwdEmpty();
             } else if (isValidEmail(this.FieldMail.getText())){
                 try {
-                    Map<String,Proprietaire> proprietaires = Proprietaire.findAll().stream().collect(Collectors.toMap(Proprietaire::getMotDePasse, Function.identity()));
+                    Map<String,Proprietaire> proprietaires = Proprietaire.findALl().stream().filter(Proprietaire-> Proprietaire.getEmail().equals(this.FieldMail.getText())).collect(Collectors.toMap(Proprietaire::getMotDePasse, Function.identity()));
                     for(Proprietaire p : proprietaires.values()) {
                         if (this.FieldMail.getText().equals(p.getEmail())) {
                             if (this.FieldPwd.getText().equals(p.getMotDePasse())) {
@@ -92,7 +92,7 @@ public class CtrlConnexion {
             alertPwdEmpty();
         } else if (isValidEmail(this.FieldMail.getText())){
             try {
-                Map<String,Proprietaire> proprietaires = Proprietaire.findAll().stream().collect(Collectors.toMap(Proprietaire::getMotDePasse, Function.identity()));
+                Map<String,Proprietaire> proprietaires = Proprietaire.findALl().stream().collect(Collectors.toMap(Proprietaire::getMotDePasse, Function.identity()));
                 for(Proprietaire p : proprietaires.values()) {
                     System.out.println(this.FieldMail.getText());
                     System.out.println(p.getEmail());
