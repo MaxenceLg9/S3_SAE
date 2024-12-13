@@ -7,6 +7,8 @@ import javafx.stage.Stage;
 import net.mpvm.saeimmobilier.modele.*;
 import net.mpvm.saeimmobilier.sql.Query.Queryable;
 import net.mpvm.saeimmobilier.util.JfxUtil;
+import net.mpvm.saeimmobilier.vue.VueAccueil;
+import net.mpvm.saeimmobilier.vue.VueConnexion;
 
 
 import java.time.LocalDate;
@@ -75,9 +77,6 @@ public class CtrlNewBien {
             locataires = Locataire.findALl();
         } catch (Locataire.LocataireException e) {
             locataires = new ArrayList<>();
-        }
-        for (Locataire loc : locataires) {
-            this.comboLocataires.getItems().add(loc);
         }
 
         for (TypeBien b : TypeBien.values()){

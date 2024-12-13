@@ -1,10 +1,13 @@
 package net.mpvm.saeimmobilier.modele;
 
 
+import net.mpvm.saeimmobilier.sql.Query.QueryElement;
 import net.mpvm.saeimmobilier.sql.Query.Queryable;
+import net.mpvm.saeimmobilier.sql.Query.UpdateQueryElement;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Map;
 
 public abstract class BienLouable extends Bien {
 

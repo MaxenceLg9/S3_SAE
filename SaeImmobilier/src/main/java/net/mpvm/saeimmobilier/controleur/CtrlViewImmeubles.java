@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import net.mpvm.saeimmobilier.modele.Bien;
 import net.mpvm.saeimmobilier.modele.Immeuble;
 import net.mpvm.saeimmobilier.vue.VueBiensLouables;
@@ -36,6 +37,6 @@ public class CtrlViewImmeubles {
 
     private void afficheBiensPourImmeuble(int idImmeuble) {
         // Transition vers la fenêtre "Biens Louables" pour cet immeuble
-        new VueBiensLouables().startForImmeuble(idImmeuble);
+        new VueBiensLouables().startForImmeuble(new Stage(),idImmeuble);
     }
 }
