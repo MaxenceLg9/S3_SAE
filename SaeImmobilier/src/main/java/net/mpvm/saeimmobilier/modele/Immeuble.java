@@ -5,14 +5,11 @@ import net.mpvm.saeimmobilier.sql.Query.UpdateQueryElement;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public final class Immeuble extends Bien{
 
-	public static final String INSERT_QUERY = "INSERT INTO immeuble (Adresse, Ville, CodePostal) VALUES (?, ?, ?)";
+	public static final String INSERT_QUERY = "INSERT INTO bien (ComplementAdresse, Adresse, Ville, CodePostal, TypeBien, Surface, NombrePieces, NumeroFiscal, DateAjout) VALUES (?, ?, ?, ?, ?,?,?,?,?)";
 	public static final String SELECT_QUERY = "SELECT * FROM immeuble";
 	public static final String SELECT_WHERE_QUERY = "SELECT * FROM immeuble WHERE Adresse = ? AND Ville = ? AND CodePostal = ?";
 	public static final String DELETE_QUERY = "DELETE FROM immeuble WHERE idImmeuble = ?";
@@ -93,11 +90,18 @@ public final class Immeuble extends Bien{
 		if(this.getIdBien() != -1)
 			throw new ImmeubleException("Le bien existe déjà dans la table");
 		try(UpdateQueryElement q = new UpdateQueryElement(INSERT_QUERY, true)){
-			q.setArgs(
-							Map.of(1, this.getAdresse(),
-									2, this.getVille(),
-									3, this.getCodePostal()))
-					.execute();
+			Map<Integer, Object> args = new HashMap<>();
+				args.put(1, null); // ComplémentAdresse
+				args.put(2, this.getAdresse());
+				args.put(3, this.getVille());
+				args.put(4, this.getCodePostal());
+				args.put(5, this.getTypeBienString());
+				args.put(6, null); // Surface
+				args.put(7, null); // NombrePieces
+				args.put(8, null); // NumeroFiscal
+				args.put(9, null); // DateAjout
+
+			q.setArgs(args).execute();
 		}
 		catch (QueryElement.QueryException queryException){
 			throw new ImmeubleException("Erreur lors de l'ajout du bien", queryException.getSqlException());
@@ -110,9 +114,9 @@ public final class Immeuble extends Bien{
 			throw new ImmeubleException("Le bien n'existe pas dans la table");
 		try(UpdateQueryElement query = new UpdateQueryElement(UPDATE_QUERY, true)){
 			query.setArgs(
-					Map.of(1, this.getAdresse(),
-							2, this.getVille(),
-							3, this.getCodePostal()))
+							Map.of(1, this.getAdresse(),
+									2, this.getVille(),
+									3, this.getCodePostal()))
 					.execute();
 		}catch(QueryElement.QueryException queryException){
 			throw new ImmeubleException("Erreur lors de la modification du bien", queryException.getSqlException());
