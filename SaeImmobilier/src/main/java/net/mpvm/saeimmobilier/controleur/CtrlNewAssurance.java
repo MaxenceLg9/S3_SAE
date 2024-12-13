@@ -89,7 +89,7 @@ public class CtrlNewAssurance {
         try {
             // Création d'une nouvelle fenêtre
             Stage stage = new Stage();
-            JfxUtil.applicationInit(stage, "newbien.fxml", "Ajouter un Bien");
+            JfxUtil.applicationInit(stage, "newbien.fxml", "Ajouter un Bien",700,800);
             stage.setWidth(1300);
             stage.setHeight(900);
             stage.setResizable(false);
@@ -131,7 +131,7 @@ public class CtrlNewAssurance {
         try {
             // Création d'une nouvelle fenêtre
             Stage stage = new Stage();
-            JfxUtil.applicationInit(stage, "newbien.fxml", "Ajouter un Bien");
+            JfxUtil.applicationInit(stage, "newbien.fxml", "Ajouter un Bien",700,800);
             stage.setWidth(1300);
             stage.setHeight(900);
             stage.setResizable(false);

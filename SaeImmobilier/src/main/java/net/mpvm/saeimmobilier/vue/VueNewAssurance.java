@@ -11,6 +11,6 @@ public class VueNewAssurance extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        JfxUtil.applicationInit(primaryStage, "newassurance.fxml","Création d'une Assurance");
+        JfxUtil.applicationInit(primaryStage, "newassurance.fxml","Création d'une Assurance",700,800);
     }
 }
