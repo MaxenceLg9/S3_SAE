@@ -78,15 +78,9 @@ CREATE TABLE Bien(
                      NumeroFiscal VARCHAR(50),
                      DateAjout DATE,
                      IdAssurance INT default 0,
-#     TODO : Le propriétaire est pas utile
-                     IdProprietaire INT default 0,
                      IdImmeuble INT default 0,
                      PRIMARY KEY(IdBien)
 );
-
-Alter table Bien
-    add constraint FK_Bien_IdProprietaire
-        foreign key (IdProprietaire) references Proprietaire(IdProprietaire);
 
 Alter table Bien
     Add constraint CK_Type_Bien
@@ -308,7 +302,7 @@ END;
 //
 DELIMITER ;
 
-DROP TRIGGER CalculPourcentageAugmentation;
+DROP TRIGGER IF EXISTS CalculPourcentageAugmentation;
 DELIMITER //
 
 CREATE TRIGGER CalculPourcentageAugmentation
