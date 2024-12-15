@@ -11,12 +11,10 @@ import java.util.Map;
 
 public abstract class BienLouable extends Bien {
 
-	public static final String INSERT_QUERY = "INSERT INTO bien (Lieu_Immeuble, Adresse, Ville, CodePostal, TypeBien, Surface, NombrePieces, NumeroFiscal, DateAjout) VALUES (?, ?, ?, ?, ?,?,?,?,?)";
-	public static final String INSERT_QUERY_ARCHIVER = "INSERT INTO archiverbien (Lieu_Immeuble, Adresse, Ville, CodePostal, TypeBien, Surface, NombrePieces, NumeroFiscal, DateAjout) VALUES (?, ?, ?, ?, ?,?,?,?,?)";
-
+	public static final String INSERT_QUERY = "INSERT INTO bien (ComplementAdresse, Adresse, Ville, CodePostal, TypeBien, Surface, NombrePieces, NumeroFiscal, DateAjout) VALUES (?, ?, ?, ?, ?,?,?,?,?)";
 	public static final String SELECT_QUERY = "SELECT * FROM bien";
 	public static final String DELETE_QUERY = "DELETE FROM bien WHERE IdBien = ?";
-	public static final String UPDATE_QUERY = "UPDATE bien SET Lieu_Immeuble = ?, Adresse = ?, Ville = ?, CodePostal = ?, TypeBien = ?, Surface = ?, NombrePieces = ? , NumeroFiscal = ? , DateAjout = ?";
+	public static final String UPDATE_QUERY = "UPDATE bien SET ComplementAdresse = ?, Adresse = ?, Ville = ?, CodePostal = ?, TypeBien = ?, Surface = ?, NombrePieces = ? , NumeroFiscal = ? , DateAjout = ?";
 
 
 	private String complementAdresse;
@@ -182,9 +180,9 @@ public abstract class BienLouable extends Bien {
 	}
 
 	@Override
-	public void save() throws QueryableException {
+	public void save() throws Bien.BienException {
 		if(this.getIdBien() != -1)
-			throw new Queryable.QueryableException("Le bien existe déjà !");
+			throw new BienException("Le bien existe déjà !",null);
 		try(UpdateQueryElement query = new UpdateQueryElement(INSERT_QUERY, true)){
 			query.setArgs(
 					Map.of(1,this.getComplementAdresse(),
@@ -195,31 +193,11 @@ public abstract class BienLouable extends Bien {
 							6, this.getSurface(),
 							7, this.getNbPieces(),
 							8, this.getNumeroFiscal(),
-							9, this.getDateAjout(),
-							10,1
-
-					)).execute();
-		}
-		catch (QueryElement.QueryException sqlE){
-			sqlE.getCause().printStackTrace();
-			throw new Locataire.LocataireException("Erreur lors de l'ajout du bien");
-		}
-		try(UpdateQueryElement query = new UpdateQueryElement(INSERT_QUERY_ARCHIVER, true)){
-			query.setArgs(
-					Map.of(1, this.getComplementAdresse(),
-							2, this.getAdresse(),
-							3, this.getVille(),
-							4, this.getCodePostal(),
-							5, this.getTypeBienString(),
-							6, this.getSurface(),
-							7, this.getNbPieces(),
-							8, this.getNumeroFiscal(),
 							9, this.getDateAjout()
 					)).execute();
 		}
-		catch (QueryElement.QueryException sqlE){
-			sqlE.printStackTrace();
-			throw new Locataire.LocataireException("Erreur lors de l'ajout du bien");
+		catch (QueryElement.QueryException queryException){
+			throw new BienException("Erreur lors de l'ajout du bien : " + queryException.getMessage(), queryException.getSqlException());
 		}
 
 	}
