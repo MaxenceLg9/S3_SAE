@@ -1,12 +1,14 @@
 package net.mpvm.saeimmobilier.modele;
 
 
+import net.mpvm.saeimmobilier.sql.Query.Queryable;
+
 import java.util.ArrayList;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class Bail {
+public class Bail implements Queryable {
 	private int idBail;
 	private int nbMoisLoues;
 	private float provisionSurCharge;
@@ -275,4 +277,18 @@ public class Bail {
 		this.repartitionOrduresMenageres = repartitionOrduresMenageres;
 	}
 
+	@Override
+	public void save() throws QueryableException {
+
+	}
+
+	@Override
+	public void modify() throws QueryableException {
+
+	}
+
+	@Override
+	public void delete() throws QueryableException {
+
+	}
 }
