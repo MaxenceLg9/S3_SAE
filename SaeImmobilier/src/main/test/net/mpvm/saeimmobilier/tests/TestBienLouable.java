@@ -1,13 +1,17 @@
 package net.mpvm.saeimmobilier.tests;
 
+import net.mpvm.saeimmobilier.modele.Bien;
 import net.mpvm.saeimmobilier.modele.BienLouable;
 import net.mpvm.saeimmobilier.modele.Garage;
+import net.mpvm.saeimmobilier.modele.Immeuble;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.sql.Date;
 import java.time.LocalDate;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestBienLouable {
 
@@ -34,6 +38,13 @@ public class TestBienLouable {
 
     @Test
     public void testCreatingInstance(){
-        BienLouable garage = new Garage(COMPLEMENT_ADRESSE,VILLE,CODE_POSTAL,ADRESSE,NBPIECES,NUMERO_FISCAL,null,SURFACE,DATE);
+        BienLouable garage = new Garage(COMPLEMENT_ADRESSE,VILLE,CODE_POSTAL,ADRESSE,NBPIECES,NUMERO_FISCAL,new Immeuble(VILLE,CODE_POSTAL,ADRESSE),SURFACE,DATE);
+        assertEquals(-1,garage.getIdBien());
+        try{
+            garage.save();
+        }catch (Bien.BienException bienException) {
+            bienException.getSqlException().printStackTrace();
+            bienException.printStackTrace();
+        }
     }
 }
