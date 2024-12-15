@@ -46,7 +46,7 @@ public final class Habitation extends BienLouable {
             throw new Queryable.QueryableException("Le bien existe déjà !");
         try(UpdateQueryElement query = new UpdateQueryElement(INSERT_QUERY, true)){
             query.setArgs(
-                    Map.of(1,this.getLieuImmeuble(),
+                    Map.of(1,this.getComplementAdresse(),
                             2, this.getAdresse(),
                             3, this.getVille(),
                             4, this.getCodePostal(),
