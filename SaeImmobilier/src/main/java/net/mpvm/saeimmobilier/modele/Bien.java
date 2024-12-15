@@ -20,75 +20,37 @@ public abstract class Bien implements Queryable {
 
     private static final String SELECT_QUERY = "SELECT * FROM bien";
     private int IdBien;
-    private String adresse;
-    private String ville;
-    private int codePostal;
     private Assurance assurance;
     private float iR; // Taux d'intérêt ou autre valeur
 
 
-    Bien(String ville,int CodePostal,String adresse, int idBien) {
+    Bien(int idBien) {
         this.IdBien = idBien;
-        this.ville = ville;
-        this.codePostal = CodePostal;
-        this.adresse = adresse;
     }
-/*
-    public static List<Immeuble> findAllImmeubles() throws Queryable.QueryableException {
-        List<Immeuble> immeubles = new ArrayList<>();
-        String query = "SELECT * FROM bien WHERE TypeBien = 'IMMEUBLE'";
-
-        try (SelectQueryElement selectQueryElement = new SelectQueryElement(query)) {
-            while (rs.next()) {
-                Immeuble immeuble = new Immeuble(
-                        rs.getString("Ville"),
-                        rs.getInt("CodePostal"),
-                        rs.getString("Adresse"),
-                        rs.getInt("IdBien") // Ajout de l'IdBien s'il est nécessaire dans le constructeur
-                );
-                immeubles.add(immeuble);
-            }
-        } catch (SQLException e) {
-            throw new Queryable.QueryableException("Erreur lors de la récupération des immeubles", e);
-        }
-        return immeubles;
-    }*/
 
 
     public int getIdBien() {
         return IdBien;
     }
-    public void setIdBien(int IdBien) {
-        this.IdBien = IdBien;
-    }
-    public String getVille() {
-        return ville;
-    }
 
-    public void setVille(String ville) {
-        this.ville = ville;
-    }
+    public abstract String getVille();
 
-    public int getCodePostal() {
-        return codePostal;
-    }
+    public abstract void setVille(String ville);
 
-    public void setCodePostal(int codePostal) {
-        this.codePostal = codePostal;
-    }
+    public abstract int getCodePostal();
+
+    public abstract void setCodePostal(int codePostal);
+
     public Assurance getAssurance() {
         return this.assurance;
     }
     public void setAssurance(Assurance assurance) {
         this.assurance = assurance;
     }
-    public String getAdresse() {
-        return adresse;
-    }
 
-    public void setAdresse(String adresse) {
-        this.adresse = adresse;
-    }
+    public abstract String getAdresse();
+
+    public abstract void setAdresse(String adresse);
     public float getiR() {
         return iR;
     }
@@ -97,13 +59,12 @@ public abstract class Bien implements Queryable {
         this.iR = iR;
     }
 
-    public static List<Bien> findAll() throws BienException {
+    public static List<? extends Bien> findAll() throws BienException {
         List<Bien> biens = new ArrayList<>();
         try(SelectQueryElement selectQueryElement = new SelectQueryElement(SELECT_QUERY)){
             ResultSet rs = selectQueryElement.execute();
             while (rs.next()) {
-                TypeBien.HABITATION.name();
-                switch (TypeBien.valueOf(rs.getString("TypeBien"))) {
+                switch (TypeBien.valueOf(rs.getString("TypeBien").toUpperCase())) {
                     case TypeBien.HABITATION:
                         biens.add(new Habitation(rs));
                         break;
@@ -111,9 +72,11 @@ public abstract class Bien implements Queryable {
                         biens.add(new Garage(rs));
                         break;
                     case TypeBien.IMMEUBLE:
-                        biens.add(new Immeuble(rs.getString("Ville"),
+                        biens.add(new Immeuble(
+                                rs.getString("Ville"),
                                 rs.getInt("CodePostal"),
-                                rs.getString("Adresse")));
+                                rs.getString("Adresse"),
+                                rs.getInt("IdBien")));
                         break;
                 }
             }
@@ -121,28 +84,6 @@ public abstract class Bien implements Queryable {
             throw new BienException("Erreur lors de la récupération des biens", e instanceof SQLException ? (SQLException) e : ((QueryElement.QueryException) e).getSqlException());
         }
         return biens;
-    }
-
-    public static List<Immeuble> findAllImmeubles() throws BienException {
-        List<Immeuble> immeubles = new ArrayList<>();
-        String query = "SELECT * FROM bien WHERE TypeBien = 'IMMEUBLE'";
-
-        try (Connection connection = BD.getConnection(true);
-             PreparedStatement statement = connection.prepareStatement(query)) {
-
-            ResultSet rs = statement.executeQuery();
-            while (rs.next()) {
-                Immeuble immeuble = new Immeuble(
-                        rs.getString("Ville"),
-                        rs.getInt("CodePostal"),
-                        rs.getString("Adresse")
-                );
-                immeubles.add(immeuble);
-            }
-        } catch (SQLException e) {
-            throw new BienException("Erreur lors de la récupération des immeubles", e);
-        }
-        return immeubles;
     }
 
     public abstract TypeBien getTypeBien();
@@ -188,36 +129,19 @@ public abstract class Bien implements Queryable {
 
                 switch (TypeBien.valueOf(typeBien)) {
                     case HABITATION:
-                        biens.add(new Habitation(rs.getString("complementAdresse"),
-                                rs.getString("Ville"),
-                                rs.getInt("CodePostal"),
-                                rs.getString("Adresse"),
-                                rs.getInt("NombrePieces"),
-                                rs.getString("NumeroFiscal"),
-                                new Immeuble(rs.getString("Ville"), rs.getInt("CodePostal"), rs.getString("Adresse")), // Exemple d'association avec l'immeuble
-                                rs.getFloat("Surface"),
-                                rs.getDate("DateAjout")
-                        ));
+                        biens.add(new Habitation(rs));
                         break;
 
                     case GARAGE:
-                        biens.add(new Garage(rs.getString("LieuImmeuble"),
-                                rs.getString("Ville"),
-                                rs.getInt("CodePostal"),
-                                rs.getString("Adresse"),
-                                rs.getInt("NombrePieces"),
-                                rs.getString("NumeroFiscal"),
-                                new Immeuble(rs.getString("Ville"), rs.getInt("CodePostal"), rs.getString("Adresse")), // Exemple d'association avec l'immeuble
-                                rs.getFloat("Surface"),
-                                rs.getDate("DateAjout")
-                        ));
+                        biens.add(new Garage(rs));
                         break;
 
                     case IMMEUBLE:
                         biens.add(new Immeuble(
                                 rs.getString("Ville"),
                                 rs.getInt("CodePostal"),
-                                rs.getString("Adresse")
+                                rs.getString("Adresse"),
+                                rs.getInt("IdBIen")
                         ));
                         break;
 
