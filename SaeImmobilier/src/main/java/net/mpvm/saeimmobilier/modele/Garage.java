@@ -40,31 +40,7 @@ public final class Garage extends BienLouable {
 		return TypeBien.GARAGE;
 	}
 
-	@Override
-	public void save() throws QueryableException {
-
-		if(this.getIdBien() != -1)
-			throw new Queryable.QueryableException("Le bien existe déjà !");
-		try(UpdateQueryElement query = new UpdateQueryElement(INSERT_QUERY, true)){
-			query.setArgs(
-					Map.of(1,this.getComplementAdresse(),
-							2, this.getAdresse(),
-							3, this.getVille(),
-							4, this.getCodePostal(),
-							5, this.getTypeBienString(),
-							6, this.getSurface(),
-							7, this.getNbPieces(),
-							8, this.getNumeroFiscal(),
-							9, this.getDateAjout()
-					)).execute();
-		}
-		catch (QueryElement.QueryException queryException){
-			queryException.getSqlException().printStackTrace();
-			throw new GarageException("Erreur lors de l'ajout du bien", queryException.getSqlException());
-		}
-
-	}
-	public static class GarageException extends BienException{
+	public static class GarageException extends Bien.BienException {
 
 		public GarageException(String message) {
 			this(message,null);
