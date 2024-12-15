@@ -19,7 +19,7 @@ public abstract class BienLouable extends Bien {
 	public static final String UPDATE_QUERY = "UPDATE bien SET Lieu_Immeuble = ?, Adresse = ?, Ville = ?, CodePostal = ?, TypeBien = ?, Surface = ?, NombrePieces = ? , NumeroFiscal = ? , DateAjout = ?";
 
 
-	private String lieuImmeuble;
+	private String complementAdresse;
 	private ArrayList<Travaux> travaux;
 	private ArrayList<Bail> baux;
 	private int ancienIndex;
@@ -29,7 +29,6 @@ public abstract class BienLouable extends Bien {
 	private Immeuble immeuble;
 	private Proprietaire proprietaire;
 	private int nbPieces;
-	private int codePostal;
 
 	public Date getDateAjout() {
 		return DateAjout;
@@ -43,12 +42,11 @@ public abstract class BienLouable extends Bien {
 
 
 	BienLouable(String complementAdresse, String ville, int codePostal, String adresse, int nbPieces, String NumeroFiscal, Immeuble immeuble, float surface, java.sql.Date dateAjout, int idBienLouable) {// Initialisation des attributs hérités de Bien
-		super(ville, codePostal, adresse, idBienLouable);
-		this.lieuImmeuble = complementAdresse;
+		super(idBienLouable);
+		this.complementAdresse = complementAdresse;
 		this.immeuble = immeuble;
 		this.surface = surface;
 		this.nbPieces = nbPieces;
-		this.codePostal = codePostal;
 		this.numeroFiscal = NumeroFiscal;
 		this.travaux = new ArrayList<>();
 		this.baux = new ArrayList<>();
@@ -57,12 +55,12 @@ public abstract class BienLouable extends Bien {
 
 	// Getters et Setters pour tous les champs
 
-	public String getLieuImmeuble() {
-		return lieuImmeuble;
+	public String getComplementAdresse() {
+		return complementAdresse;
 	}
 
-	public void setLieuImmeuble(String lieuImmeuble) {
-		this.lieuImmeuble = lieuImmeuble;
+	public void setComplementAdresse(String complementAdresse) {
+		this.complementAdresse = complementAdresse;
 	}
 
 	public ArrayList<Travaux> getTravaux() {
@@ -78,13 +76,33 @@ public abstract class BienLouable extends Bien {
 	}
 
 	@Override
-	public int getCodePostal() {
-		return codePostal;
+	public int getCodePostal(){
+		return this.immeuble.getCodePostal();
 	}
 
 	@Override
 	public void setCodePostal(int codePostal) {
-		this.codePostal = codePostal;
+		this.immeuble.setCodePostal(codePostal);
+	}
+
+	@Override
+	public String getAdresse() {
+		return this.immeuble.getAdresse();
+	}
+
+	@Override
+	public void setAdresse(String adresse){
+		this.immeuble.setAdresse(adresse);
+	}
+
+	@Override
+	public String getVille() {
+		return this.immeuble.getVille();
+	}
+
+	@Override
+	public void setVille(String ville) {
+		this.immeuble.setVille(ville);
 	}
 
 	public void ajouterBail(Bail bail) {
@@ -169,7 +187,7 @@ public abstract class BienLouable extends Bien {
 			throw new Queryable.QueryableException("Le bien existe déjà !");
 		try(UpdateQueryElement query = new UpdateQueryElement(INSERT_QUERY, true)){
 			query.setArgs(
-					Map.of(1,this.getLieuImmeuble(),
+					Map.of(1,this.getComplementAdresse(),
 							2, this.getAdresse(),
 							3, this.getVille(),
 							4, this.getCodePostal(),
@@ -188,7 +206,7 @@ public abstract class BienLouable extends Bien {
 		}
 		try(UpdateQueryElement query = new UpdateQueryElement(INSERT_QUERY_ARCHIVER, true)){
 			query.setArgs(
-					Map.of(1, this.getLieuImmeuble(),
+					Map.of(1, this.getComplementAdresse(),
 							2, this.getAdresse(),
 							3, this.getVille(),
 							4, this.getCodePostal(),
