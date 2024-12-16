@@ -39,7 +39,7 @@ public abstract class BienLouable extends Bien {
 	private java.sql.Date DateAjout;
 
 
-	BienLouable(String complementAdresse, String ville, int codePostal, String adresse, int nbPieces, String NumeroFiscal, Immeuble immeuble, float surface, java.sql.Date dateAjout, int idBienLouable) {// Initialisation des attributs hérités de Bien
+	BienLouable(String complementAdresse,int nbPieces, String NumeroFiscal, Immeuble immeuble, float surface, java.sql.Date dateAjout, int idBienLouable) {// Initialisation des attributs hérités de Bien
 		super(idBienLouable);
 		this.complementAdresse = complementAdresse;
 		this.immeuble = immeuble;
