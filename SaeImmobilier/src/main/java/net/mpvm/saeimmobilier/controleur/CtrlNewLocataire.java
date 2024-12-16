@@ -70,7 +70,7 @@ public class CtrlNewLocataire {
             try {
                 new Locataire(fieldNom.getText(), fieldPrenom.getText(), fieldEmail.getText(), sexe, this.fieldTelephone.getText()).save();
             } catch (Locataire.LocataireException e) {
-                e.getCause().getCause().printStackTrace();
+                e.printStackTrace();
             }
         }
         else{

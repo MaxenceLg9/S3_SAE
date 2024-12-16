@@ -7,7 +7,6 @@ import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import net.mpvm.saeimmobilier.modele.Proprietaire;
-import net.mpvm.saeimmobilier.util.JfxUtil;
 
 import javafx.scene.input.KeyEvent;
 import net.mpvm.saeimmobilier.vue.*;
@@ -65,7 +64,7 @@ public class CtrlConnexion {
                         if (this.FieldMail.getText().equals(p.getEmail())) {
                             if (this.FieldPwd.getText().equals(p.getMotDePasse())) {
                                 Stage stage = new Stage();
-                                VueNewBien.showWindow(stage);
+                                VueHome.showWindow(stage);
                                 Stage stageActuel = (Stage) ((PasswordField) event.getSource()).getScene().getWindow();
                                 stageActuel.close();
                             }
