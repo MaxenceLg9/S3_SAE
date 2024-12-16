@@ -112,12 +112,13 @@ public class CtrlInscription {
 
             if (MDPIdentique()) {
                 try {
-                        new Proprietaire(fieldNom.getText(),fieldPrenom.getText(),fieldTelephone.getText(),fieldMail.getText(),fieldNewPassword.getText(), fieldVille.getText(),fieldCodePostal.getText(),fieldAdresse.getText()).save();
-                } catch (Proprietaire.ProprietaireException e) {
+                        new Proprietaire(fieldNom.getText(),fieldPrenom.getText(),fieldTelephone.getText(),fieldMail.getText(),fieldNewPassword.getText()).save();
+                } catch (Proprietaire.ProprietaireException proprietaireException) {
+                    proprietaireException.getSqlException().printStackTrace();
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Erreur");
                     alert.setHeaderText("Erreur lors de la sauvegarde");
-                    alert.setContentText(e.getMessage());
+                    alert.setContentText(proprietaireException.getMessage());
                     alert.showAndWait();
                 }
             } else {
