@@ -23,8 +23,8 @@ public abstract class QueryElement<T> implements Closeable {
         try {
             this.connection = BD.getConnection(commit);
             this.preparedStatement = this.prepareStatement();
-        } catch (SQLException e) {
-            throw new QueryException("Cannot create the query : Statement  or Connection problem", e);
+        } catch (SQLException sqlException) {
+            throw new QueryException("Cannot create the query : Statement  or Connection problem", sqlException);
         }
     }
 
@@ -128,7 +128,7 @@ public abstract class QueryElement<T> implements Closeable {
         }
 
         public SQLException getSqlException(){
-            return this.sqlException;
+            return this.sqlException == null ? new SQLException("No SQL Exception") : this.sqlException;
         }
 
     }

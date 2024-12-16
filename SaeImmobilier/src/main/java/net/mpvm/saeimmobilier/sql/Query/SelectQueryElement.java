@@ -2,7 +2,11 @@ package net.mpvm.saeimmobilier.sql.Query;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 public final class SelectQueryElement extends QueryElement<ResultSet> {
@@ -12,7 +16,6 @@ public final class SelectQueryElement extends QueryElement<ResultSet> {
 
     public SelectQueryElement(String query) throws QueryException {
         super(query, false);
-        //TODO : reviewed
         try {
             fakeStatement = this.prepareStatement();
         } catch (SQLException e) {
@@ -62,7 +65,7 @@ public final class SelectQueryElement extends QueryElement<ResultSet> {
             //count the number of lines
             return rows;
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new QueryException("Error setting row count", e);
         }
     }
 
@@ -79,6 +82,26 @@ public final class SelectQueryElement extends QueryElement<ResultSet> {
         return this.rs;
     }
 
+    public List<Map<String,Object>> getResult() throws QueryException {
+
+        List<Map<String, Object>> rows = new ArrayList<>();
+        try {
+            ResultSetMetaData metaData = rs.getMetaData();
+            int columnCount = metaData.getColumnCount();
+            while (rs.next()) {
+                Map<String, Object> row = new LinkedHashMap<>();
+                for (int i = 1; i <= columnCount; i++) {
+                    row.put(metaData.getColumnName(i), rs.getObject(i));
+                }
+                rows.add(row);
+            }
+        }
+        catch(SQLException sqlException){
+            throw new QueryException("Error getting the result", sqlException);
+        }
+        return rows;
+    }
+
     public void close() throws QueryException {
         try {
             if(rs != null)
@@ -93,7 +116,7 @@ public final class SelectQueryElement extends QueryElement<ResultSet> {
      * @return boolean : true if the resultSet is closed && the superclass {@code QueryElement} too, false otherwise
      * @parameters none
      * @description check if the SelectQueryElement is closed
-     * @throws SQLException
+     * @throws QueryException
      */
     public boolean isClosed() throws QueryException {
         try {

@@ -52,7 +52,7 @@ public class CtrlConnexion {
     }
 
     @FXML
-    public void Connexion(KeyEvent event){
+    public void Connexion1(KeyEvent event){
         if (event.getCode() == KeyCode.ENTER) {
             if (isMailNull()){
                 alertMailEmpty();
@@ -76,7 +76,7 @@ public class CtrlConnexion {
                 } catch (Proprietaire.ProprietaireException e) {
                     alertIncorrectEmpty();
                 } catch (Exception e) {
-                    throw new RuntimeException(e);
+                    e.printStackTrace();
                 }
 
             }else {alertFormatMail();

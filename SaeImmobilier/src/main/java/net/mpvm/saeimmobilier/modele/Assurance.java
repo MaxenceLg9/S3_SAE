@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import java.util.Map;
 import java.util.Optional;
 
-public class Assurance {
+public class Assurance implements Queryable{
 
     private int idAssurance;
     private int Annee;
@@ -176,6 +176,16 @@ public class Assurance {
             );
             throw new AssuranceException(errorMessage, e.getSqlException());
         }
+    }
+
+    @Override
+    public void modify() throws QueryableException {
+
+    }
+
+    @Override
+    public void delete() throws QueryableException {
+
     }
 
     public int getAnnee() {

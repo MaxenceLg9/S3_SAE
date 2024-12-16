@@ -78,26 +78,37 @@ CREATE TABLE Bien(
                      NumeroFiscal VARCHAR(50),
                      DateAjout DATE,
                      IdAssurance INT default 0,
-                     IdProprietaire INT default 0,
                      IdImmeuble INT default 0,
                      PRIMARY KEY(IdBien)
 );
-
-
-alter table bien
-    add constraint FK_Bien_IdImmeuble
-        foreign key (IdImmeuble) references Bien(IdBien);
-
-Alter table Bien
-    add constraint FK_Bien_IdProprietaire
-        foreign key (IdProprietaire) references Proprietaire(IdProprietaire);
 
 Alter table Bien
     Add constraint CK_Type_Bien
         CHECK ( Bien.TypeBien IN('HABITATION','GARAGE','IMMEUBLE') );
 
 DELIMITER //
-CREATE TRIGGER CHECK_TYPE_BIEN_IDIMMEUBLE
+CREATE TRIGGER CHECK_IDIMMEUBLE_NON_IMMEUBLE
+    BEFORE INSERT ON Bien
+    FOR EACH ROW
+BEGIN
+    DECLARE v_type VARCHAR(20);
+    IF NEW.TypeBien != 'IMMEUBLE' THEN
+        IF NEW.IdImmeuble IS NULL THEN
+            SIGNAL SQLSTATE '45000'
+                SET MESSAGE_TEXT = 'Le bien n'' étant pas un immeuble doit référencer un immeuble';
+        END IF;
+    END IF;
+    SELECT TypeBien INTO v_type FROM Bien WHERE IdBien = NEW.IdImmeuble;
+    IF v_type != 'IMMEUBLE' THEN
+        SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'Le type de bien doit être un immeuble';
+    END IF;
+END;
+//
+DELIMITER ;
+
+DELIMITER //
+CREATE TRIGGER CHECK_TYPE_BIEN_
     BEFORE INSERT ON Bien
     FOR EACH ROW
 BEGIN
@@ -291,7 +302,7 @@ END;
 //
 DELIMITER ;
 
-DROP TRIGGER CalculPourcentageAugmentation;
+DROP TRIGGER IF EXISTS CalculPourcentageAugmentation;
 DELIMITER //
 
 CREATE TRIGGER CalculPourcentageAugmentation

@@ -134,9 +134,7 @@ public class CtrlNewBien {
                     switch (this.ListTypeBien.getValue()) {
                         case TypeBien.HABITATION:
                             if (fieldsNotEmptyBienLouable()) {
-                                new Habitation(this.FieldLieuImmeuble.getText(),this.FieldVille.getText(),
-                                        Integer.parseInt(this.FieldCodePostal.getText()),
-                                        this.FieldAdresse.getText(),
+                                new Habitation(this.FieldLieuImmeuble.getText(),
                                         Integer.parseInt(this.FieldNbPieces.getText()),
                                         this.FieldNumFisc.getText(),
                                         this.listImmeubles.getItems().getFirst(),
@@ -149,9 +147,7 @@ public class CtrlNewBien {
 
                         case TypeBien.GARAGE:
                             if (fieldsNotEmptyBienLouable()) {
-                                new Garage(this.FieldLieuImmeuble.getText(),this.FieldVille.getText(),
-                                        Integer.parseInt(this.FieldCodePostal.getText()),
-                                        this.FieldAdresse.getText(),
+                                new Garage(this.FieldLieuImmeuble.getText(),
                                         Integer.parseInt(this.FieldNbPieces.getText()),
                                         this.FieldNumFisc.getText(),
                                         this.listImmeubles.getItems().getFirst(),
@@ -173,7 +169,7 @@ public class CtrlNewBien {
                     }
 
                 } catch (Queryable.QueryableException e) {
-                   e.printStackTrace();
+                   e.getSqlException().printStackTrace();
                 }
                 System.out.print("Bouh ! ");
     }

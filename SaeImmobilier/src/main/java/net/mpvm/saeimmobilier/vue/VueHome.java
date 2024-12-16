@@ -13,7 +13,7 @@ public class VueHome extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        JfxUtil.applicationInit(primaryStage, "home.fxml","HomePage",650, 600);
+        JfxUtil.applicationInit(primaryStage, "home.fxml","HomePage",800, 700);
         primaryStage.setResizable(false);
     }
 
@@ -22,4 +22,3 @@ public class VueHome extends Application {
         vue.start(stage);
     }
 }
-

@@ -23,13 +23,10 @@ public class Proprietaire {
 	private String Telephone;
 	private String Email;
 	private String MotDePasse;
-	private String Ville;
-	private String CodePostal;
-	private String Adresse;
 	private ArrayList<Bien> biensPossedes;
 	private int IdProprietaire;
 
-	Proprietaire(int IdProprietaire, String nom, String Prenom, String Telephone, String Email, String MotDePasse, String Ville, String CodePostal, String Adresse) throws IllegalArgumentException {
+	Proprietaire(int IdProprietaire, String nom, String Prenom, String Telephone, String Email, String MotDePasse) throws IllegalArgumentException {
 		Pattern pattern = Pattern.compile("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$");
 		Matcher matcher = pattern.matcher(Email);
 		if (!matcher.matches()) {
@@ -43,15 +40,12 @@ public class Proprietaire {
 		this.Nom = nom;
 		this.Prenom = Prenom;
 		this.Telephone = Telephone;
-		this.Ville = Ville;
-		this.CodePostal = CodePostal;
-		this.Adresse = getAdresse();
 		this.MotDePasse = MotDePasse;
 		this.biensPossedes = new ArrayList<>();
 	}
 
-	public Proprietaire(String nom, String Prenom, String Telephone, String Email, String MotDePasse, String Ville, String CodePostal, String Adresse) throws IllegalArgumentException {
-		this(-1, nom, Prenom, Telephone, Email, MotDePasse, Ville, CodePostal, Adresse);
+	public Proprietaire(String nom, String Prenom, String Telephone, String Email, String MotDePasse) throws IllegalArgumentException {
+		this(-1, nom, Prenom, Telephone, Email, MotDePasse);
 		Pattern pattern = Pattern.compile("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$");
 		Matcher matcher = pattern.matcher(Email);
 		if (!matcher.matches()) {
@@ -65,14 +59,6 @@ public class Proprietaire {
 	}
 
 	// Getters et setters pour les propriétés
-
-	public String getAdresse() {
-		return this.Adresse;
-	}
-
-	public String getCodePostal() {
-		return this.CodePostal;
-	}
 
 	public String getEmail() {
 		return this.Email;
@@ -92,18 +78,6 @@ public class Proprietaire {
 
 	public String getTelephone() {
 		return this.Telephone;
-	}
-
-	public String getVille() {
-		return this.Ville;
-	}
-
-	public void setAdresse(String adresse) {
-		this.Adresse = adresse;
-	}
-
-	public void setCodePostal(String codePostal) {
-		this.CodePostal = codePostal;
 	}
 
 	public void setEmail(String email) {
@@ -132,10 +106,6 @@ public class Proprietaire {
 
 	public void setTelephone(String telephone) {
 		this.Telephone = telephone;
-	}
-
-	public void setVille(String ville) {
-		this.Ville = ville;
 	}
 
 	public boolean verifierMontantRegularisation(float sommeVersee, float sommeDue) {
@@ -167,18 +137,13 @@ public class Proprietaire {
 									2, this.getPrenom(),
 									3, this.getTelephone(),
 									4, this.getEmail(),
-									5, this.getMotDePasse(),
-									6, this.getVille(),
-									7, this.getCodePostal(),
-									8, this.getAdresse()
+									5, this.getMotDePasse()
 							))
 					.execute();
-		} catch (QueryElement.QueryException sqlE) {
-			throw new ProprietaireException("Erreur lors de l'ajout du propriétaire : " + sqlE.getMessage());
+		} catch (QueryElement.QueryException queryException) {
+			throw new ProprietaireException("Erreur lors de l'ajout du propriétaire : ", queryException.getSqlException());
 		}
 	}
-
-
 
 	private boolean emailAlreadyExists(String email) throws ProprietaireException {
 		try(SelectQueryElement queryElement = new SelectQueryElement(SELECT_COUNT_QUERY)) {
@@ -206,10 +171,8 @@ public class Proprietaire {
 								rs.getString("Prenom"),
 								rs.getString("Telephone"),
 								rs.getString("Email"),
-								rs.getString("MotDePasse"),
-								rs.getString("Ville"),
-								rs.getString("CodePostal"),
-								rs.getString("Adresse")));
+								rs.getString("MotDePasse")
+						));
 			}
 		}
 		catch (QueryElement.QueryException | SQLException queryException){
