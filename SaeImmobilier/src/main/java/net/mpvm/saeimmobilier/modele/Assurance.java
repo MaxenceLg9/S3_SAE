@@ -19,6 +19,7 @@ public class Assurance implements Queryable{
     private TypeContrat typeContrat; // Type Propriétaire ou aide juridique, pour une des règles métier
     private float augmentationAnnuelle;
     private Optional<Bien> bien; // Bien lié à l'assurance
+    private float primeAnneePrecedente;
 
 
     private Assurance(int IdAssurance,TypeContrat typeContrat){
@@ -89,7 +90,20 @@ public class Assurance implements Queryable{
     }
 
     public void setBien(Bien bien) {
-        this.bien = Optional.ofNullable(bien); // Permet de lier ou de supprimer le bien
+        if (bien == null) {
+            this.bien = Optional.empty(); // Supprime l'association avec un bien
+            this.primeAnneePrecedente = 0; // Réinitialise la prime précédente
+        } else {
+            this.bien = Optional.of(bien);
+
+            // Déterminer la prime de l'année précédente en fonction des données existantes
+            Optional<Assurance> assurancePrecedente = bien.getAssuranceActuelle();
+            if (assurancePrecedente.isPresent()) {
+                this.primeAnneePrecedente = assurancePrecedente.get().getPrime();
+            } else {
+                this.primeAnneePrecedente = 0; // Aucune prime précédente si c'est une nouvelle assurance
+            }
+        }
     }
 
     // Méthode pour obtenir le montant de la quotité
@@ -138,41 +152,43 @@ public class Assurance implements Queryable{
         this.bien = bien;
     }
     public void save() throws AssuranceException {
-        // Valider les données de l'assurance avant l'insertion
-        if (this.getProtectionJuridique() < 0) {
+        // Valider les données avant insertion
+        if (this.protectionJuridique < 0) {
             throw new AssuranceException("La protection juridique ne peut pas être négative.");
         }
-        if (this.getQuotiteJurisprudence() < 0) {
+        if (this.quotiteJurisprudence < 0) {
             throw new AssuranceException("La quotité juridique ne peut pas être négative.");
         }
-        if (this.getPrime() < 0) {
+        if (this.prime < 0) {
             throw new AssuranceException("La prime ne peut pas être négative.");
         }
-        if (this.getTypeContrat() == null) {
+        if (this.typeContrat == null) {
             throw new AssuranceException("Le type de contrat est obligatoire.");
         }
 
         try (UpdateQueryElement query = new UpdateQueryElement(
-                "INSERT INTO Assurance (ProtectionJuridique, QuotiteJuridique, Prime, TypeContrat) VALUES (?, ?, ?, ?)",
+                "INSERT INTO Assurance (ProtectionJuridique, QuotiteJuridique, Prime, TypeContrat, Annee) " +
+                        "VALUES (?, ?, ?, ?, ?)",
                 true)) {
 
-            // Préparer les paramètres de la requête
+            // Préparer les paramètres pour l'insertion
             query.setArgs(Map.of(
-                    1, this.getProtectionJuridique(),
-                    2, this.getQuotiteJurisprudence(),
-                    3, this.getPrime(),
-                    4, this.getTypeContrat().toString()
+                    1, this.protectionJuridique,
+                    2, this.quotiteJurisprudence,
+                    3, this.prime,
+                    4, this.typeContrat.toString(),
+                    5, this.Annee
             ));
 
             // Exécution de la requête
             query.execute();
-            System.out.println("Insertion réussie. Le déclencheur CalculTotalPrime mettra à jour TotalPrime.");
+            System.out.println("Insertion réussie. Les triggers CalculTotalPrime et CalculPourcentageAugmentation sont déclenchés.");
 
         } catch (QueryElement.QueryException e) {
-            // Gestion d'une erreur SQL et affichage du contexte
+            // Gérer les erreurs SQL et afficher des informations détaillées
             String errorMessage = String.format(
-                    "Erreur lors de l'ajout de l'assurance : ProtectionJuridique=%f, QuotitéJuridique=%f, Prime=%f, TypeContrat=%s",
-                    this.getProtectionJuridique(), this.getQuotiteJurisprudence(), this.getPrime(), this.getTypeContrat().toString()
+                    "Erreur lors de l'ajout de l'assurance : ProtectionJuridique=%f, QuotitéJuridique=%f, Prime=%f, TypeContrat=%s, Annee=%d",
+                    this.protectionJuridique, this.quotiteJurisprudence, this.prime, this.typeContrat.toString(), this.Annee
             );
             throw new AssuranceException(errorMessage, e.getSqlException());
         }

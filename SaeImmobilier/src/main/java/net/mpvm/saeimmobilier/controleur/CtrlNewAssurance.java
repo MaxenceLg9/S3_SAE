@@ -21,14 +21,13 @@ public class CtrlNewAssurance {
     private TextField fieldQuotiteJuridique;
     @FXML
     private ComboBox<TypeContrat> comboTypeContrat;
-
+    @FXML
+    private TextField fieldPrime;
     @FXML
     private List<TextField> fieldsAssurance;
-
-    // Le constructeur est optionnel dans un contrôleur JavaFX, mais si necessaire, il pourrait être ajoute ici
+    @FXML
+    private TextField fieldAnnee;
     public CtrlNewAssurance() {
-        // Ce constructeur est generalement utilise pour des initialisations autres que JavaFX
-        // Par exemple, injection de dependances ou initialisation des valeurs si cela est requis
         System.out.println("Constructeur de CtrlNewAssurance appele");
     }
 
@@ -38,48 +37,55 @@ public class CtrlNewAssurance {
         setupComboBox();
     }
 
-    private void fieldSetup() {
-        setFieldsPromptText();
+    private void setupComboBox() {
+        comboTypeContrat.getItems().addAll(TypeContrat.values());
+    }
 
+    private void fieldSetup() {
         fieldsAssurance = new ArrayList<>() {
             {
+                add(fieldAnnee);
                 add(fieldProtectionJuridique);
                 add(fieldQuotiteJuridique);
+                add(fieldPrime);
             }
         };
     }
 
-    private void setFieldsPromptText() {
-        fieldProtectionJuridique.setPromptText("Protection Juridique ");
-        fieldQuotiteJuridique.setPromptText("Quotite Juridique (en %)");
-    }
-
-    private void setupComboBox() {
-        comboTypeContrat.getItems().addAll(TypeContrat.values());
-        comboTypeContrat.setPromptText("Type de Contrat");
-    }
 
     @FXML
     public void ajouterAssurance(ActionEvent event) {
         if (fieldsNotEmpty()) {
             try {
+                validateFields();
+                int annee = Integer.parseInt(fieldAnnee.getText());
                 float protectionJuridique = Float.parseFloat(fieldProtectionJuridique.getText());
                 float quotiteJuridique = Float.parseFloat(fieldQuotiteJuridique.getText());
+                float prime = Float.parseFloat(fieldPrime.getText());
                 TypeContrat typeContrat = comboTypeContrat.getValue();
 
                 if (typeContrat == null) {
                     alertError("Type de contrat manquant", "Veuillez selectionner un type de contrat.");
                     return;
                 }
-
+                if (annee < 1950 || annee > 2050) {
+                    alertError("Année invalide", "L'année doit être comprise entre 1950 et 2050.");
+                    return;
+                }
+                if (quotiteJuridique < 0 || quotiteJuridique > 100) {
+                    alertError("Quotité juridique invalide", "La quotité juridique doit être un nombre entre 0 et 100.");
+                    return;
+                }
                 // Enregistrement de l'assurance dans la base de donnees
                 Assurance assurance = new Assurance(typeContrat);
+                assurance.setAnnee(annee);
                 assurance.setProtectionJuridique(protectionJuridique);
                 assurance.setQuotiteJurisprudence(quotiteJuridique);
+                assurance.setPrime(prime);
                 assurance.save();
 
             } catch (NumberFormatException e) {
-                alertError("Format des champs invalide", "Veuillez saisir des valeurs numeriques pour les champs appropries.");
+                alertError("Format des champs invalide", "Veuillez saisir des valeurs numeriques pour les champs appropriés.");
             } catch (Assurance.AssuranceException e) {
                 e.getSqlException().printStackTrace();
                 alertError("Erreur lors de l'enregistrement", "Une erreur est survenue lors de l'ajout de l'assurance.");
@@ -89,24 +95,28 @@ public class CtrlNewAssurance {
         }
 
         try {
-            // Creation d'une nouvelle fenêtre
             Stage stage = new Stage();
-            JfxUtil.applicationInit(stage, "newbien.fxml", "Ajouter un Bien",700,800);
-            stage.setWidth(1300);
-            stage.setHeight(900);
-            stage.setResizable(false);
+            JfxUtil.applicationInit(stage, "home.fxml", "Page Home",700,800);
+            stage.setMinWidth(1300);
+            stage.setMinHeight(900);
 
-            // Fermeture de la fenêtre actuelle
+
             Stage currentStage = (Stage) ((Button) event.getSource()).getScene().getWindow();
             currentStage.close();
 
-            // Affichage de la nouvelle fenêtre
             stage.show();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
+    private void validateFields() throws NumberFormatException {
+        for (TextField field : fieldsAssurance) {
+            String text = field.getText().replace(",", "."); // Convertir les virgules en points pour Java
+            if (!text.matches("^[0-9]*\\.?[0-9]+$")) { // Vérifie si le champ contient uniquement des nombres
+                throw new NumberFormatException("Champs contenant des caractères invalides.");
+            }
+        }
+    }
     private void alertFieldsEmpty() {
         alertError("Champs vides", "Veuillez remplir tous les champs avant de valider.");
     }
@@ -128,27 +138,14 @@ public class CtrlNewAssurance {
         return true;
     }
 
-    @FXML
-    public void annuler(ActionEvent actionEvent) {
-        try {
-            // Creation d'une nouvelle fenêtre
-            Stage stage = new Stage();
-            JfxUtil.applicationInit(stage, "newbien.fxml", "Ajouter un Bien",700,800);
-            stage.setWidth(1300);
-            stage.setHeight(900);
-            stage.setResizable(false);
 
-            // Fermeture de la fenêtre actuelle
-            Stage currentStage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
-            currentStage.close();
-
-            // Affichage de la nouvelle fenêtre
-            stage.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
     @FXML
     public void Annuler(ActionEvent actionEvent) {
+        fieldAnnee.clear();
+        fieldQuotiteJuridique.clear();
+        fieldProtectionJuridique.clear();
+        comboTypeContrat.getItems().clear();
+        fieldsAssurance.clear();
+        fieldPrime.clear();
     }
 }
