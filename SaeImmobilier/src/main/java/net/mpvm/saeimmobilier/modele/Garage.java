@@ -16,6 +16,9 @@ public final class Garage extends BienLouable {
 
 	Garage(ResultSet rs) throws SQLException, Immeuble.ImmeubleException {
 		this(rs.getString("complementAdresse"),
+				rs.getString("Ville"),
+				rs.getInt("codePostal"),
+				rs.getString("Adresse"),
 				rs.getInt("NombrePieces"),
 				rs.getString("NumeroFiscal"),
 				Immeuble.getFromId(rs.getInt("IdImmeuble")),
@@ -29,7 +32,7 @@ public final class Garage extends BienLouable {
 	}
 
 	Garage(String complementAdresse,String ville, int codePostal, String adresse, int nbPieces, String NumeroFiscal, Immeuble immeuble, float surface, Date dateAjout, int idBien) {
-		super(complementAdresse,ville,codePostal,adresse, nbPieces,NumeroFiscal,immeuble,surface,dateAjout,idBien);
+		super(complementAdresse, nbPieces,NumeroFiscal,immeuble,surface,dateAjout,idBien);
 	}
 
 	@Override
