@@ -60,9 +60,7 @@ CREATE TABLE Proprietaire(
                              Telephone CHAR(10),
                              Email VARCHAR(50),
                              MotDePasse VARCHAR(50),
-                             Ville VARCHAR(50),
-                             CodePostal CHAR(5),
-                             Adresse VARCHAR(50),
+
                              PRIMARY KEY(IdProprietaire)
 );
 

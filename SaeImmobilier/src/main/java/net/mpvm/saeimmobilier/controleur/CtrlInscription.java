@@ -32,7 +32,7 @@ public class CtrlInscription {
     public CheckBox checkBoxVisibilite;
 
     @FXML
-    private TextField fieldCodePostal,fieldAdresse,fieldVille,fieldPrenom,fieldNom,fieldMail,fieldTelephone;
+    private TextField fieldPrenom,fieldNom,fieldMail,fieldTelephone;
 
 
     private ArrayList<TextField> fieldsMDP;
@@ -135,7 +135,6 @@ public class CtrlInscription {
 
     @FXML
     public void Annuler(ActionEvent event) {
-        // Clear all fields
         fieldMail.clear();
         fieldNewPassword.clear();
         fieldConfirmation.clear();
