@@ -14,13 +14,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 
 public abstract class Bien implements Queryable {
 
     private static final String SELECT_QUERY = "SELECT * FROM bien";
     private int IdBien;
-    private Assurance assurance;
+    private Optional<Assurance> assurance;
     private float iR; // Taux d'intérêt ou autre valeur
 
 
@@ -41,10 +42,10 @@ public abstract class Bien implements Queryable {
 
     public abstract void setCodePostal(int codePostal);
 
-    public Assurance getAssurance() {
+    public Optional<Assurance> getAssurance() {
         return this.assurance;
     }
-    public void setAssurance(Assurance assurance) {
+    public void setAssurance(Optional<Assurance> assurance) {
         this.assurance = assurance;
     }
 
@@ -154,6 +155,10 @@ public abstract class Bien implements Queryable {
         }
 
         return biens;
+    }
+
+    public Optional<Assurance> getAssuranceActuelle() {
+        return this.assurance;
     }
 
 
