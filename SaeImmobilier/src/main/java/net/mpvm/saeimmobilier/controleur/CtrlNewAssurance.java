@@ -13,6 +13,8 @@ import java.util.List;
 
 public class CtrlNewAssurance {
 
+    public Button btnAnnuler;
+    public Button btnAjouterAssurance;
     @FXML
     private TextField fieldProtectionJuridique;
     @FXML
@@ -23,11 +25,11 @@ public class CtrlNewAssurance {
     @FXML
     private List<TextField> fieldsAssurance;
 
-    // Le constructeur est optionnel dans un contrôleur JavaFX, mais si nécessaire, il pourrait être ajouté ici
+    // Le constructeur est optionnel dans un contrôleur JavaFX, mais si necessaire, il pourrait être ajoute ici
     public CtrlNewAssurance() {
-        // Ce constructeur est généralement utilisé pour des initialisations autres que JavaFX
-        // Par exemple, injection de dépendances ou initialisation des valeurs si cela est requis
-        System.out.println("Constructeur de CtrlNewAssurance appelé");
+        // Ce constructeur est generalement utilise pour des initialisations autres que JavaFX
+        // Par exemple, injection de dependances ou initialisation des valeurs si cela est requis
+        System.out.println("Constructeur de CtrlNewAssurance appele");
     }
 
     @FXML
@@ -49,7 +51,7 @@ public class CtrlNewAssurance {
 
     private void setFieldsPromptText() {
         fieldProtectionJuridique.setPromptText("Protection Juridique ");
-        fieldQuotiteJuridique.setPromptText("Quotité Juridique (en %)");
+        fieldQuotiteJuridique.setPromptText("Quotite Juridique (en %)");
     }
 
     private void setupComboBox() {
@@ -66,20 +68,20 @@ public class CtrlNewAssurance {
                 TypeContrat typeContrat = comboTypeContrat.getValue();
 
                 if (typeContrat == null) {
-                    alertError("Type de contrat manquant", "Veuillez sélectionner un type de contrat.");
+                    alertError("Type de contrat manquant", "Veuillez selectionner un type de contrat.");
                     return;
                 }
 
-                // Enregistrement de l'assurance dans la base de données
+                // Enregistrement de l'assurance dans la base de donnees
                 Assurance assurance = new Assurance(typeContrat);
                 assurance.setProtectionJuridique(protectionJuridique);
                 assurance.setQuotiteJurisprudence(quotiteJuridique);
                 assurance.save();
 
             } catch (NumberFormatException e) {
-                alertError("Format des champs invalide", "Veuillez saisir des valeurs numériques pour les champs appropriés.");
+                alertError("Format des champs invalide", "Veuillez saisir des valeurs numeriques pour les champs appropries.");
             } catch (Assurance.AssuranceException e) {
-                e.printStackTrace();
+                e.getSqlException().printStackTrace();
                 alertError("Erreur lors de l'enregistrement", "Une erreur est survenue lors de l'ajout de l'assurance.");
             }
         } else {
@@ -87,7 +89,7 @@ public class CtrlNewAssurance {
         }
 
         try {
-            // Création d'une nouvelle fenêtre
+            // Creation d'une nouvelle fenêtre
             Stage stage = new Stage();
             JfxUtil.applicationInit(stage, "newbien.fxml", "Ajouter un Bien",700,800);
             stage.setWidth(1300);
@@ -129,7 +131,7 @@ public class CtrlNewAssurance {
     @FXML
     public void annuler(ActionEvent actionEvent) {
         try {
-            // Création d'une nouvelle fenêtre
+            // Creation d'une nouvelle fenêtre
             Stage stage = new Stage();
             JfxUtil.applicationInit(stage, "newbien.fxml", "Ajouter un Bien",700,800);
             stage.setWidth(1300);
@@ -145,5 +147,8 @@ public class CtrlNewAssurance {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    @FXML
+    public void Annuler(ActionEvent actionEvent) {
     }
 }

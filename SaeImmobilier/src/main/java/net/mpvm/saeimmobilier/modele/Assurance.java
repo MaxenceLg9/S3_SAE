@@ -153,7 +153,7 @@ public class Assurance implements Queryable{
         }
 
         try (UpdateQueryElement query = new UpdateQueryElement(
-                "INSERT INTO Assurance (ProtectionJuridique, QuotitéJuridique, Prime, TypeContrat) VALUES (?, ?, ?, ?)",
+                "INSERT INTO Assurance (ProtectionJuridique, QuotiteJuridique, Prime, TypeContrat) VALUES (?, ?, ?, ?)",
                 true)) {
 
             // Préparer les paramètres de la requête
