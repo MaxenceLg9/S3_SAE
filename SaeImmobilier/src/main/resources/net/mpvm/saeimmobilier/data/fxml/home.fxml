@@ -113,7 +113,7 @@
                                         <TableView fx:id="tableViewBiens" prefHeight="200.0" prefWidth="200.0" styleClass="backgroundColor">
                                             <columns>
                                                 <TableColumn prefWidth="75.0" text="idBien" />
-                                                <TableColumn prefWidth="139.0" text="ComplémenAdresse" />
+                                                <TableColumn prefWidth="139.0" text="ComplémentAdresse" />
                                                 <TableColumn prefWidth="11.0" text="Adresse" />
                                                 <TableColumn prefWidth="75.0" text="Ville" />
                                                 <TableColumn prefWidth="75.0" text="CodePostal" />
