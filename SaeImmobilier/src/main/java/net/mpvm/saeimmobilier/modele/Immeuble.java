@@ -13,14 +13,14 @@ import java.util.*;
 
 public final class Immeuble extends Bien{
 
-	public static final String INSERT_QUERY = "INSERT INTO Bien (Adresse, Ville, CodePostal, IdImmeuble, IdProprietaire, TypeBien) VALUES (?, ?, ?, ?, ?, ?)";
+	public static final String INSERT_QUERY = "INSERT INTO Bien (Adresse, Ville, CodePostal, IdImmeuble, TypeBien) VALUES (?, ?, ?,?, ?)";
 	public static final String SELECT_QUERY = "SELECT * FROM Bien";
 	public static final String SELECT_WHERE_QUERY = "SELECT * FROM Bien WHERE Adresse = ? AND Ville = ? AND CodePostal = ?";
 	public static final String DELETE_QUERY = "DELETE FROM Bien WHERE IdBien = ? AND TypeBien = 'IMMEUBLE'";
 	public static final String UPDATE_QUERY = "UPDATE Bien SET Adresse = ?, Ville = ?, CodePostal = ?";
 	public static final String SELECT_FROM_ID = "SELECT * FROM Bien WHERE IdBien = ? AND TypeBien = 'IMMEUBLE'";
 	public static final String SELECT_BIENS_IMMEUBLES = "SELECT * FROM Bien WHERE IdBien = ?";
-	public static final String SELECT_NEXT_ID = "SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE TABLE_SCHEMA = 'bdImmo' AND TABLE_NAME = 'Bien'";
+	public static final String NEXT_ID = "SELECT count(*) FROM bien WHERE IdImmeuble IS NOT NULL";
 
 	private String adresse;
 	private String ville;
@@ -148,17 +148,16 @@ public final class Immeuble extends Bien{
 		if(this.getIdBien() != -1)
 			throw new ImmeubleException("Le bien existe déjà dans la table");
 		try(UpdateQueryElement q = new UpdateQueryElement(INSERT_QUERY, true);
-		SelectQueryElement selectQueryElement = new SelectQueryElement(SELECT_NEXT_ID)){
+		SelectQueryElement selectQueryElement = new SelectQueryElement(NEXT_ID)){
 			ResultSet rs = selectQueryElement.execute();
 			rs.next();
-			int id = rs.getInt("AUTO_INCREMENT");
+			int id = rs.getInt(1)+1;
 			q.setArgs(
 							Map.of(1, this.getAdresse(),
 									2, this.getVille(),
 									3, this.getCodePostal(),
 									4, id,
-									5, -1,
-									6, TypeBien.IMMEUBLE.name()))
+									5, TypeBien.IMMEUBLE.name()))
 					.execute();
 		}
 		catch (QueryElement.QueryException | SQLException e){

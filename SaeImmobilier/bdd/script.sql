@@ -301,7 +301,7 @@ END;
 //
 DELIMITER ;
 
-DROP TRIGGER CalculPourcentageAugmentation;
+DROP TRIGGER If Exists CalculPourcentageAugmentation;
 DELIMITER //
 
 CREATE TRIGGER CalculPourcentageAugmentation
