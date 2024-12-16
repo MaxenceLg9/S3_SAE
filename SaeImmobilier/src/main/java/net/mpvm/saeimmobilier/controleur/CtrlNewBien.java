@@ -171,7 +171,7 @@ public class CtrlNewBien {
                 } catch (Queryable.QueryableException e) {
                    e.getSqlException().printStackTrace();
                 }
-                System.out.print("Bouh ! ");
+
     }
 
 
