@@ -26,7 +26,7 @@ public class CtrlViewImmeubles {
     }
 
     private void afficheImmeubles() throws Queryable.QueryableException {
-        List<Immeuble> immeubles = Bien.findAllImmeubles(); // Une méthode spécifique pour les immeubles
+        List<Immeuble> immeubles = Immeuble.findAll(); // Une méthode spécifique pour les immeubles
         gridPaneImmeubles.getChildren().clear();
 
         for (Bien immeuble : immeubles) {
