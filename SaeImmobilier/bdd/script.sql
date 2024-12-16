@@ -50,6 +50,7 @@ CREATE TABLE Assurance(
                           TypeContrat VARCHAR(20),
                           Annee INT,
                           PrimeAnneePrecedente DOUBLE,
+                          MontantQuotite DOUBLE,
                           PRIMARY KEY(IdAssurance)
 );
 
@@ -271,7 +272,16 @@ BEGIN
 END;
 //
 DELIMITER ;
+DELIMITER //
+    CREATE TRIGGER CalculMontantQuotite
+        BEFORE INSERT ON Assurance
+        FOR EACH ROW
+    BEGIN
+        SET NEW.MontantQuotite = (NEW.ProtectionJuridique *NEW.QuotiteJuridique)/100;
 
+END;
+//
+DELIMITER ;
 -- Trigger pour calculer MontantADeclarer dans la table Travaux
 DELIMITER //
 CREATE TRIGGER CalculMontantADeclarer
