@@ -30,8 +30,15 @@ public class CtrlViewLocataires {
     private void afficheLocataires() {
         try {
             locataires = Locataire.findALl().stream().collect(Collectors.toMap(Locataire::getIdLocataire, Function.identity()));
-        } catch (Locataire.LocataireException e) {
-            locataires = new HashMap<>();
+        } catch (Locataire.LocataireException locataireException) {
+            locataireException.getSqlException().printStackTrace();
+            new Thread(() -> {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Erreur");
+                alert.setHeaderText(locataireException.getMessage());
+                alert.showAndWait();
+            }).start();
+            return;
         }
         vBoxContent.getChildren().clear();
         for(Locataire l : locataires.values()) {
