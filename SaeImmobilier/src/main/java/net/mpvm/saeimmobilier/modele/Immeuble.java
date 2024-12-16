@@ -2,9 +2,11 @@ package net.mpvm.saeimmobilier.modele;
 
 
 import net.mpvm.saeimmobilier.sql.Query.QueryElement;
+import net.mpvm.saeimmobilier.sql.Query.Queryable;
 import net.mpvm.saeimmobilier.sql.Query.SelectQueryElement;
 import net.mpvm.saeimmobilier.sql.Query.UpdateQueryElement;
 
+import javax.management.ImmutableDescriptor;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
@@ -204,5 +206,24 @@ public final class Immeuble extends Bien{
 		public ImmeubleException(String message, SQLException e) {
 			super(message, e);
 		}
+	}
+
+	public static List<Immeuble> findALl() throws Immeuble.ImmeubleException {
+		List<Immeuble> p = new ArrayList<>();
+		try(SelectQueryElement query = new SelectQueryElement(SELECT_QUERY)){
+			ResultSet rs = query.execute();
+			while (rs.next()) {
+				p.add(
+						new Immeuble(
+								rs.getString("Ville"),
+								Integer.parseInt(rs.getString("CodePostal")),
+								rs.getString("Adresse")
+						));
+			}
+		}
+		catch (QueryElement.QueryException | SQLException queryException){
+			throw new Immeuble.ImmeubleException("Erreur lors de la récupération des immeubles");
+		}
+		return p;
 	}
 }
