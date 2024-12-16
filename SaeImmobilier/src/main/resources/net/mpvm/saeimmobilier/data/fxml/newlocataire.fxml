@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane minHeight="600.0" minWidth="900.0" style="-fx-background-color: #F4F4F4;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.mpvm.saeimmobilier.controleur.CtrlNewLocataire">
+    <children>
+        <HBox prefHeight="100.0" prefWidth="200.0" />
+        <BorderPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" styleClass="backgroundColor" stylesheets="@../css/style.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <left>
+                <AnchorPane prefHeight="590.0" prefWidth="150.0" BorderPane.alignment="BOTTOM_CENTER">
+                    <children>
+                        <Button fx:id="BtnDisconnect" alignment="CENTER" contentDisplay="CENTER" minHeight="30.0" minWidth="130.0" mnemonicParsing="false" style="-fx-background-color: #E74C3C; -fx-background-radius: 8px;" text="Déconnexion" textAlignment="CENTER" textFill="WHITE" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="10.0">
+                            <font>
+                                <Font name="System Bold" size="14.0" />
+                            </font>
+                     <cursor>
+                        <Cursor fx:constant="DEFAULT" />
+                     </cursor>
+                        </Button>
+                    </children>
+                </AnchorPane>
+            </left>
+            <center>
+                <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER_LEFT">
+                    <center>
+                        <VBox alignment="TOP_CENTER" BorderPane.alignment="CENTER">
+                            <children>
+                                <Label fx:id="labelTitle" alignment="TOP_CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" text="Création d'un locataire" textAlignment="CENTER" textFill="WHITE" VBox.vgrow="ALWAYS">
+                                    <VBox.margin>
+                                        <Insets top="30.0" />
+                                    </VBox.margin>
+                                    <font>
+                                        <Font name="System Bold" size="30.0" />
+                                    </font>
+                                </Label>
+                                <FlowPane alignment="TOP_CENTER" columnHalignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="700.0" vgap="10.0" VBox.vgrow="ALWAYS">
+                                    <children>
+                              <GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="61.0" prefWidth="700.0">
+                                <columnConstraints>
+                                  <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="-Infinity" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                 <children>
+                                                <TextField fx:id="fieldPrenom" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="500.0" GridPane.rowIndex="1" />
+                                                <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" text="Prénom du locataire" textFill="WHITE">
+                                       <font>
+                                          <Font name="Calibri" size="16.0" />
+                                       </font></Label>
+                                 </children>
+                              </GridPane>
+                              <GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="61.0" prefWidth="700.0">
+                                <columnConstraints>
+                                  <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="-Infinity" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                 <children>
+                                                <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" text="Nom du locataire" textFill="WHITE">
+                                       <font>
+                                          <Font name="Calibri" size="16.0" />
+                                       </font></Label>
+                                                <TextField fx:id="fieldNom" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="500.0" GridPane.rowIndex="1" />
+                                 </children>
+                              </GridPane>
+                              <GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="61.0" prefWidth="700.0">
+                                <columnConstraints>
+                                  <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="-Infinity" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                 <children>
+                                                <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" text="Téléphone" textFill="WHITE">
+                                       <font>
+                                          <Font name="Calibri" size="16.0" />
+                                       </font></Label>
+                                                <TextField fx:id="fieldTelephone" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="500.0" GridPane.rowIndex="1" />
+                                 </children>
+                              </GridPane>
+                              <GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefWidth="700.0">
+                                <columnConstraints>
+                                  <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="-Infinity" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                 <children>
+                                                <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" text="Adresse email" textFill="WHITE">
+                                       <font>
+                                          <Font name="Calibri" size="16.0" />
+                                       </font></Label>
+                                                <TextField fx:id="fieldEmail" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="500.0" GridPane.rowIndex="1" />
+                                 </children>
+                              </GridPane>
+                                        <GridPane alignment="CENTER" prefHeight="50.0" prefWidth="700.0">
+                                            <columnConstraints>
+                                                <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="-Infinity" />
+                                                <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="346.4000244140625" />
+                                            </columnConstraints>
+                                            <rowConstraints>
+                                                <RowConstraints maxHeight="40.0" minHeight="3.0" prefHeight="16.0" vgrow="ALWAYS" />
+                                                <RowConstraints maxHeight="68.0" minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
+                                            </rowConstraints>
+                                            <children>
+                                                <RadioButton fx:id="radioButtonM" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="22.0" prefWidth="102.0" text="Masculin" textAlignment="CENTER" textFill="WHITE" GridPane.rowIndex="1">
+                                                    <GridPane.margin>
+                                                        <Insets />
+                                                    </GridPane.margin>
+                                       <font>
+                                          <Font name="Calibri" size="16.0" />
+                                       </font>
+                                                </RadioButton>
+                                                <Label prefHeight="18.0" prefWidth="36.0" text="Sexe" textFill="WHITE">
+                                       <font>
+                                          <Font name="Calibri" size="16.0" />
+                                       </font></Label>
+                                                <RadioButton fx:id="radioButtonF" contentDisplay="CENTER" mnemonicParsing="false" text="Feminin" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                       <font>
+                                          <Font name="Calibri" size="16.0" />
+                                       </font></RadioButton>
+                                            </children>
+                                        </GridPane>
+                                    </children>
+                           <padding>
+                              <Insets bottom="50.0" left="50.0" right="50.0" top="50.0" />
+                           </padding>
+                                </FlowPane>
+                            </children>
+                        </VBox>
+                    </center>
+                    <bottom>
+                        <GridPane prefHeight="35.0" prefWidth="150.0" BorderPane.alignment="CENTER">
+                            <columnConstraints>
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            </rowConstraints>
+                            <children>
+                                <Button alignment="CENTER" mnemonicParsing="false" onAction="#ajouterLocataire" style="-fx-background-color: #5DADEC; -fx-background-radius: 10px;" text="Ajouter le locataire" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
+                                    <GridPane.margin>
+                                        <Insets bottom="20.0" right="10.0" />
+                                    </GridPane.margin>
+                                    <font>
+                                        <Font name="System Bold" size="14.0" />
+                                    </font>
+                                </Button>
+                                <Button alignment="CENTER" mnemonicParsing="false" onAction="#annuler" prefHeight="35.0" prefWidth="150.0" style="-fx-background-color: #E74C3C; -fx-background-radius: 10px;" text="Annuler" textFill="WHITE" GridPane.columnSpan="2147483647" GridPane.halignment="LEFT" GridPane.rowSpan="2147483647">
+                                    <GridPane.margin>
+                                        <Insets bottom="20.0" left="10.0" />
+                                    </GridPane.margin>
+                                    <font>
+                                        <Font name="System Bold" size="14.0" />
+                                    </font>
+                                </Button>
+                            </children>
+                            <BorderPane.margin>
+                                <Insets bottom="5.0" />
+                            </BorderPane.margin>
+                        </GridPane>
+                    </bottom>
+               <BorderPane.margin>
+                  <Insets right="100.0" />
+               </BorderPane.margin>
+               <padding>
+                  <Insets right="50.0" />
+               </padding>
+                </BorderPane>
+            </center>
+         <top>
+            <MenuBar BorderPane.alignment="CENTER">
+              <menus>
+                  <Menu mnemonicParsing="false" text="Accueil">
+                     <items>
+                        <MenuItem fx:id="menuAccueil" mnemonicParsing="false" onAction="#Accueil" text="Retour à l'acceuil" />
+                     </items>
+                  </Menu>
+                  <Menu mnemonicParsing="false" text="Edit">
+                     <items>
+                        <MenuItem mnemonicParsing="false" text="Liste des locataires" />
+                        <MenuItem mnemonicParsing="false" text="Liste des Biens" />
+                        <MenuItem mnemonicParsing="false" text="Liste des baux" />
+                     </items>
+                  </Menu>
+                  <Menu mnemonicParsing="false" text="Archives">
+                     <items>
+                        <MenuItem mnemonicParsing="false" text="Afficher les documents archivés" />
+                     </items>
+                  </Menu>
+              </menus>
+            </MenuBar>
+         </top>
+        </BorderPane>
+    </children>
+</AnchorPane>

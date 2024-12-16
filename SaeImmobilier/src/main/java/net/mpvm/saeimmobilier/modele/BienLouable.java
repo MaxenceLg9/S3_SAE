@@ -1,0 +1,214 @@
+package net.mpvm.saeimmobilier.modele;
+
+
+import net.mpvm.saeimmobilier.sql.Query.QueryElement;
+import net.mpvm.saeimmobilier.sql.Query.Queryable;
+import net.mpvm.saeimmobilier.sql.Query.UpdateQueryElement;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Map;
+
+public abstract class BienLouable extends Bien {
+
+	public static final String INSERT_QUERY = "INSERT INTO bien (ComplementAdresse, Adresse, Ville, CodePostal, TypeBien, Surface, NombrePieces, NumeroFiscal, DateAjout) VALUES (?, ?, ?, ?, ?,?,?,?,?)";
+	public static final String SELECT_QUERY = "SELECT * FROM bien";
+	public static final String DELETE_QUERY = "DELETE FROM bien WHERE IdBien = ?";
+	public static final String UPDATE_QUERY = "UPDATE bien SET ComplementAdresse = ?, Adresse = ?, Ville = ?, CodePostal = ?, TypeBien = ?, Surface = ?, NombrePieces = ? , NumeroFiscal = ? , DateAjout = ?";
+
+
+	private String complementAdresse;
+	private ArrayList<Travaux> travaux;
+	private ArrayList<Bail> baux;
+	private int ancienIndex;
+	private boolean changementCompteur;
+	private float surface;
+	private String numeroFiscal;
+	private Immeuble immeuble;
+	private Proprietaire proprietaire;
+	private int nbPieces;
+
+	public Date getDateAjout() {
+		return DateAjout;
+	}
+
+	public void setDateAjout(java.sql.Date dateAjout) {
+		DateAjout = dateAjout;
+	}
+
+	private java.sql.Date DateAjout;
+
+
+	BienLouable(String complementAdresse,int nbPieces, String NumeroFiscal, Immeuble immeuble, float surface, java.sql.Date dateAjout, int idBienLouable) {// Initialisation des attributs hérités de Bien
+		super(idBienLouable);
+		this.complementAdresse = complementAdresse;
+		this.immeuble = immeuble;
+		this.surface = surface;
+		this.nbPieces = nbPieces;
+		this.numeroFiscal = NumeroFiscal;
+		this.travaux = new ArrayList<>();
+		this.baux = new ArrayList<>();
+		this.DateAjout = dateAjout;
+	}
+
+	// Getters et Setters pour tous les champs
+
+	public String getComplementAdresse() {
+		return complementAdresse;
+	}
+
+	public void setComplementAdresse(String complementAdresse) {
+		this.complementAdresse = complementAdresse;
+	}
+
+	public ArrayList<Travaux> getTravaux() {
+		return travaux;
+	}
+
+	public void ajouterTravaux(Travaux travail) {
+		this.travaux.add(travail);
+	}
+
+	public ArrayList<Bail> getBaux() {
+		return baux;
+	}
+
+	@Override
+	public int getCodePostal(){
+		return this.immeuble.getCodePostal();
+	}
+
+	@Override
+	public void setCodePostal(int codePostal) {
+		this.immeuble.setCodePostal(codePostal);
+	}
+
+	@Override
+	public String getAdresse() {
+		return this.immeuble.getAdresse();
+	}
+
+	@Override
+	public void setAdresse(String adresse){
+		this.immeuble.setAdresse(adresse);
+	}
+
+	@Override
+	public String getVille() {
+		return this.immeuble.getVille();
+	}
+
+	@Override
+	public void setVille(String ville) {
+		this.immeuble.setVille(ville);
+	}
+
+	public void ajouterBail(Bail bail) {
+		this.baux.add(bail);
+	}
+
+	public int getAncienIndex() {
+		return ancienIndex;
+	}
+
+	public void setAncienIndex(int ancienIndex) {
+		this.ancienIndex = ancienIndex;
+	}
+
+	public boolean isChangementCompteur() {
+		return changementCompteur;
+	}
+
+	public void setChangementCompteur(boolean changementCompteur) {
+		this.changementCompteur = changementCompteur;
+	}
+
+	public void setSurface(float surface) {
+		this.surface = surface;
+	}
+
+	public float getSurface() {
+		return surface;
+	}
+
+	public void setSurface(int surface) {
+		if (surface <= 0) {
+			throw new IllegalArgumentException("La surface doit être positive.");
+		}
+		this.surface = surface;
+	}
+
+	public String getNumeroFiscal() {
+		return numeroFiscal;
+	}
+
+	public void setNumeroFiscal(String numeroFiscal) {
+		if (numeroFiscal == null || numeroFiscal.length() != 12) {
+			throw new IllegalArgumentException("Le numéro fiscal doit être de 12 caractères.");
+		}
+		this.numeroFiscal = numeroFiscal;
+	}
+
+	public Immeuble getImmeuble() {
+		return immeuble;
+	}
+
+	public void setImmeuble(Immeuble immeuble) {
+		this.immeuble = immeuble;
+	}
+
+	public Proprietaire getProprietaire() {
+		return proprietaire;
+	}
+
+	public void setProprietaire(Proprietaire proprietaire) {
+		this.proprietaire = proprietaire;
+	}
+
+	public void setTravaux(ArrayList<Travaux> travaux) {
+		this.travaux = travaux;
+	}
+
+	public void setBaux(ArrayList<Bail> baux) {
+		this.baux = baux;
+	}
+	public int getNbPieces() {
+		return nbPieces;
+	}
+	public void setNbPieces(int nbPieces) {
+		this.nbPieces = nbPieces;
+	}
+
+	@Override
+	public void save() throws Bien.BienException {
+		if(this.getIdBien() != -1)
+			throw new BienException("Le bien existe déjà !",null);
+		try(UpdateQueryElement query = new UpdateQueryElement(INSERT_QUERY, true)){
+			query.setArgs(
+					Map.of(1,this.getComplementAdresse(),
+							2, this.getAdresse(),
+							3, this.getVille(),
+							4, this.getCodePostal(),
+							5, this.getTypeBienString(),
+							6, this.getSurface(),
+							7, this.getNbPieces(),
+							8, this.getNumeroFiscal(),
+							9, this.getDateAjout()
+					)).execute();
+		}
+		catch (QueryElement.QueryException queryException){
+			throw new BienException("Erreur lors de l'ajout du bien : " + queryException.getMessage(), queryException.getSqlException());
+		}
+
+	}
+
+	@Override
+	public void modify() throws QueryableException {
+
+	}
+
+	@Override
+	public void delete() throws QueryableException {
+
+	}
+}

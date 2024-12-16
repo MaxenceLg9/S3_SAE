@@ -1,0 +1,25 @@
+package net.mpvm.saeimmobilier.vue;
+
+import javafx.application.Application;
+import javafx.stage.Stage;
+import net.mpvm.saeimmobilier.util.JfxUtil;
+
+public class VueConnexion extends Application {
+
+
+        public static void main(String[] args) {
+            launch(args);
+        }
+
+        @Override
+        public void start(Stage primaryStage) {
+            JfxUtil.applicationInit(primaryStage, "connexion.fxml","Page de connexion",650, 600);
+            primaryStage.setResizable(false);
+        }
+
+    public static void showWindow(Stage stage) throws Exception {
+        VueConnexion vue = new VueConnexion();
+        vue.start(stage);
+    }
+    }
+

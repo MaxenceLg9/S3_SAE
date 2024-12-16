@@ -1,4 +1,68 @@
-#labelTitle{
-    -fx-font-size: 18px;
-    -fx-font-weight: 800;
+/* Style général */
+.root {
+    -fx-primary-color: #0078D7;
+    -fx-secondary-color: #f2f3f6;
+    -fx-grey-color: #b9b9b9;
+    -fx-focus-color: -fx-secondary-color;
+}
+
+
+
+.backgroundColor {
+    -fx-background-color: linear-gradient(to right bottom, #33435c, #1e2d3e);
+}
+
+
+/* Champs texte */
+.text-field {
+    -fx-accent: -fx-primary-color;
+    -fx-background-color: -fx-grey-color, white;
+    -fx-background-insets: 0, 0 0 1 0;
+    -fx-background-radius: 8px;
+}
+
+.text-field:focused {
+    -fx-border-color: -fx-primary-color;
+}
+
+/* GridPane des locataires */
+.locataire-gridpane {
+    -fx-background-color: #3E505B;
+    -fx-padding: 10;
+    -fx-border-color: #ffffff;
+    -fx-border-width: 1;
+    -fx-border-radius: 10;
+}
+
+/* Labels des locataires */
+.locataire-label {
+    -fx-text-fill: #ffffff;
+    -fx-font-family: Calibri;
+    -fx-font-size: 14;
+}
+
+.locataire-button{
+    -fx-background-color: #92140C;
+    -fx-border-radius: 5;
+    -fx-border-color: #ffffff;
+    -fx-font-family: calibri;
+    -fx-font-size: 14;
+    -fx-text-fill: #ffffff;
+
+}
+
+.button {
+    -fx-font-family: "Arial";
+    -fx-padding: 10px 20px;
+    -fx-cursor: hand;
+    -fx-transition: 0.3s;
+    -fx-background-radius: 5px;
+    -fx-background-color: #171739;
+}
+
+.button:hover {
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+    -fx-opacity: 0.9;
+    -fx-background-color: #171739;
 }

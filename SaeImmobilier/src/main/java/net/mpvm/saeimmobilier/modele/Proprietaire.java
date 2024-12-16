@@ -1,54 +1,67 @@
-package modele;
+package net.mpvm.saeimmobilier.modele;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import net.mpvm.saeimmobilier.sql.Query.QueryElement;
+import net.mpvm.saeimmobilier.sql.Query.Queryable;
+import net.mpvm.saeimmobilier.sql.Query.SelectQueryElement;
+import net.mpvm.saeimmobilier.sql.Query.UpdateQueryElement;
 
 public class Proprietaire {
+	public static final String INSERT_QUERY = "INSERT INTO propriétaire (Nom,Prenom,Telephone,Email,MotDePasse,Ville,CodePostal,Adresse) VALUES (?, ?,?,?,?,?,?,?)";
+	public static final String SELECT_QUERY = "SELECT * FROM propriétaire";
+	public static final String DELETE_QUERY = "DELETE FROM propriétaire WHERE Id_Propriétaire = ?";
+	public static final String SELECT_COUNT_QUERY = "SELECT COUNT(*) AS count FROM proprietaire WHERE email = ?";
+
 	private String Nom;
 	private String Prenom;
 	private String Telephone;
 	private String Email;
 	private String MotDePasse;
-	private String Ville;
-	private Integer CodePostal;
-	private String Adresse;
-	private Float Electricite;
-	private Float OrduresMenageres;
-	private Float Entretien;
+	private ArrayList<Bien> biensPossedes;
+	private int IdProprietaire;
 
-	public Proprietaire(String Email, String MotDePasse) throws IllegalArgumentException {
+	Proprietaire(int IdProprietaire, String nom, String Prenom, String Telephone, String Email, String MotDePasse) throws IllegalArgumentException {
 		Pattern pattern = Pattern.compile("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$");
 		Matcher matcher = pattern.matcher(Email);
-		boolean matchFound = matcher.matches();
-		if (!matchFound) {
+		if (!matcher.matches()) {
 			throw new IllegalArgumentException("Email non valide");
 		}
 		if (MotDePasse.length() < 8 || MotDePasse.length() > 24) {
 			throw new IllegalArgumentException("Le mot de passe doit être compris entre 8 et 24 caractères.");
 		}
 		this.Email = Email;
+		this.IdProprietaire = IdProprietaire;
+		this.Nom = nom;
+		this.Prenom = Prenom;
+		this.Telephone = Telephone;
 		this.MotDePasse = MotDePasse;
-
+		this.biensPossedes = new ArrayList<>();
 	}
 
-	public String getAdresse() {
-		return this.Adresse;
+	public Proprietaire(String nom, String Prenom, String Telephone, String Email, String MotDePasse) throws IllegalArgumentException {
+		this(-1, nom, Prenom, Telephone, Email, MotDePasse);
+		Pattern pattern = Pattern.compile("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$");
+		Matcher matcher = pattern.matcher(Email);
+		if (!matcher.matches()) {
+			throw new IllegalArgumentException("Email non valide");
+		}
+		if (MotDePasse.length() < 8 || MotDePasse.length() > 24) {
+			throw new IllegalArgumentException("Le mot de passe doit être compris entre 8 et 24 caractères.");
+		}
+
+		this.biensPossedes = new ArrayList<>();
 	}
 
-	public Integer getCodePostal() {
-		return this.CodePostal;
-	}
-
-	public Float getElectricite() {
-		return this.Electricite;
-	}
+	// Getters et setters pour les propriétés
 
 	public String getEmail() {
 		return this.Email;
-	}
-
-	public Float getEntretien() {
-		return this.Entretien;
 	}
 
 	public String getMotDePasse() {
@@ -59,10 +72,6 @@ public class Proprietaire {
 		return this.Nom;
 	}
 
-	public Float getOrduresMenageres() {
-		return this.OrduresMenageres;
-	}
-
 	public String getPrenom() {
 		return this.Prenom;
 	}
@@ -71,38 +80,17 @@ public class Proprietaire {
 		return this.Telephone;
 	}
 
-	public String getVille() {
-		return this.Ville;
-	}
-
-	public void setAdresse(String adresse) {
-		this.Adresse = adresse;
-	}
-
-	public void setCodePostal(Integer codePostal) {
-		this.CodePostal = codePostal;
-	}
-
-	public void setElectricite(Float electricite) {
-		this.Electricite = electricite;
-	}
-
 	public void setEmail(String email) {
 		Pattern pattern = Pattern.compile("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$");
-		Matcher matcher = pattern.matcher(this.Email);
-		boolean matchFound = matcher.matches();
-		if (!matchFound) {
+		Matcher matcher = pattern.matcher(email);
+		if (!matcher.matches()) {
 			throw new IllegalArgumentException("Email non valide");
 		}
 		this.Email = email;
 	}
 
-	public void setEntretien(Float entretien) {
-		this.Entretien = entretien;
-	}
-
 	public void setMotDePasse(String motDePasse) {
-		if (this.MotDePasse.length() < 8 || this.MotDePasse.length() > 24) {
+		if (motDePasse.length() < 8 || motDePasse.length() > 24) {
 			throw new IllegalArgumentException("Le mot de passe doit être compris entre 8 et 24 caractères.");
 		}
 		this.MotDePasse = motDePasse;
@@ -110,10 +98,6 @@ public class Proprietaire {
 
 	public void setNom(String nom) {
 		this.Nom = nom;
-	}
-
-	public void setOrduresMenageres(Float orduresMenageres) {
-		this.OrduresMenageres = orduresMenageres;
 	}
 
 	public void setPrenom(String prenom) {
@@ -124,8 +108,85 @@ public class Proprietaire {
 		this.Telephone = telephone;
 	}
 
-	public void setVille(String ville) {
-		this.Ville = ville;
+	public boolean verifierMontantRegularisation(float sommeVersee, float sommeDue) {
+		return Math.abs(sommeVersee - sommeDue) < 0.01; // Tolérance pour arrondis
 	}
 
+	public int getIdProprietaire() {
+		return IdProprietaire;
+	}
+
+	public void setIdProprietaire(int idProprietaire) {
+		IdProprietaire = idProprietaire;
+	}
+
+	public ArrayList<Bien> getBiensPossedes() {
+		return biensPossedes;
+	}
+
+	public void setBiensPossedes(ArrayList<Bien> biensPossedes) {
+		this.biensPossedes = biensPossedes;
+	}
+
+
+	public void save() throws ProprietaireException {
+		try (UpdateQueryElement query = new UpdateQueryElement(INSERT_QUERY, true)) {
+			query.setArgs(
+							Map.of(
+									1, this.getNom(),
+									2, this.getPrenom(),
+									3, this.getTelephone(),
+									4, this.getEmail(),
+									5, this.getMotDePasse()
+							))
+					.execute();
+		} catch (QueryElement.QueryException queryException) {
+			throw new ProprietaireException("Erreur lors de l'ajout du propriétaire : ", queryException.getSqlException());
+		}
+	}
+
+	private boolean emailAlreadyExists(String email) throws ProprietaireException {
+		try(SelectQueryElement queryElement = new SelectQueryElement(SELECT_COUNT_QUERY)) {
+			// Remplacez SELECT_COUNT_QUERY par la requête SQL réelle pour vérifier l'existence de l'e-mail
+			queryElement.setArgs(Map.of(1, email));
+			// Exécution de la requête et récupération des résultats
+			ResultSet results = queryElement.execute();
+			results.next();
+			// Récupération du champ "count" dans le premier résultat
+			int count = results.getInt("count");
+			return count > 0;
+
+		} catch (QueryElement.QueryException | SQLException e) {
+			throw new ProprietaireException("Erreur lors de la vérification de l'adresse e-mail : ", e instanceof SQLException ? e : ((QueryElement.QueryException) e).getSqlException());
+		}
+	}
+	public static List<Proprietaire> findALl() throws Proprietaire.ProprietaireException {
+		List<Proprietaire> p = new ArrayList<>();
+
+		try(SelectQueryElement query = new SelectQueryElement(SELECT_QUERY)){
+			ResultSet rs = query.execute();
+			while (rs.next()) {
+				p.add(
+						new Proprietaire(rs.getString("Nom"),
+								rs.getString("Prenom"),
+								rs.getString("Telephone"),
+								rs.getString("Email"),
+								rs.getString("MotDePasse")
+						));
+			}
+		}
+		catch (QueryElement.QueryException | SQLException queryException){
+			throw new Proprietaire.ProprietaireException("Erreur lors de la récupération des propriétaires");
+		}
+		System.out.println("fin");
+		return p;
+	}
+	public static class ProprietaireException extends Queryable.QueryableException {
+		public ProprietaireException(String message){
+			super(message);
+		}
+		public ProprietaireException(String message, Throwable cause){
+			super(message, (SQLException) cause);
+		}
+	}
 }

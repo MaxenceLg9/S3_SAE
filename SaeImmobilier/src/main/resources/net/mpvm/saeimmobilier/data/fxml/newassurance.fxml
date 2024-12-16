@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" spacing="10" styleClass="backgroundColor" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.mpvm.saeimmobilier.controleur.CtrlNewAssurance">
+      <children>
+      <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" VBox.vgrow="ALWAYS">
+         <bottom>
+                <Button fx:id="btnAjouterAssurance" alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" onAction="#ajouterAssurance" style="-fx-font-size: 16;" text="Ajouter Assurance" BorderPane.alignment="TOP_CENTER">
+               <BorderPane.margin>
+                  <Insets bottom="30.0" top="50.0" />
+               </BorderPane.margin>
+            </Button>
+         </bottom>
+         <top>
+                <Label alignment="BOTTOM_CENTER" cacheShape="false" contentDisplay="TOP" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" scaleShape="false" style="-fx-font-size: 32; -fx-font-weight: bold;" text="Ajouter une Assurance" textAlignment="CENTER" textFill="WHITE" wrapText="true" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets bottom="50.0" top="30.0" />
+               </BorderPane.margin>
+               <font>
+                  <Font size="48.0" />
+               </font>
+            </Label>
+         </top>
+         <center>
+                <GridPane alignment="CENTER" hgap="10" maxHeight="1.7976931348623157E308" maxWidth="500.0" minHeight="-Infinity" minWidth="-Infinity" vgap="10.0">
+                    <children>
+                        <!-- Protection Juridique -->
+                        <Label text="Protection Juridique :" textFill="WHITE" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                        <TextField fx:id="fieldProtectionJuridique" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="0" />
+      
+                        <!-- Quotité Juridique -->
+                        <Label text="Quotité Juridique :" textFill="WHITE" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                        <TextField fx:id="fieldQuotiteJuridique" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+      
+                        <!-- Prime -->
+                        <Label text="Prime :" textFill="WHITE" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                        <TextField fx:id="txtPrime" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+      
+                        <!-- Type de Contrat -->
+                        <Label text="Type de Contrat :" textFill="WHITE" GridPane.rowIndex="3" />
+                        <ComboBox fx:id="comboTypeContrat" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
+                    </children>
+                    <columnConstraints>
+                        <ColumnConstraints />
+                        <ColumnConstraints />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                    </rowConstraints>
+                </GridPane>
+         </center>
+         <VBox.margin>
+            <Insets left="100.0" right="100.0" />
+         </VBox.margin>
+         <padding>
+            <Insets left="100.0" right="100.0" />
+         </padding>
+         <cursor>
+            <Cursor fx:constant="DEFAULT" />
+         </cursor>
+      </BorderPane>
+      </children>
+   <cursor>
+      <Cursor fx:constant="DEFAULT" />
+   </cursor>
+  </VBox>

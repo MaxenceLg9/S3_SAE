@@ -11,11 +11,17 @@ module net.mpvm.saeimmobilier {
     requires eu.hansolo.tilesfx;
     requires com.almasb.fxgl.all;
     requires java.desktop;
+    requires mysql.connector.j;
+    requires org.slf4j;
+    requires annotations;
+    requires java.management;
+    requires java.sql;
 
-    opens net.mpvm.saeimmobilier.data.fxml to javafx.fxml;
-    opens net.mpvm.saeimmobilier.data.images to javafx.fxml;
+    //opens net.mpvm.saeimmobilier.data.fxml to javafx.fxml;
+    //opens net.mpvm.saeimmobilier.data.images to javafx.fxml;
+    //opens net.mpvm.saeimmobilier.vue to javafx.fxml;
+    //opens net.mpvm.saeimmobilier.controleur to javafx.fxml;
     exports net.mpvm.saeimmobilier.vue;
-    opens net.mpvm.saeimmobilier.vue to javafx.fxml;
     exports net.mpvm.saeimmobilier.controleur;
     opens net.mpvm.saeimmobilier.controleur to javafx.fxml;
 }

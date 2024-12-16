@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.VBox?>
+
+<ScrollPane xmlns="http://javafx.com/javafx/22.0.1" xmlns:fx="http://javafx.com/fxml/1" fitToHeight="true" fitToWidth="true">
+    <content>
+        <VBox fx:id="vBoxBiensLouables" spacing="10" alignment="TOP_CENTER">
+            <children>
+                <Label text="Liste des Biens Louables" style="-fx-font-size: 18; -fx-font-weight: bold;"/>
+                <!-- Les biens seront chargés dynamiquement ici -->
+                <GridPane fx:id="gridPaneBiensLouables" hgap="10" vgap="10"/>
+            </children>
+        </VBox>
+    </content>
+</ScrollPane>
