@@ -58,13 +58,14 @@ public class CtrlViewLocataires {
             Button button = new Button("Supprimer le locataire");
             button.setOnAction(event -> askForDelete(l.getIdLocataire()));
 
-            nom.getStyleClass().add("locataire-label");
-            prenom.getStyleClass().add("locataire-label");
-            email.getStyleClass().add("locataire-label");
-            telephone.getStyleClass().add("locataire-label");
-            sexe.getStyleClass().add("locataire-label");
-            button.getStyleClass().add("locataire-button");
-            button.getStyleClass().add("button");
+            nom.getStyleClass().add("assurance-label");
+            nom.getStyleClass().add("assurance-title");
+            prenom.getStyleClass().add("assurance-label");
+            email.getStyleClass().add("assurance-label");
+            telephone.getStyleClass().add("assurance-label");
+            sexe.getStyleClass().add("assurance-label");
+            button.getStyleClass().add("button-valider");
+
             gp.add(nom, 0, 0);
             gp.add(prenom, 0, 1);
             gp.add(email, 1, 1);
@@ -87,7 +88,7 @@ public class CtrlViewLocataires {
             GridPane.setValignment(telephone, VPos.CENTER);
             GridPane.setValignment(sexe, VPos.CENTER);
 
-            gp.getStyleClass().add("locataire-gridpane");
+            gp.getStyleClass().add("assurance-gridpane");
             gp.setHgap(10);
             gp.setVgap(5);
 
