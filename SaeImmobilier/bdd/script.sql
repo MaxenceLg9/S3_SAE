@@ -80,7 +80,9 @@ CREATE TABLE Bien(
 Alter table Bien
     Add constraint CK_Type_Bien
         CHECK ( Bien.TypeBien IN('HABITATION','GARAGE','IMMEUBLE') );
-
+Alter table Assurance
+    Add constraint CK_Type_Contrat
+        CHECK ( Assurance.TypeContrat IN('PROPRIETAIRE','AIDE_JURIDIQUE') );
 DELIMITER //
 CREATE TRIGGER CHECK_IDIMMEUBLE_NON_IMMEUBLE
     BEFORE INSERT ON Bien
@@ -116,6 +118,7 @@ BEGIN
 END;
 //
 DELIMITER ;
+
 
 CREATE TABLE Bail(
                      IdBail INT auto_increment,
@@ -272,6 +275,7 @@ BEGIN
 END;
 //
 DELIMITER ;
+
 DELIMITER //
     CREATE TRIGGER CalculMontantQuotite
         BEFORE INSERT ON Assurance
@@ -282,7 +286,6 @@ DELIMITER //
 END;
 //
 DELIMITER ;
--- Trigger pour calculer MontantADeclarer dans la table Travaux
 DELIMITER //
 CREATE TRIGGER CalculMontantADeclarer
     AFTER INSERT ON Travaux
@@ -306,7 +309,7 @@ END;
 //
 DELIMITER ;
 
-DROP TRIGGER IF EXISTS CalculPourcentageAugmentation;
+
 DELIMITER //
 
 CREATE TRIGGER CalculPourcentageAugmentation
