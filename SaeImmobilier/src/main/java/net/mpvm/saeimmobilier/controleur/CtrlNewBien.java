@@ -104,12 +104,18 @@ public class CtrlNewBien {
         this.listImmeubles.setOnAction(actionEvent -> {
             if (listImmeubles.getValue().getTypeBien() == TypeBien.IMMEUBLE) {
                 this.FieldAdresse.setText(listImmeubles.getValue().getAdresse());
+                this.FieldAdresse.setEditable(false);
                 this.FieldCodePostal.setText(String.valueOf(listImmeubles.getValue().getCodePostal()));
+                this.FieldCodePostal.setEditable(false);
                 this.FieldVille.setText(listImmeubles.getValue().getVille());
+                this.FieldVille.setEditable(false);
             } else {
                 this.FieldAdresse.setText("");
+                this.FieldAdresse.setEditable(true);
                 this.FieldCodePostal.setText("");
+                this.FieldCodePostal.setEditable(true);
                 this.FieldVille.setText("");
+                this.FieldVille.setEditable(true);
             }
         });
     }
@@ -263,6 +269,15 @@ public class CtrlNewBien {
 
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public void Clear(ActionEvent actionEvent) {
+        for(TextField textField : fieldsLogement){
+            if(!textField.getText().isEmpty()){
+                textField.setText("");
+                textField.setEditable(true);
+            }
         }
     }
 

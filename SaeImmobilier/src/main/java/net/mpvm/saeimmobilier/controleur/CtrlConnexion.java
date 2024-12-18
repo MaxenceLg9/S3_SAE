@@ -52,7 +52,7 @@ public class CtrlConnexion {
     }
 
     @FXML
-    public void Connexion1(KeyEvent event){
+    public void ConnexionEnter(KeyEvent event){
         if (event.getCode() == KeyCode.ENTER) {
             if (isMailNull()){
                 alertMailEmpty();
@@ -68,6 +68,8 @@ public class CtrlConnexion {
                                 VueHome.showWindow(stage);
                                 Stage stageActuel = (Stage) ((PasswordField) event.getSource()).getScene().getWindow();
                                 stageActuel.close();
+                            }else {
+                                alertIncorrectEmpty();
                             }
                         }else {
                             alertIncorrectEmpty();
