@@ -50,7 +50,18 @@
     -fx-text-fill: #ffffff;
 
 }
+.assurance-label{
+    -fx-text-fill: #ffffff;
+    -fx-font-family: Calibri;
+    -fx-font-size: 14;
+}
+.assurance-title{
+    -fx-text-fill: #E6E8E6;
+    -fx-font-size: 18;
+    -fx-font-weight: bold;
 
+
+}
 .button {
     -fx-font-family: "Arial";
     -fx-padding: 10px 20px;
@@ -66,4 +77,35 @@
     -fx-scale-y: 1.1;
     -fx-opacity: 0.9;
     -fx-background-color: #abbbd7;
+}
+.button-supprimer{
+    -fx-background-color: #D64933;
+    -fx-border-color: #ffffff;
+    -fx-border-radius: 5px;
+    -fx-text-fill: #ffffff;
+    -fx-font-family: Calibri;
+    -fx-font-size: 16px;
+}
+.button-supprimer:hover{
+    -fx-background-color: #E15554;
+
+}
+.button-valider{
+    -fx-background-color: #659B5E;
+    -fx-border-color: #ffffff;
+    -fx-border-radius: 3px;
+    -fx-text-fill: #ffffff;
+    -fx-font-family: Calibri;
+    -fx-font-size: 16px;
+}
+.button-valider:hover{
+    -fx-background-color: #B6D094;
+
+}
+.assurance-gridpane {
+    -fx-background-color: #172A3A;
+    -fx-padding: 10;
+    -fx-border-color: #ffffff;
+    -fx-border-width: 1;
+    -fx-border-radius: 10;
 }
