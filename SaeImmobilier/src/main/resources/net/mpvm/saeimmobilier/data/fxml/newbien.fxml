@@ -18,7 +18,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="732.0" prefWidth="766.0" styleClass="backgroundColor" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/22.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.mpvm.saeimmobilier.controleur.CtrlNewBien">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="732.0" prefWidth="766.0" styleClass="backgroundColor" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.mpvm.saeimmobilier.controleur.CtrlNewBien">
    <center>
       <BorderPane styleClass="backgroundColor" BorderPane.alignment="CENTER">
          <top>
@@ -170,8 +170,8 @@
    <bottom>
       <GridPane prefHeight="30.0" prefWidth="766.0" BorderPane.alignment="CENTER">
         <columnConstraints>
-          <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="377.39996337890625" minWidth="10.0" prefWidth="259.0" />
-          <ColumnConstraints halignment="RIGHT" hgrow="ALWAYS" maxWidth="508.60003662109375" minWidth="10.0" prefWidth="507.0" />
+          <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="377.39996337890625" minWidth="10.0" prefWidth="336.80003662109374" />
+          <ColumnConstraints halignment="RIGHT" hgrow="ALWAYS" maxWidth="508.60003662109375" minWidth="10.0" prefWidth="429.59996337890624" />
         </columnConstraints>
         <rowConstraints>
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -206,6 +206,14 @@
                <GridPane.margin>
                   <Insets bottom="30.0" left="10.0" />
                </GridPane.margin>
+            </Button>
+            <Button fx:id="btnClear" mnemonicParsing="false" onAction="#Clear" prefHeight="36.0" prefWidth="118.0" text="Clear" GridPane.halignment="RIGHT">
+               <GridPane.margin>
+                  <Insets bottom="30.0" />
+               </GridPane.margin>
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
             </Button>
          </children>
       </GridPane>

@@ -92,11 +92,11 @@
                                 <Font name="System Bold" size="14.0" />
                             </font>
                         </Button>
-                        <Button fx:id="btnViewAssurance" mnemonicParsing="false" onAction="#vueAssurances" prefWidth="190.0" text="Vue des Assurances" textFill="WHITE">
-                            <font>
-                                <Font name="System Bold" size="14.0" />
-                            </font>
-                        </Button>
+                  <Button fx:id="btnLocations" mnemonicParsing="false" onAction="#gererLocation" prefWidth="190.0" text="Gérer les locations" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Button>
                     </children>
                <padding>
                   <Insets top="20.0" />

@@ -13,20 +13,18 @@ import net.mpvm.saeimmobilier.sql.Query.SelectQueryElement;
 import net.mpvm.saeimmobilier.sql.Query.UpdateQueryElement;
 
 public class Proprietaire {
-	public static final String INSERT_QUERY = "INSERT INTO proprietaire (Nom,Prenom,Telephone,Email,MotDePasse) VALUES (?,?,?,?,?)";
+	public static final String INSERT_QUERY = "INSERT INTO proprietaire (Email,MotDePasse) VALUES (?,?)";
 	public static final String SELECT_QUERY = "SELECT * FROM proprietaire";
 	public static final String DELETE_QUERY = "DELETE FROM proprietaire WHERE IdProprietaire = ?";
 	public static final String SELECT_COUNT_QUERY = "SELECT COUNT(*) AS count FROM proprietaire WHERE email = ?";
 
-	private String Nom;
-	private String Prenom;
-	private String Telephone;
+
 	private String Email;
 	private String MotDePasse;
 	private ArrayList<Bien> biensPossedes;
 	private int IdProprietaire;
 
-	Proprietaire(int IdProprietaire,String nom,String prenom, String Telephone, String Email, String MotDePasse) throws IllegalArgumentException {
+	Proprietaire(int IdProprietaire,String Email, String MotDePasse) throws IllegalArgumentException {
 		Pattern pattern = Pattern.compile("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$");
 		Matcher matcher = pattern.matcher(Email);
 		if (!matcher.matches()) {
@@ -37,15 +35,12 @@ public class Proprietaire {
 		}
 		this.Email = Email;
 		this.IdProprietaire = IdProprietaire;
-		this.Nom = nom;
-		this.Prenom = prenom;
-		this.Telephone = Telephone;
 		this.MotDePasse = MotDePasse;
 		this.biensPossedes = new ArrayList<>();
 	}
 
-	public Proprietaire(String nom,String prenom,String Telephone, String Email, String MotDePasse) throws IllegalArgumentException {
-		this(-1,nom,prenom, Telephone, Email, MotDePasse);
+	public Proprietaire(String Email, String MotDePasse) throws IllegalArgumentException {
+		this(-1, Email, MotDePasse);
 		Pattern pattern = Pattern.compile("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$");
 		Matcher matcher = pattern.matcher(Email);
 		if (!matcher.matches()) {
@@ -58,7 +53,9 @@ public class Proprietaire {
 		this.biensPossedes = new ArrayList<>();
 	}
 
-	// Getters et setters pour les propriétés
+
+
+	// Getters et setters pour les propriétaires
 
 	public String getEmail() {
 		return this.Email;
@@ -68,17 +65,6 @@ public class Proprietaire {
 		return this.MotDePasse;
 	}
 
-	public String getNom() {
-		return this.Nom;
-	}
-
-	public String getPrenom() {
-		return this.Prenom;
-	}
-
-	public String getTelephone() {
-		return this.Telephone;
-	}
 
 	public void setEmail(String email) {
 		Pattern pattern = Pattern.compile("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$");
@@ -96,17 +82,6 @@ public class Proprietaire {
 		this.MotDePasse = motDePasse;
 	}
 
-	public void setNom(String nom) {
-		this.Nom = nom;
-	}
-
-	public void setPrenom(String prenom) {
-		this.Prenom = prenom;
-	}
-
-	public void setTelephone(String telephone) {
-		this.Telephone = telephone;
-	}
 
 	public boolean verifierMontantRegularisation(float sommeVersee, float sommeDue) {
 		return Math.abs(sommeVersee - sommeDue) < 0.01; // Tolérance pour arrondis
@@ -133,11 +108,8 @@ public class Proprietaire {
 		try (UpdateQueryElement query = new UpdateQueryElement(INSERT_QUERY, true)) {
 			query.setArgs(
 							Map.of(
-									1, this.getNom(),
-									2, this.getPrenom(),
-									3, this.getTelephone(),
-									4, this.getEmail(),
-									5, this.getMotDePasse()
+									1, this.getEmail(),
+									2, this.getMotDePasse()
 							))
 					.execute();
 		} catch (QueryElement.QueryException queryException) {
@@ -168,9 +140,6 @@ public class Proprietaire {
 			while (rs.next()) {
 				p.add(
 						new Proprietaire(
-								rs.getString("Nom"),
-								rs.getString("Prenom"),
-								rs.getString("Telephone"),
 								rs.getString("Email"),
 								rs.getString("MotDePasse")
 						));

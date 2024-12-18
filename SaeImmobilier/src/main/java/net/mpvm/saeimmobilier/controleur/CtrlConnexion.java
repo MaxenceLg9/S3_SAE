@@ -66,6 +66,8 @@ public class CtrlConnexion {
                                 VueHome.showWindow(stage);
                                 Stage stageActuel = (Stage) ((PasswordField) event.getSource()).getScene().getWindow();
                                 stageActuel.close();
+                            }else {
+                                alertIncorrectEmpty();
                             }
                         }else {
                             alertIncorrectEmpty();
