@@ -81,8 +81,8 @@ public abstract class Bien implements Queryable {
                         break;
                 }
             }
-        } catch (SQLException | QueryElement.QueryException e) {
-            throw new BienException("Erreur lors de la récupération des biens", e instanceof SQLException ? (SQLException) e : ((QueryElement.QueryException) e).getSqlException());
+        } catch (SQLException | QueryElement.QEltException e) {
+            throw new BienException("Erreur lors de la récupération des biens", e instanceof SQLException ? (SQLException) e : ((QueryElement.QEltException) e).getSqlException());
         }
         return biens;
     }
@@ -150,8 +150,8 @@ public abstract class Bien implements Queryable {
                         throw new BienException("Type de bien inconnu : " + typeBien, null);
                 }
             }
-        } catch (SQLException | QueryElement.QueryException e) {
-            throw new BienException("Erreur lors de la récupération des biens pour l'immeuble ID " + idImmeuble, e instanceof SQLException ? (SQLException) e : ((QueryElement.QueryException) e).getSqlException());
+        } catch (SQLException | QueryElement.QEltException e) {
+            throw new BienException("Erreur lors de la récupération des biens pour l'immeuble ID " + idImmeuble, e instanceof SQLException ? (SQLException) e : ((QueryElement.QEltException) e).getSqlException());
         }
 
         return biens;

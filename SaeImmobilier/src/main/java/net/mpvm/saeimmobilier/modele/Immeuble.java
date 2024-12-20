@@ -44,8 +44,8 @@ public final class Immeuble extends Bien{
 			selectQueryElement.setArgs(Map.of(1, idImmeuble));
 			ResultSet rs = selectQueryElement.execute();
 			return new Immeuble(rs.getString("Ville"), rs.getInt("CodePostal"), rs.getString("Adresse"), rs.getInt("idImmeuble"));
-		}catch (QueryElement.QueryException | SQLException e){
-			throw new ImmeubleException("Erreur lors de la récupération de l'immeuble", e instanceof SQLException ? (SQLException) e : ((QueryElement.QueryException) e).getSqlException());
+		}catch (QueryElement.QEltException | SQLException e){
+			throw new ImmeubleException("Erreur lors de la récupération de l'immeuble", e instanceof SQLException ? (SQLException) e : ((QueryElement.QEltException) e).getSqlException());
 		}
 	}
 
@@ -114,8 +114,8 @@ public final class Immeuble extends Bien{
 						throw new BienException("Les immeubles ne peuvent pas être associés",null);
 				}
 			}
-		} catch (QueryElement.QueryException | SQLException e) {
-			throw new ImmeubleException("Erreur lors de la récupération des biens associés", e instanceof SQLException ? (SQLException) e : ((QueryElement.QueryException) e).getSqlException());
+		} catch (QueryElement.QEltException | SQLException e) {
+			throw new ImmeubleException("Erreur lors de la récupération des biens associés", e instanceof SQLException ? (SQLException) e : ((QueryElement.QEltException) e).getSqlException());
 		}
 		return bienLouablesAssocies;
 	}
@@ -136,7 +136,7 @@ public final class Immeuble extends Bien{
 				);
 				immeubles.add(immeuble);
 			}
-		} catch (QueryElement.QueryException queryException) {
+		} catch (QueryElement.QEltException queryException) {
 			throw new ImmeubleException("Erreur lors de la récupération des immeubles", queryException.getSqlException());
 		}
 		return immeubles;
@@ -160,8 +160,8 @@ public final class Immeuble extends Bien{
 									5, TypeBien.IMMEUBLE.name()))
 					.execute();
 		}
-		catch (QueryElement.QueryException | SQLException e){
-			throw new ImmeubleException("Erreur lors de l'ajout du bien", e instanceof SQLException ? (SQLException) e : ((QueryElement.QueryException) e).getSqlException());
+		catch (QueryElement.QEltException | SQLException e){
+			throw new ImmeubleException("Erreur lors de l'ajout du bien", e instanceof SQLException ? (SQLException) e : ((QueryElement.QEltException) e).getSqlException());
 		}
 	}
 
@@ -175,7 +175,7 @@ public final class Immeuble extends Bien{
 									2, this.getVille(),
 									3, this.getCodePostal()))
 					.execute();
-		}catch(QueryElement.QueryException queryException){
+		}catch(QueryElement.QEltException queryException){
 			throw new ImmeubleException("Erreur lors de la modification du bien", queryException.getSqlException());
 		}
 	}
@@ -187,7 +187,7 @@ public final class Immeuble extends Bien{
 		try(UpdateQueryElement query = new UpdateQueryElement(DELETE_QUERY, true)){
 			query.setArgs(Map.of(1,this.getIdBien())).execute();
 		}
-		catch (QueryElement.QueryException e) {
+		catch (QueryElement.QEltException e) {
 			throw new ImmeubleException("Erreur lors de la suppression du bien", e.getSqlException());
 		}
 	}
@@ -220,7 +220,7 @@ public final class Immeuble extends Bien{
 						));
 			}
 		}
-		catch (QueryElement.QueryException | SQLException queryException){
+		catch (QueryElement.QEltException | SQLException queryException){
 			throw new Immeuble.ImmeubleException("Erreur lors de la récupération des immeubles");
 		}
 		return p;

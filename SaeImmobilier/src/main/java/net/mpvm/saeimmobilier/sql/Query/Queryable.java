@@ -8,7 +8,7 @@ public interface Queryable {
     void modify() throws QueryableException;
     void delete() throws QueryableException;
 
-    class QueryableException extends QueryElement.QueryException {
+    class QueryableException extends QueryElement.QEltException {
 
         public QueryableException(String message) {
             this(message,null);

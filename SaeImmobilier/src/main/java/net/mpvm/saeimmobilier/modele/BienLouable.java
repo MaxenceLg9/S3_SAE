@@ -197,7 +197,7 @@ public abstract class BienLouable extends Bien {
 							9, this.getDateAjout()
 					)).execute();
 		}
-		catch (QueryElement.QueryException queryException){
+		catch (QueryElement.QEltException queryException){
 			throw new BienException("Erreur lors de l'ajout du bien : " + queryException.getMessage(), queryException.getSqlException());
 		}
 

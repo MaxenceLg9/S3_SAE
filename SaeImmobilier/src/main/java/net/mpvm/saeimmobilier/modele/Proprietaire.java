@@ -150,7 +150,7 @@ public class Proprietaire {
 		}
 		return p;
 	}
-	public static class ProprietaireException extends Queryable.QbleException {
+	public static class ProprietaireException extends Queryable.QueryableException {
 		public ProprietaireException(String message){
 			super(message);
 		}

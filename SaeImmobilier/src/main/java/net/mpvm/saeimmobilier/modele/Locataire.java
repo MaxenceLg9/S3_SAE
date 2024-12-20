@@ -117,7 +117,7 @@ public class Locataire implements Queryable {
 									5, this.getTelephone()))
 					.execute();
 		}
-		catch (QueryElement.QueryException queryException) {
+		catch (QueryElement.QEltException queryException) {
 			throw new LocataireException("Erreur lors de l'ajout du locataire", queryException.getSqlException());
 		}
 
@@ -127,7 +127,7 @@ public class Locataire implements Queryable {
 		try(UpdateQueryElement query = new UpdateQueryElement(DELETE_QUERY, true)){
 			query.setArgs(Map.of(1,this.getIdLocataire())).execute();
 		}
-		catch (QueryElement.QueryException e) {
+		catch (QueryElement.QEltException e) {
 			throw new LocataireException("Erreur lors de la suppression du locataire");
 		}
 	}
@@ -143,7 +143,7 @@ public class Locataire implements Queryable {
 							4, Character.toString(this.getSexe()),
 							5, this.getTelephone(),
 							6, this.getIdLocataire())).execute();
-		}catch(QueryElement.QueryException queryException){
+		}catch(QueryElement.QEltException queryException){
 			throw new LocataireException("Erreur lors de la modification du locataire", queryException.getSqlException());
 		}
 	}
@@ -167,8 +167,8 @@ public class Locataire implements Queryable {
 								rs.getInt("IdLocataire")));
 			}
 		}
-		catch (QueryElement.QueryException | SQLException e){
-			throw new LocataireException("Erreur lors de la récupération des locataires", e instanceof SQLException ? (SQLException) e : ((QueryElement.QueryException) e).getSqlException());
+		catch (QueryElement.QEltException | SQLException e){
+			throw new LocataireException("Erreur lors de la récupération des locataires", e instanceof SQLException ? (SQLException) e : ((QueryElement.QEltException) e).getSqlException());
 		}
 		return l;
 	}

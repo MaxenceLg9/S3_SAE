@@ -55,7 +55,7 @@ public final class Garage extends BienLouable {
                             9, this.getDateAjout()
                     )).execute();
         }
-        catch (QueryElement.QueryException queryException){
+        catch (QueryElement.QEltException queryException){
             throw new GarageException("Erreur lors de l'ajout du bien", queryException.getSqlException());
         }
 

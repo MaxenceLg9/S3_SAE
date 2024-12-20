@@ -132,4 +132,5 @@ public abstract class QueryElement<T> implements Closeable {
         }
 
     }
+
 }

@@ -54,7 +54,7 @@ public final class Habitation extends BienLouable {
                             9, this.getDateAjout()
                     )).execute();
         }
-        catch (QueryElement.QueryException queryException){
+        catch (QueryElement.QEltException queryException){
             queryException.getSqlException().printStackTrace();
             throw new Habitation.HabitationException("Erreur lors de l'ajout du bien", queryException.getSqlException());
         }

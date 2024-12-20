@@ -68,9 +68,9 @@ public class Assurance  {
                 assurance.setAugmentationAnnuelle(rs.getFloat("AugmentationAnnuelle")); // Calculé par trigger
                 assurances.add(assurance);
             }
-        } catch (QueryElement.QueryException | SQLException e) {
+        } catch (QueryElement.QEltException | SQLException e) {
             throw new AssuranceException("Erreur lors de la récupération des assurances",
-                    e instanceof SQLException ? (SQLException) e : ((QueryElement.QueryException) e).getSqlException());
+                    e instanceof SQLException ? (SQLException) e : ((QueryElement.QEltException) e).getSqlException());
         }
 
         return assurances;
@@ -131,7 +131,7 @@ public class Assurance  {
             query.execute();
             System.out.println("Insertion réussie. Les triggers CalculTotalPrime et CalculPourcentageAugmentation sont déclenchés.");
 
-        } catch (QueryElement.QueryException e) {
+        } catch (QueryElement.QEltException e) {
             // Gérer les erreurs SQL
             String errorMessage = String.format(
                     "Erreur lors de l'ajout de l'assurance : ProtectionJuridique=%f, QuotitéJuridique=%f, Prime=%f, TypeContrat=%s, Annee=%d",
@@ -248,7 +248,7 @@ public class Assurance  {
                 throw new AssuranceException("Aucune assurance correspondante trouvée pour la suppression.");
             }
             System.out.println("Assurance supprimée avec succès : ID = " + this.idAssurance);
-        } catch (QueryElement.QueryException e) {
+        } catch (QueryElement.QEltException e) {
             throw new AssuranceException("Erreur lors de la suppression de l'assurance avec ID " + this.idAssurance, e.getSqlException());
         }
     }

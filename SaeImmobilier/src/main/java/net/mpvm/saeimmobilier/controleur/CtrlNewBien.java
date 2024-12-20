@@ -44,12 +44,12 @@ public class CtrlNewBien {
     private List<TextField> fieldsLogement;
 
 
-    private Date currentDate;
+    private ModeleDate currentDate;
 
 
     @FXML
     public void initialize() {
-        this.currentDate = new Date(1,1,1);
+        this.currentDate = new ModeleDate(1,1,1);
         this.datesql = new java.sql.Date(currentDate.getCurrentDateAsLong());
         fieldsetup();
 
