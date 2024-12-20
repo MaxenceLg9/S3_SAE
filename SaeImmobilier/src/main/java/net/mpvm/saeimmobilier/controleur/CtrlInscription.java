@@ -6,6 +6,7 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import net.mpvm.saeimmobilier.modele.Proprietaire;
 import net.mpvm.saeimmobilier.vue.VueAccueil;
+import net.mpvm.saeimmobilier.vue.VueConnexion;
 import net.mpvm.saeimmobilier.vue.VueHome;
 
 import java.util.ArrayList;
@@ -116,13 +117,16 @@ public class CtrlInscription {
             if (MDPIdentique()) {
                 try {
                     new Proprietaire(fieldMail.getText(),fieldNewPassword.getText()).save();
-                } catch (Proprietaire.ProprietaireException proprietaireException) {
+                    VueConnexion.showWindow(new Stage());
+                } catch (Proprietaire.ProprietaireException proprietaireException ) {
                     proprietaireException.getSqlException().printStackTrace();
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Erreur");
                     alert.setHeaderText("Erreur lors de la sauvegarde");
                     alert.setContentText(proprietaireException.getMessage());
                     alert.showAndWait();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             } else {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
