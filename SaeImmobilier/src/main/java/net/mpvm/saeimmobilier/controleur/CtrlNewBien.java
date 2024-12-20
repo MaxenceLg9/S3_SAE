@@ -154,9 +154,6 @@ public class CtrlNewBien {
                         case TypeBien.GARAGE:
                             if (fieldsNotEmptyBienLouable()) {
                                 new Garage(this.FieldLieuImmeuble.getText(),
-                                        this.FieldVille.getText(),
-                                        Integer.parseInt(this.FieldCodePostal.getText()),
-                                        this.FieldAdresse.getText(),
                                         Integer.parseInt(this.FieldNbPieces.getText()),
                                         this.FieldNumFisc.getText(),
                                         this.listImmeubles.getItems().getFirst(),
