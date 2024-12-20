@@ -145,7 +145,7 @@ public final class Immeuble extends Bien{
 	@Override
 	public void save() throws ImmeubleException {
 		if(this.getIdBien() != -1)
-			throw new ImmeubleException("Le bien existe déjà dans la table");
+			throw new ImmeubleException("Le bien existe déjà dans la table", null);
 		try(UpdateQueryElement q = new UpdateQueryElement(INSERT_QUERY, true)){
 			q.setArgs(
 					Map.of(1, this.getAdresse(),
@@ -165,7 +165,7 @@ public final class Immeuble extends Bien{
 	@Override
 	public void modify() throws ImmeubleException {
 		if(this.getIdBien() == -1)
-			throw new ImmeubleException("Le bien n'existe pas dans la table");
+			throw new ImmeubleException("Le bien n'existe pas dans la table", null);
 		try(UpdateQueryElement query = new UpdateQueryElement(UPDATE_QUERY, true)){
 			query.setArgs(
 							Map.of(1, this.getAdresse(),
@@ -180,7 +180,7 @@ public final class Immeuble extends Bien{
 	@Override
 	public void delete() throws ImmeubleException {
 		if(this.getIdBien() == -1)
-			throw new ImmeubleException("Le bien n'existe pas dans la table");
+			throw new ImmeubleException("Le bien n'existe pas dans la table", null);
 		try(UpdateQueryElement query = new UpdateQueryElement(DELETE_QUERY, true)){
 			query.setArgs(Map.of(1,this.getIdBien())).execute();
 		}
@@ -228,7 +228,7 @@ public final class Immeuble extends Bien{
 				selectQueryElement.execute();
 				List<Map<String,Object>> result = selectQueryElement.getResult();
 				if(result.isEmpty())
-					throw new ImmeubleException("L'immeuble n'existe pas dans la base de données");
+					throw new ImmeubleException("L'immeuble n'existe pas dans la base de données", null);
 				return selectQueryElement.getResult().getFirst();
 			}catch (QueryElement.QEltException qEltException){
 				throw new ImmeubleException("Erreur lors de la récupération de l'immeuble, il n'existe peut-être pas dans la base de données", qEltException.getSqlException());

@@ -14,9 +14,4 @@ public class VueNewAssurance extends Application {
         VueNewAssurance vue = new VueNewAssurance();
         vue.start(stage);
     }
-
-    public static void showWindow(Stage stage) throws Exception {
-        VueNewAssurance vue = new VueNewAssurance();
-        vue.start(stage);
-    }
 }
