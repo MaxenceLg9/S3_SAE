@@ -2,26 +2,25 @@ package net.mpvm.saeimmobilier.modele;
 
 
 import net.mpvm.saeimmobilier.sql.Query.QueryElement;
+import net.mpvm.saeimmobilier.sql.Query.Queryable;
 import net.mpvm.saeimmobilier.sql.Query.SelectQueryElement;
 import net.mpvm.saeimmobilier.sql.Query.UpdateQueryElement;
 
+import javax.management.ImmutableDescriptor;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public final class Immeuble extends Bien{
 
-	public static final String INSERT_QUERY = "INSERT INTO Bien (Adresse, Ville, CodePostal, IdImmeuble, IdProprietaire, TypeBien) VALUES (?, ?, ?, ?, ?, ?)";
+	public static final String INSERT_QUERY = "INSERT INTO Bien (Adresse, Ville, CodePostal, IdImmeuble, TypeBien) VALUES (?, ?, ?,?, ?)";
 	public static final String SELECT_QUERY = "SELECT * FROM Bien";
 	public static final String SELECT_WHERE_QUERY = "SELECT * FROM Bien WHERE Adresse = ? AND Ville = ? AND CodePostal = ?";
 	public static final String DELETE_QUERY = "DELETE FROM Bien WHERE IdBien = ? AND TypeBien = 'IMMEUBLE'";
 	public static final String UPDATE_QUERY = "UPDATE Bien SET Adresse = ?, Ville = ?, CodePostal = ?";
 	public static final String SELECT_FROM_ID = "SELECT * FROM Bien WHERE IdBien = ? AND TypeBien = 'IMMEUBLE'";
 	public static final String SELECT_BIENS_IMMEUBLES = "SELECT * FROM Bien WHERE IdBien = ?";
-	public static final String SELECT_NEXT_ID = "SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE TABLE_SCHEMA = 'bdImmo' AND TABLE_NAME = 'Bien'";
+	public static final String NEXT_ID = "SELECT count(*) FROM bien WHERE IdImmeuble IS NOT NULL";
 
 	private String adresse;
 	private String ville;
@@ -149,17 +148,16 @@ public final class Immeuble extends Bien{
 		if(this.getIdBien() != -1)
 			throw new ImmeubleException("Le bien existe déjà dans la table");
 		try(UpdateQueryElement q = new UpdateQueryElement(INSERT_QUERY, true);
-		SelectQueryElement selectQueryElement = new SelectQueryElement(SELECT_NEXT_ID)){
+		SelectQueryElement selectQueryElement = new SelectQueryElement(NEXT_ID)){
 			ResultSet rs = selectQueryElement.execute();
 			rs.next();
-			int id = rs.getInt("AUTO_INCREMENT");
+			int id = rs.getInt(1)+1;
 			q.setArgs(
 							Map.of(1, this.getAdresse(),
 									2, this.getVille(),
 									3, this.getCodePostal(),
 									4, id,
-									5, -1,
-									6, TypeBien.IMMEUBLE.name()))
+									5, TypeBien.IMMEUBLE.name()))
 					.execute();
 		}
 		catch (QueryElement.QueryException | SQLException e){
@@ -173,9 +171,9 @@ public final class Immeuble extends Bien{
 			throw new ImmeubleException("Le bien n'existe pas dans la table");
 		try(UpdateQueryElement query = new UpdateQueryElement(UPDATE_QUERY, true)){
 			query.setArgs(
-					Map.of(1, this.getAdresse(),
-							2, this.getVille(),
-							3, this.getCodePostal()))
+							Map.of(1, this.getAdresse(),
+									2, this.getVille(),
+									3, this.getCodePostal()))
 					.execute();
 		}catch(QueryElement.QueryException queryException){
 			throw new ImmeubleException("Erreur lors de la modification du bien", queryException.getSqlException());
@@ -207,5 +205,24 @@ public final class Immeuble extends Bien{
 		public ImmeubleException(String message, SQLException e) {
 			super(message, e);
 		}
+	}
+
+	public static List<Immeuble> findALl() throws Immeuble.ImmeubleException {
+		List<Immeuble> p = new ArrayList<>();
+		try(SelectQueryElement query = new SelectQueryElement(SELECT_QUERY)){
+			ResultSet rs = query.execute();
+			while (rs.next()) {
+				p.add(
+						new Immeuble(
+								rs.getString("Ville"),
+								Integer.parseInt(rs.getString("CodePostal")),
+								rs.getString("Adresse")
+						));
+			}
+		}
+		catch (QueryElement.QueryException | SQLException queryException){
+			throw new Immeuble.ImmeubleException("Erreur lors de la récupération des immeubles");
+		}
+		return p;
 	}
 }

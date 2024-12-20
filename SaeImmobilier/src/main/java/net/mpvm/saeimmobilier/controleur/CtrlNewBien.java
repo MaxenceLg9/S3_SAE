@@ -66,17 +66,19 @@ public class CtrlNewBien {
         if (listImmeubles != null) {
             Immeuble immeuble = new Immeuble("Toulouse", 31400, "Rue de la paix");
             listImmeubles.getItems().add(immeuble);
+            try {
+                List<Immeuble> immeubles = Immeuble.findALl();
+                for (Immeuble i : immeubles) {
+                    listImmeubles.getItems().add(i);
+                }
+            } catch (Immeuble.ImmeubleException e) {
+                throw new RuntimeException(e);
+            }
             System.out.println(listImmeubles.getItems().getFirst().getAdresse());
         } else {
             System.out.println("ChoiceBox listImmeubles is not injected");
         }
 
-        List<Locataire> locataires = null;
-        try {
-            locataires = Locataire.findALl();
-        } catch (Locataire.LocataireException e) {
-            locataires = new ArrayList<>();
-        }
 
         for (TypeBien b : TypeBien.values()){
             this.ListTypeBien.getItems().add(b);
@@ -101,17 +103,21 @@ public class CtrlNewBien {
 
         this.listImmeubles.setOnAction(actionEvent -> {
             if (listImmeubles.getValue().getTypeBien() == TypeBien.IMMEUBLE) {
-                this.FieldAdresse.setText(listImmeubles.getItems().getFirst().getAdresse());
-                this.FieldCodePostal.setText(String.valueOf(listImmeubles.getItems().getFirst().getCodePostal()));
-                this.FieldVille.setText(listImmeubles.getItems().getFirst().getVille());
+                this.FieldAdresse.setText(listImmeubles.getValue().getAdresse());
+                this.FieldAdresse.setEditable(false);
+                this.FieldCodePostal.setText(String.valueOf(listImmeubles.getValue().getCodePostal()));
+                this.FieldCodePostal.setEditable(false);
+                this.FieldVille.setText(listImmeubles.getValue().getVille());
+                this.FieldVille.setEditable(false);
             } else {
-                this.FieldAdresse.setText(null);
-                this.FieldCodePostal.setText(null);
-                this.FieldVille.setText(null);
+                this.FieldAdresse.setText("");
+                this.FieldAdresse.setEditable(true);
+                this.FieldCodePostal.setText("");
+                this.FieldCodePostal.setEditable(true);
+                this.FieldVille.setText("");
+                this.FieldVille.setEditable(true);
             }
         });
-
-
     }
 
     private void fieldsetup() {
@@ -151,7 +157,8 @@ public class CtrlNewBien {
                                         Integer.parseInt(this.FieldNbPieces.getText()),
                                         this.FieldNumFisc.getText(),
                                         this.listImmeubles.getItems().getFirst(),
-                                        Float.parseFloat(this.FieldSurface.getText()), this.datesql).save();
+                                        Float.parseFloat(this.FieldSurface.getText()),
+                                        this.datesql).save();
                             } else {
                                 alertFieldsEmptybienLouable();
                             }
@@ -171,7 +178,7 @@ public class CtrlNewBien {
                 } catch (Queryable.QueryableException e) {
                    e.getSqlException().printStackTrace();
                 }
-                System.out.print("Bouh ! ");
+
     }
 
 
@@ -259,6 +266,15 @@ public class CtrlNewBien {
 
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public void Clear(ActionEvent actionEvent) {
+        for(TextField textField : fieldsLogement){
+            if(!textField.getText().isEmpty()){
+                textField.setText("");
+                textField.setEditable(true);
+            }
         }
     }
 

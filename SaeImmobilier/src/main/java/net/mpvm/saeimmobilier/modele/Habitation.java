@@ -11,7 +11,7 @@ import java.util.Map;
 
 public final class Habitation extends BienLouable {
 
-    public static final String INSERT_QUERY = "INSERT INTO bien (Lieu_Immeuble, Adresse, Ville, CodePostal, TypeBien, Surface, NombrePieces, NumeroFiscal, DateAjout) VALUES (?, ?, ?, ?, ?,?,?,?,?)";
+    public static final String INSERT_QUERY = "INSERT INTO bien (ComplementAdresse, Adresse, Ville, CodePostal, TypeBien, Surface, NombrePieces, NumeroFiscal, DateAjout) VALUES (?, ?, ?, ?, ?,?,?,?,?)";
 
     @Override
     public TypeBien getTypeBien() {
@@ -35,6 +35,29 @@ public final class Habitation extends BienLouable {
                 rs.getFloat("Surface"),
                 rs.getDate("DateAjout"),
                 rs.getInt("IdBien"));
+    }
+
+    @Override
+    public void save() throws Habitation.HabitationException {
+        if(this.getIdBien() != -1)
+            throw new Habitation.HabitationException("Le bien existe déjà !");
+        try(UpdateQueryElement query = new UpdateQueryElement(INSERT_QUERY, true)){
+            query.setArgs(
+                    Map.of(1,this.getComplementAdresse(),
+                            2, this.getAdresse(),
+                            3, this.getVille(),
+                            4, this.getCodePostal(),
+                            5, this.getTypeBienString(),
+                            6, this.getSurface(),
+                            7, this.getNbPieces(),
+                            8, this.getNumeroFiscal(),
+                            9, this.getDateAjout()
+                    )).execute();
+        }
+        catch (QueryElement.QueryException queryException){
+            queryException.getSqlException().printStackTrace();
+            throw new Habitation.HabitationException("Erreur lors de l'ajout du bien", queryException.getSqlException());
+        }
     }
 
     public static class HabitationException extends BienException{

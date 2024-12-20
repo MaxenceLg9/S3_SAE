@@ -27,6 +27,7 @@ public abstract class BienLouable extends Bien {
 	private Immeuble immeuble;
 	private Proprietaire proprietaire;
 	private int nbPieces;
+	private int codePostal;
 
 	public Date getDateAjout() {
 		return DateAjout;

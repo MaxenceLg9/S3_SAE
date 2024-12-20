@@ -50,19 +50,14 @@ CREATE TABLE Assurance(
                           TypeContrat VARCHAR(20),
                           Annee INT,
                           PrimeAnneePrecedente DOUBLE,
+                          MontantQuotite DOUBLE,
                           PRIMARY KEY(IdAssurance)
 );
 
-CREATE TABLE Proprietaire(
+CREATE TABLE Propriétaire(
                              IdProprietaire INT auto_increment,
-                             Nom VARCHAR(50),
-                             Prenom VARCHAR(50),
-                             Telephone CHAR(10),
                              Email VARCHAR(50),
                              MotDePasse VARCHAR(50),
-                             Ville VARCHAR(50),
-                             CodePostal CHAR(5),
-                             Adresse VARCHAR(50),
                              PRIMARY KEY(IdProprietaire)
 );
 
@@ -85,7 +80,9 @@ CREATE TABLE Bien(
 Alter table Bien
     Add constraint CK_Type_Bien
         CHECK ( Bien.TypeBien IN('HABITATION','GARAGE','IMMEUBLE') );
-
+Alter table Assurance
+    Add constraint CK_Type_Contrat
+        CHECK ( Assurance.TypeContrat IN('PROPRIETAIRE','AIDE_JURIDIQUE') );
 DELIMITER //
 CREATE TRIGGER CHECK_IDIMMEUBLE_NON_IMMEUBLE
     BEFORE INSERT ON Bien
@@ -121,6 +118,7 @@ BEGIN
 END;
 //
 DELIMITER ;
+
 
 CREATE TABLE Bail(
                      IdBail INT auto_increment,
@@ -278,7 +276,16 @@ END;
 //
 DELIMITER ;
 
--- Trigger pour calculer MontantADeclarer dans la table Travaux
+DELIMITER //
+    CREATE TRIGGER CalculMontantQuotite
+        BEFORE INSERT ON Assurance
+        FOR EACH ROW
+    BEGIN
+        SET NEW.MontantQuotite = (NEW.ProtectionJuridique *NEW.QuotiteJuridique)/100;
+
+END;
+//
+DELIMITER ;
 DELIMITER //
 CREATE TRIGGER CalculMontantADeclarer
     AFTER INSERT ON Travaux
@@ -302,7 +309,7 @@ END;
 //
 DELIMITER ;
 
-DROP TRIGGER IF EXISTS CalculPourcentageAugmentation;
+
 DELIMITER //
 
 CREATE TRIGGER CalculPourcentageAugmentation
