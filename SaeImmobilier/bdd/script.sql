@@ -76,7 +76,6 @@ CREATE TABLE Bien(
                      PRIMARY KEY(IdBien)
 );
 
-
 Alter table Bien
     Add constraint CK_Type_Bien
         CHECK ( Bien.TypeBien IN('HABITATION','GARAGE','IMMEUBLE') );

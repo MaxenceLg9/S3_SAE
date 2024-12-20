@@ -2,10 +2,12 @@ package net.mpvm.saeimmobilier.controleur;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import net.mpvm.saeimmobilier.modele.Proprietaire;
+import net.mpvm.saeimmobilier.util.JfxUtil;
 
 import javafx.scene.input.KeyEvent;
 import net.mpvm.saeimmobilier.vue.*;
@@ -104,6 +106,7 @@ public class CtrlConnexion {
                             } catch (Exception e) {
                                 throw new RuntimeException(e);
                             }
+
                             Stage stageActu = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
                             stageActu.close();
 
