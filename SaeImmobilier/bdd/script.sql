@@ -51,8 +51,7 @@ CREATE TABLE Assurance(
                           PRIMARY KEY(IdAssurance)
 );
 
-ALTER TABLE Assurance
-    ADD CONSTRAINT FOREIGN KEY (IdBail) REFERENCES Bail(IdBail);
+
 
 CREATE TABLE Proprietaire(
                              IdProprietaire INT auto_increment,
