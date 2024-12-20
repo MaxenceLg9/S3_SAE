@@ -89,7 +89,6 @@ public class TestGarage {
         garage.setNbPieces(5);
         garage.setNumeroFiscal("0987654321");
         garage.setSurface(62f);
-        garage.setDateAjout(Date.valueOf(LocalDate.now()));
         garage.modify();
 
         Garage garage2 = Garage.findAll().stream().filter(g -> g.getIdBien() == garage.getIdBien()).findFirst().get();
