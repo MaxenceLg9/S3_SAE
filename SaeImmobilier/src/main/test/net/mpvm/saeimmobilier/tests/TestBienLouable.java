@@ -38,7 +38,7 @@ public class TestBienLouable {
 
     @Test
     public void testCreatingInstance(){
-        BienLouable garage = new Garage(COMPLEMENT_ADRESSE,VILLE,CODE_POSTAL,ADRESSE,NBPIECES,NUMERO_FISCAL,new Immeuble(VILLE,CODE_POSTAL,ADRESSE),SURFACE,DATE);
+        BienLouable garage = new Garage(COMPLEMENT_ADRESSE,NBPIECES,NUMERO_FISCAL,new Immeuble(VILLE,CODE_POSTAL,ADRESSE),SURFACE,DATE);
         assertEquals(-1,garage.getIdBien());
         try{
             garage.save();

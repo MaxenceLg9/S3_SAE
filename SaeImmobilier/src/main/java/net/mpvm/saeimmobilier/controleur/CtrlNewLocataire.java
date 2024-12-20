@@ -80,7 +80,7 @@ public class CtrlNewLocataire {
             // Créer une nouvelle fenêtre (Stage)
             Stage stage = new Stage();
 
-            VueNewBien.showWindow(stage);
+            VueHome.showWindow(stage);
 
             Stage stage2 = (Stage) ((Button) event.getSource()).getScene().getWindow();
             // Fermer la fenêtre
