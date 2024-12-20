@@ -10,11 +10,11 @@ module net.mpvm.saeimmobilier {
     requires org.kordamp.bootstrapfx.core;
     requires eu.hansolo.tilesfx;
     requires com.almasb.fxgl.all;
-    requires java.desktop;
     requires mysql.connector.j;
     requires org.slf4j;
     requires annotations;
     requires java.management;
+    requires com.fasterxml.jackson.databind;
     requires java.sql;
 
     //opens net.mpvm.saeimmobilier.data.fxml to javafx.fxml;
