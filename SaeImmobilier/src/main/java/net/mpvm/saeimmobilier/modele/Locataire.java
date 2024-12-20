@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class Locataire implements Queryable {
+public class Locataire extends Queryable {
 
 	public static final String INSERT_QUERY = "INSERT INTO Locataire (nom, prenom, email, sexe, telephone) VALUES (?, ?, ?, ?, ?)";
 
@@ -117,8 +117,8 @@ public class Locataire implements Queryable {
 									5, this.getTelephone()))
 					.execute();
 		}
-		catch (QueryElement.QueryException queryException) {
-			throw new LocataireException("Erreur lors de l'ajout du locataire", queryException.getSqlException());
+		catch (QueryElement.QEltException QEltException) {
+			throw new LocataireException("Erreur lors de l'ajout du locataire", QEltException.getSqlException());
 		}
 
 	}
@@ -127,7 +127,7 @@ public class Locataire implements Queryable {
 		try(UpdateQueryElement query = new UpdateQueryElement(DELETE_QUERY, true)){
 			query.setArgs(Map.of(1,this.getIdLocataire())).execute();
 		}
-		catch (QueryElement.QueryException e) {
+		catch (QueryElement.QEltException e) {
 			throw new LocataireException("Erreur lors de la suppression du locataire");
 		}
 	}
@@ -143,8 +143,8 @@ public class Locataire implements Queryable {
 							4, Character.toString(this.getSexe()),
 							5, this.getTelephone(),
 							6, this.getIdLocataire())).execute();
-		}catch(QueryElement.QueryException queryException){
-			throw new LocataireException("Erreur lors de la modification du locataire", queryException.getSqlException());
+		}catch(QueryElement.QEltException QEltException){
+			throw new LocataireException("Erreur lors de la modification du locataire", QEltException.getSqlException());
 		}
 	}
 
@@ -156,24 +156,25 @@ public class Locataire implements Queryable {
 		List<Locataire> l = new ArrayList<>();
 
 		try(SelectQueryElement query = new SelectQueryElement(SELECT_QUERY)){
-			ResultSet rs = query.execute();
-			while (rs.next()) {
+			query.execute();
+			List<Map<String,Object>> result = query.getResult();
+			for(Map<String, Object> row : result){
 				l.add(
-						new Locataire(rs.getString("nom"),
-								rs.getString("prenom"),
-								rs.getString("email"),
-								rs.getString("sexe").charAt(0),
-								rs.getString("telephone"),
-								rs.getInt("IdLocataire")));
+						new Locataire(row.get("nom").toString(),
+								row.get("prenom").toString(),
+								row.get("email").toString(),
+								row.get("sexe").toString().charAt(0),
+								row.get("telephone").toString(),
+								(int) row.get("IdLocataire")));
 			}
 		}
-		catch (QueryElement.QueryException | SQLException e){
-			throw new LocataireException("Erreur lors de la récupération des locataires", e instanceof SQLException ? (SQLException) e : ((QueryElement.QueryException) e).getSqlException());
+		catch (QueryElement.QEltException qEltException){
+			throw new LocataireException("Erreur lors de la récupération des locataires", qEltException.getSqlException());
 		}
 		return l;
 	}
 
-	public static class LocataireException extends QueryableException{
+	public static class LocataireException extends QbleException {
 
 		public LocataireException(String message){
 			this(message,null);
@@ -184,4 +185,3 @@ public class Locataire implements Queryable {
 		}
 	}
 }
-
