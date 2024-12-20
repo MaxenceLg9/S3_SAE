@@ -77,16 +77,16 @@ public abstract class Bien extends Queryable {
         List<Bien> biens = new ArrayList<>();
         try(SelectQueryElement selectQueryElement = new SelectQueryElement(SELECT_QUERY)){
             sortResult(biens, selectQueryElement);
-        } catch (SQLException | QueryElement.QEltException e) {
-            throw new BienException("Erreur lors de la récupération des biens", e instanceof SQLException ? (SQLException) e : ((QueryElement.QEltException) e).getSqlException());
+        } catch (QueryElement.QEltException qEltException) {
+            throw new BienException("Erreur lors de la récupération des biens", qEltException.getSqlException());
         }
         return biens;
     }
 
-    private static void sortResult(List<Bien> biens, SelectQueryElement selectQueryElement) throws QueryElement.QEltException, SQLException {
+    private static void sortResult(List<Bien> biens, SelectQueryElement selectQueryElement) throws QueryElement.QEltException {
         selectQueryElement.execute();
-        List<Map<String,Object>> result = selectQueryElement.getResult();
-        for (Map<String,Object> args : result) {
+        List<Map<String, Object>> result = selectQueryElement.getResult();
+        for (Map<String, Object> args : result) {
             switch (TypeBien.valueOf(args.get("TypeBien").toString().toUpperCase())) {
                 case TypeBien.HABITATION:
                     biens.add(new Habitation.HBuilder(args).build());
@@ -98,12 +98,9 @@ public abstract class Bien extends Queryable {
                     biens.add(new Immeuble.IBuilder(args).build());
                     break;
                 default:
-                    throw new BienException("Type de bien inconnu", null);
+                    break;
             }
-        } catch (SQLException | QueryElement.QueryException e) {
-            throw new BienException("Erreur lors de la récupération des biens", e instanceof SQLException ? (SQLException) e : ((QueryElement.QueryException) e).getSqlException());
         }
-        return biens;
     }
 
     public abstract TypeBien getTypeBien();
@@ -143,8 +140,8 @@ public abstract class Bien extends Queryable {
             selectQueryElement.setArgs(Map.of(1, idImmeuble));
 
             sortResult(biens, selectQueryElement);
-        } catch (SQLException | QueryElement.QEltException e) {
-            throw new BienException("Erreur lors de la récupération des biens pour l'immeuble ID " + idImmeuble, e instanceof SQLException ? (SQLException) e : ((QueryElement.QEltException) e).getSqlException());
+        } catch (QueryElement.QEltException e) {
+            throw new BienException("Erreur lors de la récupération des biens pour l'immeuble ID " + idImmeuble, e.getSqlException());
         }
 
         return biens;
