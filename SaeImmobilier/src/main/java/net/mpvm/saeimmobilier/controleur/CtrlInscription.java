@@ -1,5 +1,6 @@
 package net.mpvm.saeimmobilier.controleur;
 
+import com.fasterxml.jackson.databind.annotation.JsonAppend;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -84,7 +85,7 @@ public class CtrlInscription {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Erreur");
         alert.setHeaderText("Adresse e-mail invalide");
-        alert.setContentText("Veuillez saisir une adresse e-mail valide.");
+        alert.setContentText("Veuillez saisir une adresse e-mail valide ou non utilisé.");
         alert.showAndWait();
     }
 
@@ -113,23 +114,31 @@ public class CtrlInscription {
                 return;
             }
 
-            if (MDPIdentique()) {
-                try {
-                    new Proprietaire(fieldMail.getText(),fieldNewPassword.getText()).save();
-                } catch (Proprietaire.ProprietaireException proprietaireException) {
-                    proprietaireException.getSqlException().printStackTrace();
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Erreur");
-                    alert.setHeaderText("Erreur lors de la sauvegarde");
-                    alert.setContentText(proprietaireException.getMessage());
-                    alert.showAndWait();
+            try {
+                if (Proprietaire.findAll().isEmpty()){
+                    if (MDPIdentique()) {
+                        try {
+                            new Proprietaire(fieldMail.getText(), fieldNewPassword.getText()).save();
+                        } catch (Proprietaire.ProprietaireException proprietaireException) {
+                            proprietaireException.getSqlException().printStackTrace();
+                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                            alert.setTitle("Erreur");
+                            alert.setHeaderText("Erreur lors de la sauvegarde");
+                            alert.setContentText(proprietaireException.getMessage());
+                            alert.showAndWait();
+                        }
+                    } else {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Erreur");
+                        alert.setHeaderText("Mots de passe non identiques");
+                        alert.setContentText("Les mots de passe ne correspondent pas !");
+                        alert.showAndWait();
+                    }
+                }else {
+                    alertInvalidEmail();
                 }
-            } else {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Erreur");
-                alert.setHeaderText("Mots de passe non identiques");
-                alert.setContentText("Les mots de passe ne correspondent pas !");
-                alert.showAndWait();
+            } catch (Proprietaire.ProprietaireException e) {
+                throw new RuntimeException(e);
             }
         } else {
             alertFieldsEmpty();
