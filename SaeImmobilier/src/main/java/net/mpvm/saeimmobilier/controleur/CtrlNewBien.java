@@ -77,7 +77,7 @@ public class CtrlNewBien {
                     listImmeubles.getItems().add(i);
                 }
             } catch (Immeuble.ImmeubleException e) {
-                throw new RuntimeException(e);
+                e.printStackTrace();
             }
             System.out.println(listImmeubles.getItems().getFirst().getAdresse());
         } else {

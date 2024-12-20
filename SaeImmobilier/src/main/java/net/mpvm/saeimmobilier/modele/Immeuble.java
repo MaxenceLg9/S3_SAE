@@ -12,7 +12,7 @@ import java.util.*;
 public final class Immeuble extends Bien{
 
 	public static final String INSERT_QUERY = "INSERT INTO Bien (Adresse, Ville, CodePostal, TypeBien, NumeroFiscal) VALUES (?, ?, ?, ?, ?)";
-	public static final String SELECT_QUERY = "SELECT * FROM Bien AND TypeBien = 'IMMEUBLE'";
+	public static final String SELECT_QUERY = "SELECT * FROM Bien WHERE TypeBien = 'IMMEUBLE'";
 	public static final String SELECT_WHERE_QUERY = "SELECT * FROM Bien WHERE Adresse = ? AND Ville = ? AND CodePostal = ?";
 	public static final String DELETE_QUERY = "DELETE FROM Bien WHERE IdBien = ? AND TypeBien = 'IMMEUBLE'";
 	public static final String UPDATE_QUERY = "UPDATE Bien SET Adresse = ?, Ville = ?, CodePostal = ?";
@@ -119,9 +119,7 @@ public final class Immeuble extends Bien{
 	}
 
 	public static List<Immeuble> findAll() throws ImmeubleException {
-		List<Immeuble> immeubles = new ArrayList<>();
-		String query = "SELECT * FROM bien WHERE TypeBien = 'IMMEUBLE'";
-
+		List<Immeuble> immeubles = new LinkedList<>();
 		try (SelectQueryElement selectQueryElement = new SelectQueryElement(SELECT_QUERY)) {
 			selectQueryElement.execute();
 			List<Map<String,Object>> result = selectQueryElement.getResult();
@@ -129,8 +127,9 @@ public final class Immeuble extends Bien{
 				// Ajout de l'IdBien s'il est nécessaire dans le constructeur
 				immeubles.add(new Immeuble.IBuilder(row).build());
 			}
-		} catch (QueryElement.QEltException QEltException) {
-			throw new ImmeubleException("Erreur lors de la récupération des immeubles", QEltException.getSqlException());
+		} catch (QueryElement.QEltException qEltException) {
+			qEltException.getSqlException().printStackTrace();
+			throw new ImmeubleException("Erreur lors de la récupération des immeubles", qEltException.getSqlException());
 		}
 		return immeubles;
 	}
