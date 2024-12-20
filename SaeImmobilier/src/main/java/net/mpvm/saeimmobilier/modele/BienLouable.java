@@ -24,6 +24,7 @@ public abstract class BienLouable extends Bien {
 	private float surface;
 	private Immeuble immeuble;
 	private int nbPieces;
+	private int codePostal;
 
 
 

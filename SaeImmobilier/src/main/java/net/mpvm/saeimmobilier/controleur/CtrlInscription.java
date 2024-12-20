@@ -3,7 +3,10 @@ package net.mpvm.saeimmobilier.controleur;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.stage.Stage;
 import net.mpvm.saeimmobilier.modele.Proprietaire;
+import net.mpvm.saeimmobilier.vue.VueAccueil;
+import net.mpvm.saeimmobilier.vue.VueHome;
 
 import java.util.ArrayList;
 import java.util.regex.Pattern;
@@ -32,7 +35,7 @@ public class CtrlInscription {
     public CheckBox checkBoxVisibilite;
 
     @FXML
-    private TextField fieldCodePostal,fieldAdresse,fieldVille,fieldPrenom,fieldNom,fieldMail,fieldTelephone;
+    private TextField fieldMail,fieldTelephone;
 
 
     private ArrayList<TextField> fieldsMDP;
@@ -112,7 +115,7 @@ public class CtrlInscription {
 
             if (MDPIdentique()) {
                 try {
-                        new Proprietaire(fieldNom.getText(),fieldPrenom.getText(),fieldTelephone.getText(),fieldMail.getText(),fieldNewPassword.getText()).save();
+                    new Proprietaire(fieldMail.getText(),fieldNewPassword.getText()).save();
                 } catch (Proprietaire.ProprietaireException proprietaireException) {
                     proprietaireException.getSqlException().printStackTrace();
                     Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -135,13 +138,14 @@ public class CtrlInscription {
 
     @FXML
     public void Annuler(ActionEvent event) {
-        // Clear all fields
-        fieldMail.clear();
-        fieldNewPassword.clear();
-        fieldConfirmation.clear();
-        fieldNewPasswordVisible.clear();
-        fieldConfirmationVisible.clear();
-        checkBoxVisibilite.setSelected(false);
+        try {
+            VueAccueil.showWindow(new Stage());
+            Stage stageActuel = (Stage) ((Button) event.getSource()).getScene().getWindow();
+            stageActuel.close();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     private boolean fieldsNotEmpty() {

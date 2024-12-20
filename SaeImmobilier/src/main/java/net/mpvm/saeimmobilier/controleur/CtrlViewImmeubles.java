@@ -29,12 +29,13 @@ public class CtrlViewImmeubles {
         List<Immeuble> immeubles = Immeuble.findAll(); // Une méthode spécifique pour les immeubles
         gridPaneImmeubles.getChildren().clear();
 
-        for (Bien immeuble : immeubles) {
+        for (Immeuble immeuble : immeubles) {
             Label label = new Label(immeuble.getAdresse());
             label.setOnMouseClicked(event -> afficheBiensPourImmeuble(immeuble.getIdBien()));
             gridPaneImmeubles.add(label, 0, gridPaneImmeubles.getChildren().size());
         }
     }
+
 
     private void afficheBiensPourImmeuble(int idImmeuble) {
         // Transition vers la fenêtre "Biens Louables" pour cet immeuble

@@ -1,8 +1,11 @@
 package net.mpvm.saeimmobilier.modele;
 
+import net.mpvm.saeimmobilier.sql.Connection.BD;
 import net.mpvm.saeimmobilier.sql.Query.QueryElement;
 import net.mpvm.saeimmobilier.sql.Query.Queryable;
 import net.mpvm.saeimmobilier.sql.Query.SelectQueryElement;
+import net.mpvm.saeimmobilier.sql.Query.UpdateQueryElement;
+import org.jetbrains.annotations.NotNull;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -97,7 +100,10 @@ public abstract class Bien extends Queryable {
                 default:
                     throw new BienException("Type de bien inconnu", null);
             }
+        } catch (SQLException | QueryElement.QueryException e) {
+            throw new BienException("Erreur lors de la récupération des biens", e instanceof SQLException ? (SQLException) e : ((QueryElement.QueryException) e).getSqlException());
         }
+        return biens;
     }
 
     public abstract TypeBien getTypeBien();
@@ -184,7 +190,6 @@ public abstract class Bien extends Queryable {
             return dateAjout;
         }
     }
-
 
     // Classe d'exception personnalisée
     public static class BienException extends QbleException {

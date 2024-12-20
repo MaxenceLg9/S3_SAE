@@ -2,6 +2,7 @@ package net.mpvm.saeimmobilier.modele;
 
 
 import net.mpvm.saeimmobilier.sql.Query.QueryElement;
+import net.mpvm.saeimmobilier.sql.Query.Queryable;
 import net.mpvm.saeimmobilier.sql.Query.SelectQueryElement;
 import net.mpvm.saeimmobilier.sql.Query.UpdateQueryElement;
 
@@ -18,7 +19,6 @@ public final class Immeuble extends Bien{
 	public static final String UPDATE_QUERY = "UPDATE Bien SET Adresse = ?, Ville = ?, CodePostal = ?";
 	public static final String SELECT_FROM_ID = "SELECT * FROM Bien WHERE IdBien = ? AND TypeBien = 'IMMEUBLE'";
 	public static final String SELECT_BIENS_IMMEUBLES = "SELECT * FROM Bien WHERE IdBien = ?";
-	public static final String SELECT_NEXT_ID = "SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE TABLE_SCHEMA = 'bdImmo' AND TABLE_NAME = 'Bien'";
 
 	private static final Map<Integer,Immeuble> immeubles = new HashMap<>();
 

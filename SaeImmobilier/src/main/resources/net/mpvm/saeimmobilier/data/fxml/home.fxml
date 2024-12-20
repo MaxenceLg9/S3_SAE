@@ -92,11 +92,11 @@
                                 <Font name="System Bold" size="14.0" />
                             </font>
                         </Button>
-                        <Button fx:id="btnViewAssurance" mnemonicParsing="false" onAction="#vueAssurances" prefWidth="190.0" text="Vue des Assurances" textFill="WHITE">
-                            <font>
-                                <Font name="System Bold" size="14.0" />
-                            </font>
-                        </Button>
+                  <Button fx:id="btnLocations" mnemonicParsing="false" onAction="#gererLocation" prefWidth="190.0" text="Gérer les locations" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Button>
                     </children>
                <padding>
                   <Insets top="20.0" />
@@ -113,7 +113,7 @@
                                         <TableView fx:id="tableViewBiens" prefHeight="200.0" prefWidth="200.0" styleClass="backgroundColor">
                                             <columns>
                                                 <TableColumn prefWidth="75.0" text="idBien" />
-                                                <TableColumn prefWidth="139.0" text="ComplémenAdresse" />
+                                                <TableColumn prefWidth="139.0" text="ComplémentAdresse" />
                                                 <TableColumn prefWidth="11.0" text="Adresse" />
                                                 <TableColumn prefWidth="75.0" text="Ville" />
                                                 <TableColumn prefWidth="75.0" text="CodePostal" />

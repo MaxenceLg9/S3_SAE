@@ -84,13 +84,6 @@ public class CtrlNewBien {
             System.out.println("ChoiceBox listImmeubles is not injected");
         }
 
-        List<Locataire> locataires = null;
-        try {
-            locataires = Locataire.findALl();
-        } catch (Locataire.LocataireException e) {
-            locataires = new ArrayList<>();
-        }
-
         for (TypeBien b : TypeBien.values()){
             this.ListTypeBien.getItems().add(b);
         }

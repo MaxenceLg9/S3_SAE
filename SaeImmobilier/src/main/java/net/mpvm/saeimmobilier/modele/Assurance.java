@@ -185,6 +185,9 @@ public class Assurance extends Queryable{
     }
 
     public void setTypeContrat(TypeContrat typeContrat) {
+        if (typeContrat == null) {
+            throw new IllegalArgumentException("Le type de contrat est obligatoire.");
+        }
         this.typeContrat = typeContrat;
     }
 
@@ -199,7 +202,6 @@ public class Assurance extends Queryable{
     public float getAugmentationAnnuelle() {
         return augmentationAnnuelle;
     }
-
     public void setAugmentationAnnuelle(float augmentationAnnuelle) {
         this.augmentationAnnuelle = augmentationAnnuelle;
     }
@@ -258,28 +260,10 @@ public class Assurance extends Queryable{
         }
     }
 
-    protected void setId(int id) throws QbleException {
 
-    }
-
-    public int selectId() throws QbleException {
-        return 0;
-    }
-
-    public static class ABuilder extends Queryable.Builder{
-
-        ABuilder() {
-
-        }
-
-        @Override
-        public Assurance build() {
-            return new Assurance(1,TypeContrat.AIDE_JURIDIQUE);
-        }
-    }
-
+    // Classe d'exception pour la gestion des erreurs
     public static class AssuranceException extends Queryable.QbleException {
-        public AssuranceException(String message){
+        public AssuranceException(String message) {
             super(message);
         }
 

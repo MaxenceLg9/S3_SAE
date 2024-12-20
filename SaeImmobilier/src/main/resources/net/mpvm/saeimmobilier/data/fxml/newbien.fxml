@@ -55,7 +55,7 @@
                   <RowConstraints maxHeight="50.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-               <Label prefHeight="17.0" prefWidth="206.0" text="Adresse du bien :" textFill="WHITE" GridPane.halignment="LEFT" GridPane.valignment="BOTTOM">
+               <Label prefHeight="17.0" prefWidth="206.0" text="Adresse du bien" textFill="WHITE" GridPane.halignment="LEFT" GridPane.valignment="BOTTOM">
                      <GridPane.margin>
                         <Insets />
                      </GridPane.margin>
@@ -68,7 +68,7 @@
                         <Insets right="10.0" />
                      </GridPane.margin>
                   </TextField>
-               <Label prefHeight="17.0" prefWidth="206.0" text="Nombre de pièces du bien :" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.valignment="BOTTOM">
+               <Label prefHeight="17.0" prefWidth="206.0" text="Nombre de pièces du bien" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.valignment="BOTTOM">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -78,7 +78,7 @@
                         <Insets right="10.0" />
                      </GridPane.margin>
                   </TextField>
-               <Label prefHeight="17.0" prefWidth="206.0" text="Surface habitable du bien :" textFill="WHITE" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.valignment="BOTTOM">
+               <Label prefHeight="17.0" prefWidth="206.0" text="Surface habitable du bien" textFill="WHITE" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.valignment="BOTTOM">
                      <GridPane.margin>
                         <Insets />
                      </GridPane.margin>
@@ -91,7 +91,7 @@
                         <Insets right="10.0" />
                      </GridPane.margin>
                   </TextField>
-               <Label prefHeight="17.0" prefWidth="206.0" text="Code Postal du bien :" textFill="WHITE" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
+               <Label prefHeight="17.0" prefWidth="206.0" text="Code Postal du bien" textFill="WHITE" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -101,7 +101,7 @@
                         <Insets right="10.0" />
                      </GridPane.margin>
                   </TextField>
-               <Label prefHeight="17.0" prefWidth="206.0" text="Numéro fiscal du bien :" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
+               <Label prefHeight="17.0" prefWidth="206.0" text="Numéro fiscal du bien" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -111,13 +111,13 @@
                         <Insets right="10.0" />
                      </GridPane.margin>
                   </TextField>
-               <Label prefHeight="17.0" prefWidth="206.0" text="Date d'ajout du bien :" textFill="WHITE" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
+               <Label prefHeight="17.0" prefWidth="206.0" text="Date d'ajout du bien" textFill="WHITE" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
                      <font>
                         <Font size="14.0" />
                      </font>
                   </Label>
                <Label fx:id="LabelDate" minHeight="30.0" prefHeight="18.0" prefWidth="206.0" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-               <Label prefHeight="17.0" prefWidth="206.0" text="Ville du bien :" textFill="WHITE" GridPane.halignment="LEFT" GridPane.rowIndex="4" GridPane.valignment="BOTTOM">
+               <Label prefHeight="17.0" prefWidth="206.0" text="Ville du bien" textFill="WHITE" GridPane.halignment="LEFT" GridPane.rowIndex="4" GridPane.valignment="BOTTOM">
                      <GridPane.margin>
                         <Insets />
                      </GridPane.margin>
@@ -130,7 +130,7 @@
                         <Insets right="10.0" />
                      </GridPane.margin>
                   </TextField>
-               <Label prefHeight="17.0" prefWidth="206.0" text="Type du bien :" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="4" GridPane.valignment="BOTTOM">
+               <Label prefHeight="17.0" prefWidth="206.0" text="Type du bien" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="4" GridPane.valignment="BOTTOM">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -140,13 +140,13 @@
                         <Insets right="10.0" />
                      </GridPane.margin>
                   </ChoiceBox>
-                  <Label fx:id="LieuImmeuble" prefHeight="17.0" prefWidth="206.0" text="Lieu dans l'immeuble :" textFill="WHITE" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="4" GridPane.valignment="BOTTOM">
+                  <Label fx:id="LieuImmeuble" prefHeight="17.0" prefWidth="206.0" text="Complément d'adresse" textFill="WHITE" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="4" GridPane.valignment="BOTTOM">
                      <font>
                         <Font size="14.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="FieldLieuImmeuble" minHeight="30.0" promptText="Lieu dans l'immeuble" GridPane.columnIndex="2" GridPane.rowIndex="5" />
-               <Label prefHeight="20.0" prefWidth="222.0" text="Sélectionner l'Immeuble du bien : " textFill="WHITE" GridPane.halignment="LEFT" GridPane.rowIndex="6" GridPane.valignment="BOTTOM">
+                  <TextField fx:id="FieldLieuImmeuble" minHeight="30.0" promptText="Complément d'adresse" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+               <Label prefHeight="20.0" prefWidth="222.0" text="Sélectionner l'Immeuble du bien" textFill="WHITE" GridPane.halignment="LEFT" GridPane.rowIndex="6" GridPane.valignment="BOTTOM">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -170,8 +170,8 @@
    <bottom>
       <GridPane prefHeight="30.0" prefWidth="766.0" BorderPane.alignment="CENTER">
         <columnConstraints>
-          <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="377.39996337890625" minWidth="10.0" prefWidth="259.0" />
-          <ColumnConstraints halignment="RIGHT" hgrow="ALWAYS" maxWidth="508.60003662109375" minWidth="10.0" prefWidth="507.0" />
+          <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="377.39996337890625" minWidth="10.0" prefWidth="336.80003662109374" />
+          <ColumnConstraints halignment="RIGHT" hgrow="ALWAYS" maxWidth="508.60003662109375" minWidth="10.0" prefWidth="429.59996337890624" />
         </columnConstraints>
         <rowConstraints>
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -206,6 +206,14 @@
                <GridPane.margin>
                   <Insets bottom="30.0" left="10.0" />
                </GridPane.margin>
+            </Button>
+            <Button fx:id="btnClear" mnemonicParsing="false" onAction="#Clear" prefHeight="36.0" prefWidth="118.0" text="Clear" GridPane.halignment="RIGHT">
+               <GridPane.margin>
+                  <Insets bottom="30.0" />
+               </GridPane.margin>
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
             </Button>
          </children>
       </GridPane>
