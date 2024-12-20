@@ -2,14 +2,13 @@ package net.mpvm.saeimmobilier.modele;
 
 
 import net.mpvm.saeimmobilier.sql.Query.Queryable;
-import org.controlsfx.control.PropertySheet;
 
 import java.util.ArrayList;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class Bail implements Queryable {
+public class Bail extends Queryable {
 	private int idBail;
 	private int nbMoisLoues;
 	private float provisionSurCharge;
@@ -27,7 +26,7 @@ public class Bail implements Queryable {
 	private Map<Locataire, Float> repartitionOrduresMenageres;
 	private Map<Locataire, Float> repartitionEntretien;
 	private boolean colocation;
-	private Bail(int idBail,ModeleDate dateDebut){
+	private Bail(int idBail, ModeleDate dateDebut){
 		this.idBail = idBail;
 		this.dateDebut = dateDebut;
 		this.biens = new ArrayList<>();
@@ -279,17 +278,25 @@ public class Bail implements Queryable {
 	}
 
 	@Override
-	public void save() throws QueryableException {
+	public void save() throws QbleException {
 
 	}
 
 	@Override
-	public void modify() throws QueryableException {
+	public void modify() throws QbleException {
 
 	}
 
 	@Override
-	public void delete() throws QueryableException {
+	public void delete() throws QbleException {
 
+	}
+
+	protected void setId(int id) throws QbleException {
+
+	}
+
+	public int selectId() throws QbleException {
+		return 0;
 	}
 }
