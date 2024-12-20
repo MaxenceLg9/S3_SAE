@@ -75,7 +75,7 @@ CREATE TABLE Bien(
                      TypeBien VARCHAR(20),
                      Surface DOUBLE,
                      NombrePieces INT,
-                     NumeroFiscal VARCHAR(50),
+                     NumeroFiscal VARCHAR(50) UNIQUE,
                      DateAjout DATE,
                      IdAssurance INT default 0,
                      IdImmeuble INT default 0,
