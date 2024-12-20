@@ -28,7 +28,7 @@ public class TestQueryElement {
     }
 
     @AfterEach
-    public void close() throws QueryElement.QueryException {
+    public void close() throws QueryElement.QEltException {
         if(selectQueryElement != null && !selectQueryElement.isClosed()) {
             selectQueryElement.close();
         }
@@ -39,7 +39,7 @@ public class TestQueryElement {
     }
 
     @Test
-    public void testSelectQueryBehaviour() throws QueryElement.QueryException, SQLException {
+    public void testSelectQueryBehaviour() throws QueryElement.QEltException, SQLException {
         selectQueryElement = new SelectQueryElement(Locataire.SELECT_QUERY);
         ResultSet rsQuery = selectQueryElement.execute();
         Connection connection = BD.getConnection(false);
@@ -50,7 +50,7 @@ public class TestQueryElement {
     }
 
     @Test
-    public void testUpdateQueryBehaviour() throws QueryElement.QueryException, SQLException {
+    public void testUpdateQueryBehaviour() throws QueryElement.QEltException, SQLException {
         updateQueryElement = new UpdateQueryElement(Locataire.INSERT_QUERY, false);
         updateQueryElement.setArgs(Map.of(1, "nom", 2, "prenom", 3, "email", 4, "M", 5, "telephone"));
         updateQueryElement.execute();
@@ -74,56 +74,56 @@ public class TestQueryElement {
     }
 
     @Test
-    public void testExecuteUpdateWithSelectQuery() throws QueryElement.QueryException {
+    public void testExecuteUpdateWithSelectQuery() throws QueryElement.QEltException {
         selectQueryElement = new SelectQueryElement(Locataire.INSERT_QUERY);
         selectQueryElement.setArgs(Map.of(1, "nom", 2, "prenom", 3, 'M', 4, "telephone", 5, "email"));
-        assertThrows(QueryElement.QueryException.class, () -> {
+        assertThrows(QueryElement.QEltException.class, () -> {
             selectQueryElement.execute();
         });
     }
 
     @Test
-    public void testExecuteSelectWithUpdateQuery() throws QueryElement.QueryException {
+    public void testExecuteSelectWithUpdateQuery() throws QueryElement.QEltException {
         updateQueryElement = new UpdateQueryElement(Locataire.SELECT_QUERY, false);
-        assertThrows(QueryElement.QueryException.class, () -> {
+        assertThrows(QueryElement.QEltException.class, () -> {
             updateQueryElement.execute();
         });
     }
 
     @Test
-    public void testUpdateQueryWithTooManyArgs() throws QueryElement.QueryException {
+    public void testUpdateQueryWithTooManyArgs() throws QueryElement.QEltException {
         updateQueryElement = new UpdateQueryElement(Locataire.SELECT_QUERY, false);
-        assertThrows(QueryElement.QueryException.class, () -> {
+        assertThrows(QueryElement.QEltException.class, () -> {
             updateQueryElement.setArgs(Map.of(1, "nom", 2, "prenom", 3, 'M', 4, "telephone", 5, "email"));
             updateQueryElement.execute();
         });
     }
 
     @Test
-    public void testSelectQueryWithTooManyArgs() throws QueryElement.QueryException {
+    public void testSelectQueryWithTooManyArgs() throws QueryElement.QEltException {
         selectQueryElement = new SelectQueryElement(Locataire.SELECT_QUERY);
-        assertThrows(QueryElement.QueryException.class, () -> {
+        assertThrows(QueryElement.QEltException.class, () -> {
             selectQueryElement.setArgs(Map.of(1, "nom", 2, "prenom", 3, 'M', 4, "telephone", 5, "email"));
             selectQueryElement.execute();
         });
     }
 
     @Test
-    public void testSelectResultSetWithGet() throws QueryElement.QueryException {
+    public void testSelectResultSetWithGet() throws QueryElement.QEltException {
         selectQueryElement = new SelectQueryElement(Locataire.SELECT_QUERY);
         assertEquals(selectQueryElement.execute(),selectQueryElement.getResultSet());
     }
 
     @Test
-    public void testGettingResultSetBeforeExecute() throws QueryElement.QueryException {
+    public void testGettingResultSetBeforeExecute() throws QueryElement.QEltException {
         selectQueryElement = new SelectQueryElement(Locataire.SELECT_QUERY);
-        assertThrows(QueryElement.QueryException.class, () -> {
+        assertThrows(QueryElement.QEltException.class, () -> {
             selectQueryElement.getResultSet();
         });
     }
 
     @Test
-    public void testCloseQuery() throws QueryElement.QueryException, SQLException {
+    public void testCloseQuery() throws QueryElement.QEltException, SQLException {
         selectQueryElement = new SelectQueryElement(Locataire.SELECT_QUERY);
         updateQueryElement = new UpdateQueryElement(Locataire.INSERT_QUERY,false);
 
@@ -137,7 +137,7 @@ public class TestQueryElement {
     }
 
     @Test
-    public void testGetNbArgs() throws QueryElement.QueryException {
+    public void testGetNbArgs() throws QueryElement.QEltException {
         selectQueryElement = new SelectQueryElement(Locataire.SELECT_QUERY);
         updateQueryElement = new UpdateQueryElement(Locataire.INSERT_QUERY, false);
 
