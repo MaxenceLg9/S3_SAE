@@ -243,11 +243,9 @@ public final class Immeuble extends Bien{
 	}
 
 	public static class ImmeubleException extends BienException {
-		public ImmeubleException(String message) {
-			this(message, null);
-		}
-		public ImmeubleException(String message, SQLException e) {
-			super(message, e);
-		}
-	}
+
+        public ImmeubleException(String message, SQLException e) {
+            super(message, e);
+        }
+    }
 }
