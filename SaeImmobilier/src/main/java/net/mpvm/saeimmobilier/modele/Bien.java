@@ -77,7 +77,7 @@ public abstract class Bien implements Queryable {
                                 rs.getString("Ville"),
                                 rs.getInt("CodePostal"),
                                 rs.getString("Adresse"),
-                                rs.getInt("IdBien")));
+                                rs.getInt("IdImmeuble")));
                         break;
                 }
             }

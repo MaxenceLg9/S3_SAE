@@ -35,6 +35,7 @@ public class CtrlViewBiens {
         }
         vBoxContent.getChildren().clear();
 
+        System.out.println(biens.size());
         for (Bien b : biens.values()) {
             GridPane gp = new GridPane();
             ColumnConstraints col1 = new ColumnConstraints();
