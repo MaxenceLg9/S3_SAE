@@ -10,6 +10,7 @@ import net.mpvm.saeimmobilier.vue.VueAccueil;
 import net.mpvm.saeimmobilier.vue.VueConnexion;
 import net.mpvm.saeimmobilier.vue.VueHome;
 
+import java.sql.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -49,8 +50,7 @@ public class CtrlNewBien {
 
     @FXML
     public void initialize() {
-        this.currentDate = new Date(1,1,1);
-        this.datesql = new java.sql.Date(currentDate.getCurrentDateAsLong());
+        this.datesql = new Date(new ModeleDate(1, 1, 1).getCurrentDateAsLong());
         fieldsetup();
 
         LocalDate currentDate = LocalDate.now();
@@ -64,8 +64,21 @@ public class CtrlNewBien {
 
         // Initialize the list of Immeubles
         if (listImmeubles != null) {
-            Immeuble immeuble = new Immeuble("Toulouse", 31400, "Rue de la paix");
+            Immeuble immeuble = null;
+            try {
+                immeuble = new Immeuble.IBuilder("Toulouse", 31400, "Rue de la paix", "AAAAAAAAAA", Date.valueOf(LocalDate.now())).build();
+            } catch (Bien.BienException e) {
+                e.printStackTrace();
+            }
             listImmeubles.getItems().add(immeuble);
+            try {
+                List<Immeuble> immeubles = Immeuble.findAll();
+                for (Immeuble i : immeubles) {
+                    listImmeubles.getItems().add(i);
+                }
+            } catch (Immeuble.ImmeubleException e) {
+                throw new RuntimeException(e);
+            }
             System.out.println(listImmeubles.getItems().getFirst().getAdresse());
         } else {
             System.out.println("ChoiceBox listImmeubles is not injected");
@@ -101,13 +114,19 @@ public class CtrlNewBien {
 
         this.listImmeubles.setOnAction(actionEvent -> {
             if (listImmeubles.getValue().getTypeBien() == TypeBien.IMMEUBLE) {
-                this.FieldAdresse.setText(listImmeubles.getItems().getFirst().getAdresse());
-                this.FieldCodePostal.setText(String.valueOf(listImmeubles.getItems().getFirst().getCodePostal()));
-                this.FieldVille.setText(listImmeubles.getItems().getFirst().getVille());
+                this.FieldAdresse.setText(listImmeubles.getValue().getAdresse());
+                this.FieldAdresse.setEditable(false);
+                this.FieldCodePostal.setText(String.valueOf(listImmeubles.getValue().getCodePostal()));
+                this.FieldCodePostal.setEditable(false);
+                this.FieldVille.setText(listImmeubles.getValue().getVille());
+                this.FieldVille.setEditable(false);
             } else {
-                this.FieldAdresse.setText(null);
-                this.FieldCodePostal.setText(null);
-                this.FieldVille.setText(null);
+                this.FieldAdresse.setText("");
+                this.FieldAdresse.setEditable(true);
+                this.FieldCodePostal.setText("");
+                this.FieldCodePostal.setEditable(true);
+                this.FieldVille.setText("");
+                this.FieldVille.setEditable(true);
             }
         });
 
@@ -130,48 +149,50 @@ public class CtrlNewBien {
 
     @FXML
     public void ajouterBien(ActionEvent actionEvent) {
-                try {
-                    switch (this.ListTypeBien.getValue()) {
-                        case TypeBien.HABITATION:
-                            if (fieldsNotEmptyBienLouable()) {
-                                new Habitation(this.FieldLieuImmeuble.getText(),
-                                        Integer.parseInt(this.FieldNbPieces.getText()),
-                                        this.FieldNumFisc.getText(),
-                                        this.listImmeubles.getItems().getFirst(),
-                                        Float.parseFloat(this.FieldSurface.getText()), this.datesql).save();
-                            }else {
-                                alertFieldsEmptybienLouable();
-                            }
-                            break;
-
-
-                        case TypeBien.GARAGE:
-                            if (fieldsNotEmptyBienLouable()) {
-                                new Garage(this.FieldLieuImmeuble.getText(),
-                                        Integer.parseInt(this.FieldNbPieces.getText()),
-                                        this.FieldNumFisc.getText(),
-                                        this.listImmeubles.getItems().getFirst(),
-                                        Float.parseFloat(this.FieldSurface.getText()), this.datesql).save();
-                            } else {
-                                alertFieldsEmptybienLouable();
-                            }
-                            break;
-
-                        case TypeBien.IMMEUBLE:
-                            if (fieldsNotEmptyImmeuble()){
-                                new Immeuble(this.FieldVille.getText(),
-                                        Integer.parseInt(this.FieldCodePostal.getText()),
-                                        this.FieldAdresse.getText()).save();
+        try {
+            switch (this.ListTypeBien.getValue()) {
+                case TypeBien.HABITATION:
+                    if (fieldsNotEmptyBienLouable()) {
+                        new Habitation.HBuilder(this.FieldLieuImmeuble.getText(),
+                                Integer.parseInt(this.FieldNbPieces.getText()),
+                                this.FieldNumFisc.getText(),
+                                this.listImmeubles.getItems().getFirst(),
+                                Float.parseFloat(this.FieldSurface.getText()), this.datesql).build().save();
                     }else {
-                                alertFieldsEmpty();
-                            }
-                    break;
+                        alertFieldsEmptybienLouable();
                     }
+                    break;
 
-                } catch (Queryable.QueryableException e) {
-                   e.getSqlException().printStackTrace();
-                }
-                System.out.print("Bouh ! ");
+                case TypeBien.GARAGE:
+                    if (fieldsNotEmptyBienLouable()) {
+                        new Garage.GBuilder(this.FieldLieuImmeuble.getText(),
+                                Integer.parseInt(this.FieldNbPieces.getText()),
+                                this.FieldNumFisc.getText(),
+                                this.listImmeubles.getItems().getFirst(),
+                                Float.parseFloat(this.FieldSurface.getText()), this.datesql).build().save();
+                    } else {
+                        alertFieldsEmptybienLouable();
+                    }
+                    break;
+
+                case TypeBien.IMMEUBLE:
+                    if (fieldsNotEmptyImmeuble()){
+                        new Immeuble.IBuilder(
+                                this.FieldVille.getText(),
+                                Integer.parseInt(this.FieldCodePostal.getText()),
+                                this.FieldAdresse.getText(),
+                                this.FieldNumFisc.getText(),
+                                this.datesql).build().save();
+                    }else {
+                        alertFieldsEmpty();
+                    }
+                    break;
+            }
+
+        } catch (Queryable.QbleException e) {
+            e.getSqlException().printStackTrace();
+        }
+        System.out.print("Bouh ! ");
     }
 
 
@@ -184,7 +205,7 @@ public class CtrlNewBien {
             }
         }
         return true;
-        }
+    }
 
 
     private boolean fieldsNotEmptyImmeuble(){
@@ -259,6 +280,15 @@ public class CtrlNewBien {
 
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public void Clear(ActionEvent actionEvent) {
+        for(TextField textField : fieldsLogement){
+            if(!textField.getText().isEmpty()){
+                textField.setText("");
+                textField.setEditable(true);
+            }
         }
     }
 

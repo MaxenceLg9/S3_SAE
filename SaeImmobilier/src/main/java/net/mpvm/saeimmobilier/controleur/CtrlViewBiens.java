@@ -96,7 +96,7 @@ public class CtrlViewBiens {
     private void deleteBien(int id) {
         try {
             biens.get(id).delete();
-        } catch (Bien.QueryableException e) {
+        } catch (Queryable.QbleException e) {
             throw new RuntimeException(e);
         }
         afficheBiens();
