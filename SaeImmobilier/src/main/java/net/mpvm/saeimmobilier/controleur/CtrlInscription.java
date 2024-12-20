@@ -36,7 +36,7 @@ public class CtrlInscription {
     public CheckBox checkBoxVisibilite;
 
     @FXML
-    private TextField fieldMail,fieldTelephone;
+    private TextField fieldMail;
 
 
     private ArrayList<TextField> fieldsMDP;
