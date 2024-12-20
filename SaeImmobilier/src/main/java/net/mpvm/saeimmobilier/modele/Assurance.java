@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public class Assurance  {
+public class Assurance extends Queryable{
 
     private int idAssurance;
     private int Annee;
@@ -76,10 +76,6 @@ public class Assurance  {
         return assurances;
     }
 
-    // Méthode pour obtenir le montant de la quotité
-    public float getMontantQuotite() {
-        return montantQuotite;
-    }
 
     public void setMontantQuotite(float montantQuotite) {
         this.montantQuotite = montantQuotite;
@@ -95,13 +91,6 @@ public class Assurance  {
     }
 
     // Méthode pour valider la cohérence des montants calculés
-    public boolean validerCoherenceAssurance() {
-        float totalCalcule = this.quotiteJurisprudence + this.protectionJuridique + this.prime;
-        if (totalPrime != totalCalcule) {
-            throw new IllegalStateException("Incohérence détectée dans les montants calculés.");
-        }
-        return true;
-    }
 
     // Méthode pour sauvegarder une assurance
     public void save() throws AssuranceException {
@@ -194,9 +183,57 @@ public class Assurance  {
     public float getAugmentationAnnuelle() {
         return augmentationAnnuelle;
     }
-
     public void setAugmentationAnnuelle(float augmentationAnnuelle) {
         this.augmentationAnnuelle = augmentationAnnuelle;
+    }
+
+    public void setBien(Optional<Bien> bien) {
+        this.bien = bien;
+    }
+    public void save() throws AssuranceException {
+        // Valider les données de l'assurance avant l'insertion
+        if (this.getProtectionJuridique() < 0) {
+            throw new AssuranceException("La protection juridique ne peut pas être négative.");
+        }
+        if (this.getQuotiteJurisprudence() < 0) {
+            throw new AssuranceException("La quotité juridique ne peut pas être négative.");
+        }
+        if (this.getPrime() < 0) {
+            throw new AssuranceException("La prime ne peut pas être négative.");
+        }
+        if (this.getTypeContrat() == null) {
+            throw new AssuranceException("Le type de contrat est obligatoire.");
+        }
+
+        try (UpdateQueryElement query = new UpdateQueryElement(
+                "INSERT INTO Assurance (ProtectionJuridique, QuotitéJuridique, Prime, TypeContrat) VALUES (?, ?, ?, ?)",
+                true)) {
+
+            // Préparer les paramètres de la requête
+            query.setArgs(Map.of(
+                    1, this.getProtectionJuridique(),
+                    2, this.getQuotiteJurisprudence(),
+                    3, this.getPrime(),
+                    4, this.getTypeContrat().toString()
+            ));
+
+            // Exécution de la requête
+            query.execute();
+            System.out.println("Insertion réussie. Le déclencheur CalculTotalPrime mettra à jour TotalPrime.");
+
+        } catch (QueryElement.QEltException e) {
+            // Gestion d'une erreur SQL et affichage du contexte
+            String errorMessage = String.format(
+                    "Erreur lors de l'ajout de l'assurance : ProtectionJuridique=%f, QuotitéJuridique=%f, Prime=%f, TypeContrat=%s",
+                    this.getProtectionJuridique(), this.getQuotiteJurisprudence(), this.getPrime(), this.getTypeContrat().toString()
+            );
+            throw new AssuranceException(errorMessage, e.getSqlException());
+        }
+    }
+
+    @Override
+    public void modify() throws QueryableException {
+
     }
 
     public int getAnnee() {
@@ -253,10 +290,28 @@ public class Assurance  {
         }
     }
 
+    protected void setId(int id) throws QbleException {
 
-    // Classe d'exception pour la gestion des erreurs
-    public static class AssuranceException extends Queryable.QueryableException {
-        public AssuranceException(String message) {
+    }
+
+    public int selectId() throws QbleException {
+        return 0;
+    }
+
+    public static class ABuilder extends Queryable.Builder{
+
+        ABuilder() {
+
+        }
+
+        @Override
+        public Assurance build() {
+            return new Assurance(1,TypeContrat.AIDE_JURIDIQUE);
+        }
+    }
+
+    public static class AssuranceException extends Queryable.QbleException {
+        public AssuranceException(String message){
             super(message);
         }
 
