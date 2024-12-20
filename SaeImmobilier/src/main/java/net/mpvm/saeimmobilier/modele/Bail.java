@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Bail implements Queryable {
+public class Bail extends Queryable {
 	private int idBail;
 	private int nbMoisLoues;
 	private float provisionSurCharge;
@@ -16,8 +16,8 @@ public class Bail implements Queryable {
 	private float totalCharge;
 	private float loyer;
 	private float regularisationCharge;
-	private Date dateDebut;
-	private Date dateFin;
+	private ModeleDate dateDebut;
+	private ModeleDate dateFin;
 	private ArrayList<BienLouable> biens;
 	private ArrayList<Locataire> locataires;
 	private ArrayList<Charges> charges;
@@ -26,7 +26,7 @@ public class Bail implements Queryable {
 	private Map<Locataire, Float> repartitionOrduresMenageres;
 	private Map<Locataire, Float> repartitionEntretien;
 	private boolean colocation;
-	private Bail(int idBail,Date dateDebut){
+	private Bail(int idBail, ModeleDate dateDebut){
 		this.idBail = idBail;
 		this.dateDebut = dateDebut;
 		this.biens = new ArrayList<>();
@@ -38,7 +38,7 @@ public class Bail implements Queryable {
 		this.colocation = false;
 	}
 	// Constructeur
-	public Bail(Date dateDebut) {
+	public Bail(ModeleDate dateDebut) {
 		this.dateDebut = dateDebut;
 		this.biens = new ArrayList<>();
 		this.repartitionOrduresMenageres = new HashMap<>();
@@ -110,7 +110,7 @@ public class Bail implements Queryable {
 	}
 
 	// Méthode pour obtenir la date de fin en fonction de la durée
-	public Date calculerDateFin() {
+	public ModeleDate calculerDateFin() {
 		if (this.dateDebut == null || this.nbMoisLoues <= 0) {
 			return null;
 		}
@@ -180,19 +180,19 @@ public class Bail implements Queryable {
 		this.regularisationCharge = regularisationCharge;
 	}
 
-	public Date getDateDebut() {
+	public ModeleDate getDateDebut() {
 		return dateDebut;
 	}
 
-	public void setDateDebut(Date dateDebut) {
+	public void setDateDebut(ModeleDate dateDebut) {
 		this.dateDebut = dateDebut;
 	}
 
-	public Date getDateFin() {
+	public ModeleDate getDateFin() {
 		return dateFin;
 	}
 
-	public void setDateFin(Date dateFin) {
+	public void setDateFin(ModeleDate dateFin) {
 		this.dateFin = dateFin;
 	}
 
@@ -278,17 +278,25 @@ public class Bail implements Queryable {
 	}
 
 	@Override
-	public void save() throws QueryableException {
+	public void save() throws QbleException {
 
 	}
 
 	@Override
-	public void modify() throws QueryableException {
+	public void modify() throws QbleException {
 
 	}
 
 	@Override
-	public void delete() throws QueryableException {
+	public void delete() throws QbleException {
 
+	}
+	
+	protected void setId(int id) throws QbleException {
+
+	}
+
+	public int selectId() throws QbleException {
+		return 0;
 	}
 }
