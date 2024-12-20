@@ -14,46 +14,47 @@ public final class SelectQueryElement extends QueryElement<ResultSet> {
     private final PreparedStatement fakeStatement;
     private ResultSet rs;
 
-    public SelectQueryElement(String query) throws QueryException {
+    public SelectQueryElement(String query) throws QEltException {
         super(query, false);
         try {
             fakeStatement = this.prepareStatement();
         } catch (SQLException e) {
-            throw new QueryException("Error creating fake statement", e);
+            throw new QEltException("Error creating fake statement", e);
         }
         //methods to get the number of lines obtained by the query
 
     }
 
     @Override
-    public QueryElement<ResultSet> setArgs(Map<Integer,Object> args) throws QueryException {
+    public QueryElement<ResultSet> setArgs(Map<Integer,Object> args) throws QEltException {
         //adding the args for the fake query
         if(args.size() != getNArgs())
-            throw new QueryException("Error, wrong number of args");
+            throw new QEltException("Error, wrong number of args");
         for(Map.Entry<Integer,Object> entry : args.entrySet())
             try {
                 fakeStatement.setObject(entry.getKey(), entry.getValue());
             } catch (SQLException sqlException) {
-                throw new QueryException("Error setting args", sqlException);
+                throw new QEltException("Error setting args", sqlException);
             }
         //executing the overrided method
         return super.setArgs(args);
     }
 
     @Override
-    public ResultSet execute() throws QueryException {
+    public ResultSet execute() throws QEltException {
+        //TODO : migration to getResult and map instead of ResultSet with full Exception type SQL
         //execute the preparedStatement with the query
         try {
             rs = this.getPreparedStatement().executeQuery();
         } catch (SQLException e) {
-            throw new QueryException("Error, select query can't be used to modify the database", e);
+            throw new QEltException("Error, select query can't be used to modify the database", e);
         }
         //print the number of rows obtained by the query
         System.out.println(this.getClass().getSimpleName() + " : " + setRowCount() + " rows selected");
         return rs;
     }
 
-    private int setRowCount() throws QueryException {
+    private int setRowCount() throws QEltException {
         //get the false resultset
         try(ResultSet rs2 = this.executeFakeStatement()) {
             int rows = 0;
@@ -65,24 +66,24 @@ public final class SelectQueryElement extends QueryElement<ResultSet> {
             //count the number of lines
             return rows;
         } catch (SQLException e) {
-            throw new QueryException("Error setting row count", e);
+            throw new QEltException("Error setting row count", e);
         }
     }
 
-    public ResultSet getResultSet() throws QueryException {
+    public ResultSet getResultSet() throws QEltException {
         if(rs == null)
-            throw new QueryException("Result is null, maybe you should try executing the query first");
+            throw new QEltException("Result is null, maybe you should try executing the query first");
         try{
             if(rs.isClosed())
-                throw new QueryException("ResultSet is closed");
+                throw new QEltException("ResultSet is closed");
         }
         catch(SQLException e){
-            throw new QueryException("Error : cannot get the resultSet");
+            throw new QEltException("Error : cannot get the resultSet");
         }
         return this.rs;
     }
 
-    public List<Map<String,Object>> getResult() throws QueryException {
+    public List<Map<String,Object>> getResult() throws QEltException {
 
         List<Map<String, Object>> rows = new ArrayList<>();
         try {
@@ -97,18 +98,18 @@ public final class SelectQueryElement extends QueryElement<ResultSet> {
             }
         }
         catch(SQLException sqlException){
-            throw new QueryException("Error getting the result", sqlException);
+            throw new QEltException("Error getting the result", sqlException);
         }
         return rows;
     }
 
-    public void close() throws QueryException {
+    public void close() throws QEltException {
         try {
             if(rs != null)
                 rs.close();
             super.close();
         }catch (SQLException e){
-            throw new QueryException("Error closing resultSet", e);
+            throw new QEltException("Error closing resultSet", e);
         }
     }
 
@@ -116,13 +117,13 @@ public final class SelectQueryElement extends QueryElement<ResultSet> {
      * @return boolean : true if the resultSet is closed && the superclass {@code QueryElement} too, false otherwise
      * @parameters none
      * @description check if the SelectQueryElement is closed
-     * @throws QueryException
+     * @throws QEltException
      */
-    public boolean isClosed() throws QueryException {
+    public boolean isClosed() throws QEltException {
         try {
             return super.isClosed() && rs.isClosed();
         }catch(SQLException s){
-            throw new QueryException("Error checking if the ResultSet is closed", s);
+            throw new QEltException("Error checking if the ResultSet is closed", s);
         }
     }
 

@@ -6,7 +6,7 @@ public class Travaux {
 	private Float Montant;
 	private Float MontantNonDeductible;
 	private Float Reduction;
-	private Date Date;
+	private ModeleDate Date;
 	private String Nature;
 	private String NumeroDevis;
 	private Float MontantADeclarer;
@@ -16,13 +16,13 @@ public class Travaux {
 	private Bien bien;
 
 
-	public Travaux(String NumeroDeFacture, String Entreprise, Date Date) {
+	public Travaux(String NumeroDeFacture, String Entreprise, ModeleDate Date) {
 		this.Date = Date;
 		this.NumeroFacture = NumeroDeFacture;
 		this.Entreprise = Entreprise;
 	}
 
-	public Date getDate() {
+	public ModeleDate getDate() {
 		return this.Date;
 	}
 
@@ -54,7 +54,7 @@ public class Travaux {
 		return this.Reduction;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(ModeleDate date) {
 		this.Date = date;
 	}
 

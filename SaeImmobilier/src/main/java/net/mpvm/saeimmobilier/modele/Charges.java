@@ -5,12 +5,12 @@ public class Charges {
     private Bail bail;
     private int idCharges;
     private float montant;
-    private Date dateReleve;
-    public Charges(Date dateReleve){
+    private ModeleDate dateReleve;
+    public Charges(ModeleDate dateReleve){
         this.dateReleve = dateReleve;
     }
     // Constructeur
-    private Charges(int idCharges,Date dateReleve) {
+    private Charges(int idCharges, ModeleDate dateReleve) {
         this.idCharges = idCharges;
         this.dateReleve = dateReleve;
     }
@@ -44,11 +44,11 @@ public class Charges {
         this.montant = montant;
     }
 
-    public Date getDateReleve() {
+    public ModeleDate getDateReleve() {
         return dateReleve;
     }
 
-    public void setDateReleve(Date dateReleve) {
+    public void setDateReleve(ModeleDate dateReleve) {
         this.dateReleve = dateReleve;
     }
 

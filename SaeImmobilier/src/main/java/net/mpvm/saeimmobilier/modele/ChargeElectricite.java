@@ -2,12 +2,12 @@ package net.mpvm.saeimmobilier.modele;
 
 public class ChargeElectricite extends Charges {
     private int idChargeElectricite;
-    private ChargeElectricite(Date dateReleve,int idChargeElectricite) {
+    private ChargeElectricite(ModeleDate dateReleve, int idChargeElectricite) {
         super(dateReleve);
         this.idChargeElectricite = idChargeElectricite;
     }
     // Constructeur
-    public ChargeElectricite(Date dateReleve) {
+    public ChargeElectricite(ModeleDate dateReleve) {
         super(dateReleve);
     }
 

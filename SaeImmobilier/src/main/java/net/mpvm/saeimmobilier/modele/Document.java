@@ -3,17 +3,17 @@ package net.mpvm.saeimmobilier.modele;
 public class Document {
     private int idDocument;
     private String cheminDocument;
-    private Date dateAjout;
+    private ModeleDate dateAjout;
     private Bail bail;
     // Constructeur privé qui demande tous les attributs
-    private Document(int idDocument, String cheminDocument, Date dateAjout) {
+    private Document(int idDocument, String cheminDocument, ModeleDate dateAjout) {
         this.idDocument = idDocument;
         this.cheminDocument = cheminDocument;
         this.dateAjout = dateAjout;
     }
 
     // Constructeur public qui demande tous les attributs sauf idDocument
-    public Document(String cheminDocument, Date dateAjout) {
+    public Document(String cheminDocument, ModeleDate dateAjout) {
         this.cheminDocument = cheminDocument;
         this.dateAjout = dateAjout;
     }
@@ -27,7 +27,7 @@ public class Document {
         return cheminDocument;
     }
 
-    public Date getDateAjout() {
+    public ModeleDate getDateAjout() {
         return dateAjout;
     }
     public Bail getBail() {
@@ -41,7 +41,7 @@ public class Document {
     public void setIdDocument(int idDocument) {
         this.idDocument = idDocument;
     }
-    public void setDateAjout(Date dateAjout) {
+    public void setDateAjout(ModeleDate dateAjout) {
         this.dateAjout = dateAjout;
     }
     public void setBail(Bail bail) {

@@ -1,17 +1,15 @@
 package net.mpvm.saeimmobilier.modele;
 
-import java.util.ArrayList;
-
 public class Paiement {
     private int idPaiement;  // Attribut unique non demandé dans le constructeur public
     private float montant;
-    private Date datePaiement;
+    private ModeleDate datePaiement;
     private TypePaiement typePaiement;
     private StatutPaiement statutPaiement;
     private Bail bail;
 
     // Constructeur privé qui demande tous les attributs, y compris idPaiement
-    private Paiement(int idPaiement, float montant, Date datePaiement, TypePaiement typePaiement, StatutPaiement statutPaiement) {
+    private Paiement(int idPaiement, float montant, ModeleDate datePaiement, TypePaiement typePaiement, StatutPaiement statutPaiement) {
         this.idPaiement = idPaiement;
         this.montant = montant;
         this.datePaiement = datePaiement;
@@ -20,7 +18,7 @@ public class Paiement {
     }
 
     // Constructeur public qui demande tous les attributs sauf idPaiement
-    public Paiement(float montant, Date datePaiement, TypePaiement typePaiement, StatutPaiement statutPaiement) {
+    public Paiement(float montant, ModeleDate datePaiement, TypePaiement typePaiement, StatutPaiement statutPaiement) {
         this.montant = montant;
         this.datePaiement = datePaiement;
         this.typePaiement = typePaiement;
@@ -36,7 +34,7 @@ public class Paiement {
         return montant;
     }
 
-    public Date getDatePaiement() {
+    public ModeleDate getDatePaiement() {
         return datePaiement;
     }
 
@@ -53,7 +51,7 @@ public class Paiement {
         this.montant = montant;
     }
 
-    public void setDatePaiement(Date datePaiement) {
+    public void setDatePaiement(ModeleDate datePaiement) {
         this.datePaiement = datePaiement;
     }
 

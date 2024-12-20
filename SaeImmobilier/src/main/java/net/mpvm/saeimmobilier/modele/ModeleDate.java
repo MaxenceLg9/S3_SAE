@@ -4,14 +4,14 @@ package net.mpvm.saeimmobilier.modele;
 import java.time.LocalDate;
 import java.time.ZoneId;
 
-public class Date {
+public class ModeleDate {
 	private Integer annee;
 	private Integer mois;
 	private Integer jour;
 	private String dateComplete;
 
 	// Constructeur avec validation
-	public Date(Integer annee, Integer mois, Integer jour) {
+	public ModeleDate(Integer annee, Integer mois, Integer jour) {
 		if (isNotValidDate(annee, mois, jour)) {
 			throw new IllegalArgumentException("Date invalide : " + jour + "/" + mois + "/" + annee);
 		}
@@ -81,7 +81,7 @@ public class Date {
 			default -> 31;
 		};
 	}
-	public Date addMonths(int months) {
+	public ModeleDate addMonths(int months) {
 		int newMois = this.mois + months;
 		int newAnnee = this.annee;
 
@@ -99,7 +99,7 @@ public class Date {
 		int maxJour = getDaysInMonth(newAnnee, newMois);
 		int newJour = Math.min(this.jour, maxJour);
 
-		return new Date(newAnnee, newMois, newJour);
+		return new ModeleDate(newAnnee, newMois, newJour);
 	}
 	// Vérifie si une année est bissextile
 	private boolean isLeapYear(Integer annee) {
@@ -123,12 +123,12 @@ public class Date {
 		return this.dateComplete;
 	}
 
-	public static Date getCurrentDate() {
+	public static ModeleDate getCurrentDate() {
 		LocalDate currentDate = LocalDate.now();
 		int annee = currentDate.getYear();
 		int mois = currentDate.getMonthValue();
 		int jour = currentDate.getDayOfMonth();
-		return new Date(annee, mois, jour);
+		return new ModeleDate(annee, mois, jour);
 	}
 
 	public long getCurrentDateAsLong() {

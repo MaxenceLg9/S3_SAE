@@ -4,17 +4,17 @@ import java.sql.SQLException;
 
 public final class UpdateQueryElement extends QueryElement<Integer> {
 
-    public UpdateQueryElement(String query, boolean commit) throws QueryException {
+    public UpdateQueryElement(String query, boolean commit) throws QEltException {
         super(query,commit);
     }
 
     @Override
-    public Integer execute() throws QueryException {
+    public Integer execute() throws QEltException {
         int row;
         try {
             row = preparedStatement.executeUpdate();
         } catch (SQLException sqlException) {
-            throw new QueryException("Error executing query", sqlException);
+            throw new QEltException("Error executing query", sqlException);
         }
         System.out.println(this.getClass().getSimpleName() + " : " + row + " rows updated");
         return row;

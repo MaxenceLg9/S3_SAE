@@ -4,7 +4,7 @@ package net.mpvm.saeimmobilier.modele;
 
 public class Caution {
     private int idCaution;
-    private Date dateNaissance;
+    private ModeleDate dateNaissance;
     private String lieuNaissance;
     private String situationFamiliale;
     private String profession;
@@ -30,7 +30,7 @@ public class Caution {
     }
 
     // Getters
-    public Date getDateNaissance() {
+    public ModeleDate getDateNaissance() {
         return dateNaissance;
     }
 
@@ -67,7 +67,7 @@ public class Caution {
     }
 
     // Setters
-    public void setDateNaissance(Date dateNaissance) {
+    public void setDateNaissance(ModeleDate dateNaissance) {
         this.dateNaissance = dateNaissance;
     }
 

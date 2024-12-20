@@ -7,11 +7,11 @@ public class ChargeEau extends Charges{
     private float PartieFixe;
     private float PartieVariable;
     private int AncienIndice;
-    private ChargeEau(Date DateReleve,int IdChargeEau){
+    private ChargeEau(ModeleDate DateReleve, int IdChargeEau){
         super(DateReleve);
         this.IdChargeEau = IdChargeEau;
     }
-    public ChargeEau(Date DateReleve) {
+    public ChargeEau(ModeleDate DateReleve) {
 
         super(DateReleve);
     }

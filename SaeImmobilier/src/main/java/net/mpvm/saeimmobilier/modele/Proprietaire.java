@@ -140,8 +140,8 @@ public class Proprietaire {
 									5, this.getMotDePasse()
 							))
 					.execute();
-		} catch (QueryElement.QueryException queryException) {
-			throw new ProprietaireException("Erreur lors de l'ajout du propriétaire : ", queryException.getSqlException());
+		} catch (QueryElement.QEltException QEltException) {
+			throw new ProprietaireException("Erreur lors de l'ajout du propriétaire : ", QEltException.getSqlException());
 		}
 	}
 
@@ -156,8 +156,8 @@ public class Proprietaire {
 			int count = results.getInt("count");
 			return count > 0;
 
-		} catch (QueryElement.QueryException | SQLException e) {
-			throw new ProprietaireException("Erreur lors de la vérification de l'adresse e-mail : ", e instanceof SQLException ? e : ((QueryElement.QueryException) e).getSqlException());
+		} catch (QueryElement.QEltException | SQLException e) {
+			throw new ProprietaireException("Erreur lors de la vérification de l'adresse e-mail : ", e instanceof SQLException ? e : ((QueryElement.QEltException) e).getSqlException());
 		}
 	}
 	public static List<Proprietaire> findALl() throws Proprietaire.ProprietaireException {
@@ -175,13 +175,13 @@ public class Proprietaire {
 						));
 			}
 		}
-		catch (QueryElement.QueryException | SQLException queryException){
+		catch (QueryElement.QEltException | SQLException QEltException){
 			throw new Proprietaire.ProprietaireException("Erreur lors de la récupération des propriétaires");
 		}
 		System.out.println("fin");
 		return p;
 	}
-	public static class ProprietaireException extends Queryable.QueryableException {
+	public static class ProprietaireException extends Queryable.QbleException {
 		public ProprietaireException(String message){
 			super(message);
 		}

@@ -17,14 +17,14 @@ public abstract class QueryElement<T> implements Closeable {
     private final Connection connection;
     private final long nArgs;
 
-    public QueryElement(String query, boolean commit) throws QueryException {
+    public QueryElement(String query, boolean commit) throws QEltException {
         this.query = query;
         nArgs = query.chars().filter(ch -> ch == '?').count();
         try {
             this.connection = BD.getConnection(commit);
             this.preparedStatement = this.prepareStatement();
         } catch (SQLException sqlException) {
-            throw new QueryException("Cannot create the query : Statement  or Connection problem", sqlException);
+            throw new QEltException("Cannot create the query : Statement  or Connection problem", sqlException);
         }
     }
 
@@ -47,82 +47,82 @@ public abstract class QueryElement<T> implements Closeable {
     /*
      *
      */
-    public boolean isClosed() throws QueryException{
+    public boolean isClosed() throws QEltException {
         try{
             return this.connection.isClosed() && this.preparedStatement.isClosed();
         }
-        catch(SQLException e){
-            throw new QueryException("error when checking if the queryElement is closed", e);
+        catch(SQLException sqlException){
+            throw new QEltException("error when checking if the queryElement is closed", sqlException);
         }
     }
 
-    public QueryElement<T> setArgs(Map<Integer,Object> args) throws QueryException {
+    public QueryElement<T> setArgs(Map<Integer,Object> args) throws QEltException {
         if(args.size() != nArgs)
-            throw new QueryException("Error, wrong number of args");
+            throw new QEltException("Error, wrong number of args");
         for(Map.Entry<Integer,Object> entry : args.entrySet()) {
             try {
                 preparedStatement.setObject(entry.getKey(), entry.getValue());
-            } catch (SQLException e) {
-                throw new QueryException("Error setting args", e);
+            } catch (SQLException sqlException) {
+                throw new QEltException("Error setting args", sqlException);
             }
         }
         return this;
     }
 
-    public void close() throws QueryException {
+    public void close() throws QEltException {
         try {
             if(preparedStatement != null)
                 preparedStatement.close();
             if(connection != null)
                 connection.close();
-        } catch (SQLException e) {
-            throw new QueryException("Error closing connection or Statement", e);
+        } catch (SQLException sqlException) {
+            throw new QEltException("Error closing connection or Statement", sqlException);
         }
     }
 
-    public void rollback() throws QueryException {
+    public void rollback() throws QEltException {
         try {
             this.connection.rollback();
-        } catch (SQLException e) {
-            throw new QueryException("Error rolling back", e);
+        } catch (SQLException sqlException) {
+            throw new QEltException("Error rolling back", sqlException);
         }
     }
 
-    public void rollback(Savepoint savepoint) throws QueryException {
+    public void rollback(Savepoint savepoint) throws QEltException {
         try {
             this.connection.rollback(savepoint);
-        } catch (SQLException e) {
-            throw new QueryException("Error rolling back to the savepoint", e);
+        } catch (SQLException sqlException) {
+            throw new QEltException("Error rolling back to the savepoint", sqlException);
         }
     }
 
-    public Savepoint savePoint() throws QueryException{
+    public Savepoint savePoint() throws QEltException {
         try {
             return this.connection.setSavepoint();
-        } catch (SQLException e) {
-            throw new QueryException("Error creating savepoint", e);
+        } catch (SQLException sqlException) {
+            throw new QEltException("Error creating savepoint", sqlException);
         }
     }
 
-    public void commit() throws QueryException {
+    public void commit() throws QEltException {
         try{
             connection.commit();
         }
         catch (SQLException e) {
-            throw new QueryException("Error committing", e);
+            throw new QEltException("Error committing", e);
         }
     }
 
-    public abstract T execute() throws QueryException;
+    public abstract T execute() throws QEltException;
 
-    public static class QueryException extends IOException {
+    public static class QEltException extends IOException {
 
         private final SQLException sqlException;
-        public QueryException(String message) {
+        public QEltException(String message) {
             this(message, null);
         }
 
-        public QueryException(String message, SQLException sqlException){
+        public QEltException(String message, SQLException sqlException){
             super(message);
             this.sqlException = sqlException;
         }

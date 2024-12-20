@@ -5,12 +5,12 @@ public class TaxeFonciere extends Document{
     private float Montant;
     private int Annee;
     private int idTaxeFonciere;
-    private TaxeFonciere(String cheminDocument,Date DateAjout,int idTaxeFonciere,int Annee){
+    private TaxeFonciere(String cheminDocument, ModeleDate DateAjout, int idTaxeFonciere, int Annee){
         super(cheminDocument,DateAjout);
         this.idTaxeFonciere = idTaxeFonciere;
         this.Annee = Annee;
     }
-    public TaxeFonciere(String cheminDocument, Date dateAjout,int Annee) {
+    public TaxeFonciere(String cheminDocument, ModeleDate dateAjout, int Annee) {
         super(cheminDocument, dateAjout);
         this.Annee = Annee;
     }
