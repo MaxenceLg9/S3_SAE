@@ -16,6 +16,7 @@ module net.mpvm.saeimmobilier {
     requires java.management;
     requires com.fasterxml.jackson.databind;
     requires java.sql;
+    requires com.fasterxml.jackson.annotation;
 
     //opens net.mpvm.saeimmobilier.data.fxml to javafx.fxml;
     //opens net.mpvm.saeimmobilier.data.images to javafx.fxml;
