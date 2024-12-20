@@ -1,36 +1,36 @@
 package net.mpvm.saeimmobilier.modele;
 
-import net.mpvm.saeimmobilier.sql.Connection.BD;
 import net.mpvm.saeimmobilier.sql.Query.QueryElement;
 import net.mpvm.saeimmobilier.sql.Query.Queryable;
 import net.mpvm.saeimmobilier.sql.Query.SelectQueryElement;
-import net.mpvm.saeimmobilier.sql.Query.UpdateQueryElement;
-import org.jetbrains.annotations.NotNull;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 
-public abstract class Bien implements Queryable {
+public abstract class Bien extends Queryable {
 
     private static final String SELECT_QUERY = "SELECT * FROM bien";
-    private int IdBien;
-    private Assurance assurance;
+    private static final String SELECT_ID_QUERY = "SELECT IdBien FROM bien WHERE NumeroFiscal = ?";
+    private int idBien;
+    private Optional<Assurance> assurance;
     private float iR; // Taux d'intérêt ou autre valeur
+    private String numeroFiscal;
+    private final Date dateAjout;
 
 
-    Bien(int idBien) {
-        this.IdBien = idBien;
+    public Bien(int idBien, String numeroFiscal, Date dateAjout) {
+        this.idBien = idBien;
+        this.numeroFiscal = numeroFiscal;
+        this.dateAjout = dateAjout;
     }
 
 
     public int getIdBien() {
-        return IdBien;
+        return idBien;
     }
 
     public abstract String getVille();
@@ -41,10 +41,10 @@ public abstract class Bien implements Queryable {
 
     public abstract void setCodePostal(int codePostal);
 
-    public Assurance getAssurance() {
+    public Optional<Assurance> getAssurance() {
         return this.assurance;
     }
-    public void setAssurance(Assurance assurance) {
+    public void setAssurance(Optional<Assurance> assurance) {
         this.assurance = assurance;
     }
 
@@ -59,31 +59,45 @@ public abstract class Bien implements Queryable {
         this.iR = iR;
     }
 
+    public void save() throws BienException {
+        try(SelectQueryElement selectQueryElement = new SelectQueryElement(SELECT_ID_QUERY)){
+            selectQueryElement.setArgs(Map.of(1,numeroFiscal));
+            selectQueryElement.execute();
+            Map<String,Object> result = selectQueryElement.getResult().getFirst();
+            this.idBien = (int) result.get("IdBien");
+        } catch (QueryElement.QEltException e) {
+            throw new BienException("Erreur lors de la récupération de l'ID du bien", e.getSqlException());
+        }
+    }
+
     public static List<? extends Bien> findAll() throws BienException {
         List<Bien> biens = new ArrayList<>();
         try(SelectQueryElement selectQueryElement = new SelectQueryElement(SELECT_QUERY)){
-            ResultSet rs = selectQueryElement.execute();
-            while (rs.next()) {
-                switch (TypeBien.valueOf(rs.getString("TypeBien").toUpperCase())) {
-                    case TypeBien.HABITATION:
-                        biens.add(new Habitation(rs));
-                        break;
-                    case TypeBien.GARAGE:
-                        biens.add(new Garage(rs));
-                        break;
-                    case TypeBien.IMMEUBLE:
-                        biens.add(new Immeuble(
-                                rs.getString("Ville"),
-                                rs.getInt("CodePostal"),
-                                rs.getString("Adresse"),
-                                rs.getInt("IdBien")));
-                        break;
-                }
-            }
-        } catch (SQLException | QueryElement.QueryException e) {
-            throw new BienException("Erreur lors de la récupération des biens", e instanceof SQLException ? (SQLException) e : ((QueryElement.QueryException) e).getSqlException());
+            sortResult(biens, selectQueryElement);
+        } catch (SQLException | QueryElement.QEltException e) {
+            throw new BienException("Erreur lors de la récupération des biens", e instanceof SQLException ? (SQLException) e : ((QueryElement.QEltException) e).getSqlException());
         }
         return biens;
+    }
+
+    private static void sortResult(List<Bien> biens, SelectQueryElement selectQueryElement) throws QueryElement.QEltException, SQLException {
+        selectQueryElement.execute();
+        List<Map<String,Object>> result = selectQueryElement.getResult();
+        for (Map<String,Object> args : result) {
+            switch (TypeBien.valueOf(args.get("TypeBien").toString().toUpperCase())) {
+                case TypeBien.HABITATION:
+                    biens.add(new Habitation.HBuilder(args).build());
+                    break;
+                case TypeBien.GARAGE:
+                    biens.add(new Garage.GBuilder(args).build());
+                    break;
+                case TypeBien.IMMEUBLE:
+                    biens.add(new Immeuble.IBuilder(args).build());
+                    break;
+                default:
+                    throw new BienException("Type de bien inconnu", null);
+            }
+        }
     }
 
     public abstract TypeBien getTypeBien();
@@ -122,43 +136,58 @@ public abstract class Bien implements Queryable {
             // Remplacez le paramètre par l'id de l'immeuble
             selectQueryElement.setArgs(Map.of(1, idImmeuble));
 
-            ResultSet rs = selectQueryElement.execute();
-            while (rs.next()) {
-                // Identifiez le type de bien et créez l'objet correspondant
-                String typeBien = rs.getString("TypeBien");
-
-                switch (TypeBien.valueOf(typeBien)) {
-                    case HABITATION:
-                        biens.add(new Habitation(rs));
-                        break;
-
-                    case GARAGE:
-                        biens.add(new Garage(rs));
-                        break;
-
-                    case IMMEUBLE:
-                        biens.add(new Immeuble(
-                                rs.getString("Ville"),
-                                rs.getInt("CodePostal"),
-                                rs.getString("Adresse"),
-                                rs.getInt("IdBIen")
-                        ));
-                        break;
-
-                    default:
-                        throw new BienException("Type de bien inconnu : " + typeBien, null);
-                }
-            }
-        } catch (SQLException | QueryElement.QueryException e) {
-            throw new BienException("Erreur lors de la récupération des biens pour l'immeuble ID " + idImmeuble, e instanceof SQLException ? (SQLException) e : ((QueryElement.QueryException) e).getSqlException());
+            sortResult(biens, selectQueryElement);
+        } catch (SQLException | QueryElement.QEltException e) {
+            throw new BienException("Erreur lors de la récupération des biens pour l'immeuble ID " + idImmeuble, e instanceof SQLException ? (SQLException) e : ((QueryElement.QEltException) e).getSqlException());
         }
 
         return biens;
     }
 
+    public Optional<Assurance> getAssuranceActuelle() {
+        return this.assurance;
+    }
+
+    public String getNumeroFiscal() {
+        return this.numeroFiscal;
+    }
+
+    public Date getDateAjout() {
+        return this.dateAjout;
+    }
+
+    public void setNumeroFiscal(String numeroFiscal) {
+        this.numeroFiscal = numeroFiscal;
+    }
+
+    public abstract static class BBuilder extends Queryable.Builder{
+
+        private final int IdBien;
+        private final String numeroFiscal;
+        private final Date dateAjout;
+
+        public BBuilder(int idBien, String numeroFiscal, Date dateAjout) {
+            this.IdBien = idBien;
+            this.dateAjout = dateAjout;
+            this.numeroFiscal = numeroFiscal;
+        }
+
+        int getIdBien(){
+            return IdBien;
+        }
+
+        String getNumeroFiscal(){
+            return numeroFiscal;
+        }
+
+        Date getDateAjout(){
+            return dateAjout;
+        }
+    }
+
 
     // Classe d'exception personnalisée
-    public static class BienException extends QueryableException {
+    public static class BienException extends QbleException {
         public BienException(String message, SQLException sqlException) {
             super(message, sqlException);
         }

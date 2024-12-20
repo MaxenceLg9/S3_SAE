@@ -2,19 +2,18 @@ package net.mpvm.saeimmobilier.modele;
 
 
 import net.mpvm.saeimmobilier.sql.Query.QueryElement;
-import net.mpvm.saeimmobilier.sql.Query.Queryable;
 import net.mpvm.saeimmobilier.sql.Query.UpdateQueryElement;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Map;
 
 public abstract class BienLouable extends Bien {
 
-	public static final String INSERT_QUERY = "INSERT INTO bien (ComplementAdresse, Adresse, Ville, CodePostal, TypeBien, Surface, NombrePieces, NumeroFiscal, DateAjout) VALUES (?, ?, ?, ?, ?,?,?,?,?)";
+	public static final String INSERT_QUERY = "INSERT INTO bien (ComplementAdresse, Adresse, Ville, CodePostal, TypeBien, Surface, NombrePieces, NumeroFiscal, DateAjout, IdImmeuble) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	public static final String SELECT_QUERY = "SELECT * FROM bien";
 	public static final String DELETE_QUERY = "DELETE FROM bien WHERE IdBien = ?";
-	public static final String UPDATE_QUERY = "UPDATE bien SET ComplementAdresse = ?, Adresse = ?, Ville = ?, CodePostal = ?, TypeBien = ?, Surface = ?, NombrePieces = ? , NumeroFiscal = ? , DateAjout = ?";
+	public static final String UPDATE_QUERY = "UPDATE bien SET ComplementAdresse = ?, Surface = ?, NombrePieces = ? , NumeroFiscal = ? WHERE IdBien = ?";
 
 
 	private String complementAdresse;
@@ -23,32 +22,22 @@ public abstract class BienLouable extends Bien {
 	private int ancienIndex;
 	private boolean changementCompteur;
 	private float surface;
-	private String numeroFiscal;
 	private Immeuble immeuble;
-	private Proprietaire proprietaire;
 	private int nbPieces;
 
-	public Date getDateAjout() {
-		return DateAjout;
-	}
-
-	public void setDateAjout(java.sql.Date dateAjout) {
-		DateAjout = dateAjout;
-	}
-
-	private java.sql.Date DateAjout;
 
 
-	BienLouable(String complementAdresse,int nbPieces, String NumeroFiscal, Immeuble immeuble, float surface, java.sql.Date dateAjout, int idBienLouable) {// Initialisation des attributs hérités de Bien
-		super(idBienLouable);
+
+	public BienLouable(String complementAdresse,int nbPieces, String numeroFiscal, Immeuble immeuble, float surface, java.sql.Date dateAjout, int idBien) throws BienException {// Initialisation des attributs hérités de Bien
+		super(idBien, numeroFiscal, dateAjout);
 		this.complementAdresse = complementAdresse;
+		if(immeuble == null)
+			throw new BienLouableException("L'immeuble doit être renseigné", null);
 		this.immeuble = immeuble;
 		this.surface = surface;
 		this.nbPieces = nbPieces;
-		this.numeroFiscal = NumeroFiscal;
 		this.travaux = new ArrayList<>();
 		this.baux = new ArrayList<>();
-		this.DateAjout = dateAjout;
 	}
 
 	// Getters et Setters pour tous les champs
@@ -138,31 +127,12 @@ public abstract class BienLouable extends Bien {
 		this.surface = surface;
 	}
 
-	public String getNumeroFiscal() {
-		return numeroFiscal;
-	}
-
-	public void setNumeroFiscal(String numeroFiscal) {
-		if (numeroFiscal == null || numeroFiscal.length() != 12) {
-			throw new IllegalArgumentException("Le numéro fiscal doit être de 12 caractères.");
-		}
-		this.numeroFiscal = numeroFiscal;
-	}
-
 	public Immeuble getImmeuble() {
 		return immeuble;
 	}
 
 	public void setImmeuble(Immeuble immeuble) {
 		this.immeuble = immeuble;
-	}
-
-	public Proprietaire getProprietaire() {
-		return proprietaire;
-	}
-
-	public void setProprietaire(Proprietaire proprietaire) {
-		this.proprietaire = proprietaire;
 	}
 
 	public void setTravaux(ArrayList<Travaux> travaux) {
@@ -183,8 +153,8 @@ public abstract class BienLouable extends Bien {
 	public void save() throws Bien.BienException {
 		if(this.getIdBien() != -1)
 			throw new BienException("Le bien existe déjà !",null);
-		try(UpdateQueryElement query = new UpdateQueryElement(INSERT_QUERY, true)){
-			query.setArgs(
+		try(UpdateQueryElement updateQueryElement = new UpdateQueryElement(INSERT_QUERY, true)){
+			updateQueryElement.setArgs(
 					Map.of(1,this.getComplementAdresse(),
 							2, this.getAdresse(),
 							3, this.getVille(),
@@ -193,22 +163,80 @@ public abstract class BienLouable extends Bien {
 							6, this.getSurface(),
 							7, this.getNbPieces(),
 							8, this.getNumeroFiscal(),
-							9, this.getDateAjout()
+							9, this.getDateAjout(),
+							10, this.getImmeuble().getIdBien()
 					)).execute();
+			super.save();
 		}
-		catch (QueryElement.QueryException queryException){
-			throw new BienException("Erreur lors de l'ajout du bien : " + queryException.getMessage(), queryException.getSqlException());
+		catch (QueryElement.QEltException QEltException){
+			throw new BienException("Erreur lors de l'ajout du bien : " + QEltException.getSqlException().getMessage(), QEltException.getSqlException());
 		}
 
 	}
 
 	@Override
-	public void modify() throws QueryableException {
-
+	public void modify() throws BienLouableException {
+		if(getIdBien() == -1)
+			throw new BienLouableException("Il faut sauvegarder le bien avant de vouloir le modifier",null);
+		try(UpdateQueryElement updateQueryElement = new UpdateQueryElement(UPDATE_QUERY, true)){
+			updateQueryElement.setArgs(
+					Map.of(1, this.getComplementAdresse(),
+							2, this.getSurface(),
+							3, this.getNbPieces(),
+							4, this.getNumeroFiscal(),
+							5, this.getIdBien()
+					)).execute();
+		}catch(QueryElement.QEltException QEltException){
+			throw new BienLouableException("Erreur lors de la modification du bien : " + QEltException.getMessage(), QEltException.getSqlException());
+		}
 	}
 
 	@Override
-	public void delete() throws QueryableException {
+	public void delete() throws BienLouableException {
+		try(UpdateQueryElement updateQueryElement = new UpdateQueryElement(DELETE_QUERY, true)){
+			updateQueryElement.setArgs(
+							Map.of(1,this.getIdBien()))
+					.execute();
+		}catch(QueryElement.QEltException QEltException){
+			throw new BienLouableException("Erreur lors de la suppression du bien", QEltException.getSqlException());
+		}
+	}
+	public abstract static class BLBuilder extends BBuilder{
 
+		private final String complementAdresse;
+		private final int nbPieces;
+		private final float surface;
+		private final Immeuble immeuble;
+
+		public BLBuilder(String complementAdresse,int nbPieces, String numeroFiscal, Immeuble immeuble, float surface, java.sql.Date dateAjout, int idBien) {
+			super(idBien, numeroFiscal, dateAjout);
+			this.complementAdresse = complementAdresse;
+			this.nbPieces = nbPieces;
+			this.surface = surface;
+			this.immeuble = immeuble;
+		}
+
+        public float getSurface() {
+            return surface;
+        }
+
+        public int getNbPieces() {
+            return nbPieces;
+        }
+
+        public String getComplementAdresse() {
+            return complementAdresse;
+        }
+
+		public Immeuble getImmeuble() {
+			return immeuble;
+		}
+	}
+
+	public static class BienLouableException extends BienException{
+
+		public BienLouableException(String message, SQLException sqlException){
+			super(message,sqlException);
+		}
 	}
 }
