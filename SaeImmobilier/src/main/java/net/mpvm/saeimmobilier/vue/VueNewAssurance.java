@@ -14,5 +14,4 @@ public class VueNewAssurance extends Application {
         VueNewAssurance vue = new VueNewAssurance();
         vue.start(stage);
     }
-
 }
