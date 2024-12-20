@@ -93,42 +93,6 @@ public class Assurance extends Queryable{
     // Méthode pour valider la cohérence des montants calculés
 
     // Méthode pour sauvegarder une assurance
-    public void save() throws AssuranceException {
-        // Valider les données avant insertion
-        if (this.protectionJuridique < 0 || this.quotiteJurisprudence < 0 || this.prime < 0) {
-            throw new AssuranceException("Les montants d'assurance ne peuvent pas être négatifs.");
-        }
-        if (this.typeContrat == null) {
-            throw new AssuranceException("Le type de contrat est obligatoire.");
-        }
-
-        try (UpdateQueryElement query = new UpdateQueryElement(
-                "INSERT INTO Assurance (ProtectionJuridique, QuotiteJuridique, Prime, TypeContrat, Annee) " +
-                        "VALUES (?, ?, ?, ?, ?)",
-                true)) {
-
-            // Préparer les paramètres pour l'insertion
-            query.setArgs(Map.of(
-                    1, this.protectionJuridique,
-                    2, this.quotiteJurisprudence,
-                    3, this.prime,
-                    4, this.typeContrat.toString(),
-                    5, this.Annee
-            ));
-
-            // Exécution de la requête
-            query.execute();
-            System.out.println("Insertion réussie. Les triggers CalculTotalPrime et CalculPourcentageAugmentation sont déclenchés.");
-
-        } catch (QueryElement.QEltException e) {
-            // Gérer les erreurs SQL
-            String errorMessage = String.format(
-                    "Erreur lors de l'ajout de l'assurance : ProtectionJuridique=%f, QuotitéJuridique=%f, Prime=%f, TypeContrat=%s, Annee=%d",
-                    this.protectionJuridique, this.quotiteJurisprudence, this.prime, this.typeContrat.toString(), this.Annee
-            );
-            throw new AssuranceException(errorMessage, e.getSqlException());
-        }
-    }
 
     // Getters et Setters
 
@@ -232,7 +196,7 @@ public class Assurance extends Queryable{
     }
 
     @Override
-    public void modify() throws QueryableException {
+    public void modify() throws QbleException {
 
     }
 
@@ -296,6 +260,10 @@ public class Assurance extends Queryable{
 
     public int selectId() throws QbleException {
         return 0;
+    }
+
+    public Float getMontantQuotite() {
+        return this.montantQuotite;
     }
 
     public static class ABuilder extends Queryable.Builder{

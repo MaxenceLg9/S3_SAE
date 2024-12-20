@@ -81,6 +81,11 @@ public final class Immeuble extends Bien{
 		return 0;
 	}
 
+	@Override
+	public int getNbPieces() {
+		return 0;
+	}
+
 	public List<Travaux> getTravauxAssocies() {
 		return travauxAssocies;
 	}

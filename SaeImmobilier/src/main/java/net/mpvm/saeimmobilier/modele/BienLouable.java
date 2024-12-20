@@ -5,9 +5,9 @@ import net.mpvm.saeimmobilier.sql.Query.QueryElement;
 import net.mpvm.saeimmobilier.sql.Query.Queryable;
 import net.mpvm.saeimmobilier.sql.Query.UpdateQueryElement;
 
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Map;
 
 public abstract class BienLouable extends Bien {
@@ -47,7 +47,7 @@ public abstract class BienLouable extends Bien {
 		this.immeuble = immeuble;
 		this.surface = surface;
 		this.nbPieces = nbPieces;
-		this.numeroFiscal = NumeroFiscal;
+		this.numeroFiscal = numeroFiscal;
 		this.travaux = new ArrayList<>();
 		this.baux = new ArrayList<>();
 		this.DateAjout = dateAjout;
