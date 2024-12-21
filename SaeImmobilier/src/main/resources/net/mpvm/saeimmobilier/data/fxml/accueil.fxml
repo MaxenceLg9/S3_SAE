@@ -37,9 +37,7 @@
          <children>
             <HBox spacing="20.0">
                <children>
-                  <Button fx:id="btnConnexion" minHeight="40.0" minWidth="140.0" onAction="#Connexion" text="Se connecter" style="-fx-background-color: #3498DB; -fx-background-radius: 20px; -fx-text-fill: white; -fx-font-size: 14px; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0.2, 0, 2);">
-                  </Button>
-                  <Button fx:id="btnInscription" minHeight="40.0" minWidth="140.0" onAction="#Inscription" text="S'inscrire" style="-fx-background-color: #2ECC71; -fx-background-radius: 20px; -fx-text-fill: white; -fx-font-size: 14px; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0.2, 0, 2);">
+                  <Button fx:id="btnDefault" minHeight="40.0" minWidth="140.0" style="-fx-background-radius: 20px; -fx-text-fill: white; -fx-font-size: 14px; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0.2, 0, 2);">
                   </Button>
                </children>
             </HBox>

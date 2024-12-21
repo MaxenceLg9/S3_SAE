@@ -6,6 +6,7 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import net.mpvm.saeimmobilier.modele.*;
 import net.mpvm.saeimmobilier.sql.Query.Queryable;
+import net.mpvm.saeimmobilier.util.JfxUtil;
 import net.mpvm.saeimmobilier.vue.VueAccueil;
 import net.mpvm.saeimmobilier.vue.VueConnexion;
 import net.mpvm.saeimmobilier.vue.VueHome;
@@ -63,26 +64,12 @@ public class CtrlNewBien {
         this.LabelDate.setText(formattedDate);
 
         // Initialize the list of Immeubles
-        if (listImmeubles != null) {
-            Immeuble immeuble = null;
-            try {
-                immeuble = new Immeuble.IBuilder("Toulouse", 31400, "Rue de la paix", "AAAAAAAAAA", Date.valueOf(LocalDate.now())).build();
-            } catch (Bien.BienException e) {
-                e.printStackTrace();
-            }
-            listImmeubles.getItems().add(immeuble);
-            try {
-                List<Immeuble> immeubles = Immeuble.findAll();
-                for (Immeuble i : immeubles) {
-                    listImmeubles.getItems().add(i);
-                }
-            } catch (Immeuble.ImmeubleException e) {
-                e.printStackTrace();
-            }
-            System.out.println(listImmeubles.getItems().getFirst().getAdresse());
-        } else {
-            System.out.println("ChoiceBox listImmeubles is not injected");
+        try {
+            listImmeubles.getItems().addAll(Immeuble.findAll());
+        } catch (Immeuble.ImmeubleException e) {
+            JfxUtil.setAlert(Alert.AlertType.ERROR, "Erreur", "Erreur lors de la récupération des immeubles", "");
         }
+
 
         for (TypeBien b : TypeBien.values()){
             this.ListTypeBien.getItems().add(b);
@@ -91,14 +78,12 @@ public class CtrlNewBien {
         this.ListTypeBien.setOnAction(actionEvent -> {
             if(this.ListTypeBien.getValue()==TypeBien.IMMEUBLE){
                 this.FieldNbPieces.setDisable(true);
-                this.FieldNumFisc.setDisable(true);
                 this.FieldSurface.setDisable(true);
                 this.listImmeubles.setDisable(true);
                 this.FieldLieuImmeuble.setDisable(true);
 
             } else {
                 this.FieldNbPieces.setDisable(false);
-                this.FieldNumFisc.setDisable(false);
                 this.FieldSurface.setDisable(false);
                 this.listImmeubles.setDisable(false);
                 this.FieldLieuImmeuble.setDisable(false);
@@ -106,13 +91,13 @@ public class CtrlNewBien {
         });
 
         this.listImmeubles.setOnAction(actionEvent -> {
-            if (listImmeubles.getValue().getTypeBien() == TypeBien.IMMEUBLE) {
+            if (listImmeubles.getValue() != null) {
                 this.FieldAdresse.setText(listImmeubles.getValue().getAdresse());
-                this.FieldAdresse.setEditable(false);
+                this.FieldAdresse.setDisable(true);
                 this.FieldCodePostal.setText(String.valueOf(listImmeubles.getValue().getCodePostal()));
-                this.FieldCodePostal.setEditable(false);
+                this.FieldCodePostal.setDisable(true);
                 this.FieldVille.setText(listImmeubles.getValue().getVille());
-                this.FieldVille.setEditable(false);
+                this.FieldVille.setDisable(true);
             } else {
                 this.FieldAdresse.setText("");
                 this.FieldAdresse.setEditable(true);

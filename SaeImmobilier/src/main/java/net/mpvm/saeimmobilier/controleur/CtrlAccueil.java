@@ -4,7 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
-import javafx.scene.control.*;
+import net.mpvm.saeimmobilier.modele.Proprietaire;
 import net.mpvm.saeimmobilier.util.JfxUtil;
 import net.mpvm.saeimmobilier.vue.VueConnexion;
 import net.mpvm.saeimmobilier.vue.VueInscription;
@@ -13,9 +13,29 @@ import net.mpvm.saeimmobilier.vue.VueInscription;
 public class CtrlAccueil {
 
     @FXML
-    private Button btnConnexion;
-    @FXML
-    private Button btnInscription;
+    private Button btnDefault;
+
+    public void initialize() {
+        try {
+            toggleButton(Proprietaire.findAll().isEmpty());
+        } catch (Proprietaire.ProprietaireException e) {
+            JfxUtil.displayError(e.getSqlException(), e.getMessage());
+        }
+        // Initialisation
+    }
+
+    public void toggleButton(boolean toggle) {
+        if(toggle) {
+            btnDefault.setOnAction(this::Inscription);
+            btnDefault.setText("Inscription");
+            btnDefault.setStyle("-fx-background-color: #2ba530;" + btnDefault.getStyle());
+        }
+        else {
+            btnDefault.setOnAction(this::Connexion);
+            btnDefault.setText("Connexion");
+            btnDefault.setStyle("-fx-background-color: #088791;-fx-background-radius: 20px;" + btnDefault.getStyle());
+        }
+    }
 
     public void Quitter(ActionEvent actionEvent) {
         System.exit(0);

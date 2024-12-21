@@ -1,5 +1,6 @@
 package net.mpvm.saeimmobilier.util;
 
+import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -7,6 +8,7 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 
 public class JfxUtil {
@@ -36,11 +38,18 @@ public class JfxUtil {
     }
 
     public static void setAlert(Alert.AlertType alertType, String title, String headerText, String contentText) {
-        new Thread(() -> {Alert alert = new Alert(alertType);
-            alert.setTitle(title);
-            alert.setHeaderText(headerText);
-            alert.setContentText(contentText);
-            alert.showAndWait();
-        }).start();
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(headerText);
+        alert.setContentText(contentText);
+        alert.showAndWait();
+    }
+
+    public static void showWindow(Stage stage, Class<? extends Application> applicationClass) {
+        try {
+            ((Application) applicationClass.getConstructors()[0].newInstance()).start(stage);
+        } catch (Exception e) {
+            System.out.println("والآن أصبحت الموت، مدمر العالم");
+        }
     }
 }

@@ -64,7 +64,7 @@
                   </TextField>
 
                   <!-- Field Nouveau Mot de Passe -->
-                  <PasswordField fx:id="fieldNewPassword" promptText="Nouveau Mot de Passe" styleClass="text-field" AnchorPane.leftAnchor="210.0" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="75.0">
+                  <PasswordField fx:id="fieldPassword" promptText="Nouveau Mot de Passe" styleClass="text-field" AnchorPane.leftAnchor="210.0" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="75.0">
                      <padding>
                         <Insets bottom="5.0" left="10.0" top="5.0" />
                      </padding>
@@ -74,7 +74,7 @@
                   </PasswordField>
 
                   <!-- Field Confirmation -->
-                  <PasswordField fx:id="fieldConfirmation" promptText="Confirmation" AnchorPane.leftAnchor="210.0" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="135.0">
+                  <PasswordField fx:id="fieldConfirmPassword" promptText="Confirmation" AnchorPane.leftAnchor="210.0" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="135.0">
                      <padding>
                         <Insets bottom="5.0" left="10.0" top="5.0" />
                      </padding>

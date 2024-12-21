@@ -1,13 +1,13 @@
 package net.mpvm.saeimmobilier.controleur;
 
-import com.fasterxml.jackson.databind.annotation.JsonAppend;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import net.mpvm.saeimmobilier.modele.Proprietaire;
+import net.mpvm.saeimmobilier.util.JfxUtil;
 import net.mpvm.saeimmobilier.vue.VueAccueil;
-import net.mpvm.saeimmobilier.vue.VueHome;
+import net.mpvm.saeimmobilier.vue.VueConnexion;
 
 import java.util.ArrayList;
 import java.util.regex.Pattern;
@@ -21,7 +21,7 @@ public class CtrlInscription {
     public Button btnAnnuler;
 
     @FXML
-    public PasswordField fieldConfirmation;
+    public PasswordField fieldConfirmPassword;
 
     @FXML
     public TextField fieldConfirmationVisible;
@@ -30,7 +30,7 @@ public class CtrlInscription {
     public TextField fieldNewPasswordVisible;
 
     @FXML
-    public PasswordField fieldNewPassword;
+    public PasswordField fieldPassword;
 
     @FXML
     public CheckBox checkBoxVisibilite;
@@ -43,9 +43,9 @@ public class CtrlInscription {
 
     @FXML
     public void initialize() {
-        assert fieldNewPassword != null : "fieldNewPassword is null";
+        assert fieldPassword != null : "fieldNewPassword is null";
         assert fieldNewPasswordVisible != null : "fieldNewPasswordVisible is null";
-        assert fieldConfirmation != null : "fieldConfirmation is null";
+        assert fieldConfirmPassword != null : "fieldConfirmation is null";
         assert fieldConfirmationVisible != null : "fieldConfirmationVisible is null";
 
         // Initial setup
@@ -58,8 +58,8 @@ public class CtrlInscription {
 
         fieldsMDP = new ArrayList<>() {{
             add(fieldMail);
-            add(fieldNewPassword);
-            add(fieldConfirmation);
+            add(fieldPassword);
+            add(fieldConfirmPassword);
         }};
 
         // Hide visible fields initially
@@ -69,48 +69,30 @@ public class CtrlInscription {
 
     private void setFieldsPromptText() {
         fieldMail.setPromptText("Adresse Mail");
-        fieldNewPassword.setPromptText("Nouveau Mot de Passe");
-        fieldConfirmation.setPromptText("Confirmation");
-    }
-
-    private void alertFieldsEmpty() {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Erreur");
-        alert.setHeaderText("Champs vides");
-        alert.setContentText("Veuillez remplir tous les champs");
-        alert.showAndWait();
-    }
-
-    private void alertInvalidEmail() {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Erreur");
-        alert.setHeaderText("Adresse e-mail invalide");
-        alert.setContentText("Veuillez saisir une adresse e-mail valide ou non utilisé.");
-        alert.showAndWait();
-    }
-
-    private void alertInvalidPassword() {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Erreur");
-        alert.setHeaderText("Mot de passe invalide");
-        alert.setContentText("Le mot de passe doit contenir au moins 8 caractères.");
-        alert.showAndWait();
+        fieldPassword.setPromptText("Nouveau Mot de Passe");
+        fieldConfirmPassword.setPromptText("Confirmation");
     }
 
     @FXML
     public void Valider(ActionEvent event) {
-        fieldNewPassword.setText(fieldNewPasswordVisible.getText());
-        fieldConfirmation.setText(fieldConfirmationVisible.getText());
-        fieldConfirmationVisible.setText(fieldConfirmation.getText());
-        fieldNewPasswordVisible.setText(fieldNewPassword.getText());
+        fieldPassword.setText(fieldNewPasswordVisible.getText());
+        fieldConfirmPassword.setText(fieldConfirmationVisible.getText());
+        fieldConfirmationVisible.setText(fieldConfirmPassword.getText());
+        fieldNewPasswordVisible.setText(fieldPassword.getText());
         if (fieldsNotEmpty()) {
             if (!isValidEmail(fieldMail.getText())) {
-                alertInvalidEmail();
+                JfxUtil.setAlert(Alert.AlertType.ERROR,
+                        "Erreur",
+                        "L'adresse e-mail est invalide",
+                        "L'adresse e-mail saisie n'est pas conforme");
                 return;
             }
 
-            if (!isValidPassword(fieldNewPassword.getText())) {
-                alertInvalidPassword();
+            if (!isValidPassword(fieldPassword.getText())) {
+                JfxUtil.setAlert(Alert.AlertType.ERROR,
+                        "Erreur",
+                        "Le mot de passe est incorrect",
+                        "Le mot de passe doit faire 8 caractères, contenir une majuscule, une minuscule, un chiffre et un caractère spécial au minimum");
                 return;
             }
 
@@ -118,30 +100,43 @@ public class CtrlInscription {
                 if (Proprietaire.findAll().isEmpty()){
                     if (MDPIdentique()) {
                         try {
-                            new Proprietaire(fieldMail.getText(), fieldNewPassword.getText()).save();
+                            new Proprietaire(fieldMail.getText(), fieldPassword.getText()).save();
+                            JfxUtil.setAlert(Alert.AlertType.INFORMATION,
+                                    "Succès",
+                                    "Inscription réussie",
+                                    "Vous êtes maintenant inscrit ! Vous pouvez passer à la connexion");
+                            Stage stageActuel = (Stage) ((Button) event.getSource()).getScene().getWindow();
+                            stageActuel.close();
+                            JfxUtil.showWindow(new Stage(), VueConnexion.class);
                         } catch (Proprietaire.ProprietaireException proprietaireException) {
-                            proprietaireException.getSqlException().printStackTrace();
-                            Alert alert = new Alert(Alert.AlertType.ERROR);
-                            alert.setTitle("Erreur");
-                            alert.setHeaderText("Erreur lors de la sauvegarde");
-                            alert.setContentText(proprietaireException.getMessage());
-                            alert.showAndWait();
+                            JfxUtil.setAlert(Alert.AlertType.ERROR,
+                                    "Erreur",
+                                    "Erreur lors de la sauvegarde",
+                                    proprietaireException.getMessage());
                         }
                     } else {
-                        Alert alert = new Alert(Alert.AlertType.ERROR);
-                        alert.setTitle("Erreur");
-                        alert.setHeaderText("Mots de passe non identiques");
-                        alert.setContentText("Les mots de passe ne correspondent pas !");
-                        alert.showAndWait();
+                        JfxUtil.setAlert(Alert.AlertType.ERROR,
+                                "Erreur",
+                                "Mots de passe non identiques",
+                                "Les mots de passe ne correspondent pas !");
                     }
                 }else {
-                    alertInvalidEmail();
+                    JfxUtil.setAlert(Alert.AlertType.ERROR,
+                            "Erreur",
+                            "Il existe déjà un propriétaire",
+                            "Un propriétaire est déjà présent, essayez avec les informations déjà enregistrées");
                 }
             } catch (Proprietaire.ProprietaireException e) {
-                throw new RuntimeException(e);
+                JfxUtil.setAlert(Alert.AlertType.ERROR,
+                        "Erreur",
+                        "Erreur lors de la récupération des données",
+                        "Vérifier votre connexion");
             }
         } else {
-            alertFieldsEmpty();
+            JfxUtil.setAlert(Alert.AlertType.ERROR,
+                    "Erreur",
+                    "Les champs sont vides",
+                    "Vous devez remplir tout les champs si vous souhaitez vous inscrire");
         }
     }
 
@@ -167,7 +162,7 @@ public class CtrlInscription {
     }
 
     private boolean MDPIdentique() {
-        return fieldNewPassword.getText().equals(fieldConfirmation.getText());
+        return fieldPassword.getText().equals(fieldConfirmPassword.getText());
     }
 
     private boolean isValidEmail(String email) {
@@ -176,28 +171,29 @@ public class CtrlInscription {
     }
 
     private boolean isValidPassword(String password) {
-        return password.length() >= 8;
+        return password.length() >= 8 && Pattern.matches("(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*]).*", password);
+
     }
 
     @FXML
     private void setupVisibility(ActionEvent actionEventS) {
         if (checkBoxVisibilite.isSelected()) {
             // Show passwords in plain text (visible TextField)
-            fieldNewPasswordVisible.setText(fieldNewPassword.getText());
+            fieldNewPasswordVisible.setText(fieldPassword.getText());
             fieldNewPasswordVisible.setVisible(true);
-            fieldNewPassword.setVisible(false);
+            fieldPassword.setVisible(false);
 
-            fieldConfirmationVisible.setText(fieldConfirmation.getText());
+            fieldConfirmationVisible.setText(fieldConfirmPassword.getText());
             fieldConfirmationVisible.setVisible(true);
-            fieldConfirmation.setVisible(false);
+            fieldConfirmPassword.setVisible(false);
         } else {
             // Hide plain text fields and restore PasswordField
-            fieldNewPassword.setText(fieldNewPasswordVisible.getText());
-            fieldNewPassword.setVisible(true);
+            fieldPassword.setText(fieldNewPasswordVisible.getText());
+            fieldPassword.setVisible(true);
             fieldNewPasswordVisible.setVisible(false);
 
-            fieldConfirmation.setText(fieldConfirmationVisible.getText());
-            fieldConfirmation.setVisible(true);
+            fieldConfirmPassword.setText(fieldConfirmationVisible.getText());
+            fieldConfirmPassword.setVisible(true);
             fieldConfirmationVisible.setVisible(false);
         }
     }
