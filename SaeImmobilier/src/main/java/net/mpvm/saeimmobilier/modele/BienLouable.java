@@ -2,21 +2,21 @@ package net.mpvm.saeimmobilier.modele;
 
 
 import net.mpvm.saeimmobilier.sql.Query.QueryElement;
-import net.mpvm.saeimmobilier.sql.Query.Queryable;
+import net.mpvm.saeimmobilier.sql.Query.SelectQueryElement;
 import net.mpvm.saeimmobilier.sql.Query.UpdateQueryElement;
 
-import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 public abstract class BienLouable extends Bien {
 
-    public static final String INSERT_QUERY = "INSERT INTO bien (ComplementAdresse, Adresse, Ville, CodePostal, TypeBien, Surface, NombrePieces, NumeroFiscal, DateAjout, IdImmeuble) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    public static final String SELECT_QUERY = "SELECT * FROM bien";
+    public static final String INSERT_QUERY = "INSERT INTO bien (ComplementAdresse, TypeBien, Surface, NombrePieces, NumeroFiscal, DateAjout, IdImmeuble) VALUES (?, ?, ?, ?, ?, ?, ?)";
     public static final String DELETE_QUERY = "DELETE FROM bien WHERE IdBien = ?";
     public static final String UPDATE_QUERY = "UPDATE bien SET ComplementAdresse = ?, Surface = ?, NombrePieces = ? , NumeroFiscal = ? WHERE IdBien = ?";
-
+    public static final String SELECT_QUERY = "SELECT * FROM bien WHERE TypeBien in ('HABITATION','GARAGE')";
 
     private String complementAdresse;
     private ArrayList<Travaux> travaux;
@@ -24,20 +24,9 @@ public abstract class BienLouable extends Bien {
     private int ancienIndex;
     private boolean changementCompteur;
     private float surface;
-    private String numeroFiscal;
     private Immeuble immeuble;
-    private Proprietaire proprietaire;
     private int nbPieces;
 
-    public Date getDateAjout() {
-        return DateAjout;
-    }
-
-    public void setDateAjout(java.sql.Date dateAjout) {
-        DateAjout = dateAjout;
-    }
-
-    private java.sql.Date DateAjout;
 
     public BienLouable(String complementAdresse,int nbPieces, String numeroFiscal, Immeuble immeuble, float surface, java.sql.Date dateAjout, int idBien) throws BienException {// Initialisation des attributs hérités de Bien
         super(idBien, numeroFiscal, dateAjout);
@@ -47,10 +36,8 @@ public abstract class BienLouable extends Bien {
         this.immeuble = immeuble;
         this.surface = surface;
         this.nbPieces = nbPieces;
-        this.numeroFiscal = numeroFiscal;
         this.travaux = new ArrayList<>();
         this.baux = new ArrayList<>();
-        this.DateAjout = dateAjout;
     }
 
     // Getters et Setters pour tous les champs
@@ -169,22 +156,37 @@ public abstract class BienLouable extends Bien {
         try(UpdateQueryElement updateQueryElement = new UpdateQueryElement(INSERT_QUERY, true)){
             updateQueryElement.setArgs(
                     Map.of(1,this.getComplementAdresse(),
-                            2, this.getAdresse(),
-                            3, this.getVille(),
-                            4, this.getCodePostal(),
-                            5, this.getTypeBienString(),
-                            6, this.getSurface(),
-                            7, this.getNbPieces(),
-                            8, this.getNumeroFiscal(),
-                            9, this.getDateAjout(),
-                            10, this.getImmeuble().getIdBien()
+                            2, this.getTypeBienString(),
+                            3, this.getSurface(),
+                            4, this.getNbPieces(),
+                            5, this.getNumeroFiscal(),
+                            6, this.getDateAjout(),
+                            7, this.getImmeuble().getIdBien()
                     )).execute();
             super.save();
         }
         catch (QueryElement.QEltException QEltException){
             throw new BienException("Erreur lors de l'ajout du bien : " + QEltException.getSqlException().getMessage(), QEltException.getSqlException());
         }
+    }
 
+    public static List<? extends BienLouable> findAll() throws BienLouableException {
+        List<BienLouable> biens = new LinkedList<>();
+        try(SelectQueryElement selectQueryElement = new SelectQueryElement(SELECT_QUERY)) {
+            selectQueryElement.execute();
+            List<Map<String, Object>> result = selectQueryElement.getResult();
+            for (Map<String, Object> args : result) {
+                if(TypeBien.valueOf(args.get("TypeBien").toString()) == TypeBien.HABITATION)
+                    biens.add(new Habitation.HBuilder(args).build());
+                if(TypeBien.valueOf(args.get("TypeBien").toString()) == TypeBien.GARAGE)
+                    biens.add(new Garage.GBuilder(args).build());
+            }
+        }
+        catch(QueryElement.QEltException QEltException){
+            System.out.println(QEltException.getMessage());
+            throw new BienLouableException("Erreur lors de la récupération des biens : " + QEltException.getSqlException().getMessage(), QEltException.getSqlException());
+        }
+        return biens;
     }
 
     @Override
