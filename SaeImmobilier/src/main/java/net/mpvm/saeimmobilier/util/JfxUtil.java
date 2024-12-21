@@ -2,10 +2,12 @@ package net.mpvm.saeimmobilier.util;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 public class JfxUtil {
     public static void applicationInit(Stage primaryStage, String fxmlFile, String nomPage, double height, double width) {
@@ -27,5 +29,15 @@ public class JfxUtil {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void displayError(SQLException sqlException, String message) {
+        sqlException.printStackTrace();
+        new Thread(() -> {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erreur");
+            alert.setHeaderText(message);
+            alert.showAndWait();
+        }).start();
     }
 }

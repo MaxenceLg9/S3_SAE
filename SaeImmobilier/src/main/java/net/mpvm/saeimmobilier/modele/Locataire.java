@@ -160,11 +160,11 @@ public class Locataire extends Queryable {
 			List<Map<String,Object>> result = query.getResult();
 			for(Map<String, Object> row : result){
 				l.add(
-						new Locataire(row.get("nom").toString(),
-								row.get("prenom").toString(),
-								row.get("email").toString(),
-								row.get("sexe").toString().charAt(0),
-								row.get("telephone").toString(),
+						new Locataire(row.get("Nom").toString(),
+								row.get("Prenom").toString(),
+								row.get("Email").toString(),
+								row.get("Sexe").toString().charAt(0),
+								row.get("Telephone").toString(),
 								(int) row.get("IdLocataire")));
 			}
 		}

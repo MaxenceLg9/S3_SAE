@@ -291,7 +291,7 @@ public class Bail extends Queryable {
 	public void delete() throws QbleException {
 
 	}
-	
+
 	protected void setId(int id) throws QbleException {
 
 	}

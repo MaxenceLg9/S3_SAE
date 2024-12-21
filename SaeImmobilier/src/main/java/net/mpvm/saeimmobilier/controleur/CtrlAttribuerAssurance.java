@@ -10,6 +10,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import net.mpvm.saeimmobilier.modele.Assurance;
+import net.mpvm.saeimmobilier.util.JfxUtil;
 
 import java.util.Map;
 import java.util.function.Function;
@@ -31,21 +32,13 @@ public class CtrlAttribuerAssurance {
             assurances = Assurance.findAll().stream()
                     .collect(Collectors.toMap(Assurance::getIdAssurance, Function.identity()));
         } catch (Assurance.AssuranceException assuranceException) {
-            assuranceException.getSqlException().printStackTrace();
-            new Thread(() -> {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Erreur");
-                alert.setHeaderText(assuranceException.getMessage());
-                alert.showAndWait();
-            }).start();
-            return;
+            JfxUtil.displayError(assuranceException.getSqlException(), assuranceException.getMessage());
         }
 
         vBoxContent.getChildren().clear();
 
         for (Assurance a : assurances.values()) {
             GridPane gp = new GridPane();
-
             ColumnConstraints col1 = new ColumnConstraints();
             col1.setPrefWidth(150);
             col1.setMinWidth(20);

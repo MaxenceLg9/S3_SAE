@@ -1,11 +1,8 @@
 package net.mpvm.saeimmobilier.modele;
 
-import net.mpvm.saeimmobilier.sql.Connection.BD;
 import net.mpvm.saeimmobilier.sql.Query.QueryElement;
 import net.mpvm.saeimmobilier.sql.Query.Queryable;
 import net.mpvm.saeimmobilier.sql.Query.SelectQueryElement;
-import net.mpvm.saeimmobilier.sql.Query.UpdateQueryElement;
-import org.jetbrains.annotations.NotNull;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -47,8 +44,8 @@ public abstract class Bien extends Queryable {
     public Optional<Assurance> getAssurance() {
         return this.assurance;
     }
-    public void setAssurance(Optional<Assurance> assurance) {
-        this.assurance = assurance;
+    public void setAssurance(Assurance assurance) {
+        this.assurance = Optional.of(assurance);
     }
 
     public abstract String getAdresse();
@@ -117,17 +114,7 @@ public abstract class Bien extends Queryable {
             return 0;}
     }
 
-    public int getNombrePieces() {
-        Bien bien = this;
-
-        if (bien instanceof BienLouable) {
-            return ((BienLouable) bien).getNbPieces(); // Appeler la méthode getNbPieces() si c'est un BienLouable
-        } else if (bien instanceof Immeuble) {
-            return 0; // Par exemple, un immeuble n'a pas de nombre de pièces défini de cette manière, vous pouvez ajuster
-        } else {
-            return -1; // Retourner une valeur indiquant que le nombre de pièces n'est pas disponible
-        }
-    }
+    public abstract int getNbPieces();
 
 
     public static List<Bien> findByImmeuble(int idImmeuble) throws Bien.BienException {
@@ -187,6 +174,7 @@ public abstract class Bien extends Queryable {
             return dateAjout;
         }
     }
+
 
     // Classe d'exception personnalisée
     public static class BienException extends QbleException {

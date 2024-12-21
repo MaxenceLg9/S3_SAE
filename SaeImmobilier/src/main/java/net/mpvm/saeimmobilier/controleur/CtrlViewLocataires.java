@@ -10,7 +10,9 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import net.mpvm.saeimmobilier.modele.Locataire;
+import net.mpvm.saeimmobilier.util.JfxUtil;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
@@ -31,13 +33,7 @@ public class CtrlViewLocataires {
         try {
             locataires = Locataire.findALl().stream().collect(Collectors.toMap(Locataire::getIdLocataire, Function.identity()));
         } catch (Locataire.LocataireException locataireException) {
-            locataireException.getSqlException().printStackTrace();
-            new Thread(() -> {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Erreur");
-                alert.setHeaderText(locataireException.getMessage());
-                alert.showAndWait();
-            }).start();
+            JfxUtil.displayError(locataireException.getSqlException(), locataireException.getMessage());
             return;
         }
         vBoxContent.getChildren().clear();

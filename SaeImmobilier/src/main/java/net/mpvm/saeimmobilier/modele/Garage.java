@@ -26,7 +26,7 @@ public final class Garage extends BienLouable {
 		}
 	}
 
-	public Garage(GBuilder gBuilder) throws BienException {
+	private Garage(GBuilder gBuilder) throws BienException {
 		this(gBuilder.getComplementAdresse(),gBuilder.getNbPieces(),gBuilder.getNumeroFiscal(),gBuilder.getImmeuble(),gBuilder.getSurface(),gBuilder.getDateAjout(),gBuilder.getIdBien());
 	}
 
@@ -93,3 +93,5 @@ public final class Garage extends BienLouable {
 		}
 	}
 }
+
+

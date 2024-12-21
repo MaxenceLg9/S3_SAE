@@ -82,10 +82,6 @@ public final class Habitation extends BienLouable {
 
     public static class HabitationException extends BienException{
 
-        public HabitationException(String message) {
-            this(message,null);
-        }
-
         public HabitationException(String message, SQLException sqlException) {
             super(message, sqlException);
         }
