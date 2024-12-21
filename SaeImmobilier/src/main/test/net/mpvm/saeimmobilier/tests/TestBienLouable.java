@@ -37,6 +37,6 @@ public class TestBienLouable {
 
     @Test
     public void testFindAll() throws Bien.BienException {
-        List<BienLouable> biens = BienLouable.findAll();
+        List<? extends BienLouable> biens = BienLouable.findAll();
     }
 }
