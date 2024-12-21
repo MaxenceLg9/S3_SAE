@@ -1,9 +1,6 @@
 package net.mpvm.saeimmobilier.modele;
 
-import net.mpvm.saeimmobilier.sql.Query.SelectQueryElement;
-import net.mpvm.saeimmobilier.sql.Query.QueryElement;
-import net.mpvm.saeimmobilier.sql.Query.Queryable;
-import net.mpvm.saeimmobilier.sql.Query.UpdateQueryElement;
+import net.mpvm.saeimmobilier.sql.Query.*;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -53,24 +50,23 @@ public class Assurance extends Queryable{
                 """;
 
         try (SelectQueryElement query = new SelectQueryElement(SELECT_QUERY)) {
-            ResultSet rs = query.execute();
-            while (rs.next()) {
+            Result rs = query.execute();
+            for(Map<String,Object> row : rs){
                 Assurance assurance = new Assurance(
-                        rs.getInt("IdAssurance"),
-                        TypeContrat.valueOf(rs.getString("TypeContrat"))
+                        (int) row.get("IdAssurance"),
+                        TypeContrat.valueOf((row.get("TypeContrat").toString()))
                 );
-                assurance.setAnnee(rs.getInt("Annee"));
-                assurance.setQuotiteJurisprudence(rs.getFloat("QuotiteJuridique"));
-                assurance.setProtectionJuridique(rs.getFloat("ProtectionJuridique"));
-                assurance.setPrime(rs.getFloat("Prime"));
-                assurance.setTotalPrime(rs.getFloat("TotalPrime")); // Chargé depuis la base
-                assurance.setMontantQuotite(rs.getFloat("MontantQuotite")); // Calculé par trigger
-                assurance.setAugmentationAnnuelle(rs.getFloat("AugmentationAnnuelle")); // Calculé par trigger
+                assurance.setAnnee((int) row.get("Annee"));
+                assurance.setQuotiteJurisprudence((Float) row.get("QuotiteJuridique"));
+                assurance.setProtectionJuridique((Float) row.get("ProtectionJuridique"));
+                assurance.setPrime((Float) row.get("Prime"));
+                assurance.setTotalPrime((Float) row.get("TotalPrime")); // Chargé depuis la base
+                assurance.setMontantQuotite((Float) row.get("MontantQuotite")); // Calculé par trigger
+                assurance.setAugmentationAnnuelle((Float) row.get("AugmentationAnnuelle")); // Calculé par trigger
                 assurances.add(assurance);
             }
-        } catch (QueryElement.QEltException | SQLException e) {
-            throw new AssuranceException("Erreur lors de la récupération des assurances",
-                    e instanceof SQLException ? (SQLException) e : ((QueryElement.QEltException) e).getSqlException());
+        } catch (QueryElement.QEltException qEltException) {
+            throw new AssuranceException("Erreur lors de la récupération des assurances", qEltException.getSqlException());
         }
 
         return assurances;

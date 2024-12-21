@@ -44,8 +44,11 @@ public abstract class QueryElement<T> implements Closeable {
         return this.query;
     }
 
-    /*
-     *
+    /**
+     * @return boolean : true if the connection & statement is closed from {@code QueryElement} too, false otherwise
+     * @parameters none
+     * @description check if the QueryElement<T> is closed
+     * @throws QEltException
      */
     public boolean isClosed() throws QEltException {
         try{

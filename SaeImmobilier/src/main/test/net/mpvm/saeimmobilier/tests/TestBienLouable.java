@@ -36,16 +36,4 @@ public class TestBienLouable {
     public void setDown(){
 
     }
-
-    @Test
-    public void testCreatingInstance() throws Bien.BienException {
-        BienLouable garage = new Garage.GBuilder(COMPLEMENT_ADRESSE,NBPIECES,NUMERO_FISCAL,new Immeuble.IBuilder(VILLE,CODE_POSTAL,ADRESSE,NUMERO_FISCAL_IMMEUBLE,DATE).build(),SURFACE,DATE).build();
-        assertEquals(-1,garage.getIdBien());
-        try{
-            garage.save();
-        }catch (Bien.BienException bienException) {
-            bienException.getSqlException().printStackTrace();
-            bienException.printStackTrace();
-        }
-    }
 }

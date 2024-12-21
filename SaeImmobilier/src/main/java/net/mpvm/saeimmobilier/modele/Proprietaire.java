@@ -7,10 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import net.mpvm.saeimmobilier.sql.Query.QueryElement;
-import net.mpvm.saeimmobilier.sql.Query.Queryable;
-import net.mpvm.saeimmobilier.sql.Query.SelectQueryElement;
-import net.mpvm.saeimmobilier.sql.Query.UpdateQueryElement;
+
+import net.mpvm.saeimmobilier.sql.Query.*;
 
 public class Proprietaire {
 	public static final String INSERT_QUERY = "INSERT INTO proprietaire (Email,MotDePasse) VALUES (?,?)";
@@ -122,30 +120,28 @@ public class Proprietaire {
 			// Remplacez SELECT_COUNT_QUERY par la requête SQL réelle pour vérifier l'existence de l'e-mail
 			queryElement.setArgs(Map.of(1, email));
 			// Exécution de la requête et récupération des résultats
-			ResultSet results = queryElement.execute();
-			results.next();
+			Map<String,Object> results = queryElement.execute().getFirst();
 			// Récupération du champ "count" dans le premier résultat
-			int count = results.getInt("count");
-			return count > 0;
+			return (int) results.get("Count") > 0;
 
-		} catch (QueryElement.QEltException | SQLException e) {
-			throw new ProprietaireException("Erreur lors de la vérification de l'adresse e-mail : ", e instanceof SQLException ? e : ((QueryElement.QEltException) e).getSqlException());
+		} catch (QueryElement.QEltException qEltException) {
+			throw new ProprietaireException("Erreur lors de la vérification de l'adresse qEltException-mail : ", qEltException.getSqlException());
 		}
 	}
 	public static List<Proprietaire> findAll() throws Proprietaire.ProprietaireException {
 		List<Proprietaire> p = new ArrayList<>();
 
 		try(SelectQueryElement query = new SelectQueryElement(SELECT_QUERY)){
-			ResultSet rs = query.execute();
-			while (rs.next()) {
+			Result rs = query.execute();
+			for(Map<String,Object> row : rs) {
 				p.add(
 						new Proprietaire(
-								rs.getString("Email"),
-								rs.getString("MotDePasse")
+								row.get("Email").toString(),
+								row.get("MotDePasse").toString()
 						));
 			}
 		}
-		catch (QueryElement.QEltException | SQLException QEltException){
+		catch (QueryElement.QEltException qEltException){
 			throw new Proprietaire.ProprietaireException("Erreur lors de la récupération des propriétaires");
 		}
 		return p;

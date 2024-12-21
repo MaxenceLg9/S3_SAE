@@ -3,6 +3,7 @@ package net.mpvm.saeimmobilier.tests;
 import net.mpvm.saeimmobilier.modele.Locataire;
 import net.mpvm.saeimmobilier.sql.Connection.BD;
 import net.mpvm.saeimmobilier.sql.Query.QueryElement;
+import net.mpvm.saeimmobilier.sql.Query.Result;
 import net.mpvm.saeimmobilier.sql.Query.SelectQueryElement;
 import net.mpvm.saeimmobilier.sql.Query.UpdateQueryElement;
 import org.junit.jupiter.api.AfterEach;
@@ -41,12 +42,21 @@ public class TestQueryElement {
     @Test
     public void testSelectQueryBehaviour() throws QueryElement.QEltException, SQLException {
         selectQueryElement = new SelectQueryElement(Locataire.SELECT_QUERY);
-        ResultSet rsQuery = selectQueryElement.execute();
+        Result result = selectQueryElement.execute();
+
         Connection connection = BD.getConnection(false);
-        ResultSet rs1 = connection.prepareStatement(Locataire.SELECT_QUERY).executeQuery();
-        while(rs1.next() && rsQuery.next())
-            for(int i = 0; i < Math.min(rs1.getMetaData().getColumnCount(),rsQuery.getMetaData().getColumnCount()); i++)
-                assertEquals(rs1.getObject(i + 1), rsQuery.getObject(i + 1));
+        ResultSet rs = connection.prepareStatement(Locataire.SELECT_QUERY).executeQuery();
+        int i = 0;
+        while(rs.next() && i < result.size())
+            for(int x = 0; x < Math.min(rs.getMetaData().getColumnCount(),result.get(i).size()); x++) {
+                Map<String,Object> row = result.get(i);
+                String c1 = rs.getMetaData().getColumnName(x + 1);
+                String c2 = row.keySet().toArray()[x].toString();
+
+                assertEquals(c1,c2);
+                assertEquals(rs.getObject(c1), row.get(c2));
+            }
+        assertTrue(i == result.size() && !rs.next());
     }
 
     @Test
@@ -59,11 +69,10 @@ public class TestQueryElement {
 
         selectQueryElement = new SelectQueryElement("SELECT * FROM Locataire WHERE email = ?");
         selectQueryElement.setArgs(Map.of(1, "email"));
-        ResultSet rsQuery = selectQueryElement.execute();
-        rsQuery.next();
-        assertEquals("nom", rsQuery.getString("nom"));
+        Map<String,Object> row = selectQueryElement.execute().getFirst();
+        assertEquals("nom", row.get("Nom"));
 
-        Integer id = rsQuery.getInt("IdLocataire");
+        Integer id = (int) row.get("IdLocataire");
         selectQueryElement.close();
 
         updateQueryElement = new UpdateQueryElement(Locataire.DELETE_QUERY, false);
@@ -111,19 +120,19 @@ public class TestQueryElement {
     @Test
     public void testSelectResultSetWithGet() throws QueryElement.QEltException {
         selectQueryElement = new SelectQueryElement(Locataire.SELECT_QUERY);
-        assertEquals(selectQueryElement.execute(),selectQueryElement.getResultSet());
+        assertEquals(selectQueryElement.execute(),selectQueryElement.getResult());
     }
 
     @Test
     public void testGettingResultSetBeforeExecute() throws QueryElement.QEltException {
         selectQueryElement = new SelectQueryElement(Locataire.SELECT_QUERY);
         assertThrows(QueryElement.QEltException.class, () -> {
-            selectQueryElement.getResultSet();
+            selectQueryElement.getResult();
         });
     }
 
     @Test
-    public void testCloseQuery() throws QueryElement.QEltException, SQLException {
+    public void testCloseQuery() throws QueryElement.QEltException {
         selectQueryElement = new SelectQueryElement(Locataire.SELECT_QUERY);
         updateQueryElement = new UpdateQueryElement(Locataire.INSERT_QUERY,false);
 
