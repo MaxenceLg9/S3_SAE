@@ -4,7 +4,6 @@ import net.mpvm.saeimmobilier.sql.Query.QueryElement;
 import net.mpvm.saeimmobilier.sql.Query.SelectQueryElement;
 
 import java.sql.Date;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -43,7 +42,7 @@ public final class Habitation extends BienLouable {
             }
             return habitations;
         }catch(QueryElement.QEltException qEltException){
-            qEltException.printStackTrace();
+            System.out.println(qEltException.getMessage());
             throw new HabitationException("Impossible de récupérer les habitations : " + qEltException.getSqlException().getMessage(), qEltException.getSqlException());
         }
     }
@@ -80,7 +79,7 @@ public final class Habitation extends BienLouable {
         }
     }
 
-    public static class HabitationException extends BienException{
+    public static class HabitationException extends BienLouableException{
 
         public HabitationException(String message, SQLException sqlException) {
             super(message, sqlException);
