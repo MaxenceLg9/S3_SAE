@@ -26,6 +26,7 @@ public abstract class Bien extends Queryable {
         this.idBien = idBien;
         this.numeroFiscal = numeroFiscal;
         this.dateAjout = dateAjout;
+        this.assurance = Optional.empty();
     }
 
 
@@ -44,6 +45,7 @@ public abstract class Bien extends Queryable {
     public Optional<Assurance> getAssurance() {
         return this.assurance;
     }
+
     public void setAssurance(Assurance assurance) {
         this.assurance = Optional.of(assurance);
     }
@@ -104,7 +106,7 @@ public abstract class Bien extends Queryable {
 
     public String getTypeBienString(){
         return getTypeBien().name();
-    };
+    }
 
     public float getSurface() {
         Bien bien = this;

@@ -60,7 +60,7 @@ public class TestQueryElement {
     }
 
     @Test
-    public void testUpdateQueryBehaviour() throws QueryElement.QEltException, SQLException {
+    public void testUpdateQueryBehaviour() throws QueryElement.QEltException {
         updateQueryElement = new UpdateQueryElement(Locataire.INSERT_QUERY, false);
         updateQueryElement.setArgs(Map.of(1, "nom", 2, "prenom", 3, "email", 4, "M", 5, "telephone"));
         updateQueryElement.execute();
@@ -86,17 +86,13 @@ public class TestQueryElement {
     public void testExecuteUpdateWithSelectQuery() throws QueryElement.QEltException {
         selectQueryElement = new SelectQueryElement(Locataire.INSERT_QUERY);
         selectQueryElement.setArgs(Map.of(1, "nom", 2, "prenom", 3, 'M', 4, "telephone", 5, "email"));
-        assertThrows(QueryElement.QEltException.class, () -> {
-            selectQueryElement.execute();
-        });
+        assertThrows(QueryElement.QEltException.class, () -> selectQueryElement.execute());
     }
 
     @Test
     public void testExecuteSelectWithUpdateQuery() throws QueryElement.QEltException {
         updateQueryElement = new UpdateQueryElement(Locataire.SELECT_QUERY, false);
-        assertThrows(QueryElement.QEltException.class, () -> {
-            updateQueryElement.execute();
-        });
+        assertThrows(QueryElement.QEltException.class, () -> updateQueryElement.execute());
     }
 
     @Test
@@ -126,9 +122,7 @@ public class TestQueryElement {
     @Test
     public void testGettingResultSetBeforeExecute() throws QueryElement.QEltException {
         selectQueryElement = new SelectQueryElement(Locataire.SELECT_QUERY);
-        assertThrows(QueryElement.QEltException.class, () -> {
-            selectQueryElement.getResult();
-        });
+        assertThrows(QueryElement.QEltException.class, () -> selectQueryElement.getResult());
     }
 
     @Test

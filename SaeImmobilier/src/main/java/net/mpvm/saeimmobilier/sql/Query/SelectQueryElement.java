@@ -1,6 +1,5 @@
 package net.mpvm.saeimmobilier.sql.Query;
 
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;

@@ -1,7 +1,6 @@
 package net.mpvm.saeimmobilier.tests;
 
 import net.mpvm.saeimmobilier.modele.*;
-import net.mpvm.saeimmobilier.sql.Query.Queryable;
 import org.junit.jupiter.api.*;
 
 import java.sql.Date;
