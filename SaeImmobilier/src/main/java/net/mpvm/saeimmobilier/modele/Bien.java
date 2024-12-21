@@ -152,6 +152,11 @@ public abstract class Bien extends Queryable {
         this.numeroFiscal = numeroFiscal;
     }
 
+    @Override
+    public void archiver(){
+
+    }
+
     public abstract static class BBuilder extends Queryable.Builder{
 
         private final int IdBien;

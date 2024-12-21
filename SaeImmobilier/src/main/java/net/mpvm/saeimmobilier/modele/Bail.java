@@ -292,6 +292,11 @@ public class Bail extends Queryable {
 
 	}
 
+	@Override
+	public void archiver() throws QbleException {
+
+	}
+
 	protected void setId(int id) throws QbleException {
 
 	}

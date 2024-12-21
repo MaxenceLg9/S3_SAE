@@ -132,6 +132,11 @@ public class Locataire extends Queryable {
 		}
 	}
 
+	@Override
+	public void archiver() throws QbleException {
+
+	}
+
 	public void modify() throws LocataireException{
 		if(this.getIdLocataire() == -1)
 			throw new LocataireException("Vous ne pouvez pas modifier un locataire qui n'existe pas");
