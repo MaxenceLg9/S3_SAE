@@ -32,11 +32,14 @@ public class JfxUtil {
     }
 
     public static void displayError(SQLException sqlException, String message) {
-        sqlException.printStackTrace();
-        new Thread(() -> {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Erreur");
-            alert.setHeaderText(message);
+        setAlert(Alert.AlertType.ERROR, "Erreur", message, sqlException.getMessage());
+    }
+
+    public static void setAlert(Alert.AlertType alertType, String title, String headerText, String contentText) {
+        new Thread(() -> {Alert alert = new Alert(alertType);
+            alert.setTitle(title);
+            alert.setHeaderText(headerText);
+            alert.setContentText(contentText);
             alert.showAndWait();
         }).start();
     }
