@@ -9,8 +9,4 @@ public class VueAttribuerAssurance extends Application {
     public void start(Stage stage) {
         JfxUtil.applicationInit(stage, "attribuerassurance.fxml","Attribuer une Assurance",700,800);
     }
-    public static void showWindow(Stage stage) throws Exception {
-        VueAttribuerAssurance vue = new VueAttribuerAssurance();
-        vue.start(stage);
-    }
 }

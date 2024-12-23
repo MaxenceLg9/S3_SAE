@@ -7,18 +7,17 @@ import net.mpvm.saeimmobilier.util.JfxUtil;
 public class VueConnexion extends Application {
 
 
-        public static void main(String[] args) {
-            launch(args);
-        }
+    public static void main(String[] args) {
+        launch(args);
+    }
 
-        @Override
-        public void start(Stage primaryStage) {
-            JfxUtil.applicationInit(primaryStage, "connexion.fxml","Page de connexion",650, 600);
-        }
+    @Override
+    public void start(Stage primaryStage) {
+        JfxUtil.applicationInit(primaryStage, "connexion.fxml","Page de connexion",650, 600);
+    }
 
     public static void showWindow(Stage stage) throws Exception {
         VueConnexion vue = new VueConnexion();
         vue.start(stage);
     }
-    }
-
+}
