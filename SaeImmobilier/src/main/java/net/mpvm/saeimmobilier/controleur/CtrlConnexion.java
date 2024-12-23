@@ -8,6 +8,7 @@ import javafx.stage.Stage;
 import net.mpvm.saeimmobilier.modele.Proprietaire;
 
 import javafx.scene.input.KeyEvent;
+import net.mpvm.saeimmobilier.util.JfxUtil;
 import net.mpvm.saeimmobilier.vue.*;
 
 import java.util.Map;
@@ -28,6 +29,24 @@ public class CtrlConnexion {
     @FXML
     protected void onHelloButtonClick() {
         welcomeText.setText("Welcome to JavaFX Application!");
+    }
+
+    public void initialize(){
+        try{
+            if (Proprietaire.findAll().isEmpty()){
+                JfxUtil.setAlert(Alert.AlertType.ERROR,
+                        "Erreur",
+                        "Il n'existe pas de propriétaire propriétaire",
+                        "Essayez de vous inscrire");
+                JfxUtil.showWindow(new Stage(), VueInscription.class);
+                ((Stage) welcomeText.getScene().getWindow()).close();
+            }
+        } catch (Proprietaire.ProprietaireException e) {
+            JfxUtil.setAlert(Alert.AlertType.ERROR,
+                    "Erreur",
+                    "Erreur lors de la récupération des données",
+                    "Vérifier votre connexion");
+        }
     }
 
     public void Quitter(javafx.event.ActionEvent actionEvent) throws Exception {
