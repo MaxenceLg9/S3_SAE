@@ -47,7 +47,21 @@ public class CtrlInscription {
         assert fieldNewPasswordVisible != null : "fieldNewPasswordVisible is null";
         assert fieldConfirmPassword != null : "fieldConfirmation is null";
         assert fieldConfirmationVisible != null : "fieldConfirmationVisible is null";
-
+        try{
+            if (!Proprietaire.findAll().isEmpty()){
+                JfxUtil.setAlert(Alert.AlertType.ERROR,
+                        "Erreur",
+                        "Il existe déjà un propriétaire",
+                        "Un propriétaire est déjà présent, essayez avec les informations déjà enregistrées");
+                JfxUtil.showWindow(new Stage(), VueConnexion.class);
+                ((Stage) fieldPassword.getScene().getWindow()).close();
+            }
+        } catch (Proprietaire.ProprietaireException e) {
+            JfxUtil.setAlert(Alert.AlertType.ERROR,
+                    "Erreur",
+                    "Erreur lors de la récupération des données",
+                    "Vérifier votre connexion");
+        }
         // Initial setup
         fieldSetup();
         checkBoxVisibilite.setSelected(false); // Default: password hidden
@@ -80,57 +94,26 @@ public class CtrlInscription {
         fieldConfirmationVisible.setText(fieldConfirmPassword.getText());
         fieldNewPasswordVisible.setText(fieldPassword.getText());
         if (fieldsNotEmpty()) {
-            if (!isValidEmail(fieldMail.getText())) {
-                JfxUtil.setAlert(Alert.AlertType.ERROR,
-                        "Erreur",
-                        "L'adresse e-mail est invalide",
-                        "L'adresse e-mail saisie n'est pas conforme");
-                return;
-            }
-
-            if (!isValidPassword(fieldPassword.getText())) {
-                JfxUtil.setAlert(Alert.AlertType.ERROR,
-                        "Erreur",
-                        "Le mot de passe est incorrect",
-                        "Le mot de passe doit faire 8 caractères, contenir une majuscule, une minuscule, un chiffre et un caractère spécial au minimum");
-                return;
-            }
-
-            try {
-                if (Proprietaire.findAll().isEmpty()){
-                    if (MDPIdentique()) {
-                        try {
-                            new Proprietaire(fieldMail.getText(), fieldPassword.getText()).save();
-                            JfxUtil.setAlert(Alert.AlertType.INFORMATION,
-                                    "Succès",
-                                    "Inscription réussie",
-                                    "Vous êtes maintenant inscrit ! Vous pouvez passer à la connexion");
-                            Stage stageActuel = (Stage) ((Button) event.getSource()).getScene().getWindow();
-                            stageActuel.close();
-                            JfxUtil.showWindow(new Stage(), VueConnexion.class);
-                        } catch (Proprietaire.ProprietaireException proprietaireException) {
-                            JfxUtil.setAlert(Alert.AlertType.ERROR,
-                                    "Erreur",
-                                    "Erreur lors de la sauvegarde",
-                                    proprietaireException.getMessage());
-                        }
-                    } else {
-                        JfxUtil.setAlert(Alert.AlertType.ERROR,
-                                "Erreur",
-                                "Mots de passe non identiques",
-                                "Les mots de passe ne correspondent pas !");
-                    }
-                }else {
+            if (MDPIdentique()) {
+                try {
+                    new Proprietaire(fieldMail.getText(), fieldPassword.getText()).save();
+                    JfxUtil.setAlert(Alert.AlertType.INFORMATION,
+                            "Succès",
+                            "Inscription réussie",
+                            "Vous êtes maintenant inscrit ! Vous pouvez passer à la connexion");
+                    ((Stage) ((Button) event.getSource()).getScene().getWindow()).close();
+                    JfxUtil.showWindow(new Stage(), VueConnexion.class);
+                } catch (Proprietaire.ProprietaireException proprietaireException) {
                     JfxUtil.setAlert(Alert.AlertType.ERROR,
                             "Erreur",
-                            "Il existe déjà un propriétaire",
-                            "Un propriétaire est déjà présent, essayez avec les informations déjà enregistrées");
+                            "Erreur lors de la sauvegarde",
+                            proprietaireException.getMessage());
                 }
-            } catch (Proprietaire.ProprietaireException e) {
+            } else {
                 JfxUtil.setAlert(Alert.AlertType.ERROR,
                         "Erreur",
-                        "Erreur lors de la récupération des données",
-                        "Vérifier votre connexion");
+                        "Mots de passe non identiques",
+                        "Les mots de passe ne correspondent pas !");
             }
         } else {
             JfxUtil.setAlert(Alert.AlertType.ERROR,
@@ -172,7 +155,6 @@ public class CtrlInscription {
 
     private boolean isValidPassword(String password) {
         return password.length() >= 8 && Pattern.matches("(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*]).*", password);
-
     }
 
     @FXML
