@@ -24,10 +24,10 @@ public class CtrlInscription {
     public PasswordField fieldConfirmPassword;
 
     @FXML
-    public TextField fieldConfirmationVisible;
+    public TextField fieldConfirmPasswordVisible;
 
     @FXML
-    public TextField fieldNewPasswordVisible;
+    public TextField fieldPasswordVisible;
 
     @FXML
     public PasswordField fieldPassword;
@@ -44,9 +44,9 @@ public class CtrlInscription {
     @FXML
     public void initialize() {
         assert fieldPassword != null : "fieldNewPassword is null";
-        assert fieldNewPasswordVisible != null : "fieldNewPasswordVisible is null";
+        assert fieldPasswordVisible != null : "fieldNewPasswordVisible is null";
         assert fieldConfirmPassword != null : "fieldConfirmation is null";
-        assert fieldConfirmationVisible != null : "fieldConfirmationVisible is null";
+        assert fieldConfirmPasswordVisible != null : "fieldConfirmationVisible is null";
         try{
             if (!Proprietaire.findAll().isEmpty()){
                 JfxUtil.setAlert(Alert.AlertType.ERROR,
@@ -76,9 +76,13 @@ public class CtrlInscription {
             add(fieldConfirmPassword);
         }};
 
+        fieldPassword.setOnAction(e -> fieldPasswordVisible.setText(fieldPassword.getText()));
+        fieldPasswordVisible.setOnAction(e -> fieldPassword.setText(fieldPasswordVisible.getText()));
+        fieldConfirmPassword.setOnAction(e -> fieldConfirmPasswordVisible.setText(fieldConfirmPassword.getText()));
+        fieldConfirmPasswordVisible.setOnAction(e -> fieldConfirmPassword.setText(fieldConfirmPasswordVisible.getText()));
         // Hide visible fields initially
-        fieldNewPasswordVisible.setVisible(false);
-        fieldConfirmationVisible.setVisible(false);
+        fieldPasswordVisible.setVisible(false);
+        fieldConfirmPasswordVisible.setVisible(false);
     }
 
     private void setFieldsPromptText() {
@@ -89,10 +93,6 @@ public class CtrlInscription {
 
     @FXML
     public void Valider(ActionEvent event) {
-        fieldPassword.setText(fieldNewPasswordVisible.getText());
-        fieldConfirmPassword.setText(fieldConfirmationVisible.getText());
-        fieldConfirmationVisible.setText(fieldConfirmPassword.getText());
-        fieldNewPasswordVisible.setText(fieldPassword.getText());
         if (fieldsNotEmpty()) {
             if (MDPIdentique()) {
                 try {
@@ -161,22 +161,22 @@ public class CtrlInscription {
     private void setupVisibility(ActionEvent actionEventS) {
         if (checkBoxVisibilite.isSelected()) {
             // Show passwords in plain text (visible TextField)
-            fieldNewPasswordVisible.setText(fieldPassword.getText());
-            fieldNewPasswordVisible.setVisible(true);
+            fieldPasswordVisible.setText(fieldPassword.getText());
+            fieldPasswordVisible.setVisible(true);
             fieldPassword.setVisible(false);
 
-            fieldConfirmationVisible.setText(fieldConfirmPassword.getText());
-            fieldConfirmationVisible.setVisible(true);
+            fieldConfirmPasswordVisible.setText(fieldConfirmPassword.getText());
+            fieldConfirmPasswordVisible.setVisible(true);
             fieldConfirmPassword.setVisible(false);
         } else {
             // Hide plain text fields and restore PasswordField
-            fieldPassword.setText(fieldNewPasswordVisible.getText());
+            fieldPassword.setText(fieldPasswordVisible.getText());
             fieldPassword.setVisible(true);
-            fieldNewPasswordVisible.setVisible(false);
+            fieldPasswordVisible.setVisible(false);
 
-            fieldConfirmPassword.setText(fieldConfirmationVisible.getText());
+            fieldConfirmPassword.setText(fieldConfirmPasswordVisible.getText());
             fieldConfirmPassword.setVisible(true);
-            fieldConfirmationVisible.setVisible(false);
+            fieldConfirmPasswordVisible.setVisible(false);
         }
     }
 }
