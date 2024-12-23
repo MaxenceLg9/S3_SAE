@@ -14,7 +14,6 @@ public class VueConnexion extends Application {
         @Override
         public void start(Stage primaryStage) {
             JfxUtil.applicationInit(primaryStage, "connexion.fxml","Page de connexion",650, 600);
-            primaryStage.setResizable(false);
         }
 
     public static void showWindow(Stage stage) throws Exception {

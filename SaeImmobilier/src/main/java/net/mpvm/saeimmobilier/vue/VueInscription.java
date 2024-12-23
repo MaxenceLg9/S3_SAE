@@ -15,7 +15,6 @@ public class VueInscription extends Application {
     @Override
     public void start(Stage primaryStage) {
         JfxUtil.applicationInit(primaryStage, "inscription.fxml","Page d'authentification'",80, 800);
-        primaryStage.setResizable(false);
     }
 
     public static void showWindow(Stage stage) throws Exception {
