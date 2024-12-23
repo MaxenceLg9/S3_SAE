@@ -19,7 +19,7 @@ public class CtrlAccueil {
         try {
             toggleButton(Proprietaire.findAll().isEmpty());
         } catch (Proprietaire.ProprietaireException e) {
-            JfxUtil.displayError(e.getSqlException(), e.getMessage());
+            JfxUtil.displayError("Erreur de récupération des données", "Vérifiez votre connexion à la base de données");
         }
         // Initialisation
     }

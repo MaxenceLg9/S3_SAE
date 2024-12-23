@@ -32,7 +32,7 @@ public class CtrlAttribuerAssurance {
             assurances = Assurance.findAll().stream()
                     .collect(Collectors.toMap(Assurance::getIdAssurance, Function.identity()));
         } catch (Assurance.AssuranceException assuranceException) {
-            JfxUtil.displayError(assuranceException.getSqlException(), assuranceException.getMessage());
+            JfxUtil.displayError("Erreur lors de la récupération des assurances", "Vérifiez votre connexion Internet");
         }
 
         vBoxContent.getChildren().clear();

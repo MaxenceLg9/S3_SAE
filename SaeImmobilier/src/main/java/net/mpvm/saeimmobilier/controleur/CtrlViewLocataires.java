@@ -33,7 +33,7 @@ public class CtrlViewLocataires {
         try {
             locataires = Locataire.findALl().stream().collect(Collectors.toMap(Locataire::getIdLocataire, Function.identity()));
         } catch (Locataire.LocataireException locataireException) {
-            JfxUtil.displayError(locataireException.getSqlException(), locataireException.getMessage());
+            JfxUtil.displayError("Erreur lors de la récupération des locataires", "Verifiez votre connexion");
             return;
         }
         vBoxContent.getChildren().clear();

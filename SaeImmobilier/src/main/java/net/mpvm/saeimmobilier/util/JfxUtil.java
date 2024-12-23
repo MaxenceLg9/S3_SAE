@@ -33,8 +33,8 @@ public class JfxUtil {
         }
     }
 
-    public static void displayError(SQLException sqlException, String message) {
-        setAlert(Alert.AlertType.ERROR, "Erreur", message, sqlException.getMessage());
+    public static void displayError(String erreur, String message) {
+        setAlert(Alert.AlertType.ERROR, "Erreur", erreur, message);
     }
 
     public static void setAlert(Alert.AlertType alertType, String title, String headerText, String contentText) {
