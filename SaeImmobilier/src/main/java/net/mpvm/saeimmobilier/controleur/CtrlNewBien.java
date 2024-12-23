@@ -2,12 +2,12 @@ package net.mpvm.saeimmobilier.controleur;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import net.mpvm.saeimmobilier.modele.*;
 import net.mpvm.saeimmobilier.sql.Query.Queryable;
 import net.mpvm.saeimmobilier.util.JfxUtil;
-import net.mpvm.saeimmobilier.vue.VueAccueil;
 import net.mpvm.saeimmobilier.vue.VueConnexion;
 import net.mpvm.saeimmobilier.vue.VueHome;
 
@@ -25,23 +25,23 @@ public class CtrlNewBien {
     private java.sql.Date datesql;
 
     @FXML
-    private TextField FieldLieuImmeuble;
+    private TextField fieldLieuImmeuble;
     @FXML
     private Label LabelDate;
     @FXML
-    private TextField FieldAdresse;
+    private TextField fieldAdresse;
     @FXML
-    private TextField FieldVille;
+    private TextField fieldVille;
     @FXML
-    private TextField FieldCodePostal;
+    private TextField fieldCodePostal;
     @FXML
     private TextField FieldNumFisc;
     @FXML
-    private TextField FieldNbPieces;
+    private TextField fieldNbPieces;
     @FXML
-    private TextField FieldSurface;
+    private TextField fieldSurface;
     @FXML
-    private ChoiceBox<TypeBien> ListTypeBien;
+    private ChoiceBox<TypeBien> listTypeBien;
     @FXML
     private List<TextField> fieldsLogement;
 
@@ -72,39 +72,41 @@ public class CtrlNewBien {
 
 
         for (TypeBien b : TypeBien.values()){
-            this.ListTypeBien.getItems().add(b);
+            this.listTypeBien.getItems().add(b);
         }
 
-        this.ListTypeBien.setOnAction(actionEvent -> {
-            if(this.ListTypeBien.getValue()==TypeBien.IMMEUBLE){
-                this.FieldNbPieces.setDisable(true);
-                this.FieldSurface.setDisable(true);
+        this.listTypeBien.setOnAction(actionEvent -> {
+            if(this.listTypeBien.getValue()==TypeBien.IMMEUBLE){
+                this.fieldNbPieces.setDisable(true);
+                this.fieldSurface.setDisable(true);
                 this.listImmeubles.setDisable(true);
-                this.FieldLieuImmeuble.setDisable(true);
+                this.fieldLieuImmeuble.setDisable(true);
 
             } else {
-                this.FieldNbPieces.setDisable(false);
-                this.FieldSurface.setDisable(false);
+                this.fieldNbPieces.setDisable(false);
+                this.fieldSurface.setDisable(false);
                 this.listImmeubles.setDisable(false);
-                this.FieldLieuImmeuble.setDisable(false);
+                this.fieldLieuImmeuble.setDisable(false);
             }
         });
 
         this.listImmeubles.setOnAction(actionEvent -> {
             if (listImmeubles.getValue() != null) {
-                this.FieldAdresse.setText(listImmeubles.getValue().getAdresse());
-                this.FieldAdresse.setDisable(true);
-                this.FieldCodePostal.setText(String.valueOf(listImmeubles.getValue().getCodePostal()));
-                this.FieldCodePostal.setDisable(true);
-                this.FieldVille.setText(listImmeubles.getValue().getVille());
-                this.FieldVille.setDisable(true);
+                this.fieldAdresse.setText(listImmeubles.getValue().getAdresse());
+                this.fieldAdresse.setDisable(true);
+                this.fieldCodePostal.setText(String.valueOf(listImmeubles.getValue().getCodePostal()));
+                this.fieldCodePostal.setDisable(true);
+                this.fieldVille.setText(listImmeubles.getValue().getVille());
+                this.fieldVille.setDisable(true);
+                this.listTypeBien.getItems().remove(TypeBien.IMMEUBLE);
             } else {
-                this.FieldAdresse.setText("");
-                this.FieldAdresse.setEditable(true);
-                this.FieldCodePostal.setText("");
-                this.FieldCodePostal.setEditable(true);
-                this.FieldVille.setText("");
-                this.FieldVille.setEditable(true);
+                this.fieldAdresse.setText("");
+                this.fieldAdresse.setDisable(false);
+                this.fieldCodePostal.setText("");
+                this.fieldCodePostal.setDisable(false);
+                this.fieldVille.setText("");
+                this.fieldVille.setDisable(false);
+                this.listTypeBien.getItems().add(TypeBien.IMMEUBLE);
             }
         });
 
@@ -114,12 +116,12 @@ public class CtrlNewBien {
     private void fieldsetup() {
         fieldsLogement = new ArrayList<>(){
             {
-                add(FieldVille);
-                add(FieldCodePostal);
-                add(FieldAdresse);
-                add(FieldNbPieces);
+                add(fieldVille);
+                add(fieldCodePostal);
+                add(fieldAdresse);
+                add(fieldNbPieces);
                 add(FieldNumFisc);
-                add(FieldSurface);
+                add(fieldSurface);
             }
         };
     }
@@ -128,14 +130,14 @@ public class CtrlNewBien {
     @FXML
     public void ajouterBien(ActionEvent actionEvent) {
         try {
-            switch (this.ListTypeBien.getValue()) {
+            switch (this.listTypeBien.getValue()) {
                 case TypeBien.HABITATION:
                     if (fieldsNotEmptyBienLouable()) {
-                        new Habitation.HBuilder(this.FieldLieuImmeuble.getText(),
-                                Integer.parseInt(this.FieldNbPieces.getText()),
+                        new Habitation.HBuilder(this.fieldLieuImmeuble.getText(),
+                                Integer.parseInt(this.fieldNbPieces.getText()),
                                 this.FieldNumFisc.getText(),
                                 this.listImmeubles.getItems().getFirst(),
-                                Float.parseFloat(this.FieldSurface.getText()), this.datesql).build().save();
+                                Float.parseFloat(this.fieldSurface.getText()), this.datesql).build().save();
                     }else {
                         alertFieldsEmptybienLouable();
                     }
@@ -143,11 +145,11 @@ public class CtrlNewBien {
 
                 case TypeBien.GARAGE:
                     if (fieldsNotEmptyBienLouable()) {
-                        new Garage.GBuilder(this.FieldLieuImmeuble.getText(),
-                                Integer.parseInt(this.FieldNbPieces.getText()),
+                        new Garage.GBuilder(this.fieldLieuImmeuble.getText(),
+                                Integer.parseInt(this.fieldNbPieces.getText()),
                                 this.FieldNumFisc.getText(),
                                 this.listImmeubles.getItems().getFirst(),
-                                Float.parseFloat(this.FieldSurface.getText()), this.datesql).build().save();
+                                Float.parseFloat(this.fieldSurface.getText()), this.datesql).build().save();
                     } else {
                         alertFieldsEmptybienLouable();
                     }
@@ -156,9 +158,9 @@ public class CtrlNewBien {
                 case TypeBien.IMMEUBLE:
                     if (fieldsNotEmptyImmeuble()){
                         new Immeuble.IBuilder(
-                                this.FieldVille.getText(),
-                                Integer.parseInt(this.FieldCodePostal.getText()),
-                                this.FieldAdresse.getText(),
+                                this.fieldVille.getText(),
+                                Integer.parseInt(this.fieldCodePostal.getText()),
+                                this.fieldAdresse.getText(),
                                 this.FieldNumFisc.getText(),
                                 this.datesql).build().save();
                     }else {
@@ -239,7 +241,7 @@ public class CtrlNewBien {
         Stage stage = new Stage();
         try {
             VueHome.showWindow(stage);
-            Stage stageActu = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
+            Stage stageActu = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
             stageActu.close();
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -268,6 +270,8 @@ public class CtrlNewBien {
                 textField.setEditable(true);
             }
         }
+        this.listImmeubles.setValue(null);
+        this.listTypeBien.setValue(null);
     }
 
 }

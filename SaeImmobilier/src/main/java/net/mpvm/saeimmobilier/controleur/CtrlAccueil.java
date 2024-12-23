@@ -17,9 +17,10 @@ public class CtrlAccueil {
 
     public void initialize() {
         try {
-            toggleButton(Proprietaire.findAll().isEmpty());
+            toggleButton(Proprietaire.countProprietaire() == 0);
         } catch (Proprietaire.ProprietaireException e) {
-            JfxUtil.displayError("Erreur de récupération des données", "Vérifiez votre connexion à la base de données");
+            JfxUtil.displayError("Erreur de récupération des données", "L'application n'a pas pu se lancer. Vérifiez votre connexion à la base de données.");
+            throw new RuntimeException();
         }
         // Initialisation
     }
@@ -37,7 +38,7 @@ public class CtrlAccueil {
         }
     }
 
-    public void Quitter(ActionEvent actionEvent) {
+    public void Quitter() {
         System.exit(0);
     }
 
@@ -54,7 +55,7 @@ public class CtrlAccueil {
             stage2.close();
 
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 
@@ -72,7 +73,7 @@ public class CtrlAccueil {
             // Afficher la fenêtre
             stage.show();
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
 
     }
