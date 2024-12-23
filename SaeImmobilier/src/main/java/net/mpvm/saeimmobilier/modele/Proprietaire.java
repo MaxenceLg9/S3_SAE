@@ -21,7 +21,7 @@ public class Proprietaire extends Queryable{
 	private ArrayList<Bien> biensPossedes;
 	private int idProprietaire;
 
-	Proprietaire(int idProprietaire,String email, String password) throws ProprietaireException {
+	private Proprietaire(int idProprietaire, String email, String password) throws ProprietaireException {
 		setEmail(email);
 		setPassword(password);
 		this.idProprietaire = idProprietaire;
@@ -138,6 +138,7 @@ public class Proprietaire extends Queryable{
 			throw new ProprietaireException("Erreur lors de la vérification de l'adresse qEltException-mail : ", qEltException.getSqlException());
 		}
 	}
+
 	public static List<Proprietaire> findAll() throws Proprietaire.ProprietaireException {
 		List<Proprietaire> p = new ArrayList<>();
 
