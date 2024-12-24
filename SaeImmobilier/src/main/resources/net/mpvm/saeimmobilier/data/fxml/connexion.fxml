@@ -7,27 +7,46 @@
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
 <BorderPane styleClass="backgroundColor" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.mpvm.saeimmobilier.controleur.CtrlConnexion">
    <center>
-      <VBox alignment="CENTER" fillWidth="false" prefHeight="550.0" prefWidth="700.0" spacing="20.0">
-      
-          <Label fx:id="welcomeText" text="Se connecter" textFill="WHITE">
-            <font>
-               <Font name="System Bold" size="36.0" />
-            </font>
-         </Label>
-         <TextField fx:id="FieldMail" alignment="CENTER" prefHeight="25.0" prefWidth="316.0" promptText="Entrez votre identifiant ou votre email" />
-          <PasswordField fx:id="FieldPwd" alignment="CENTER" onKeyPressed="#ConnexionEnter" prefHeight="25.0" prefWidth="316.0" promptText="Entrez votre mot de passe" />
-          <Button fx:id="btnConnexion" onAction="#Connexion" style="-fx-background-color: #2ECC71;" text="Connexion" />
-         <Hyperlink fx:id="hyperLinkmdpOublie" onAction="#mdpOublie" text="Mot de passe oublié ?" textFill="#38d7ff">
-            <font>
-               <Font size="14.0" />
-            </font></Hyperlink>
-      
-      </VBox>
+      <GridPane alignment="CENTER" hgap="20.0" maxHeight="-Infinity" maxWidth="600.0" prefHeight="210.0" prefWidth="400.0" style="-fx-background-radius: 30; -fx-background-color: #002949;" vgap="20.0" BorderPane.alignment="CENTER">
+         <columnConstraints>
+            <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+         </rowConstraints>
+         <children>
+            <TextField fx:id="FieldMail" alignment="CENTER" maxHeight="-Infinity" maxWidth="500.0" prefHeight="25.0" prefWidth="320.0" promptText="Entrez votre identifiant ou votre email">
+               <GridPane.margin>
+                  <Insets left="10.0" right="10.0" />
+               </GridPane.margin></TextField>
+             <PasswordField fx:id="FieldPwd" alignment="CENTER" maxHeight="-Infinity" maxWidth="500.0" onKeyPressed="#ConnexionEnter" prefHeight="25.0" prefWidth="320.0" promptText="Entrez votre mot de passe" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets left="10.0" right="10.0" />
+               </GridPane.margin></PasswordField>
+             <Button fx:id="btnConnexion" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#Connexion" prefHeight="35.0" prefWidth="100.0" style="-fx-background-color: #2ECC71;" text="Connexion" GridPane.rowIndex="2" />
+            <Hyperlink fx:id="hyperLinkmdpOublie" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#mdpOublie" prefHeight="30.0" prefWidth="150.0" text="Mot de passe oublié ?" textFill="#38d7ff" GridPane.rowIndex="3">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Hyperlink>
+         </children>
+         <BorderPane.margin>
+            <Insets bottom="20.0" left="20.0" right="20.0" />
+         </BorderPane.margin>
+         <padding>
+            <Insets left="20.0" right="20.0" top="20.0" />
+         </padding>
+      </GridPane>
    </center>
    <bottom>
       <Button fx:id="BtwQuitter" minHeight="35.0" minWidth="125.0" mnemonicParsing="false" onAction="#Quitter" style="-fx-background-color: #FF6F61; -fx-background-radius: 10px;" text="Quitter" textFill="WHITE" BorderPane.alignment="CENTER_LEFT">
@@ -39,4 +58,15 @@
          </font>
       </Button>
    </bottom>
+   <top>
+   
+                <Label fx:id="welcomeText" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="55.0" prefWidth="220.0" text="Se connecter" textFill="WHITE" BorderPane.alignment="CENTER">
+         <font>
+            <Font name="System Bold" size="36.0" />
+         </font>
+         <BorderPane.margin>
+            <Insets top="20.0" />
+         </BorderPane.margin>
+      </Label>
+   </top>
 </BorderPane>
