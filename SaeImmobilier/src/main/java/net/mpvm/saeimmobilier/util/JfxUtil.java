@@ -26,11 +26,6 @@ public class JfxUtil {
 
             Image icon = new Image(JfxUtil.class.getResource("/net/mpvm/saeimmobilier/data/images/icon_immobilier.png").toString());
 
-
-            System.out.println(scene.getHeight());
-            primaryStage.setMinHeight(scene.getHeight());
-            primaryStage.setMinWidth(width);
-
             primaryStage.setTitle(nomPage);
             primaryStage.getIcons().add(icon);
             primaryStage.setScene(scene);
@@ -49,6 +44,8 @@ public class JfxUtil {
                 // Set minimum size based on scene size + decorations
                 primaryStage.setMinWidth(sceneWidth + decorationWidth);
                 primaryStage.setMinHeight(sceneHeight + decorationHeight);
+                primaryStage.setWidth(width + decorationWidth);
+                primaryStage.setHeight(height + decorationHeight);
             });
 
         } catch (IOException e) {
