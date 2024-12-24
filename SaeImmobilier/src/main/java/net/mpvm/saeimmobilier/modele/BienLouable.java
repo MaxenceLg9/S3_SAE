@@ -120,13 +120,6 @@ public abstract class BienLouable extends Bien {
         return surface;
     }
 
-    public void setSurface(int surface) {
-        if (surface <= 0) {
-            throw new IllegalArgumentException("La surface doit être positive.");
-        }
-        this.surface = surface;
-    }
-
     public Immeuble getImmeuble() {
         return immeuble;
     }
