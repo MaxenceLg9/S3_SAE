@@ -62,16 +62,11 @@ public class CtrlAccueil {
     public void Connexion(ActionEvent actionEvent) {
         try {
             // Créer une nouvelle fenêtre (Stage)
-            Stage stage = new Stage();
-
-            VueConnexion.showWindow(stage);
+            JfxUtil.showWindow(new Stage(), VueConnexion.class);
 
             Stage stage2 = (Stage) ((javafx.scene.control.Button) actionEvent.getSource()).getScene().getWindow();
             // Fermer la fenêtre
             stage2.close();
-
-            // Afficher la fenêtre
-            stage.show();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

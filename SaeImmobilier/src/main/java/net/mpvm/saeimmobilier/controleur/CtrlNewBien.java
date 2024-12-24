@@ -251,9 +251,7 @@ public class CtrlNewBien {
     public void Deconnexion(ActionEvent actionEvent) {
         try {
             // Créer une nouvelle fenêtre (Stage)
-            Stage stage = new Stage();
-
-            VueConnexion.showWindow(stage);
+            JfxUtil.showWindow(new Stage(), VueConnexion.class);
             Stage stage2 = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
             // Fermer la fenêtre
             stage2.close();
