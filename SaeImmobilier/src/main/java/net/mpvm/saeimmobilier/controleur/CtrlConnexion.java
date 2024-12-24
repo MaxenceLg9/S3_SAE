@@ -49,10 +49,9 @@ public class CtrlConnexion {
         }
     }
 
-    public void Quitter(javafx.event.ActionEvent actionEvent) throws Exception {
-        Stage stage1 = new Stage();
-        VueAccueil.showWindow(stage1);
+    public void Quitter(javafx.event.ActionEvent actionEvent) {
         Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
+        JfxUtil.showWindow(new Stage(), VueAccueil.class);
         stage.close();
     }
 

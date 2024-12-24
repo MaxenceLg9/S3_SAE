@@ -126,7 +126,7 @@ public class CtrlInscription {
     @FXML
     public void Annuler(ActionEvent event) {
         try {
-            VueAccueil.showWindow(new Stage());
+            JfxUtil.showWindow(new Stage(), VueAccueil.class);
             Stage stageActuel = (Stage) ((Button) event.getSource()).getScene().getWindow();
             stageActuel.close();
         } catch (Exception e) {
@@ -149,12 +149,11 @@ public class CtrlInscription {
     }
 
     private boolean isValidEmail(String email) {
-        String emailRegex = "^[\\w-\\.]+@[\\w-\\.]+\\.\\w{2,}$";
-        return Pattern.matches(emailRegex, email);
+        return Pattern.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$", email);
     }
 
     private boolean isValidPassword(String password) {
-        return password.length() >= 8 && Pattern.matches("(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*]).*", password);
+        return Pattern.matches("^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*]).{8,}$", password);
     }
 
     @FXML
