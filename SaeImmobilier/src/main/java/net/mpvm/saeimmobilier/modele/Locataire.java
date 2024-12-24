@@ -5,13 +5,12 @@ import net.mpvm.saeimmobilier.sql.Query.SelectQueryElement;
 import net.mpvm.saeimmobilier.sql.Query.UpdateQueryElement;
 import net.mpvm.saeimmobilier.sql.Query.Queryable;
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class Locataire extends Queryable {
+public final class Locataire extends Queryable {
 
 	public static final String INSERT_QUERY = "INSERT INTO Locataire (nom, prenom, email, sexe, telephone) VALUES (?, ?, ?, ?, ?)";
 
@@ -19,7 +18,7 @@ public class Locataire extends Queryable {
 	public static final String DELETE_QUERY = "DELETE FROM Locataire WHERE IdLocataire = ?";
 	public static final String UPDATE_QUERY = "UPDATE Locataire SET nom = ?, prenom = ?, email = ?, sexe = ?, telephone = ? WHERE IdLocataire = ?";
 
-	private final int IdLocataire;
+	private final int idLocataire;
 	private char sexe;
 	private String telephone;
 	private String email;
@@ -36,7 +35,7 @@ public class Locataire extends Queryable {
 		this.email = email;
 		this.sexe = sexe;
 		this.telephone = telephone;
-		this.IdLocataire = idLocataire;
+		this.idLocataire = idLocataire;
 		this.baux = new ArrayList<>();
 		this.charges = new ArrayList<>();
 		this.totalCharge = 0f;
@@ -47,7 +46,7 @@ public class Locataire extends Queryable {
 	}
 
 	public int getIdLocataire() {
-		return this.IdLocataire;
+		return this.idLocataire;
 	}
 
 	public char getSexe() {
@@ -89,9 +88,11 @@ public class Locataire extends Queryable {
 	public void setPrenom(String prenom) {
 		this.prenom = prenom;
 	}
+
 	public ArrayList<Bail> getBaux(){
 		return this.baux;
 	}
+	
 	public void ajouterBail(Bail bail) {
 		this.baux.add(bail);
 	}
