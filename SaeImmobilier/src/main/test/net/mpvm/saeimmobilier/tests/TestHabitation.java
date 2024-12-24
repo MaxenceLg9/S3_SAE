@@ -96,4 +96,17 @@ public class TestHabitation {
 
         habitation.delete();
     }
+
+    @Test
+    public void testGetters() throws Bien.BienException {
+        Habitation habitation = new Habitation.HBuilder(COMPLEMENT_ADRESSE, NBPIECES, NUMERO_FISCAL, immeuble, SURFACE, DATE).build();
+        assertEquals(COMPLEMENT_ADRESSE, habitation.getComplementAdresse());
+        assertEquals(NBPIECES, habitation.getNbPieces());
+        assertEquals(NUMERO_FISCAL, habitation.getNumeroFiscal());
+        assertEquals(immeuble, habitation.getImmeuble());
+        assertEquals(SURFACE, habitation.getSurface());
+        assertEquals(DATE, habitation.getDateAjout());
+        assertEquals(-1, habitation.getIdBien());
+        assertEquals(TypeBien.HABITATION, habitation.getTypeBien());
+    }
 }

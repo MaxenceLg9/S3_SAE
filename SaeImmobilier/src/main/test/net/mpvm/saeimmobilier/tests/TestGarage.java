@@ -99,4 +99,17 @@ public class TestGarage {
 
         garage.delete();
     }
+
+    @Test
+    public void testGetters() throws Bien.BienException {
+        Garage garage = new Garage.GBuilder(COMPLEMENT_ADRESSE, NBPIECES, NUMERO_FISCAL, immeuble, SURFACE, DATE).build();
+        assertEquals(COMPLEMENT_ADRESSE, garage.getComplementAdresse());
+        assertEquals(NBPIECES, garage.getNbPieces());
+        assertEquals(NUMERO_FISCAL, garage.getNumeroFiscal());
+        assertEquals(immeuble, garage.getImmeuble());
+        assertEquals(SURFACE, garage.getSurface());
+        assertEquals(DATE, garage.getDateAjout());
+        assertEquals(-1, garage.getIdBien());
+        assertEquals(TypeBien.GARAGE, garage.getTypeBien());
+    }
 }
