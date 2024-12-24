@@ -68,7 +68,7 @@ public class Proprietaire extends Queryable{
 	}
 
 	private boolean checkPassword(String password){
-		return password.length() >= 8 && Pattern.matches("(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*]).*", password);
+		return Pattern.matches("^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*]).{8,}$", password);
 	}
 
 	private boolean checkEmail(String email){
