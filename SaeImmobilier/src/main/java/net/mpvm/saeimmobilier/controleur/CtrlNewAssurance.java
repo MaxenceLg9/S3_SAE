@@ -77,17 +77,12 @@ public class CtrlNewAssurance {
                     return;
                 }
                 // Enregistrement de l'assurance dans la base de donnees
-                Assurance assurance = new Assurance(typeContrat);
-                assurance.setAnnee(annee);
-                assurance.setProtectionJuridique(protectionJuridique);
-                assurance.setQuotiteJurisprudence(quotiteJuridique);
-                assurance.setPrime(prime);
-                assurance.save();
+                new Assurance.ABuilder(typeContrat,annee,protectionJuridique,quotiteJuridique,prime).build().save();
 
             } catch (NumberFormatException e) {
                 alertError("Format des champs invalide", "Veuillez saisir des valeurs numeriques pour les champs appropriés.");
             } catch (Assurance.AssuranceException e) {
-                e.getSqlException().printStackTrace();
+                System.out.println(e.getMessage());
                 alertError("Erreur lors de l'enregistrement", "Une erreur est survenue lors de l'ajout de l'assurance.");
             }
         } else {

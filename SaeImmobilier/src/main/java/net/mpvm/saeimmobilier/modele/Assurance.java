@@ -2,7 +2,6 @@ package net.mpvm.saeimmobilier.modele;
 
 import net.mpvm.saeimmobilier.sql.Query.*;
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +11,7 @@ import java.util.Optional;
 public class Assurance extends Queryable{
 
     private int idAssurance;
-    private int Annee;
+    private int annee;
     private float quotiteJurisprudence;
     private float protectionJuridique;
     private float prime;
@@ -31,23 +30,14 @@ public class Assurance extends Queryable{
         this.bien = Optional.empty(); // Initialisé à une valeur vide
     }
 
-    // Constructeur par défaut
-    public Assurance(TypeContrat typeContrat) {
-        if (typeContrat == null) {
-            throw new IllegalArgumentException("Le type de contrat est obligatoire.");
-        }
-        this.typeContrat = typeContrat;
-        this.bien = Optional.empty(); // Initialisé à une valeur vide
+    public Assurance(ABuilder aBuilder) {
+        super();
     }
 
     // Méthode pour récupérer toutes les assurances
     public static List<Assurance> findAll() throws AssuranceException {
         List<Assurance> assurances = new ArrayList<>();
-        String SELECT_QUERY = """
-                SELECT IdAssurance, Annee, QuotiteJuridique, ProtectionJuridique, Prime, 
-                       TotalPrime, MontantQuotite, AugmentationAnnuelle, TypeContrat 
-                FROM Assurance
-                """;
+        String SELECT_QUERY = "SELECT * FROM Assurance";
 
         try (SelectQueryElement query = new SelectQueryElement(SELECT_QUERY)) {
             Result rs = query.execute();
@@ -137,19 +127,17 @@ public class Assurance extends Queryable{
     }
 
     public void setBien(Bien bien) {
-        this.bien = Optional.ofNullable(bien);
+        this.bien = Optional.of(bien);
     }
 
     public float getAugmentationAnnuelle() {
         return augmentationAnnuelle;
     }
+
     public void setAugmentationAnnuelle(float augmentationAnnuelle) {
         this.augmentationAnnuelle = augmentationAnnuelle;
     }
 
-    public void setBien(Optional<Bien> bien) {
-        this.bien = bien;
-    }
     public void save() throws AssuranceException {
         // Valider les données de l'assurance avant l'insertion
         if (this.getProtectionJuridique() < 0) {
@@ -197,11 +185,11 @@ public class Assurance extends Queryable{
     }
 
     public int getAnnee() {
-        return Annee;
+        return annee;
     }
 
     public void setAnnee(int annee) {
-        this.Annee = annee;
+        this.annee = annee;
     }
 
 
@@ -210,7 +198,7 @@ public class Assurance extends Queryable{
         if (this.idAssurance <= 0) {
             throw new AssuranceException("L'ID de l'assurance est invalide pour une suppression.");
         }
-        if (this.Annee <= 0) {
+        if (this.annee <= 0) {
             throw new AssuranceException("L'année est obligatoire pour la suppression.");
         }
         if (this.typeContrat == null) {
@@ -220,11 +208,11 @@ public class Assurance extends Queryable{
         // Requête de suppression
         String DELETE_QUERY = """
         DELETE FROM Assurance
-        WHERE IdAssurance = ? 
-        AND Annee = ? 
-        AND TypeContrat = ? 
-        AND Prime = ? 
-        AND QuotiteJuridique = ? 
+        WHERE IdAssurance = ?
+        AND Annee = ?
+        AND TypeContrat = ?
+        AND Prime = ?
+        AND QuotiteJuridique = ?
         AND ProtectionJuridique = ?
         """;
 
@@ -232,7 +220,7 @@ public class Assurance extends Queryable{
             // Préparation des paramètres de la requête
             query.setArgs(Map.of(
                     1, this.idAssurance,
-                    2, this.Annee,
+                    2, this.annee,
                     3, this.typeContrat.toString(),
                     4, this.prime,
                     5, this.quotiteJurisprudence,
@@ -269,13 +257,29 @@ public class Assurance extends Queryable{
 
     public static class ABuilder extends Queryable.Builder{
 
-        ABuilder() {
+        private int id;
+        private TypeContrat typeContrat;
+        private int annee;
+        private float protectionJuridique;
+        private float quotiteJuridique;
+        private float prime;
 
+        ABuilder(Map<String, Object> args) {
+            this((int) args.get("IdAssurance"), TypeContrat.valueOf(args.get("TypeContrat").toString()), (int) args.get("Annee"), (float) args.get("ProtectionJuridique"), (float) args.get("QuotiteJuridique"), (float) args.get("Prime"));
+        }
+
+        private ABuilder(int id, TypeContrat typeContrat, int annee, float protectionJuridique, float quotiteJuridique, float prime) {
+            this.id = id;
+            this.typeContrat = typeContrat;
+        }
+
+        public ABuilder(TypeContrat typeContrat, int annee, float protectionJuridique, float quotiteJuridique, float prime) {
+            this(-1,typeContrat, annee, protectionJuridique, quotiteJuridique, prime);
         }
 
         @Override
         public Assurance build() {
-            return new Assurance(1,TypeContrat.AIDE_JURIDIQUE);
+            return new Assurance(this);
         }
     }
 
