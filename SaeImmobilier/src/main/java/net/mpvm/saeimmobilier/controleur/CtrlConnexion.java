@@ -26,11 +26,6 @@ public class CtrlConnexion {
     @FXML
     private Button BtwQuitter;
 
-    @FXML
-    protected void onHelloButtonClick() {
-        welcomeText.setText("Welcome to JavaFX Application!");
-    }
-
     public void initialize(){
         try{
             if (Proprietaire.findAll().isEmpty()){
@@ -49,13 +44,13 @@ public class CtrlConnexion {
         }
     }
 
-    public void Quitter(javafx.event.ActionEvent actionEvent) {
+    public void Quitter(ActionEvent actionEvent) {
         Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
         JfxUtil.showWindow(new Stage(), VueAccueil.class);
         stage.close();
     }
 
-    public void mdpOublie(javafx.event.ActionEvent actionEvent) {
+    public void mdpOublie(ActionEvent actionEvent) {
         try {
             // Créer une nouvelle fenêtre (Stage)
             Stage stage = new Stage();

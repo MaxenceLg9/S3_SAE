@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import net.mpvm.saeimmobilier.controleur.CtrlAccueil;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -17,7 +18,7 @@ import static javafx.scene.layout.Region.USE_COMPUTED_SIZE;
 import static javafx.scene.layout.Region.USE_PREF_SIZE;
 
 public class JfxUtil {
-    public static void applicationInit(Stage primaryStage, String fxmlFile, String nomPage, double height, double width) {
+    public static FXMLLoader applicationInit(Stage primaryStage, String fxmlFile, String nomPage, double height, double width) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(JfxUtil.class.getResource("/net/mpvm/saeimmobilier/data/fxml/" + fxmlFile));
 
@@ -25,6 +26,7 @@ public class JfxUtil {
             scene.getStylesheets().add(JfxUtil.class.getResource("/net/mpvm/saeimmobilier/data/css/style.css").toExternalForm());
 
             Image icon = new Image(JfxUtil.class.getResource("/net/mpvm/saeimmobilier/data/images/icon_immobilier.png").toString());
+
 
             primaryStage.setTitle(nomPage);
             primaryStage.getIcons().add(icon);
@@ -47,11 +49,12 @@ public class JfxUtil {
                 primaryStage.setWidth(width + decorationWidth);
                 primaryStage.setHeight(height + decorationHeight);
             });
-
+            return fxmlLoader;
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            throw new RuntimeException(e);
         }
     }
+
 
     public static void displayError(String erreur, String message) {
         setAlert(Alert.AlertType.ERROR, "Erreur", erreur, message);

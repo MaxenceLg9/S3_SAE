@@ -2,20 +2,17 @@ package net.mpvm.saeimmobilier.vue;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
+import net.mpvm.saeimmobilier.controleur.CtrlImmeuble;
 import net.mpvm.saeimmobilier.util.JfxUtil;
 
-public class VueBiens extends Application {
+public class VueImmeuble extends Application {
+
     public static void main(String[] args) {
         launch(args);
     }
 
     @Override
     public void start(Stage primaryStage) {
-        JfxUtil.applicationInit(primaryStage, "viewbiens.fxml", "Liste des Biens",750, 800);
-    }
-
-    public static void showWindow(Stage stage) throws Exception {
-        VueBiens vue = new VueBiens();
-        vue.start(stage);
+        CtrlImmeuble ctrl = JfxUtil.applicationInit(primaryStage, "immeuble.fxml","Immeuble",700, 800).getController();
     }
 }

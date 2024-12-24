@@ -3,15 +3,15 @@ package net.mpvm.saeimmobilier.controleur;
 import javafx.fxml.FXML;
 
 import javafx.event.ActionEvent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
+import net.mpvm.saeimmobilier.util.JfxUtil;
 import net.mpvm.saeimmobilier.vue.*;
 
 public class CtrlHome {
 
     @FXML
-    public void addBien(ActionEvent actionEvent){
+    public void ajouterBien(ActionEvent actionEvent){
         Stage stage = new Stage();
         try {
             VueNewBien.showWindow(stage);
@@ -24,7 +24,7 @@ public class CtrlHome {
 
     }
 
-    public void addLocataire(ActionEvent actionEvent) {
+    public void ajouterLocataire(ActionEvent actionEvent) {
         Stage stage = new Stage();
         try {
             VueNewLocataire.showWindow(stage);
@@ -35,7 +35,7 @@ public class CtrlHome {
         }
     }
 
-    public void addAssurance(ActionEvent actionEvent) {
+    public void ajouterAssurance(ActionEvent actionEvent) {
         try {
             VueNewAssurance.showWindow(new Stage());
             Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
@@ -45,26 +45,17 @@ public class CtrlHome {
         }
     }
 
-    public void viewBien(ActionEvent actionEvent) {
-        Stage stage = new Stage();
-        try {
-            VueBiens.showWindow(stage);
-            Stage stageActu = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
-            stageActu.close();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+    public void vueImmeubles(ActionEvent actionEvent) {
+        JfxUtil.showWindow(new Stage(),VueImmeubles.class);
+        Stage stageActu = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
+        stageActu.close();
+
     }
 
     public void vueLocataires(ActionEvent actionEvent) {
-        Stage stage = new Stage();
-        try {
-            VueLocataires.showWindow(stage);
-            Stage stageActu = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
-            stageActu.close();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        JfxUtil.showWindow(new Stage(),VueLocataires.class);
+        Stage stageActu = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
+        stageActu.close();
     }
 
 
