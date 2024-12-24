@@ -56,6 +56,7 @@ public final class Garage extends BienLouable {
 	}
 
 	public static class GBuilder extends BLBuilder {
+		
 		public GBuilder(String complementAdresse, int nbPieces, String NumeroFiscal, @NotNull Immeuble immeuble, float surface, @NotNull Date dateAjout) {
 			this(complementAdresse, nbPieces,NumeroFiscal,immeuble,surface,dateAjout, -1);
 		}
