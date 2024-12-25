@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import net.mpvm.saeimmobilier.controleur.CtrlAccueil;
 
@@ -29,7 +30,6 @@ public class JfxUtil {
 
             Scene scene = new Scene(fxmlLoader.load());
             scene.getStylesheets().add(JfxUtil.class.getResource("/net/mpvm/saeimmobilier/data/css/style.css").toExternalForm());
-            System.out.println(scene.getRoot().getLayoutBounds().getWidth());
 
             Image icon = new Image(JfxUtil.class.getResource("/net/mpvm/saeimmobilier/data/images/icon_immobilier.png").toString());
 
@@ -40,11 +40,23 @@ public class JfxUtil {
             primaryStage.show();
             // Get the scene's actual layout dimensions
             Platform.runLater(() -> {
-                primaryStage.setMinHeight(0);
-                primaryStage.setMinWidth(0);
-                primaryStage.sizeToScene();
-                primaryStage.setMinHeight(primaryStage.getHeight());
-                primaryStage.setMinWidth(primaryStage.getWidth());
+                if(!primaryStage.isMaximized()){
+                    primaryStage.setMinHeight(0);
+                    primaryStage.setMinWidth(0);
+                    primaryStage.sizeToScene();
+
+                    System.out.println(primaryStage.getScene().getWidth() + " * " + primaryStage.getScene().getHeight());
+                    System.out.println(primaryStage.getWidth() + " * " + primaryStage.getHeight());
+
+                    primaryStage.setMinHeight(primaryStage.getHeight());
+                    primaryStage.setMinWidth(primaryStage.getWidth());
+                }
+                else{
+                    System.out.println("Maximized");
+                    primaryStage.setMaximized(true);
+                    primaryStage.setWidth(Screen.getPrimary().getVisualBounds().getWidth());
+                    primaryStage.setHeight(Screen.getPrimary().getVisualBounds().getHeight());
+                }
             });
 
         } catch (IOException e) {
