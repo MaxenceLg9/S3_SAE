@@ -29,8 +29,7 @@ public class CtrlAttribuerAssurance {
 
     private void afficheAssurances() {
         try {
-            assurances = Assurance.findAll().stream()
-                    .collect(Collectors.toMap(Assurance::getIdAssurance, Function.identity()));
+            assurances = Assurance.findAll().stream().collect(Collectors.toMap(Assurance::getIdAssurance, Function.identity()));
         } catch (Assurance.AssuranceException assuranceException) {
             JfxUtil.displayError("Erreur lors de la récupération des assurances", "Vérifiez votre connexion Internet");
         }

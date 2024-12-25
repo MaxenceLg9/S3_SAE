@@ -13,6 +13,6 @@ public class VueImmeuble extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        CtrlImmeuble ctrl = JfxUtil.applicationInit(primaryStage, "immeuble.fxml","Immeuble",700, 800).getController();
+        JfxUtil.applicationInit(primaryStage, "immeuble.fxml","Immeuble",700, 800);
     }
 }

@@ -46,8 +46,7 @@ public class CtrlConnexion {
 
     public void Quitter(ActionEvent actionEvent) {
         Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
-        JfxUtil.showWindow(new Stage(), VueAccueil.class);
-        stage.close();
+        JfxUtil.showWindow(stage, VueAccueil.class);
     }
 
     public void mdpOublie(ActionEvent actionEvent) {

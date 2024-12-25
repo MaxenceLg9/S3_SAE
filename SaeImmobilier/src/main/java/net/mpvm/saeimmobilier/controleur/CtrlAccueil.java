@@ -45,14 +45,9 @@ public class CtrlAccueil {
     public void Inscription(ActionEvent actionEvent) {
         try {
             // Créer une nouvelle fenêtre (Stage)
-            Stage stage = new Stage();
-
+            Stage stage = (Stage) ((javafx.scene.control.Button) actionEvent.getSource()).getScene().getWindow();
             // Initialiser la fenêtre avec l'utilitaire existant
-            VueInscription.showWindow(stage);
-
-            Stage stage2 = (Stage) ((javafx.scene.control.Button) actionEvent.getSource()).getScene().getWindow();
-            // Fermer la fenêtre
-            stage2.close();
+            JfxUtil.showWindow(stage, VueInscription.class);
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -62,11 +57,9 @@ public class CtrlAccueil {
     public void Connexion(ActionEvent actionEvent) {
         try {
             // Créer une nouvelle fenêtre (Stage)
-            JfxUtil.showWindow(new Stage(), VueConnexion.class);
-
-            Stage stage2 = (Stage) ((javafx.scene.control.Button) actionEvent.getSource()).getScene().getWindow();
-            // Fermer la fenêtre
-            stage2.close();
+            Stage stage = (Stage) ((javafx.scene.control.Button) actionEvent.getSource()).getScene().getWindow();
+            // Initialiser la fenêtre avec l'utilitaire existant
+            JfxUtil.showWindow(stage, VueConnexion.class);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

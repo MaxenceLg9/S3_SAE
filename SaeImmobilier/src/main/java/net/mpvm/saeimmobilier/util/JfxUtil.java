@@ -13,43 +13,40 @@ import net.mpvm.saeimmobilier.controleur.CtrlAccueil;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
+import java.util.Timer;
 
 import static javafx.scene.layout.Region.USE_COMPUTED_SIZE;
 import static javafx.scene.layout.Region.USE_PREF_SIZE;
 
 public class JfxUtil {
-    public static FXMLLoader applicationInit(Stage primaryStage, String fxmlFile, String nomPage, double height, double width) {
+    public static void applicationInit(Stage primaryStage, String fxmlFile, String nomPage, double height, double width) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(JfxUtil.class.getResource("/net/mpvm/saeimmobilier/data/fxml/" + fxmlFile));
 
             Scene scene = new Scene(fxmlLoader.load());
             scene.getStylesheets().add(JfxUtil.class.getResource("/net/mpvm/saeimmobilier/data/css/style.css").toExternalForm());
+            System.out.println(scene.getRoot().getLayoutBounds().getWidth());
 
             Image icon = new Image(JfxUtil.class.getResource("/net/mpvm/saeimmobilier/data/images/icon_immobilier.png").toString());
-
 
             primaryStage.setTitle(nomPage);
             primaryStage.getIcons().add(icon);
             primaryStage.setScene(scene);
             primaryStage.setResizable(true);
             primaryStage.show();
-
+            // Get the scene's actual layout dimensions
             Platform.runLater(() -> {
-                // Get the scene's actual layout dimensions
-                double sceneWidth = primaryStage.getScene().getRoot().getLayoutBounds().getWidth();
-                double sceneHeight = primaryStage.getScene().getRoot().getLayoutBounds().getHeight();
-
-                // Get the insets (decoration size)
-                double decorationWidth = primaryStage.getWidth() - scene.getWidth();
-                double decorationHeight = primaryStage.getHeight() - scene.getHeight();
-
-                // Set minimum size based on scene size + decorations
-                primaryStage.setMinWidth(sceneWidth + decorationWidth);
-                primaryStage.setMinHeight(sceneHeight + decorationHeight);
-                primaryStage.setWidth(width + decorationWidth);
-                primaryStage.setHeight(height + decorationHeight);
+                primaryStage.setMinHeight(0);
+                primaryStage.setMinWidth(0);
+                primaryStage.sizeToScene();
+                primaryStage.setMinHeight(primaryStage.getHeight());
+                primaryStage.setMinWidth(primaryStage.getWidth());
             });
-            return fxmlLoader;
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

@@ -9,8 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<GridPane style="-fx-background-color: linear-gradient(to right bottom, #33435c, #1e2d3e);;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.mpvm.saeimmobilier.controleur.CtrlAccueil">
+<GridPane style="-fx-background-color: linear-gradient(to right bottom, #33435c, #1e2d3e);;" vgap="40.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.mpvm.saeimmobilier.controleur.CtrlAccueil">
    <columnConstraints>
       <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" />
    </columnConstraints>
