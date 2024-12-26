@@ -13,7 +13,7 @@ public class VueNewBien extends Application {
     @Override
     public void start(Stage stage) throws Exception {
 
-        JfxUtil.applicationInit(stage, "newbien.fxml", "Ajouter un Bien", DEFAULT_HEIGHT, DEFAULT_WIDTH);
+        JfxUtil.updateStage(stage, "newbien.fxml", "Ajouter un Bien", DEFAULT_HEIGHT, DEFAULT_WIDTH);
         stage.setMinWidth(DEFAULT_WIDTH);
         stage.setMinHeight(DEFAULT_HEIGHT);
     }

@@ -9,7 +9,7 @@ public class VueBiensLouables {
 
     public void startForImmeuble(Stage stage,int idImmeuble) {
         this.idImmeuble = idImmeuble;
-        JfxUtil.applicationInit(stage, "viewbienslouables.fxml", "Biens Louables de l'Immeuble " + idImmeuble,750, 800);
+        JfxUtil.updateStage(stage, "viewbienslouables.fxml", "Biens Louables de l'Immeuble " + idImmeuble,750, 800);
     }
 
     public static void showWindow(Stage stage, int idImmeuble) throws Exception {

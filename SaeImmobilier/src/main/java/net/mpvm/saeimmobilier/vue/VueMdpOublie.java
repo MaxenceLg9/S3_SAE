@@ -12,7 +12,7 @@ public class VueMdpOublie extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        JfxUtil.applicationInit(primaryStage, "mdpoublie.fxml","Modification mot de passe",750, 800);
+        JfxUtil.updateStage(primaryStage, "mdpoublie.fxml","Modification mot de passe",750, 800);
         primaryStage.setResizable(false);
     }
 

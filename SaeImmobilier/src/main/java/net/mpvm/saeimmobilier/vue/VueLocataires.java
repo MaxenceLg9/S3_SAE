@@ -12,7 +12,7 @@ public class VueLocataires extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        JfxUtil.applicationInit(primaryStage, "viewlocataires.fxml","Vision des locataires",750, 800);
+        JfxUtil.updateStage(primaryStage, "viewlocataires.fxml","Vision des locataires",750, 800);
     }
     public static void showWindow(Stage stage) throws Exception {
         VueLocataires vue = new VueLocataires();

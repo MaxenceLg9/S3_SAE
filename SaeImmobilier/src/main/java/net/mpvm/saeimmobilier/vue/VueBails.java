@@ -10,7 +10,7 @@ public class VueBails {
 
     public void startForImmeuble(Stage stage,int IdBien) {
         this.IdBien = IdBien;
-        JfxUtil.applicationInit(stage, "viewBails.fxml", "Locations du Bien " + IdBien,700,800);
+        JfxUtil.updateStage(stage, "viewBails.fxml", "Locations du Bien " + IdBien,700,800);
     }
 
     public void showWindow(Stage stage, int IdBien) {

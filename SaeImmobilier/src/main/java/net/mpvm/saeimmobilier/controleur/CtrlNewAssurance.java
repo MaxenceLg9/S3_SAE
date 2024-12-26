@@ -91,7 +91,7 @@ public class CtrlNewAssurance {
 
         try {
             Stage stage = new Stage();
-            JfxUtil.applicationInit(stage, "home.fxml", "Page Home",700,800);
+            JfxUtil.updateStage(stage, "home.fxml", "Page Home",700,800);
             stage.setMinWidth(1300);
             stage.setMinHeight(900);
 

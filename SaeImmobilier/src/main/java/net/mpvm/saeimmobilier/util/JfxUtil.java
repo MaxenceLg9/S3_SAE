@@ -3,53 +3,44 @@ package net.mpvm.saeimmobilier.util;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.image.Image;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 
 public class JfxUtil {
-    public static void applicationInit(Stage primaryStage, String fxmlFile, String nomPage, double height, double width) {
+    public static void updateStage(Stage primaryStage, String fxmlFile, String nomPage, double height, double width) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(JfxUtil.class.getResource("/net/mpvm/saeimmobilier/data/fxml/" + fxmlFile));
 
-            Scene scene = new Scene(fxmlLoader.load());
-            scene.getStylesheets().add(JfxUtil.class.getResource("/net/mpvm/saeimmobilier/data/css/style.css").toExternalForm());
-
-            Image icon = new Image(JfxUtil.class.getResource("/net/mpvm/saeimmobilier/data/images/icon_immobilier.png").toString());
-
+            primaryStage.getScene().setRoot(fxmlLoader.load());
             primaryStage.setTitle(nomPage);
-            primaryStage.getIcons().add(icon);
-            primaryStage.setScene(scene);
-            primaryStage.setResizable(true);
-            primaryStage.show();
             // Get the scene's actual layout dimensions
-            Platform.runLater(() -> {
-                if(!primaryStage.isMaximized()){
-                    primaryStage.setMinHeight(0);
-                    primaryStage.setMinWidth(0);
-                    primaryStage.sizeToScene();
-
-                    System.out.println(primaryStage.getScene().getWidth() + " * " + primaryStage.getScene().getHeight());
-                    System.out.println(primaryStage.getWidth() + " * " + primaryStage.getHeight());
-
-                    primaryStage.setMinHeight(primaryStage.getHeight());
-                    primaryStage.setMinWidth(primaryStage.getWidth());
-                }
-                else{
-                    System.out.println("Maximized");
-                    primaryStage.setMaximized(true);
-                    primaryStage.setWidth(Screen.getPrimary().getVisualBounds().getWidth());
-                    primaryStage.setHeight(Screen.getPrimary().getVisualBounds().getHeight());
-                }
-            });
+            resize(primaryStage);
 
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static void resize(Stage primaryStage) {
+        Platform.runLater(() -> {
+            if(!primaryStage.isMaximized()){
+                primaryStage.setMinHeight(0);
+                primaryStage.setMinWidth(0);
+                primaryStage.sizeToScene();
+
+                System.out.println(primaryStage.getScene().getWidth() + " * " + primaryStage.getScene().getHeight());
+                System.out.println(primaryStage.getWidth() + " * " + primaryStage.getHeight());
+
+                primaryStage.setMinHeight(primaryStage.getHeight());
+                primaryStage.setMinWidth(primaryStage.getWidth());
+            }
+            else{
+                System.out.println("Maximized");
+                primaryStage.setMaximized(true);
+            }
+        });
     }
 
 

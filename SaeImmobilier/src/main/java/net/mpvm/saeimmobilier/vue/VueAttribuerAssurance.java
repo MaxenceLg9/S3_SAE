@@ -7,6 +7,6 @@ import net.mpvm.saeimmobilier.util.JfxUtil;
 public class VueAttribuerAssurance extends Application {
     @Override
     public void start(Stage stage) {
-        JfxUtil.applicationInit(stage, "attribuerassurance.fxml","Attribuer une Assurance",700,800);
+        JfxUtil.updateStage(stage, "attribuerassurance.fxml","Attribuer une Assurance",700,800);
     }
 }

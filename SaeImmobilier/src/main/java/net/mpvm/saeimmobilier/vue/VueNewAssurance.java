@@ -8,7 +8,7 @@ public class VueNewAssurance extends Application {
 
     @Override
     public void start(Stage stage) {
-        JfxUtil.applicationInit(stage, "newassurance.fxml","Création d'une Assurance",700,800);
+        JfxUtil.updateStage(stage, "newassurance.fxml","Création d'une Assurance",700,800);
     }
     public static void showWindow(Stage stage) throws Exception {
         VueNewAssurance vue = new VueNewAssurance();
