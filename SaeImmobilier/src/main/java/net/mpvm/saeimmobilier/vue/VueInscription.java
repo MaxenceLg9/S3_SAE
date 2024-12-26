@@ -16,9 +16,4 @@ public class VueInscription extends Application {
     public void start(Stage primaryStage) {
         JfxUtil.updateStage(primaryStage, "inscription.fxml","Page d'authentification'",80, 400);
     }
-
-    public static void showWindow(Stage stage) throws Exception {
-        VueInscription vue = new VueInscription();
-        vue.start(stage);
-    }
 }

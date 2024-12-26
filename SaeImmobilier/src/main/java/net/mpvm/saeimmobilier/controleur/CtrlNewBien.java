@@ -225,27 +225,15 @@ public class CtrlNewBien {
 
 
     @FXML
-    public void Annuler(ActionEvent actionEvent) {
-        Stage stage = new Stage();
-        try {
-            VueHome.showWindow(stage);
-            Stage stageActu = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
-            stageActu.close();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+    public void Annuler(ActionEvent event) {
+        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+        JfxUtil.showWindow(stage, VueHome.class);
     }
 
 
-    public void Accueil(ActionEvent actionEvent) {
-        Stage stage = new Stage();
-        try {
-            VueHome.showWindow(stage);
-            Stage stageActu = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-            stageActu.close();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+    public void Accueil(ActionEvent event) {
+        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+        JfxUtil.showWindow(stage, VueHome.class);
     }
 
     public void Deconnexion(ActionEvent actionEvent) {

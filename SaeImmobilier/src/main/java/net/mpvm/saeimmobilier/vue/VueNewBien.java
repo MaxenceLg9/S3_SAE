@@ -17,11 +17,5 @@ public class VueNewBien extends Application {
         stage.setMinWidth(DEFAULT_WIDTH);
         stage.setMinHeight(DEFAULT_HEIGHT);
     }
-
-    public static void showWindow(Stage stage) throws Exception {
-        VueNewBien vue = new VueNewBien();
-        vue.start(stage);
-    }
-
 }
 

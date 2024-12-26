@@ -15,9 +15,4 @@ public class VueHome extends Application {
     public void start(Stage primaryStage) {
         JfxUtil.updateStage(primaryStage, "home.fxml","HomePage",800, 700);
     }
-
-    public static void showWindow(Stage stage) throws Exception {
-        VueHome vue = new VueHome();
-        vue.start(stage);
-    }
 }

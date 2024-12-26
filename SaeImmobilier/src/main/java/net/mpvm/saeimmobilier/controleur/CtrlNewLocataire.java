@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import net.mpvm.saeimmobilier.modele.Locataire;
+import net.mpvm.saeimmobilier.util.JfxUtil;
 import net.mpvm.saeimmobilier.vue.VueAccueil;
 import net.mpvm.saeimmobilier.vue.VueHome;
 import net.mpvm.saeimmobilier.vue.VueNewBien;
@@ -76,18 +77,9 @@ public class CtrlNewLocataire {
         else{
             alertFieldsEmpty();
         }
-        try {
-            // Créer une nouvelle fenêtre (Stage)
-            Stage stage = new Stage();
-
-            VueHome.showWindow(stage);
-
-            Stage stage2 = (Stage) ((Button) event.getSource()).getScene().getWindow();
-            // Fermer la fenêtre
-            stage2.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        // Créer une nouvelle fenêtre (Stage)
+        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+        JfxUtil.showWindow(stage, VueHome.class);
 
     }
 
@@ -108,27 +100,14 @@ public class CtrlNewLocataire {
         return true;
     }
 
-    public void annuler(ActionEvent actionEvent) {
-
-        Stage stage = new Stage();
-        try {
-            VueHome.showWindow(stage);
-            Stage stageActu = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
-            stageActu.close();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+    public void annuler(ActionEvent event) {
+        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+        JfxUtil.showWindow(stage, VueHome.class);
 
     }
 
-    public void Accueil(ActionEvent actionEvent ) {
-        Stage stage = new Stage();
-        try {
-            VueHome.showWindow(stage);
-            Stage stageActu = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
-            stageActu.close();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+    public void Accueil(ActionEvent event ) {
+        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+        JfxUtil.showWindow(stage, VueHome.class);
     }
 }

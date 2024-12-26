@@ -50,15 +50,9 @@ public class CtrlConnexion {
     }
 
     public void mdpOublie(ActionEvent actionEvent) {
-        try {
-            // Créer une nouvelle fenêtre (Stage)
-            Stage stage = new Stage();
-
-            VueMdpOublie.showWindow(stage);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        // Créer une nouvelle fenêtre (Stage)
+        Stage stage = (Stage) this.welcomeText.getScene().getWindow();
+        JfxUtil.showWindow(stage, VueMdpOublie.class);
     }
 
     @FXML
@@ -74,10 +68,8 @@ public class CtrlConnexion {
                     for(Proprietaire p : proprietaires.values()) {
                         if (this.FieldMail.getText().equals(p.getEmail())) {
                             if (this.FieldPwd.getText().equals(p.getPassword())) {
-                                Stage stage = new Stage();
-                                VueHome.showWindow(stage);
-                                Stage stageActuel = (Stage) ((PasswordField) event.getSource()).getScene().getWindow();
-                                stageActuel.close();
+                                Stage stage = (Stage) ((PasswordField) event.getSource()).getScene().getWindow();
+                                JfxUtil.showWindow(stage, VueHome.class);
                             }else {
                                 alertIncorrectEmpty();
                             }
@@ -110,16 +102,8 @@ public class CtrlConnexion {
                     System.out.println(p.getEmail());
                     if (this.FieldMail.getText().equals(p.getEmail())) {
                         if (this.FieldPwd.getText().equals(p.getPassword())) {
-                            Stage stage = new Stage();
-                            try {
-                                VueHome.showWindow(stage);
-                            } catch (Exception e) {
-                                throw new RuntimeException(e);
-                            }
-
-                            Stage stageActu = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
-                            stageActu.close();
-
+                            Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
+                            JfxUtil.showWindow(stage, VueHome.class);
                         }
                     }else {
                         alertIncorrectEmpty();

@@ -11,38 +11,21 @@ import net.mpvm.saeimmobilier.vue.*;
 public class CtrlHome {
 
     @FXML
-    public void ajouterBien(ActionEvent actionEvent){
-        Stage stage = new Stage();
-        try {
-            VueNewBien.showWindow(stage);
-            Stage stageActu = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
-            stageActu.close();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+    public void ajouterBien(ActionEvent event){
+        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+        JfxUtil.showWindow(stage, VueHome.class);
 
 
     }
 
-    public void ajouterLocataire(ActionEvent actionEvent) {
-        Stage stage = new Stage();
-        try {
-            VueNewLocataire.showWindow(stage);
-            Stage stageActu = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
-            stageActu.close();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+    public void ajouterLocataire(ActionEvent event) {
+        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+        JfxUtil.showWindow(stage, VueHome.class);
     }
 
-    public void ajouterAssurance(ActionEvent actionEvent) {
-        try {
-            VueNewAssurance.showWindow(new Stage());
-            Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
-            stage.close();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+    public void ajouterAssurance(ActionEvent event) {
+        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+        JfxUtil.showWindow(stage, VueHome.class);
     }
 
     public void vueImmeubles(ActionEvent actionEvent) {

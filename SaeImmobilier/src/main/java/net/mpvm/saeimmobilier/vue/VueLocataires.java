@@ -14,8 +14,4 @@ public class VueLocataires extends Application {
     public void start(Stage primaryStage) {
         JfxUtil.updateStage(primaryStage, "viewlocataires.fxml","Vision des locataires",750, 800);
     }
-    public static void showWindow(Stage stage) throws Exception {
-        VueLocataires vue = new VueLocataires();
-        vue.start(stage);
-    }
 }
