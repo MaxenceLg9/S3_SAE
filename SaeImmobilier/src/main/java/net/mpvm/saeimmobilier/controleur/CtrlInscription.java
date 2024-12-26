@@ -53,8 +53,7 @@ public class CtrlInscription {
                         "Erreur",
                         "Il existe déjà un propriétaire",
                         "Un propriétaire est déjà présent, essayez avec les informations déjà enregistrées");
-                JfxUtil.showWindow(new Stage(), VueConnexion.class);
-                ((Stage) fieldPassword.getScene().getWindow()).close();
+                JfxUtil.showWindow(((Stage) fieldPassword.getScene().getWindow()), VueConnexion.class);
             }
         } catch (Proprietaire.ProprietaireException e) {
             JfxUtil.setAlert(Alert.AlertType.ERROR,
@@ -101,8 +100,7 @@ public class CtrlInscription {
                             "Succès",
                             "Inscription réussie",
                             "Vous êtes maintenant inscrit ! Vous pouvez passer à la connexion");
-                    ((Stage) ((Button) event.getSource()).getScene().getWindow()).close();
-                    JfxUtil.showWindow(new Stage(), VueConnexion.class);
+                    JfxUtil.showWindow(((Stage) fieldPassword.getScene().getWindow()), VueConnexion.class);
                 } catch (Proprietaire.ProprietaireException proprietaireException) {
                     JfxUtil.setAlert(Alert.AlertType.ERROR,
                             "Erreur",
@@ -125,14 +123,7 @@ public class CtrlInscription {
 
     @FXML
     public void Annuler(ActionEvent event) {
-        try {
-            JfxUtil.showWindow(new Stage(), VueAccueil.class);
-            Stage stageActuel = (Stage) ((Button) event.getSource()).getScene().getWindow();
-            stageActuel.close();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
+        JfxUtil.showWindow(((Stage) fieldPassword.getScene().getWindow()), VueAccueil.class);
     }
 
     private boolean fieldsNotEmpty() {

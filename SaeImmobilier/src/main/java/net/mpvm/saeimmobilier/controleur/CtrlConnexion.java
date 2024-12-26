@@ -33,8 +33,7 @@ public class CtrlConnexion {
                         "Erreur",
                         "Il n'existe pas de propriétaire propriétaire",
                         "Essayez de vous inscrire");
-                JfxUtil.showWindow(new Stage(), VueInscription.class);
-                ((Stage) welcomeText.getScene().getWindow()).close();
+                JfxUtil.showWindow(((Stage) welcomeText.getScene().getWindow()), VueInscription.class);
             }
         } catch (Proprietaire.ProprietaireException e) {
             JfxUtil.setAlert(Alert.AlertType.ERROR,

@@ -226,24 +226,21 @@ public class CtrlNewBien {
 
     @FXML
     public void Annuler(ActionEvent event) {
-        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+        Stage stage = (Stage) this.listImmeubles.getScene().getWindow();
         JfxUtil.showWindow(stage, VueHome.class);
     }
 
 
     public void Accueil(ActionEvent event) {
-        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+        Stage stage = (Stage) this.listImmeubles.getScene().getWindow();
         JfxUtil.showWindow(stage, VueHome.class);
     }
 
     public void Deconnexion(ActionEvent actionEvent) {
         try {
             // Créer une nouvelle fenêtre (Stage)
-            JfxUtil.showWindow(new Stage(), VueConnexion.class);
-            Stage stage2 = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
-            // Fermer la fenêtre
-            stage2.close();
-
+            Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+            JfxUtil.showWindow(stage, VueConnexion.class);
         } catch (Exception e) {
             e.printStackTrace();
         }
