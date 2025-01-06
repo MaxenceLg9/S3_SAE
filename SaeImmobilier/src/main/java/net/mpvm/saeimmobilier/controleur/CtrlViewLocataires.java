@@ -60,7 +60,7 @@ public class CtrlViewLocataires {
             email.getStyleClass().add("assurance-label");
             telephone.getStyleClass().add("assurance-label");
             sexe.getStyleClass().add("assurance-label");
-            button.getStyleClass().add("button-valider");
+            button.getStyleClass().add("button-supprimer");
 
             gp.add(nom, 0, 0);
             gp.add(prenom, 0, 1);
