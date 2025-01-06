@@ -7,6 +7,7 @@ import javafx.stage.Stage;
 import net.mpvm.saeimmobilier.modele.Assurance;
 import net.mpvm.saeimmobilier.modele.TypeContrat;
 import net.mpvm.saeimmobilier.util.JfxUtil;
+import net.mpvm.saeimmobilier.vue.VueHome;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,16 +91,7 @@ public class CtrlNewAssurance {
         }
 
         try {
-            Stage stage = new Stage();
-            JfxUtil.updateStage(stage, "home.fxml", "Page Home",700,800);
-            stage.setMinWidth(1300);
-            stage.setMinHeight(900);
-
-
-            Stage currentStage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-            currentStage.close();
-
-            stage.show();
+            JfxUtil.showWindow((Stage) this.btnAjouterAssurance.getScene().getWindow(),VueHome.class);
         } catch (Exception e) {
             e.printStackTrace();
         }
