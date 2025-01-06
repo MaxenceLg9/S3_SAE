@@ -1,6 +1,7 @@
 package net.mpvm.saeimmobilier.modele;
 
 import net.mpvm.saeimmobilier.sql.Query.*;
+import net.mpvm.saeimmobilier.util.JfxUtil;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -48,12 +49,12 @@ public class Assurance extends Queryable{
                         TypeContrat.valueOf((row.get("TypeContrat").toString()))
                 );
                 assurance.setAnnee((int) row.get("Annee"));
-                assurance.setQuotiteJurisprudence((Float) row.get("QuotiteJuridique"));
-                assurance.setProtectionJuridique((Float) row.get("ProtectionJuridique"));
-                assurance.setPrime((Float) row.get("Prime"));
-                assurance.setTotalPrime((Float) row.get("TotalPrime")); // Chargé depuis la base
-                assurance.setMontantQuotite((Float) row.get("MontantQuotite")); // Calculé par trigger
-                assurance.setAugmentationAnnuelle((Float) row.get("AugmentationAnnuelle")); // Calculé par trigger
+                assurance.setQuotiteJurisprudence(JfxUtil.doubleToFloat((double) row.get("QuotiteJuridique")));
+                assurance.setProtectionJuridique(JfxUtil.doubleToFloat((double) row.get("ProtectionJuridique")));
+                assurance.setPrime(JfxUtil.doubleToFloat((double) row.get("Prime")));
+                assurance.setTotalPrime(JfxUtil.doubleToFloat((double) row.get("TotalPrime"))); // Chargé depuis la base
+                assurance.setMontantQuotite(JfxUtil.doubleToFloat((double)  row.get("MontantQuotite"))); // Calculé par trigger
+                assurance.setAugmentationAnnuelle(JfxUtil.doubleToFloat((double) row.get("AugmentationAnnuelle"))); // Calculé par trigger
                 assurances.add(assurance);
             }
         } catch (QueryElement.QEltException qEltException) {
@@ -262,6 +263,10 @@ public class Assurance extends Queryable{
 
     public int selectId() throws QbleException {
         return 0;
+    }
+
+    public String toString(){
+        return this.typeContrat + " " + this.annee + " " + this.prime + " " + this.
     }
 
     public Float getMontantQuotite() {
