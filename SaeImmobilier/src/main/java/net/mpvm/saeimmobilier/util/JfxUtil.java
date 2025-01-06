@@ -89,4 +89,9 @@ public class JfxUtil {
         primaryStage.setResizable(true);
         primaryStage.show();
     }
+
+    public static Float doubleToFloat(double d){
+
+        return ((Double) d).floatValue();
+    }
 }
