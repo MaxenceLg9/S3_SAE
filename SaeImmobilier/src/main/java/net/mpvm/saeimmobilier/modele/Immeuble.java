@@ -219,7 +219,7 @@ public final class Immeuble extends Bien{
 		private final String ville;
 		private final int codePostal;
 
-		IBuilder(String ville, int codePostal, String adresse, String numeroFiscal, Date dateAjout, int idBien) {
+		IBuilder(String ville, int codePostal, String adresse, String numeroFiscal, java.sql.Date dateAjout, int idBien) {
 			super(idBien, numeroFiscal, dateAjout);
 			this.ville = ville;
 			this.codePostal = codePostal;

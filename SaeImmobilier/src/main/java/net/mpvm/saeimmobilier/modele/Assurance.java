@@ -266,7 +266,7 @@ public class Assurance extends Queryable{
     }
 
     public String toString(){
-        return this.typeContrat + " " + this.annee + " " + this.prime + " " + this.
+        return this.typeContrat + " " + this.annee + " " + this.prime + " " + this.quotiteJurisprudence + " " + this.protectionJuridique;
     }
 
     public Float getMontantQuotite() {

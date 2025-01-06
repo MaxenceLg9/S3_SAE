@@ -19,10 +19,10 @@ public abstract class Bien extends Queryable {
     private Optional<Assurance> assurance;
     private float iR; // Taux d'intérêt ou autre valeur
     private String numeroFiscal;
-    private final Date dateAjout;
+    private final java.sql.Date dateAjout;
 
 
-    public Bien(int idBien, String numeroFiscal, Date dateAjout) {
+    public Bien(int idBien, String numeroFiscal, java.sql.Date dateAjout) {
         this.idBien = idBien;
         this.numeroFiscal = numeroFiscal;
         this.dateAjout = dateAjout;
@@ -166,7 +166,7 @@ public abstract class Bien extends Queryable {
         return this.numeroFiscal;
     }
 
-    public Date getDateAjout() {
+    public java.sql.Date getDateAjout() {
         return this.dateAjout;
     }
 
@@ -186,9 +186,9 @@ public abstract class Bien extends Queryable {
 
         private final int IdBien;
         private final String numeroFiscal;
-        private final Date dateAjout;
+        private final java.sql.Date dateAjout;
 
-        public BBuilder(int idBien, String numeroFiscal, Date dateAjout) {
+        public BBuilder(int idBien, String numeroFiscal, java.sql.Date dateAjout) {
             this.IdBien = idBien;
             this.dateAjout = dateAjout;
             this.numeroFiscal = numeroFiscal;
@@ -202,7 +202,7 @@ public abstract class Bien extends Queryable {
             return numeroFiscal;
         }
 
-        Date getDateAjout(){
+        java.sql.Date getDateAjout(){
             return dateAjout;
         }
     }
