@@ -10,9 +10,11 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import net.mpvm.saeimmobilier.modele.Assurance;
+import net.mpvm.saeimmobilier.modele.Bien;
 import net.mpvm.saeimmobilier.util.JfxUtil;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -113,10 +115,70 @@ public class CtrlAttribuerAssurance {
 
             gp.setPrefWidth(Region.USE_COMPUTED_SIZE);
             gp.setMaxWidth(Region.USE_COMPUTED_SIZE);
+            int bienId = 0;
+            chooseButton.setOnAction(event -> attribuerAssurance(bienId, a));
 
             vBoxContent.getChildren().add(gp);
         }
     }
+    public void attribuerAssurance(int idBien, Assurance nouvelleAssurance) {
+        try {
+            // Récupérer le bien concerné
+            Bien bien = Bien.findById(idBien);
+            if (bien == null) {
+                throw new Exception("Le bien avec l'ID spécifié n'existe pas.");
+            }
+
+            // Récupérer l'assurance actuelle du bien (si elle existe via Optional)
+            Optional<Assurance> assuranceActuelleOpt = bien.getAssurance();
+            Assurance assuranceActuelle = assuranceActuelleOpt.orElse(null);
+
+            // Vérification des conditions pour associer la nouvelle assurance
+            if (assuranceActuelle != null && nouvelleAssurance.getAnnee() != assuranceActuelle.getAnnee() + 1) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Assurance non valide");
+                alert.setHeaderText("L'année de l'assurance choisie n'est pas valide.");
+                alert.setContentText("Vous ne pouvez choisir qu'une assurance datant de l'année suivante.");
+                alert.showAndWait();
+                return;
+            }
+
+            // Calculer l'augmentation annuelle si une assurance actuelle existe
+            double augmentationAnnuelle = 0;
+            if (assuranceActuelle != null) {
+                augmentationAnnuelle =
+                        (nouvelleAssurance.getProtectionJuridique() - assuranceActuelle.getProtectionJuridique()) / 100.0;
+                nouvelleAssurance.setPrimePrecedente(assuranceActuelle.getPrime());
+            }
+
+            // Mettre à jour l'augmentation annuelle dans la nouvelle assurance
+            nouvelleAssurance.setAugmentationAnnuelle((float) augmentationAnnuelle);
+            nouvelleAssurance.update(); // Sauvegarder la nouvelle assurance
+
+            // Associer la nouvelle assurance au bien
+            bien.setAssurance(nouvelleAssurance);
+            bien.update(); // Sauvegarder le bien
+
+            // Confirmation pour l'utilisateur
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Assurance attribuée");
+            alert.setHeaderText("L'assurance a été attribuée au bien.");
+            alert.setContentText("Augmentation annuelle : " + augmentationAnnuelle + " %");
+            alert.showAndWait();
+
+            // Rafraîchir l'affichage
+            afficheAssurances();
+
+        } catch (Exception e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erreur");
+            alert.setHeaderText("Une erreur est survenue lors de l'attribution de l'assurance.");
+            alert.setContentText(e.getMessage());
+            alert.showAndWait();
+        }
+    }
+
+
 
     @FXML
     public void askForDelete(int id) {

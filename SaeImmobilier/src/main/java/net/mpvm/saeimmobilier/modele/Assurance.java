@@ -14,6 +14,7 @@ public class Assurance extends Queryable{
     private int annee;
     private float quotiteJurisprudence;
     private float protectionJuridique;
+    private float primePrecedente;
     private float prime;
     private TypeContrat typeContrat; // Type Propriétaire ou aide juridique
     private float augmentationAnnuelle; // Calculé en base
@@ -181,7 +182,7 @@ public class Assurance extends Queryable{
 
     @Override
     public void modify() throws QbleException {
-
+        update();
     }
 
     public int getAnnee() {
@@ -243,6 +244,18 @@ public class Assurance extends Queryable{
 
     }
 
+    public void setBien(Optional<Bien> bien) {
+        this.bien = bien;
+    }
+
+    public float getPrimePrecedente() {
+        return primePrecedente;
+    }
+
+    public void setPrimePrecedente(float primePrecedente) {
+        this.primePrecedente = primePrecedente;
+    }
+
     protected void setId(int id) throws QbleException {
 
     }
@@ -253,6 +266,41 @@ public class Assurance extends Queryable{
 
     public Float getMontantQuotite() {
         return this.montantQuotite;
+    }
+
+    public void update() throws AssuranceException {
+        if (this.idAssurance <= 0) {
+            throw new AssuranceException("L'ID de l'assurance est invalide pour une mise à jour.");
+        }
+
+        String UPDATE_QUERY = """
+        UPDATE Assurance SET
+        ProtectionJuridique = ?,
+        QuotitéJuridique = ?,
+        Prime = ?,
+        TypeContrat = ?,
+        TotalPrime = ?
+        WHERE IdAssurance = ?
+        """;
+
+        try (UpdateQueryElement query = new UpdateQueryElement(UPDATE_QUERY, true)) {
+            query.setArgs(Map.of(
+                    1, this.protectionJuridique,
+                    2, this.quotiteJurisprudence,
+                    3, this.prime,
+                    4, this.typeContrat.toString(),
+                    5, this.totalPrime,
+                    6, this.idAssurance
+            ));
+
+            int rowsAffected = query.execute();
+            if (rowsAffected == 0) {
+                throw new AssuranceException("Aucune assurance correspondante trouvée pour la mise à jour.");
+            }
+            System.out.println("Mise à jour réussie pour l'assurance ID = " + this.idAssurance);
+        } catch (QueryElement.QEltException e) {
+            throw new AssuranceException("Erreur lors de la mise à jour de l'assurance avec ID " + this.idAssurance, e.getSqlException());
+        }
     }
 
     public static class ABuilder extends Queryable.Builder{
