@@ -3,17 +3,22 @@ package net.mpvm.saeimmobilier.util;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 
 public class JfxUtil {
+
+    public static void updateStage(Stage primaryStage, String fxmlFile, String nomPage){
+        updateStage(primaryStage, fxmlFile, nomPage, 0, 0);
+    }
+
     public static void updateStage(Stage primaryStage, String fxmlFile, String nomPage, double height, double width) {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(JfxUtil.class.getResource("/net/mpvm/saeimmobilier/data/fxml/" + fxmlFile));
-
-            primaryStage.getScene().setRoot(fxmlLoader.load());
+            setScene(primaryStage,fxmlFile);
             primaryStage.setTitle(nomPage);
             // Get the scene's actual layout dimensions
             resize(primaryStage);
@@ -62,5 +67,26 @@ public class JfxUtil {
         } catch (Exception e) {
             System.out.println("والآن أصبحت الموت، مدمر العالم");
         }
+    }
+
+
+
+    private static void setScene(Stage primaryStage, String fxml) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(JfxUtil.class.getResource("/net/mpvm/saeimmobilier/data/fxml/"+fxml));
+        if(primaryStage.getScene() == null) {
+            instantiateStage(primaryStage, fxmlLoader);
+        }
+        else {
+            primaryStage.getScene().setRoot(fxmlLoader.load());
+        }
+    }
+
+    private static void instantiateStage(Stage primaryStage, FXMLLoader fxmlLoader) throws IOException {
+        Scene scene = new Scene(fxmlLoader.load());
+        scene.getStylesheets().add(JfxUtil.class.getResource("/net/mpvm/saeimmobilier/data/css/style.css").toExternalForm());
+        primaryStage.setScene(scene);
+        primaryStage.getIcons().add(new Image(JfxUtil.class.getResource("/net/mpvm/saeimmobilier/data/images/icon_immobilier.png").toString()));
+        primaryStage.setResizable(true);
+        primaryStage.show();
     }
 }
