@@ -42,6 +42,7 @@ CREATE TABLE Travaux(
 );
 CREATE TABLE Assurance(
                           IdAssurance INT auto_increment,
+                          NumeroContrat VARCHAR(50) UNIQUE NOT NULL,
                           ProtectionJuridique DOUBLE,
                           QuotiteJuridique DOUBLE,
                           Prime DOUBLE,
@@ -93,13 +94,13 @@ BEGIN
         IF NEW.IdImmeuble IS NULL THEN
             SIGNAL SQLSTATE '45000'
                 SET MESSAGE_TEXT = 'Le bien n'' étant pas un immeuble doit référencer un immeuble';
-        END IF;
-    END IF;
-    SELECT TypeBien INTO v_type FROM Bien WHERE IdBien = NEW.IdImmeuble;
-    IF v_type != 'IMMEUBLE' THEN
+END IF;
+END IF;
+SELECT TypeBien INTO v_type FROM Bien WHERE IdBien = NEW.IdImmeuble;
+IF v_type != 'IMMEUBLE' THEN
         SIGNAL SQLSTATE '45000'
             SET MESSAGE_TEXT = 'Le type de bien doit être un immeuble';
-    END IF;
+END IF;
 END;
 //
 DELIMITER ;
@@ -114,7 +115,7 @@ BEGIN
     IF v_type != 'IMMEUBLE' THEN
         SIGNAL SQLSTATE '45000'
             SET MESSAGE_TEXT = 'Le type de bien doit être un immeuble';
-    END IF;
+END IF;
 END;
 //
 DELIMITER ;
@@ -277,11 +278,11 @@ END;
 DELIMITER ;
 
 DELIMITER //
-    CREATE TRIGGER CalculMontantQuotite
-        BEFORE INSERT ON Assurance
-        FOR EACH ROW
-    BEGIN
-        SET NEW.MontantQuotite = (NEW.ProtectionJuridique *NEW.QuotiteJuridique)/100;
+CREATE TRIGGER CalculMontantQuotite
+    BEFORE INSERT ON Assurance
+    FOR EACH ROW
+BEGIN
+    SET NEW.MontantQuotite = (NEW.ProtectionJuridique *NEW.QuotiteJuridique)/100;
 
 END;
 //
@@ -321,7 +322,7 @@ BEGIN
                 ((NEW.Prime - NEW.PrimeAnneePrecedente) / NEW.PrimeAnneePrecedente) * 100;
     ELSE
         SET NEW.AugmentationAnnuelle = 0;
-    END IF;
+END IF;
 END;
 //
 
