@@ -3,11 +3,8 @@ package net.mpvm.saeimmobilier.controleur;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.stage.Stage;
 import net.mpvm.saeimmobilier.modele.Assurance;
 import net.mpvm.saeimmobilier.modele.TypeContrat;
-import net.mpvm.saeimmobilier.util.JfxUtil;
-import net.mpvm.saeimmobilier.vue.VueHome;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +16,7 @@ public class CtrlNewAssurance {
     @FXML
     private TextField fieldProtectionJuridique;
     @FXML
-    private TextField fieldQuotiteJuridique;
+    private TextField fieldNumeroDeContrat;
     @FXML
     private ComboBox<TypeContrat> comboTypeContrat;
     @FXML
@@ -47,7 +44,7 @@ public class CtrlNewAssurance {
             {
                 add(fieldAnnee);
                 add(fieldProtectionJuridique);
-                add(fieldQuotiteJuridique);
+                add(fieldNumeroDeContrat);
                 add(fieldPrime);
             }
         };
@@ -61,7 +58,7 @@ public class CtrlNewAssurance {
                 validateFields();
                 int annee = Integer.parseInt(fieldAnnee.getText());
                 float protectionJuridique = Float.parseFloat(fieldProtectionJuridique.getText());
-                float quotiteJuridique = Float.parseFloat(fieldQuotiteJuridique.getText());
+                String numeroContrat = fieldNumeroDeContrat.getText();
                 float prime = Float.parseFloat(fieldPrime.getText());
                 TypeContrat typeContrat = comboTypeContrat.getValue();
 
@@ -73,12 +70,8 @@ public class CtrlNewAssurance {
                     alertError("Année invalide", "L'année doit être comprise entre 1950 et 2050.");
                     return;
                 }
-                if (quotiteJuridique < 0 || quotiteJuridique > 100) {
-                    alertError("Quotité juridique invalide", "La quotité juridique doit être un nombre entre 0 et 100.");
-                    return;
-                }
                 // Enregistrement de l'assurance dans la base de donnees
-                new Assurance.ABuilder(typeContrat,annee,protectionJuridique,quotiteJuridique,prime).build().save();
+                new Assurance.ABuilder(typeContrat,annee,protectionJuridique,prime,numeroContrat).build().save();
 
             } catch (NumberFormatException e) {
                 alertError("Format des champs invalide", "Veuillez saisir des valeurs numeriques pour les champs appropriés.");
@@ -88,12 +81,6 @@ public class CtrlNewAssurance {
             }
         } else {
             alertFieldsEmpty();
-        }
-
-        try {
-            JfxUtil.showWindow((Stage) this.btnAjouterAssurance.getScene().getWindow(),VueHome.class);
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
     private void validateFields() throws NumberFormatException {
@@ -129,7 +116,7 @@ public class CtrlNewAssurance {
     @FXML
     public void Annuler(ActionEvent actionEvent) {
         fieldAnnee.clear();
-        fieldQuotiteJuridique.clear();
+        fieldNumeroDeContrat.clear();
         fieldProtectionJuridique.clear();
         comboTypeContrat.getItems().clear();
         fieldsAssurance.clear();
