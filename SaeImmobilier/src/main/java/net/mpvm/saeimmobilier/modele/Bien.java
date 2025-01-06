@@ -3,7 +3,7 @@ package net.mpvm.saeimmobilier.modele;
 import net.mpvm.saeimmobilier.sql.Query.QueryElement;
 import net.mpvm.saeimmobilier.sql.Query.Queryable;
 import net.mpvm.saeimmobilier.sql.Query.SelectQueryElement;
-
+import java.sql.Date;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;

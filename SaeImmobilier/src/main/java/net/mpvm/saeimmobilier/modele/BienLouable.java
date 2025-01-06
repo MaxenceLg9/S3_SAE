@@ -5,6 +5,7 @@ import net.mpvm.saeimmobilier.sql.Query.QueryElement;
 import net.mpvm.saeimmobilier.sql.Query.SelectQueryElement;
 import net.mpvm.saeimmobilier.sql.Query.UpdateQueryElement;
 
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -28,7 +29,7 @@ public abstract class BienLouable extends Bien {
     private int nbPieces;
 
 
-    public BienLouable(String complementAdresse,int nbPieces, String numeroFiscal, Immeuble immeuble, float surface, java.sql.Date dateAjout, int idBien) throws BienException {// Initialisation des attributs hérités de Bien
+    public BienLouable(String complementAdresse,int nbPieces, String numeroFiscal, Immeuble immeuble, float surface, Date dateAjout, int idBien) throws BienException {// Initialisation des attributs hérités de Bien
         super(idBien, numeroFiscal, dateAjout);
         this.complementAdresse = complementAdresse;
         if(immeuble == null)
@@ -216,7 +217,7 @@ public abstract class BienLouable extends Bien {
         private final float surface;
         private final Immeuble immeuble;
 
-        public BLBuilder(String complementAdresse,int nbPieces, String numeroFiscal, Immeuble immeuble, float surface, java.sql.Date dateAjout, int idBien) {
+        public BLBuilder(String complementAdresse,int nbPieces, String numeroFiscal, Immeuble immeuble, float surface, Date dateAjout, int idBien) {
             super(idBien, numeroFiscal, dateAjout);
             this.complementAdresse = complementAdresse;
             this.nbPieces = nbPieces;

@@ -39,7 +39,7 @@ public class CtrlHome {
     }
 
 
-    public void gererLocation(ActionEvent actionEvent) {
+    public void gererLocation(ActionEvent event) {
 
     }
 }

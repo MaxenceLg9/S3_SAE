@@ -2,7 +2,6 @@ package net.mpvm.saeimmobilier.modele;
 
 import net.mpvm.saeimmobilier.sql.Query.QueryElement;
 import net.mpvm.saeimmobilier.sql.Query.SelectQueryElement;
-
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.HashMap;
