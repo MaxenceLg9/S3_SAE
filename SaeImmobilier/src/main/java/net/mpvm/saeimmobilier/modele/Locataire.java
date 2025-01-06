@@ -7,6 +7,7 @@ import net.mpvm.saeimmobilier.sql.Query.Queryable;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -158,7 +159,7 @@ public final class Locataire extends Queryable {
 		return "Nom : " + this.getNom() + ", Prenom : " + this.getPrenom() + ", Email : " + this.getEmail();
 	}
 
-	public static List<Locataire> findALl() throws LocataireException {
+	public static List<Locataire> findAll() throws LocataireException {
 		List<Locataire> l = new ArrayList<>();
 
 		try(SelectQueryElement query = new SelectQueryElement(SELECT_QUERY)){
