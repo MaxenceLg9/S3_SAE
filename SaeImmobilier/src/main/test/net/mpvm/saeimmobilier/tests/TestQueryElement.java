@@ -57,6 +57,8 @@ public class TestQueryElement {
                 assertEquals(rs.getObject(c1), row.get(c2));
             }
         assertTrue(i == result.size() && !rs.next());
+        rs.close();
+        connection.close();
     }
 
     @Test

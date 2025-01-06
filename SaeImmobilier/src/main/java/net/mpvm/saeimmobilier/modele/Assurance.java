@@ -170,13 +170,13 @@ public class Assurance extends Queryable{
             query.execute();
             System.out.println("Insertion réussie. Le déclencheur CalculTotalPrime mettra à jour TotalPrime.");
 
-        } catch (QueryElement.QEltException e) {
+        } catch (QueryElement.QEltException qEltException) {
             // Gestion d'une erreur SQL et affichage du contexte
             String errorMessage = String.format(
                     "Erreur lors de l'ajout de l'assurance : ProtectionJuridique=%f, QuotitéJuridique=%f, Prime=%f, TypeContrat=%s",
                     this.getProtectionJuridique(), this.getQuotiteJurisprudence(), this.getPrime(), this.getTypeContrat().toString()
             );
-            throw new AssuranceException(errorMessage, e.getSqlException());
+            throw new AssuranceException(errorMessage, qEltException.getSqlException());
         }
     }
 

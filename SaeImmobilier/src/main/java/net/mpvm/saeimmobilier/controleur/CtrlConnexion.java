@@ -1,5 +1,6 @@
 package net.mpvm.saeimmobilier.controleur;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -33,7 +34,7 @@ public class CtrlConnexion {
                         "Erreur",
                         "Il n'existe pas de propriétaire propriétaire",
                         "Essayez de vous inscrire");
-                JfxUtil.showWindow(((Stage) welcomeText.getScene().getWindow()), VueInscription.class);
+                Platform.runLater(() -> JfxUtil.showWindow(((Stage) welcomeText.getScene().getWindow()), VueInscription.class));
             }
         } catch (Proprietaire.ProprietaireException e) {
             JfxUtil.setAlert(Alert.AlertType.ERROR,
