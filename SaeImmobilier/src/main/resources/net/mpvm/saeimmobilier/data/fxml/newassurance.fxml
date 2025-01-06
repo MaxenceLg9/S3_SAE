@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" spacing="10" styleClass="backgroundColor" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.mpvm.saeimmobilier.controleur.CtrlNewAssurance">
+<VBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" spacing="10" styleClass="backgroundColor" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.mpvm.saeimmobilier.controleur.CtrlNewAssurance">
       <children>
       <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" VBox.vgrow="ALWAYS">
          <top>
@@ -27,7 +27,7 @@
             </Label>
          </top>
          <center>
-                <GridPane alignment="CENTER" hgap="15.0" maxHeight="1.7976931348623157E308" maxWidth="500.0" minHeight="-Infinity" minWidth="-Infinity" vgap="20.0">
+                <GridPane alignment="CENTER" hgap="15.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="470.0" prefWidth="770.0" vgap="30.0">
                     <children>
                         <!-- Protection Juridique -->
                         <Label text="Protection Juridique" textFill="WHITE" GridPane.rowIndex="2">
@@ -37,11 +37,11 @@
                         <TextField fx:id="fieldProtectionJuridique" promptText="Valeur de la protection juridique" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" />
       
                         <!-- Quotité Juridique -->
-                        <Label text="Quotité Juridique" textFill="WHITE" GridPane.rowIndex="3">
+                        <Label text="Numéro de contrat" textFill="WHITE" GridPane.rowIndex="3">
                      <font>
                         <Font name="Calibri" size="16.0" />
                      </font></Label>
-                        <TextField fx:id="fieldQuotiteJuridique" promptText="Quotité Juridique en %" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <TextField fx:id="fieldNumeroDeContrat" promptText="Numéro de contrat" GridPane.columnIndex="1" GridPane.rowIndex="3" />
       
                         <!-- Prime -->
                         <Label text="Prime" textFill="WHITE" GridPane.rowIndex="4">
@@ -64,8 +64,8 @@
                   <TextField fx:id="fieldAnnee" promptText="Année d'effet" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                     </children>
                     <columnConstraints>
-                        <ColumnConstraints />
-                        <ColumnConstraints />
+                        <ColumnConstraints hgrow="ALWAYS" percentWidth="30.0" />
+                        <ColumnConstraints hgrow="ALWAYS" percentWidth="70.0" />
                     </columnConstraints>
                     <rowConstraints>
                         <RowConstraints />
