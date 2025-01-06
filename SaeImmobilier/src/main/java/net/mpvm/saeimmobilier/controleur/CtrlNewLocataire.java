@@ -7,8 +7,6 @@ import javafx.stage.Stage;
 import net.mpvm.saeimmobilier.modele.Locataire;
 import net.mpvm.saeimmobilier.util.JfxUtil;
 import net.mpvm.saeimmobilier.vue.VueAccueil;
-import net.mpvm.saeimmobilier.vue.VueHome;
-import net.mpvm.saeimmobilier.vue.VueNewBien;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,10 +75,6 @@ public class CtrlNewLocataire {
         else{
             alertFieldsEmpty();
         }
-        // Créer une nouvelle fenêtre (Stage)
-        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-        JfxUtil.showWindow(stage, VueHome.class);
-
     }
 
     private void alertFieldsEmpty() {
@@ -102,12 +96,11 @@ public class CtrlNewLocataire {
 
     public void annuler(ActionEvent event) {
         Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-        JfxUtil.showWindow(stage, VueHome.class);
-
+        JfxUtil.showWindow(stage, VueAccueil.class);
     }
 
     public void Accueil(ActionEvent event ) {
         Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-        JfxUtil.showWindow(stage, VueHome.class);
+        JfxUtil.showWindow(stage, VueAccueil.class);
     }
 }

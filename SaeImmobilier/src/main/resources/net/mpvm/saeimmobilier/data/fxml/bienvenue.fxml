@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<GridPane prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: linear-gradient(to right bottom, #33435c, #1e2d3e);;" vgap="40.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.mpvm.saeimmobilier.controleur.CtrlBienvenue">
+   <columnConstraints>
+      <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints percentHeight="50.0" valignment="CENTER" vgrow="NEVER" />
+      <RowConstraints percentHeight="40.0" valignment="CENTER" vgrow="ALWAYS" />
+      <RowConstraints percentHeight="20.0" valignment="CENTER" vgrow="NEVER" />
+   </rowConstraints>
+   <children>
+      <VBox alignment="CENTER" fillWidth="false">
+         <children>
+            <Label fx:id="welcomeText" alignment="CENTER" contentDisplay="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="60.0" prefWidth="600.0" text="Bienvenue sur l'application" textAlignment="CENTER" textFill="#FFFFFF">
+               <font>
+                  <Font name="Arial Black" size="40.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" contentDisplay="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="110.0" prefWidth="700.0" style="-fx-font-size: 18px;" text="Veuillez vous connecter ou vous inscrire pour continuer et accéder au reste de l'application." textAlignment="CENTER" textFill="#DDDDDD" wrapText="true">
+            </Label>
+         </children>
+         <GridPane.margin>
+            <Insets top="20.0" />
+         </GridPane.margin>
+      </VBox>
+      <Button fx:id="btnDefault" alignment="CENTER" contentDisplay="CENTER" maxWidth="200.0" minHeight="40.0" minWidth="140.0" style="-fx-background-radius: 20px; -fx-text-fill: white; -fx-font-size: 14px; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0.2, 0, 2);" text="Default" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+         <GridPane.margin>
+            <Insets bottom="20.0" top="20.0" />
+         </GridPane.margin>
+      </Button>
+      <Button fx:id="BtwQuitter" minHeight="40.0" minWidth="140.0" mnemonicParsing="false" onAction="#Quitter" style="-fx-background-color: #FF6F61; -fx-background-radius: 20px; -fx-text-fill: white; -fx-font-size: 14px; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0.2, 0, 2);" text="Quitter" GridPane.halignment="LEFT" GridPane.hgrow="NEVER" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" GridPane.vgrow="NEVER">
+         <GridPane.margin>
+            <Insets bottom="10.0" left="10.0" />
+         </GridPane.margin>
+      </Button>
+   </children>
+</GridPane>

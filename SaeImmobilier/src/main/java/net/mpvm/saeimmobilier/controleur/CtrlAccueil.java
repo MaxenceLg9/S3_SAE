@@ -1,67 +1,91 @@
 package net.mpvm.saeimmobilier.controleur;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.stage.Stage;
-import net.mpvm.saeimmobilier.modele.Proprietaire;
-import net.mpvm.saeimmobilier.util.JfxUtil;
-import net.mpvm.saeimmobilier.vue.VueConnexion;
-import net.mpvm.saeimmobilier.vue.VueInscription;
 
+import javafx.event.ActionEvent;
+import javafx.scene.Node;
+import javafx.scene.control.*;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+import net.mpvm.saeimmobilier.modele.Assurance;
+import net.mpvm.saeimmobilier.modele.Immeuble;
+import net.mpvm.saeimmobilier.modele.Locataire;
+import net.mpvm.saeimmobilier.sql.Query.Queryable;
+import net.mpvm.saeimmobilier.util.JfxUtil;
+import net.mpvm.saeimmobilier.vue.*;
 
 public class CtrlAccueil {
 
     @FXML
-    private Button btnDefault;
+    public TabPane tabPane;
 
-    public void initialize() {
-        try {
-            toggleButton(Proprietaire.countProprietaire() == 0);
-        } catch (Proprietaire.ProprietaireException e) {
-            JfxUtil.displayError("Erreur de récupération des données", "L'application n'a pas pu se lancer. Vérifiez votre connexion à la base de données.");
-            throw new RuntimeException();
-        }
-        // Initialisation
+    public void initialize(){
+        refreshTable();
     }
 
-    public void toggleButton(boolean toggle) {
-        if(toggle) {
-            btnDefault.setOnAction(this::Inscription);
-            btnDefault.setText("Inscription");
-            btnDefault.setStyle("-fx-background-color: #2ba530;" + btnDefault.getStyle());
-        }
-        else {
-            btnDefault.setOnAction(this::Connexion);
-            btnDefault.setText("Connexion");
-            btnDefault.setStyle("-fx-background-color: #088791;-fx-background-radius: 20px;" + btnDefault.getStyle());
-        }
+    private void refreshTable() {
+        tabPane.getTabs().forEach(tab -> {
+            tab.setContent(new VBox(5));
+            try {
+                if("Immeubles".equals(tab.getText())){
+                    Immeuble.findAll().forEach(immeuble -> {
+                        ((VBox) tab.getContent()).getChildren().add(new Label(immeuble.toString()));
+                    });
+                } else if("Locataires".equals(tab.getText())){
+                    Locataire.findAll().forEach(locataire -> {
+                        ((VBox) tab.getContent()).getChildren().add(new Label(locataire.toString()));
+                    });
+                } else if("Assurances".equals(tab.getText())){
+                    Assurance.findAll().forEach(assurance -> {
+                        ((VBox) tab.getContent()).getChildren().add(new Label(assurance.toString()));
+                    });
+                }
+            } catch (Queryable.QbleException e) {
+                JfxUtil.displayError("Erreur",e.getMessage());
+            }
+        });
     }
 
-    public void Quitter() {
-        System.exit(0);
+    @FXML
+    public void ajouterBien(ActionEvent event){
+        Stage stage = new Stage();
+        JfxUtil.showWindow(stage, VueNewBien.class);
+        stage.getProperties().put("parent", this);
     }
 
-    public void Inscription(ActionEvent actionEvent) {
+    public void ajouterLocataire(ActionEvent event) {
+        Stage stage = new Stage();
+        JfxUtil.showWindow(stage, VueNewLocataire.class);
+        stage.getProperties().put("parent", this);
+    }
+
+    public void ajouterAssurance(ActionEvent event) {
+        Stage stage = new Stage();
+        JfxUtil.showWindow(stage, VueNewAssurance.class);
+        stage.getProperties().put("parent", this);
+    }
+
+    public void vueImmeubles(ActionEvent event) {
+        Stage stage = new Stage();
+        JfxUtil.showWindow(stage,VueImmeubles.class);
+    }
+
+    public void vueLocataires(ActionEvent event) {
+        Stage stage = new Stage();
+        JfxUtil.showWindow(stage,VueLocataires.class);
+    }
+
+    public void gererLocation(ActionEvent actionEvent) {
+
+    }
+
+    public void deconnexion(ActionEvent event) {
         try {
             // Créer une nouvelle fenêtre (Stage)
-            Stage stage = (Stage) ((javafx.scene.control.Button) actionEvent.getSource()).getScene().getWindow();
-            // Initialiser la fenêtre avec l'utilitaire existant
-            JfxUtil.showWindow(stage, VueInscription.class);
-
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
-    public void Connexion(ActionEvent actionEvent) {
-        try {
-            // Créer une nouvelle fenêtre (Stage)
-            Stage stage = (Stage) ((javafx.scene.control.Button) actionEvent.getSource()).getScene().getWindow();
-            // Initialiser la fenêtre avec l'utilitaire existant
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             JfxUtil.showWindow(stage, VueConnexion.class);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
 
     }

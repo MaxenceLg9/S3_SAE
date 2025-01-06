@@ -1,17 +1,14 @@
 package net.mpvm.saeimmobilier.controleur;
 
 import javafx.fxml.FXML;
-import javafx.geometry.HPos;
 import javafx.geometry.Pos;
-import javafx.geometry.VPos;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import net.mpvm.saeimmobilier.modele.Immeuble;
 import net.mpvm.saeimmobilier.vue.VueBiensLouables;
-import net.mpvm.saeimmobilier.vue.VueHome;
+import net.mpvm.saeimmobilier.vue.VueAccueil;
 import net.mpvm.saeimmobilier.util.JfxUtil;
 
 import java.util.List;
@@ -97,6 +94,6 @@ public class CtrlViewImmeubles {
     }
     @FXML
     private void retourAccueil() {
-        new VueHome().start(new Stage());
+        new VueAccueil().start(new Stage());
     }
 }
