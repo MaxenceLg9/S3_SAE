@@ -277,16 +277,6 @@ END;
 DELIMITER ;
 
 DELIMITER //
-CREATE TRIGGER CalculMontantQuotite
-    BEFORE INSERT ON Assurance
-    FOR EACH ROW
-BEGIN
-    SET NEW.MontantQuotite = (NEW.ProtectionJuridique *NEW.QuotiteJuridique)/100;
-
-END;
-//
-DELIMITER ;
-DELIMITER //
 CREATE TRIGGER CalculMontantADeclarer
     AFTER INSERT ON Travaux
     FOR EACH ROW
@@ -298,38 +288,10 @@ END;
 //
 DELIMITER ;
 
-DELIMITER //
-
-CREATE TRIGGER CalculTotalPrime
-    BEFORE INSERT ON Assurance
-    FOR EACH ROW
-BEGIN
-    SET NEW.TotalPrime = NEW.ProtectionJuridique + NEW.Prime;
-END;
-//
-DELIMITER ;
-
-
-DELIMITER //
-
-CREATE TRIGGER CalculPourcentageAugmentation
-    BEFORE INSERT ON Assurance
-    FOR EACH ROW
-BEGIN
-    IF NEW.PrimeAnneePrecedente IS NOT NULL AND NEW.PrimeAnneePrecedente > 0 THEN
-        SET NEW.AugmentationAnnuelle =
-                ((NEW.Prime - NEW.PrimeAnneePrecedente) / NEW.PrimeAnneePrecedente) * 100;
-    ELSE
-        SET NEW.AugmentationAnnuelle = 0;
-    END IF;
-END;
-//
-
-DELIMITER ;
 
 
 INSERT INTO Assurance (
-    ProtectionJuridique, QuotiteJuridique, Prime, PrimeAnneePrecedente, Annee, TypeContrat
+    ProtectionJuridique, Prime, Annee, TypeContrat, NumeroContrat
 ) VALUES (
-             1000.0, 500.0, 1500.0, 1400.0, 2024, 'PROPRIETAIRE'
+             1000.0, 1500.0,  2024, 'PROPRIETAIRE',11111111
          );
