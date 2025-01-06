@@ -15,14 +15,13 @@ public class Assurance extends Queryable{
 
     private int idAssurance;
     private int annee;
-    private float quotiteJurisprudence;
     private float protectionJuridique;
     private float prime;
     private TypeContrat typeContrat; // Type Propriétaire ou aide juridique
     private Optional<Bien> bien; // Bien lié à l'assurance
     private String numeroContrat;
 
-    private Assurance(int idAssurance, TypeContrat typeContrat, int annee, float quotiteJurisprudence, float protectionJuridique, float prime, String numeroContrat) {
+    private Assurance(int idAssurance, TypeContrat typeContrat, int annee, float protectionJuridique, float prime, String numeroContrat) {
         if (typeContrat == null) {
             throw new IllegalArgumentException("Le type de contrat est obligatoire.");
         }
@@ -30,14 +29,13 @@ public class Assurance extends Queryable{
         this.typeContrat = typeContrat;
         this.bien = Optional.empty(); // Initialisé à une valeur vide
         this.annee = annee;
-        this.quotiteJurisprudence = quotiteJurisprudence;
         this.protectionJuridique = protectionJuridique;
         this.prime = prime;
         this.numeroContrat = numeroContrat;
     }
 
     public Assurance(ABuilder aBuilder) {
-        this(aBuilder.id, aBuilder.typeContrat, aBuilder.annee, aBuilder.protectionJuridique, aBuilder.prime, aBuilder.primePrecedente, aBuilder.numeroContrat);
+        this(aBuilder.id, aBuilder.typeContrat, aBuilder.annee, aBuilder.protectionJuridique, aBuilder.prime, aBuilder.numeroContrat);
     }
 
     // Méthode pour récupérer toutes les assurances
@@ -62,7 +60,7 @@ public class Assurance extends Queryable{
     // annotation to tell that the method isn't finished
 
     public float getTotalPrime() {
-        return 0;
+        return this.prime + this.protectionJuridique;
     }
 
     // Méthode pour valider la cohérence des montants calculés
@@ -73,18 +71,6 @@ public class Assurance extends Queryable{
 
     public int getIdAssurance() {
         return idAssurance;
-    }
-
-    public void setIdAssurance(int idAssurance) {
-        this.idAssurance = idAssurance;
-    }
-
-    public float getQuotiteJurisprudence() {
-        return quotiteJurisprudence;
-    }
-
-    public void setQuotiteJurisprudence(float quotiteJurisprudence) {
-        this.quotiteJurisprudence = quotiteJurisprudence;
     }
 
     public float getProtectionJuridique() {
@@ -128,9 +114,6 @@ public class Assurance extends Queryable{
         if (this.getProtectionJuridique() < 0) {
             throw new AssuranceException("La protection juridique ne peut pas être négative.");
         }
-        if (this.getQuotiteJurisprudence() < 0) {
-            throw new AssuranceException("La quotité juridique ne peut pas être négative.");
-        }
         if (this.getPrime() < 0) {
             throw new AssuranceException("La prime ne peut pas être négative.");
         }
@@ -145,7 +128,6 @@ public class Assurance extends Queryable{
             // Préparer les paramètres de la requête
             query.setArgs(Map.of(
                     1, this.getProtectionJuridique(),
-                    2, this.getQuotiteJurisprudence(),
                     3, this.getPrime(),
                     4, this.getTypeContrat().toString()
             ));
@@ -158,7 +140,7 @@ public class Assurance extends Queryable{
             // Gestion d'une erreur SQL et affichage du contexte
             String errorMessage = String.format(
                     "Erreur lors de l'ajout de l'assurance : ProtectionJuridique=%f, QuotitéJuridique=%f, Prime=%f, TypeContrat=%s",
-                    this.getProtectionJuridique(), this.getQuotiteJurisprudence(), this.getPrime(), this.getTypeContrat().toString()
+                    this.getProtectionJuridique(), this.getPrime(), this.getTypeContrat().toString()
             );
             throw new AssuranceException(errorMessage, qEltException.getSqlException());
         }
@@ -208,7 +190,6 @@ public class Assurance extends Queryable{
                     2, this.annee,
                     3, this.typeContrat.toString(),
                     4, this.prime,
-                    5, this.quotiteJurisprudence,
                     6, this.protectionJuridique
             ));
 
@@ -268,7 +249,6 @@ public class Assurance extends Queryable{
         try (UpdateQueryElement query = new UpdateQueryElement(UPDATE_QUERY, true)) {
             query.setArgs(Map.of(
                     1, this.protectionJuridique,
-                    2, this.quotiteJurisprudence,
                     3, this.prime,
                     4, this.typeContrat.toString(),
                     6, this.idAssurance
@@ -286,7 +266,6 @@ public class Assurance extends Queryable{
 
     public static class ABuilder extends Queryable.Builder{
 
-        public float primePrecedente;
         private final int id;
         private final TypeContrat typeContrat;
         private final int annee;
