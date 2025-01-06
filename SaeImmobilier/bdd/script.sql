@@ -44,16 +44,15 @@ CREATE TABLE Assurance(
                           IdAssurance INT auto_increment,
                           NumeroContrat VARCHAR(50) UNIQUE NOT NULL,
                           ProtectionJuridique DOUBLE,
-                          QuotiteJuridique DOUBLE,
                           Prime DOUBLE,
-                          AugmentationAnnuelle DOUBLE,
-                          TotalPrime DOUBLE,
                           TypeContrat VARCHAR(20),
                           Annee INT,
-                          PrimeAnneePrecedente DOUBLE,
-                          MontantQuotite DOUBLE,
+                          IdBail INTEGER,
                           PRIMARY KEY(IdAssurance)
 );
+
+ALTER TABLE Assurance
+    ADD CONSTRAINT FOREIGN KEY (IdBail) REFERENCES Bail(IdBail);
 
 CREATE TABLE Proprietaire(
                              IdProprietaire INT auto_increment,
@@ -94,13 +93,13 @@ BEGIN
         IF NEW.IdImmeuble IS NULL THEN
             SIGNAL SQLSTATE '45000'
                 SET MESSAGE_TEXT = 'Le bien n'' étant pas un immeuble doit référencer un immeuble';
-END IF;
-END IF;
-SELECT TypeBien INTO v_type FROM Bien WHERE IdBien = NEW.IdImmeuble;
-IF v_type != 'IMMEUBLE' THEN
+        END IF;
+    END IF;
+    SELECT TypeBien INTO v_type FROM Bien WHERE IdBien = NEW.IdImmeuble;
+    IF v_type != 'IMMEUBLE' THEN
         SIGNAL SQLSTATE '45000'
             SET MESSAGE_TEXT = 'Le type de bien doit être un immeuble';
-END IF;
+    END IF;
 END;
 //
 DELIMITER ;
@@ -115,7 +114,7 @@ BEGIN
     IF v_type != 'IMMEUBLE' THEN
         SIGNAL SQLSTATE '45000'
             SET MESSAGE_TEXT = 'Le type de bien doit être un immeuble';
-END IF;
+    END IF;
 END;
 //
 DELIMITER ;
@@ -322,7 +321,7 @@ BEGIN
                 ((NEW.Prime - NEW.PrimeAnneePrecedente) / NEW.PrimeAnneePrecedente) * 100;
     ELSE
         SET NEW.AugmentationAnnuelle = 0;
-END IF;
+    END IF;
 END;
 //
 
