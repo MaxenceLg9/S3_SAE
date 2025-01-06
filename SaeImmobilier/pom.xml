@@ -187,7 +187,7 @@
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>libs/</classpathPrefix>
                             <mainClass>
-                                net.mpvm.saeimmobilier.vue.VueAccueil
+                                net.mpvm.saeimmobilier.vue.VueBienvenue
                             </mainClass>
                         </manifest>
                     </archive>

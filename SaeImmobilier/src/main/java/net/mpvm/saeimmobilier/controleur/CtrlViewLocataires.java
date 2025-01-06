@@ -31,7 +31,7 @@ public class CtrlViewLocataires {
 
     private void afficheLocataires() {
         try {
-            locataires = Locataire.findALl().stream().collect(Collectors.toMap(Locataire::getIdLocataire, Function.identity()));
+            locataires = Locataire.findAll().stream().collect(Collectors.toMap(Locataire::getIdLocataire, Function.identity()));
         } catch (Locataire.LocataireException locataireException) {
             JfxUtil.displayError("Erreur lors de la récupération des locataires", "Verifiez votre connexion");
             return;

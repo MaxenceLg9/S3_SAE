@@ -4,15 +4,17 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import net.mpvm.saeimmobilier.util.JfxUtil;
 
-public class VueHome extends Application {
+import java.io.IOException;
 
+
+public class VueBienvenue extends Application{
 
     public static void main(String[] args) {
         launch(args);
     }
 
     @Override
-    public void start(Stage primaryStage) {
-        JfxUtil.updateStage(primaryStage, "home.fxml","HomePage",800, 700);
+    public void start(Stage primaryStage) throws IOException {
+        JfxUtil.updateStage(primaryStage, "bienvenue.fxml", "Accueil", 800, 800);
     }
 }

@@ -2,14 +2,12 @@ package net.mpvm.saeimmobilier.controleur;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import net.mpvm.saeimmobilier.modele.*;
 import net.mpvm.saeimmobilier.sql.Query.Queryable;
 import net.mpvm.saeimmobilier.util.JfxUtil;
-import net.mpvm.saeimmobilier.vue.VueConnexion;
-import net.mpvm.saeimmobilier.vue.VueHome;
+import net.mpvm.saeimmobilier.vue.VueAccueil;
 
 import java.sql.Date;
 import java.time.LocalDate;
@@ -172,11 +170,8 @@ public class CtrlNewBien {
         } catch (Queryable.QbleException e) {
             e.getSqlException().printStackTrace();
         }
-        System.out.print("Bouh ! ");
+        JfxUtil.setAlert(Alert.AlertType.INFORMATION, "Succès", "Ajout du bien", "Le bien a été ajouté! Vous pouvez maintenant retourner sur la page d'accueil");
     }
-
-
-
 
     private boolean fieldsNotEmptyBienLouable() {
         for(TextField textField : fieldsLogement){
@@ -227,23 +222,13 @@ public class CtrlNewBien {
     @FXML
     public void Annuler(ActionEvent event) {
         Stage stage = (Stage) this.listImmeubles.getScene().getWindow();
-        JfxUtil.showWindow(stage, VueHome.class);
+        stage.close();
     }
 
 
     public void Accueil(ActionEvent event) {
         Stage stage = (Stage) this.listImmeubles.getScene().getWindow();
-        JfxUtil.showWindow(stage, VueHome.class);
-    }
-
-    public void Deconnexion(ActionEvent actionEvent) {
-        try {
-            // Créer une nouvelle fenêtre (Stage)
-            Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-            JfxUtil.showWindow(stage, VueConnexion.class);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        JfxUtil.showWindow(stage, VueAccueil.class);
     }
 
     public void Clear(ActionEvent actionEvent) {
@@ -256,5 +241,4 @@ public class CtrlNewBien {
         this.listImmeubles.setValue(null);
         this.listTypeBien.setValue(null);
     }
-
 }

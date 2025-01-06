@@ -46,7 +46,7 @@ public class CtrlConnexion {
 
     public void Quitter(ActionEvent actionEvent) {
         Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
-        JfxUtil.showWindow(stage, VueAccueil.class);
+        JfxUtil.showWindow(stage, VueBienvenue.class);
     }
 
     public void mdpOublie(ActionEvent actionEvent) {
@@ -69,7 +69,7 @@ public class CtrlConnexion {
                         if (this.FieldMail.getText().equals(p.getEmail())) {
                             if (this.FieldPwd.getText().equals(p.getPassword())) {
                                 Stage stage = (Stage) ((PasswordField) event.getSource()).getScene().getWindow();
-                                JfxUtil.showWindow(stage, VueHome.class);
+                                JfxUtil.showWindow(stage, VueAccueil.class);
                             }else {
                                 alertIncorrectEmpty();
                             }
@@ -103,7 +103,7 @@ public class CtrlConnexion {
                     if (this.FieldMail.getText().equals(p.getEmail())) {
                         if (this.FieldPwd.getText().equals(p.getPassword())) {
                             Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
-                            JfxUtil.showWindow(stage, VueHome.class);
+                            JfxUtil.showWindow(stage, VueAccueil.class);
                         }
                     }else {
                         alertIncorrectEmpty();

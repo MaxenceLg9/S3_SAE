@@ -7,7 +7,7 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import net.mpvm.saeimmobilier.modele.Proprietaire;
 import net.mpvm.saeimmobilier.util.JfxUtil;
-import net.mpvm.saeimmobilier.vue.VueAccueil;
+import net.mpvm.saeimmobilier.vue.VueBienvenue;
 import net.mpvm.saeimmobilier.vue.VueConnexion;
 
 import java.util.ArrayList;
@@ -124,7 +124,7 @@ public class CtrlInscription {
 
     @FXML
     public void Annuler(ActionEvent event) {
-        JfxUtil.showWindow(((Stage) fieldPassword.getScene().getWindow()), VueAccueil.class);
+        JfxUtil.showWindow(((Stage) fieldPassword.getScene().getWindow()), VueBienvenue.class);
     }
 
     private boolean fieldsNotEmpty() {

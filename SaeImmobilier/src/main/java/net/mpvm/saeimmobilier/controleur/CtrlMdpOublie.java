@@ -3,11 +3,10 @@ package net.mpvm.saeimmobilier.controleur;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.Hyperlink;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import net.mpvm.saeimmobilier.util.JfxUtil;
-import net.mpvm.saeimmobilier.vue.VueHome;
+import net.mpvm.saeimmobilier.vue.VueAccueil;
 
 
 public class CtrlMdpOublie {
@@ -26,7 +25,7 @@ public class CtrlMdpOublie {
 
     public void Quitter(javafx.event.ActionEvent event) {
         Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-        JfxUtil.showWindow(stage, VueHome.class);
+        JfxUtil.showWindow(stage, VueAccueil.class);
     }
 
     public void Modifier(javafx.event.ActionEvent actionEvent) {
