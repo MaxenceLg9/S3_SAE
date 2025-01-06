@@ -1,5 +1,6 @@
 package net.mpvm.saeimmobilier.controleur;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -53,7 +54,7 @@ public class CtrlInscription {
                         "Erreur",
                         "Il existe déjà un propriétaire",
                         "Un propriétaire est déjà présent, essayez avec les informations déjà enregistrées");
-                JfxUtil.showWindow(((Stage) fieldPassword.getScene().getWindow()), VueConnexion.class);
+                Platform.runLater(() -> JfxUtil.showWindow(((Stage) fieldPassword.getScene().getWindow()), VueConnexion.class));
             }
         } catch (Proprietaire.ProprietaireException e) {
             JfxUtil.setAlert(Alert.AlertType.ERROR,
@@ -127,10 +128,6 @@ public class CtrlInscription {
     }
 
     private boolean fieldsNotEmpty() {
-        fieldPasswordVisible.setText(fieldPassword.getText());
-        fieldConfirmPasswordVisible.setText(fieldConfirmPassword.getText());
-        fieldPassword.setText(fieldPasswordVisible.getText());
-        fieldConfirmPassword.setText(fieldConfirmPasswordVisible.getText());
 
         for (TextField textField : fieldsMDP) {
             if (textField.getText().isEmpty()) {
