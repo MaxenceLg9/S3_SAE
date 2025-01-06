@@ -139,14 +139,14 @@ public final class Immeuble extends Bien{
 		return bienLouablesAssocies;
 	}
 
-	public static List<Immeuble> findAll() throws ImmeubleException {
-		List<Immeuble> immeubles = new LinkedList<>();
+	public static List<net.mpvm.saeimmobilier.modele.Immeuble> findAll() throws ImmeubleException {
+		List<net.mpvm.saeimmobilier.modele.Immeuble> immeubles = new LinkedList<>();
 		try (SelectQueryElement selectQueryElement = new SelectQueryElement(SELECT_QUERY)) {
 			selectQueryElement.execute();
 			List<Map<String,Object>> result = selectQueryElement.getResult();
 			for(Map<String,Object> row : result){
 				// Ajout de l'IdBien s'il est nécessaire dans le constructeur
-				immeubles.add(new Immeuble.IBuilder(row).build());
+				immeubles.add(new net.mpvm.saeimmobilier.modele.Immeuble.IBuilder(row).build());
 			}
 		} catch (QueryElement.QEltException qEltException) {
 			qEltException.getSqlException().printStackTrace();
