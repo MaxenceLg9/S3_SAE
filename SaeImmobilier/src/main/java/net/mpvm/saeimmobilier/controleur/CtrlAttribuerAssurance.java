@@ -49,7 +49,6 @@ public class CtrlAttribuerAssurance {
 
             Label idAssurance = new Label("Assurance " + a.getIdAssurance());
             Label protectionJuridique = new Label("Protection Juridique " + a.getProtectionJuridique());
-            Label quotiteJuridique = new Label("Quotité Juridique " + a.getQuotiteJurisprudence());
             Label prime = new Label("Prime " + a.getPrime());
             Label totalPrime = new Label("Total Prime " + a.getTotalPrime());
             Label augmentation = new Label("Augmentation " + a.getAugmentationAnnuelle() + " %");
@@ -69,7 +68,6 @@ public class CtrlAttribuerAssurance {
             idAssurance.getStyleClass().add("assurance-label");
             idAssurance.getStyleClass().add("assurance-title");
             protectionJuridique.getStyleClass().add("assurance-label");
-            quotiteJuridique.getStyleClass().add("assurance-label");
             prime.getStyleClass().add("assurance-label");
             totalPrime.getStyleClass().add("assurance-label");
             augmentation.getStyleClass().add("assurance-label");
@@ -84,7 +82,6 @@ public class CtrlAttribuerAssurance {
             // Ajout des labels et boutons au GridPane
             gp.add(idAssurance, 0, 0);
             gp.add(protectionJuridique, 0, 1);
-            gp.add(quotiteJuridique, 0, 2);
             gp.add(prime, 1, 0);
             gp.add(totalPrime, 1, 1);
             gp.add(augmentation, 1, 2);
@@ -94,10 +91,8 @@ public class CtrlAttribuerAssurance {
             gp.add(chooseButton, 2, 2);
 
             gp.setAlignment(Pos.TOP_CENTER);
-
             GridPane.setHalignment(idAssurance, HPos.LEFT);
             GridPane.setHalignment(protectionJuridique, HPos.LEFT);
-            GridPane.setHalignment(quotiteJuridique, HPos.LEFT);
             GridPane.setHalignment(prime, HPos.LEFT);
             GridPane.setHalignment(totalPrime, HPos.LEFT);
             GridPane.setHalignment(augmentation, HPos.LEFT);
@@ -171,8 +166,6 @@ public class CtrlAttribuerAssurance {
             alert.showAndWait();
         }
     }
-
-
 
     @FXML
     public void askForDelete(int id) {
