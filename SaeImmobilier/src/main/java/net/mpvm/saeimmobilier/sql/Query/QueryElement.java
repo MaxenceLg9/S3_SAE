@@ -24,7 +24,7 @@ public abstract class QueryElement<T> implements Closeable {
             this.connection = BD.getConnection(commit);
             this.preparedStatement = this.prepareStatement();
         } catch (SQLException sqlException) {
-            throw new QEltException("Cannot create the query : Statement  or Connection problem", sqlException);
+            throw new QEltException("Cannot create the query : Statement or Connection problem", sqlException);
         }
     }
 
