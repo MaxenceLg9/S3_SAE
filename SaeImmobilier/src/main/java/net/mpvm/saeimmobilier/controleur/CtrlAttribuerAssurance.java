@@ -53,7 +53,6 @@ public class CtrlAttribuerAssurance {
             Label prime = new Label("Prime " + a.getPrime());
             Label totalPrime = new Label("Total Prime " + a.getTotalPrime());
             Label augmentation = new Label("Augmentation " + a.getAugmentationAnnuelle() + " %");
-            Label montantQuotite = new Label("Montant Quotité " + a.getMontantQuotite());
             Label typeContrat = new Label("Type de Contrat " + a.getTypeContrat());
             Label annee = new Label("Année " + a.getAnnee());
             Button deleteButton = new Button("Supprimer l'assurance");
@@ -74,7 +73,6 @@ public class CtrlAttribuerAssurance {
             prime.getStyleClass().add("assurance-label");
             totalPrime.getStyleClass().add("assurance-label");
             augmentation.getStyleClass().add("assurance-label");
-            montantQuotite.getStyleClass().add("assurance-label");
             typeContrat.getStyleClass().add("assurance-label");
             annee.getStyleClass().add("assurance-label");
             annee.getStyleClass().add("assurance-title");
@@ -90,7 +88,6 @@ public class CtrlAttribuerAssurance {
             gp.add(prime, 1, 0);
             gp.add(totalPrime, 1, 1);
             gp.add(augmentation, 1, 2);
-            gp.add(montantQuotite, 0, 3);
             gp.add(typeContrat, 1, 3);
             gp.add(annee, 2, 0);
             gp.add(deleteButton, 2, 3);
@@ -104,7 +101,6 @@ public class CtrlAttribuerAssurance {
             GridPane.setHalignment(prime, HPos.LEFT);
             GridPane.setHalignment(totalPrime, HPos.LEFT);
             GridPane.setHalignment(augmentation, HPos.LEFT);
-            GridPane.setHalignment(montantQuotite, HPos.LEFT);
             GridPane.setHalignment(typeContrat, HPos.LEFT);
             GridPane.setHalignment(annee, HPos.LEFT);
             GridPane.setValignment(idAssurance, VPos.CENTER);
@@ -148,11 +144,9 @@ public class CtrlAttribuerAssurance {
             if (assuranceActuelle != null) {
                 augmentationAnnuelle =
                         (nouvelleAssurance.getProtectionJuridique() - assuranceActuelle.getProtectionJuridique()) / 100.0;
-                nouvelleAssurance.setPrimePrecedente(assuranceActuelle.getPrime());
             }
 
             // Mettre à jour l'augmentation annuelle dans la nouvelle assurance
-            nouvelleAssurance.setAugmentationAnnuelle((float) augmentationAnnuelle);
             nouvelleAssurance.update(); // Sauvegarder la nouvelle assurance
 
             // Associer la nouvelle assurance au bien

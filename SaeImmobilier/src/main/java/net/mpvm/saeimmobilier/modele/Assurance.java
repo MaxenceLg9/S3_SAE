@@ -2,12 +2,14 @@ package net.mpvm.saeimmobilier.modele;
 
 import net.mpvm.saeimmobilier.sql.Query.*;
 import net.mpvm.saeimmobilier.util.JfxUtil;
+import net.mpvm.saeimmobilier.util.Unfinished;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.lang.annotation.*;
 
 public class Assurance extends Queryable{
 
@@ -15,25 +17,27 @@ public class Assurance extends Queryable{
     private int annee;
     private float quotiteJurisprudence;
     private float protectionJuridique;
-    private float primePrecedente;
     private float prime;
     private TypeContrat typeContrat; // Type Propriétaire ou aide juridique
-    private float augmentationAnnuelle; // Calculé en base
-    private float montantQuotite; // Calculé en base
-    private float totalPrime; // Calculé en base
     private Optional<Bien> bien; // Bien lié à l'assurance
+    private String numeroContrat;
 
-    private Assurance(int idAssurance, TypeContrat typeContrat) {
+    private Assurance(int idAssurance, TypeContrat typeContrat, int annee, float quotiteJurisprudence, float protectionJuridique, float prime, String numeroContrat) {
         if (typeContrat == null) {
             throw new IllegalArgumentException("Le type de contrat est obligatoire.");
         }
         this.idAssurance = idAssurance;
         this.typeContrat = typeContrat;
         this.bien = Optional.empty(); // Initialisé à une valeur vide
+        this.annee = annee;
+        this.quotiteJurisprudence = quotiteJurisprudence;
+        this.protectionJuridique = protectionJuridique;
+        this.prime = prime;
+        this.numeroContrat = numeroContrat;
     }
 
     public Assurance(ABuilder aBuilder) {
-        super();
+        this(aBuilder.id, aBuilder.typeContrat, aBuilder.annee, aBuilder.protectionJuridique, aBuilder.prime, aBuilder.primePrecedente, aBuilder.numeroContrat);
     }
 
     // Méthode pour récupérer toutes les assurances
@@ -44,17 +48,7 @@ public class Assurance extends Queryable{
         try (SelectQueryElement query = new SelectQueryElement(SELECT_QUERY)) {
             Result rs = query.execute();
             for(Map<String,Object> row : rs){
-                Assurance assurance = new Assurance(
-                        (int) row.get("IdAssurance"),
-                        TypeContrat.valueOf((row.get("TypeContrat").toString()))
-                );
-                assurance.setAnnee((int) row.get("Annee"));
-                assurance.setQuotiteJurisprudence(JfxUtil.doubleToFloat((double) row.get("QuotiteJuridique")));
-                assurance.setProtectionJuridique(JfxUtil.doubleToFloat((double) row.get("ProtectionJuridique")));
-                assurance.setPrime(JfxUtil.doubleToFloat((double) row.get("Prime")));
-                assurance.setTotalPrime(JfxUtil.doubleToFloat((double) row.get("TotalPrime"))); // Chargé depuis la base
-                assurance.setMontantQuotite(JfxUtil.doubleToFloat((double)  row.get("MontantQuotite"))); // Calculé par trigger
-                assurance.setAugmentationAnnuelle(JfxUtil.doubleToFloat((double) row.get("AugmentationAnnuelle"))); // Calculé par trigger
+                Assurance assurance = new Assurance.ABuilder(row).build();
                 assurances.add(assurance);
             }
         } catch (QueryElement.QEltException qEltException) {
@@ -65,17 +59,10 @@ public class Assurance extends Queryable{
     }
 
 
-    public void setMontantQuotite(float montantQuotite) {
-        this.montantQuotite = montantQuotite;
-    }
+    // annotation to tell that the method isn't finished
 
-    // Méthode pour obtenir le total de l'assurance
     public float getTotalPrime() {
-        return totalPrime;
-    }
-
-    public void setTotalPrime(float totalPrime) {
-        this.totalPrime = totalPrime;
+        return 0;
     }
 
     // Méthode pour valider la cohérence des montants calculés
@@ -133,11 +120,7 @@ public class Assurance extends Queryable{
     }
 
     public float getAugmentationAnnuelle() {
-        return augmentationAnnuelle;
-    }
-
-    public void setAugmentationAnnuelle(float augmentationAnnuelle) {
-        this.augmentationAnnuelle = augmentationAnnuelle;
+        return 0;
     }
 
     public void save() throws AssuranceException {
@@ -249,13 +232,11 @@ public class Assurance extends Queryable{
         this.bien = bien;
     }
 
+    @Unfinished
     public float getPrimePrecedente() {
-        return primePrecedente;
+        return 0;
     }
 
-    public void setPrimePrecedente(float primePrecedente) {
-        this.primePrecedente = primePrecedente;
-    }
 
     protected void setId(int id) throws QbleException {
 
@@ -266,11 +247,7 @@ public class Assurance extends Queryable{
     }
 
     public String toString(){
-        return this.typeContrat + " " + this.annee + " " + this.prime + " " + this.quotiteJurisprudence + " " + this.protectionJuridique;
-    }
-
-    public Float getMontantQuotite() {
-        return this.montantQuotite;
+        return this.typeContrat + " " + this.annee + " " + this.prime + " " + this.numeroContrat;
     }
 
     public void update() throws AssuranceException {
@@ -294,7 +271,6 @@ public class Assurance extends Queryable{
                     2, this.quotiteJurisprudence,
                     3, this.prime,
                     4, this.typeContrat.toString(),
-                    5, this.totalPrime,
                     6, this.idAssurance
             ));
 
@@ -310,24 +286,34 @@ public class Assurance extends Queryable{
 
     public static class ABuilder extends Queryable.Builder{
 
-        private int id;
-        private TypeContrat typeContrat;
-        private int annee;
-        private float protectionJuridique;
-        private float quotiteJuridique;
-        private float prime;
+        public float primePrecedente;
+        private final int id;
+        private final TypeContrat typeContrat;
+        private final int annee;
+        private final float protectionJuridique;
+        private final float prime;
+        private final String numeroContrat;
 
         ABuilder(Map<String, Object> args) {
-            this((int) args.get("IdAssurance"), TypeContrat.valueOf(args.get("TypeContrat").toString()), (int) args.get("Annee"), (float) args.get("ProtectionJuridique"), (float) args.get("QuotiteJuridique"), (float) args.get("Prime"));
+            this((int) args.get("IdAssurance"),
+                    TypeContrat.valueOf(args.get("TypeContrat").toString()),
+                    (int) args.get("Annee"),
+                    JfxUtil.doubleToFloat((double) args.get("ProtectionJuridique")),
+                    JfxUtil.doubleToFloat((double) args.get("Prime")),
+                    args.get("NumeroContrat").toString());
         }
 
-        private ABuilder(int id, TypeContrat typeContrat, int annee, float protectionJuridique, float quotiteJuridique, float prime) {
+        private ABuilder(int id, TypeContrat typeContrat, int annee, float protectionJuridique, float prime, String numeroContrat) {
             this.id = id;
             this.typeContrat = typeContrat;
+            this.annee = annee;
+            this.protectionJuridique = protectionJuridique;
+            this.prime = prime;
+            this.numeroContrat = numeroContrat;
         }
 
-        public ABuilder(TypeContrat typeContrat, int annee, float protectionJuridique, float quotiteJuridique, float prime) {
-            this(-1,typeContrat, annee, protectionJuridique, quotiteJuridique, prime);
+        public ABuilder(TypeContrat typeContrat, int annee, float protectionJuridique, float prime, String numeroContrat) {
+            this(-1,typeContrat, annee, protectionJuridique, prime, numeroContrat);
         }
 
         @Override
