@@ -59,11 +59,6 @@
                                         <Font name="System Bold" size="14.0" />
                                     </font>
                                 </Button>
-                                <Button fx:id="btnAjoutAssurance" mnemonicParsing="false" onAction="#ajouterAssurance" prefWidth="190.0" text="Ajout d'une assurance" textFill="WHITE">
-                                    <font>
-                                        <Font name="System Bold" size="14.0" />
-                                    </font>
-                                </Button>
                                 <Button fx:id="btnViewBien" mnemonicParsing="false" onAction="#vueImmeubles" prefWidth="190.0" text="Vue des biens" textFill="WHITE">
                                     <font>
                                         <Font name="System Bold" size="14.0" />
