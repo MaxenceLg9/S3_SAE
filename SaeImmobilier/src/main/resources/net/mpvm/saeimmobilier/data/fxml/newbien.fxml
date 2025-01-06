@@ -37,8 +37,8 @@
             <center>
                 <GridPane alignment="TOP_CENTER" hgap="10.0" prefHeight="442.0" prefWidth="679.0" BorderPane.alignment="CENTER">
                     <columnConstraints>
-                        <ColumnConstraints fillWidth="false" halignment="RIGHT" hgrow="ALWAYS" percentWidth="33.0" />
-                        <ColumnConstraints fillWidth="false" halignment="LEFT" hgrow="ALWAYS" percentWidth="33.0" />
+                        <ColumnConstraints fillWidth="false" halignment="RIGHT" hgrow="ALWAYS" percentWidth="40.0" />
+                        <ColumnConstraints fillWidth="false" halignment="LEFT" hgrow="ALWAYS" percentWidth="60.0" />
                     </columnConstraints>
                     <rowConstraints>
                         <RowConstraints maxHeight="50.0" minHeight="30.0" prefHeight="40.0" vgrow="SOMETIMES" />
