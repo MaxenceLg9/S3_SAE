@@ -19,6 +19,7 @@ public final class Immeuble extends Bien{
 	public static final String SELECT_FROM_ID = "SELECT * FROM Bien WHERE IdBien = ? AND TypeBien = 'IMMEUBLE'";
 	public static final String SELECT_BIENS_IMMEUBLES = "SELECT * FROM Bien WHERE IdBien = ?";
 	public static final String SELECT_COUNT_BL = "SELECT Count(*) FROM Bien WHERE IdImmeuble = ? AND TypeBien = 'GARAGE' OR TypeBien = 'HABITATION'";
+	public static final String SELECT_LOCALISATION = "SELECT IdImmeuble FROM Bien WHERE Adresse = ? AND Ville = ? AND CodePostal = ? AND TypeBien = 'IMMEUBLE'";
 
 	private static final Map<Integer, net.mpvm.saeimmobilier.modele.Immeuble> immeubles = new HashMap<>();
 
@@ -40,6 +41,25 @@ public final class Immeuble extends Bien{
 
 	private Immeuble(IBuilder iBuilder) {
 		this(iBuilder.ville, iBuilder.codePostal, iBuilder.adresse, iBuilder.getNumeroFiscal(), iBuilder.getDateAjout(), iBuilder.getIdBien());
+	}
+
+	public static Immeuble findByLocalisation(String adresse, int codePostal, String ville) throws ImmeubleException {
+		try (SelectQueryElement query = new SelectQueryElement(SELECT_LOCALISATION)) {
+			query.setArgs(Map.of(
+					1, adresse,
+					2, ville,
+					3, codePostal
+			));
+			query.execute();
+			List<Map<String, Object>> result = query.getResult();
+			if (!result.isEmpty()) {
+				int idBien = (int) result.get(0).get("IdImmeuble");
+				return new IBuilder(idBien).build();
+			}
+		} catch (QueryElement.QEltException e) {
+			throw new ImmeubleException("Erreur lors de la recherche par localisation", e.getSqlException());
+		}
+		return null;
 	}
 
 	@Override
