@@ -1,17 +1,16 @@
 package net.mpvm.saeimmobilier.controleur;
 
 import javafx.fxml.FXML;
-import javafx.geometry.HPos;
 import javafx.geometry.Pos;
-import javafx.geometry.VPos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.*;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import net.mpvm.saeimmobilier.modele.Immeuble;
 import net.mpvm.saeimmobilier.vue.VueBiensLouables;
-import net.mpvm.saeimmobilier.vue.VueHome;
+import net.mpvm.saeimmobilier.vue.VueAccueil;
 import net.mpvm.saeimmobilier.util.JfxUtil;
 
 import java.util.List;
@@ -29,8 +28,14 @@ public class CtrlViewImmeubles {
         afficheImmeubles();
     }
 
+
+
     private void afficheImmeubles() {
         try {
+            Label titre = new Label("Liste des Immeubles");
+            titre.setStyle("-fx-font-size: 24px; -fx-text-fill: white; -fx-font-weight: bold; -fx-alignment: center;");
+            titre.setAlignment(Pos.CENTER);
+            vBoxImmeubles.getChildren().add(titre);
             List<Immeuble> immeubles = Immeuble.findAll();
             vBoxImmeubles.getChildren().clear();
 
@@ -41,23 +46,6 @@ public class CtrlViewImmeubles {
                 return;
             }
 
-            // Créer l'en-tête de la grille
-            GridPane header = new GridPane();
-
-            header.setAlignment(Pos.TOP_CENTER);
-            header.setStyle("-fx-border-color: white; -fx-border-radius: 10;");
-
-            Label titre = new Label("Vue Immeubles");
-            Button retour =new Button("Retour");
-
-            titre.getStyleClass().add("assurance-title");
-
-
-            header.add(titre, 0, 0);
-
-
-            vBoxImmeubles.getChildren().add(header);
-
             for (Immeuble immeuble : immeubles) {
                 GridPane gp = new GridPane();
                 gp.setHgap(10);
@@ -65,25 +53,36 @@ public class CtrlViewImmeubles {
                 gp.setAlignment(Pos.TOP_CENTER);
                 gp.getStyleClass().add("locataire-gridpane");
 
-                Label adresse = new Label("Adresse : " + immeuble.getAdresse());
-                Label codepostal= new Label("Code Postal : " + immeuble.getCodePostal());
-                Label ville = new Label("Ville : " + immeuble.getVille());
-                Label nbAppartements = new Label("Nombre d'appartements : " + immeuble.getNbAppartements());
-                Button button = new Button("Voir les biens");
-                button.setOnAction(event -> afficheBiensPourImmeuble(immeuble.getIdBien()));
+                Label adresse = new Label("Adresse " + immeuble.getAdresse());
+                Label codepostal = new Label("Code Postal " + immeuble.getCodePostal());
+                Label ville = new Label("Ville " + immeuble.getVille());
+                Label nbAppartements = new Label("Nombre d'appartements " + immeuble.getNbAppartements());
 
-                codepostal.getStyleClass().add("assurance-label");
-                ville.getStyleClass().add("assurance-label");
+                Button voirBiensButton = new Button("Voir les biens");
+                voirBiensButton.setOnAction(event -> afficheBiensPourImmeuble(immeuble.getIdBien()));
+
+                Button attribuerAssuranceButton = new Button("Attribuer Assurance");
+                attribuerAssuranceButton.setOnAction(event -> attribuerAssurance(immeuble.getIdBien()));
+
+                Button supprimerButton = new Button("Supprimer");
+                supprimerButton.setOnAction(event -> supprimerImmeuble(immeuble));
+
                 adresse.getStyleClass().add("assurance-label");
                 adresse.getStyleClass().add("assurance-title");
+                codepostal.getStyleClass().add("assurance-label");
+                ville.getStyleClass().add("assurance-label");
                 nbAppartements.getStyleClass().add("assurance-label");
-                button.getStyleClass().add("button-valider");
+                voirBiensButton.getStyleClass().add("button-valider");
+                attribuerAssuranceButton.getStyleClass().add("button-valider");
+                supprimerButton.getStyleClass().add("button-supprimer");
 
-                gp.add(adresse, 0, 1);
-                gp.add(codepostal, 1, 1);
-                gp.add(ville, 2, 1);
-                gp.add(nbAppartements, 3, 1);
-                gp.add(button, 3, 2);
+                gp.add(adresse, 0, 0);
+                gp.add(codepostal, 1, 0);
+                gp.add(ville, 2, 0);
+                gp.add(nbAppartements, 3, 0);
+                gp.add(voirBiensButton, 4, 0);
+                gp.add(attribuerAssuranceButton, 5, 0);
+                gp.add(supprimerButton, 6, 0);
 
                 vBoxImmeubles.getChildren().add(gp);
             }
@@ -92,11 +91,42 @@ public class CtrlViewImmeubles {
             e.printStackTrace();
         }
     }
+
+    private void supprimerImmeuble(Immeuble immeuble) {
+        try {
+            // Suppression de l'immeuble
+            immeuble.delete();
+
+            // Rafraîchir l'affichage
+            afficheImmeubles();
+
+            // Afficher une alerte de confirmation
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Suppression réussie");
+            alert.setHeaderText(null);
+            alert.setContentText("L'immeuble a été supprimé avec succès.");
+            alert.showAndWait();
+        } catch (Immeuble.ImmeubleException e) {
+            JfxUtil.displayError("Erreur lors de la suppression de l'immeuble", e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
     private void afficheBiensPourImmeuble(int idImmeuble) {
         new VueBiensLouables().startForImmeuble(new Stage(), idImmeuble);
     }
+
+    private void attribuerAssurance(int idImmeuble) {
+        // Logique pour attribuer une assurance à l'immeuble
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Fonctionnalité en développement");
+        alert.setHeaderText(null);
+        alert.setContentText("La fonctionnalité 'Attribuer Assurance' sera bientôt disponible.");
+        alert.showAndWait();
+    }
+
     @FXML
     private void retourAccueil() {
-        new VueHome().start(new Stage());
+        new VueAccueil().start(new Stage());
     }
 }
