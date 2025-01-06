@@ -137,7 +137,7 @@ public final class Immeuble extends Bien{
 			List<Map<String,Object>> result = selectQueryElement.getResult();
 			for(Map<String,Object> row : result){
 				// Ajout de l'IdBien s'il est nécessaire dans le constructeur
-				immeubles.add(new Immeuble.IBuilder(row).build());
+				immeubles.add(new net.mpvm.saeimmobilier.modele.Immeuble.IBuilder(row).build());
 			}
 		} catch (QueryElement.QEltException qEltException) {
 			qEltException.getSqlException().printStackTrace();
