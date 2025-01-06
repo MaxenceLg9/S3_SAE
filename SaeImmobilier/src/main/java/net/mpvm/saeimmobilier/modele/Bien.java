@@ -29,6 +29,28 @@ public abstract class Bien extends Queryable {
         this.assurance = Optional.empty();
     }
 
+    public static Bien findById(int idBien) throws BienException {
+        try (SelectQueryElement selectQueryElement = new SelectQueryElement(SELECT_ID_QUERY)) {
+            selectQueryElement.setArgs(Map.of(1, idBien));
+            selectQueryElement.execute();
+            List<Map<String, Object>> results = selectQueryElement.getResult();
+
+
+
+            Map<String, Object> result = results.get(0);
+            TypeBien typeBien = TypeBien.valueOf(result.get("TypeBien").toString().toUpperCase());
+
+            return switch (typeBien) {
+                case HABITATION -> new Habitation.HBuilder(result).build();
+                case GARAGE -> new Garage.GBuilder(result).build();
+                case IMMEUBLE -> new Immeuble.IBuilder(result).build();
+
+            };
+        } catch (QueryElement.QEltException e) {
+            throw new BienException("Erreur lors de la récupération du bien avec ID " + idBien, e.getSqlException());
+        }
+    }
+
 
     public int getIdBien() {
         return idBien;
@@ -153,8 +175,11 @@ public abstract class Bien extends Queryable {
     }
 
     @Override
-    public void archiver(){
+    public void archiver() {
 
+    }
+
+    public void update() {
     }
 
     public abstract static class BBuilder extends Queryable.Builder{
