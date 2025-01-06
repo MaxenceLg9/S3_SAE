@@ -18,8 +18,9 @@ public final class Immeuble extends Bien{
 	public static final String UPDATE_QUERY = "UPDATE Bien SET Adresse = ?, Ville = ?, CodePostal = ?";
 	public static final String SELECT_FROM_ID = "SELECT * FROM Bien WHERE IdBien = ? AND TypeBien = 'IMMEUBLE'";
 	public static final String SELECT_BIENS_IMMEUBLES = "SELECT * FROM Bien WHERE IdBien = ?";
+	public static final String SELECT_COUNT_BL = "SELECT Count(*) FROM Bien WHERE IdImmeuble = ? AND TypeBien = 'GARAGE' OR TypeBien = 'HABITATION'";
 
-	private static final Map<Integer,Immeuble> immeubles = new HashMap<>();
+	private static final Map<Integer, net.mpvm.saeimmobilier.modele.Immeuble> immeubles = new HashMap<>();
 
 	private String adresse;
 	private String ville;
@@ -118,14 +119,14 @@ public final class Immeuble extends Bien{
 		return bienLouablesAssocies;
 	}
 
-	public static List<Immeuble> findAll() throws ImmeubleException {
-		List<Immeuble> immeubles = new LinkedList<>();
+	public static List<net.mpvm.saeimmobilier.modele.Immeuble> findAll() throws ImmeubleException {
+		List<net.mpvm.saeimmobilier.modele.Immeuble> immeubles = new LinkedList<>();
 		try (SelectQueryElement selectQueryElement = new SelectQueryElement(SELECT_QUERY)) {
 			selectQueryElement.execute();
 			List<Map<String,Object>> result = selectQueryElement.getResult();
 			for(Map<String,Object> row : result){
 				// Ajout de l'IdBien s'il est nécessaire dans le constructeur
-				immeubles.add(new Immeuble.IBuilder(row).build());
+				immeubles.add(new net.mpvm.saeimmobilier.modele.Immeuble.IBuilder(row).build());
 			}
 		} catch (QueryElement.QEltException qEltException) {
 			qEltException.getSqlException().printStackTrace();
@@ -151,11 +152,11 @@ public final class Immeuble extends Bien{
 			throw new ImmeubleException("Le bien existe déjà dans la table", null);
 		try(UpdateQueryElement q = new UpdateQueryElement(INSERT_QUERY, true)){
 			q.setArgs(
-					Map.of(1, this.getAdresse(),
-							2, this.getVille(),
-							3, this.getCodePostal(),
-							4, TypeBien.IMMEUBLE.name(),
-							5, this.getNumeroFiscal()))
+							Map.of(1, this.getAdresse(),
+									2, this.getVille(),
+									3, this.getCodePostal(),
+									4, TypeBien.IMMEUBLE.name(),
+									5, this.getNumeroFiscal()))
 					.execute();
 			super.save();
 			immeubles.put(this.getIdBien(),this);
@@ -195,6 +196,20 @@ public final class Immeuble extends Bien{
 	@Override
 	public String toString(){
 		return this.getAdresse() + " " + this.getVille() + ", " + this.getCodePostal();
+	}
+
+	public int getNbAppartements() {
+		try (SelectQueryElement query = new SelectQueryElement(SELECT_COUNT_BL)) {
+			query.setArgs(Map.of(1, this.getIdBien()));
+			query.execute();
+			List<Map<String,Object>> result = query.getResult();
+			if (!result.isEmpty()) {
+				return Integer.parseInt(result.get(0).get("Count(*)").toString());
+			}
+		} catch (QueryElement.QEltException QEltException) {
+			QEltException.printStackTrace();
+		}
+		return 0;
 	}
 
 
