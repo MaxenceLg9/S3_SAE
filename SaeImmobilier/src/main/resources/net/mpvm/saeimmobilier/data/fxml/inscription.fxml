@@ -106,12 +106,16 @@
             <TextField fx:id="fieldPasswordVisible" maxHeight="-Infinity" maxWidth="400.0" prefHeight="30.0" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1">
                <padding>
                   <Insets bottom="5.0" left="10.0" top="5.0" />
-               </padding></TextField>
+               </padding>
+               <font>
+                  <Font name="Calibri" size="14.0" />
+               </font>
+            </TextField>
 
                               <!-- Label Confirmation -->
             <Label prefHeight="20.0" prefWidth="100.0" text="Confirmation" textFill="WHITE" GridPane.halignment="RIGHT" GridPane.hgrow="NEVER" GridPane.rowIndex="2" GridPane.vgrow="NEVER">
                <font>
-                  <Font name="Calibri Bold" size="16.0" />
+                  <Font name="Calibri Bold" size="14.0" />
                </font>
             </Label>
 
@@ -129,8 +133,9 @@
                   <Insets bottom="5.0" left="10.0" top="5.0" />
                </padding>
                <font>
-                  <Font size="10.0" />
-               </font></TextField>
+                  <Font name="Calibri" size="14.0" />
+               </font>
+            </TextField>
 
                               <!-- CheckBox Visibilité -->
             <CheckBox fx:id="checkBoxVisibilite" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="150.0" mnemonicParsing="false" onAction="#setupVisibility" prefHeight="30.0" text="Mot de Passe Visible" textFill="#ebeae8" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.hgrow="NEVER" GridPane.rowIndex="3" GridPane.vgrow="NEVER">

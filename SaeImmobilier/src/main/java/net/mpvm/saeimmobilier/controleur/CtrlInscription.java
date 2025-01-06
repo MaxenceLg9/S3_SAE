@@ -127,6 +127,11 @@ public class CtrlInscription {
     }
 
     private boolean fieldsNotEmpty() {
+        fieldPasswordVisible.setText(fieldPassword.getText());
+        fieldConfirmPasswordVisible.setText(fieldConfirmPassword.getText());
+        fieldPassword.setText(fieldPasswordVisible.getText());
+        fieldConfirmPassword.setText(fieldConfirmPasswordVisible.getText());
+
         for (TextField textField : fieldsMDP) {
             if (textField.getText().isEmpty()) {
                 return false;
