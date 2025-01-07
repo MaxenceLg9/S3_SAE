@@ -17,7 +17,7 @@ public final class Immeuble extends Bien{
 	public static final String DELETE_QUERY = "DELETE FROM Bien WHERE IdBien = ? AND TypeBien = 'IMMEUBLE'";
 	public static final String UPDATE_QUERY = "UPDATE Bien SET Adresse = ?, Ville = ?, CodePostal = ?";
 	public static final String SELECT_FROM_ID = "SELECT * FROM Bien WHERE IdBien = ? AND TypeBien = 'IMMEUBLE'";
-	public static final String SELECT_BIENS_IMMEUBLES = "SELECT * FROM Bien WHERE IdBien = ?";
+	public static final String SELECT_BIENS_IMMEUBLES = "SELECT * FROM Bien WHERE IdImmeuble = ? AND TypeBien = 'GARAGE' OR TypeBien = 'HABITATION'";
 	public static final String SELECT_COUNT_BL = "SELECT Count(*) FROM Bien WHERE IdImmeuble = ? AND TypeBien = 'GARAGE' OR TypeBien = 'HABITATION'";
 	public static final String SELECT_LOCALISATION = "SELECT IdImmeuble FROM Bien WHERE Adresse = ? AND Ville = ? AND CodePostal = ? AND TypeBien = 'IMMEUBLE'";
 

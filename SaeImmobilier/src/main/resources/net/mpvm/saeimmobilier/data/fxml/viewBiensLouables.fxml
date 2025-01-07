@@ -1,17 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<ScrollPane xmlns="http://javafx.com/javafx/22.0.1" xmlns:fx="http://javafx.com/fxml/1" fitToHeight="true" fitToWidth="true">
+<ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="550.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.mpvm.saeimmobilier.controleur.CtrlViewBiensLouables">
     <content>
-        <VBox fx:id="vBoxBiensLouables" spacing="10" alignment="TOP_CENTER">
+        <VBox fx:id="vBoxBiensLouables" alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" spacing="10.0" style="-fx-background-color: #2b3b50;" stylesheets="@../css/style.css" VBox.vgrow="ALWAYS">
             <children>
-                <Label text="Liste des Biens Louables" style="-fx-font-size: 18; -fx-font-weight: bold;"/>
-                <!-- Les biens seront chargés dynamiquement ici -->
-                <GridPane fx:id="gridPaneBiensLouables" hgap="10" vgap="10"/>
+                <GridPane alignment="TOP_CENTER" style="-fx-border-color: white; -fx-border-radius: 10;" hgap="10" vgap="10">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="150.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="150.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="150.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="150.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="150.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="150.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="150.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                    <children>
+                        <Label text="Type Bien" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.valignment="CENTER" />
+                        <Label text="Complément d'Adresse" textFill="WHITE" GridPane.columnIndex="0" GridPane.halignment="LEFT" GridPane.valignment="CENTER" />
+                        <Label text="Surface" textFill="WHITE" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.valignment="CENTER" />
+                        <Label text="Nombre de pièces" textFill="WHITE" GridPane.columnIndex="3" GridPane.halignment="LEFT" GridPane.valignment="CENTER" />
+                        <Button text="Gérer Bails" GridPane.columnIndex="4"  />
+                        <Button text="Attribuer Assurance" GridPane.columnIndex="5"  />
+                        <Button text="Supprimer" GridPane.columnIndex="6"  />
+                    </children>
+                    <VBox.margin>
+                        <Insets left="10.0" right="10.0" />
+                    </VBox.margin>
+                </GridPane>
+                <Button id="retour" text="Retour à l'Accueil" onAction="#retourAccueil" style="-fx-font-size: 14;" />
             </children>
         </VBox>
     </content>
