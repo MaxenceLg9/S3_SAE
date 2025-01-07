@@ -3,6 +3,8 @@ package net.mpvm.saeimmobilier.modele;
 import net.mpvm.saeimmobilier.sql.Query.QueryElement;
 import net.mpvm.saeimmobilier.sql.Query.Queryable;
 import net.mpvm.saeimmobilier.sql.Query.SelectQueryElement;
+import net.mpvm.saeimmobilier.sql.Query.UpdateQueryElement;
+
 import java.sql.Date;
 import java.sql.*;
 import java.util.ArrayList;
@@ -15,6 +17,8 @@ public abstract class Bien extends Queryable {
 
     private static final String SELECT_QUERY = "SELECT * FROM bien";
     private static final String SELECT_ID_QUERY = "SELECT IdBien FROM bien WHERE NumeroFiscal = ?";
+    public static final String DELETE_QUERY = "DELETE FROM bien WHERE IdBien = ?";
+
     private int idBien;
     private Optional<Assurance> assurance;
     private float iR; // Taux d'intérêt ou autre valeur
@@ -139,11 +143,20 @@ public abstract class Bien extends Queryable {
     }
 
     public abstract int getNbPieces();
-
+    @Override
+    public void delete() throws Bien.BienException {
+        try(UpdateQueryElement updateQueryElement = new UpdateQueryElement(DELETE_QUERY, true)){
+            updateQueryElement.setArgs(
+                            Map.of(1,this.getIdBien()))
+                    .execute();
+        }catch(QueryElement.QEltException QEltException){
+            throw new BienLouable.BienLouableException("Erreur lors de la suppression du bien", QEltException.getSqlException());
+        }
+    }
 
     public static List<Bien> findByImmeuble(int idImmeuble) throws Bien.BienException {
         List<Bien> biens = new ArrayList<>();
-        String query = "SELECT * FROM immeuble WHERE idImmeuble = ?";
+        String query = "SELECT * FROM Bien WHERE IdImmeuble = ? ";
 
         try (SelectQueryElement selectQueryElement = new SelectQueryElement(query)) {
 

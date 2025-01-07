@@ -9,6 +9,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import net.mpvm.saeimmobilier.modele.Immeuble;
+import net.mpvm.saeimmobilier.vue.VueAttribuerAssurance;
 import net.mpvm.saeimmobilier.vue.VueBiensLouables;
 import net.mpvm.saeimmobilier.vue.VueAccueil;
 import net.mpvm.saeimmobilier.util.JfxUtil;
@@ -32,20 +33,32 @@ public class CtrlViewImmeubles {
 
     private void afficheImmeubles() {
         try {
+            // Effacer les éléments existants avant de les ajouter à nouveau
+            vBoxImmeubles.getChildren().clear();
+
+            // Ajouter le titre
             Label titre = new Label("Liste des Immeubles");
             titre.setStyle("-fx-font-size: 24px; -fx-text-fill: white; -fx-font-weight: bold; -fx-alignment: center;");
             titre.setAlignment(Pos.CENTER);
             vBoxImmeubles.getChildren().add(titre);
+
+            // Ajouter le bouton retour à l'accueil
+            Button retourAccueil = new Button("Retour à l'accueil");
+            retourAccueil.setOnAction(event -> retourAccueil());
+            retourAccueil.getStyleClass().add("button-supprimer");
+            vBoxImmeubles.getChildren().add(retourAccueil);
+
+            // Récupérer la liste des immeubles
             List<Immeuble> immeubles = Immeuble.findAll();
-            vBoxImmeubles.getChildren().clear();
 
             if (immeubles.isEmpty()) {
                 Label label = new Label("Aucun immeuble trouvé.");
-                label.setStyle("-fx-text-fill: white;");
+                label.getStyleClass().add("assurance-label");
                 vBoxImmeubles.getChildren().add(label);
                 return;
             }
 
+            // Ajouter les immeubles à la VBox
             for (Immeuble immeuble : immeubles) {
                 GridPane gp = new GridPane();
                 gp.setHgap(10);
@@ -92,6 +105,7 @@ public class CtrlViewImmeubles {
         }
     }
 
+
     private void supprimerImmeuble(Immeuble immeuble) {
         try {
             // Suppression de l'immeuble
@@ -112,17 +126,12 @@ public class CtrlViewImmeubles {
         }
     }
 
-    private void afficheBiensPourImmeuble(int idImmeuble) {
-        new VueBiensLouables().startForImmeuble(new Stage(), idImmeuble);
+    private void afficheBiensPourImmeuble(int idBien) {
+        new VueBiensLouables().startForImmeuble(new Stage(), idBien);
     }
 
-    private void attribuerAssurance(int idImmeuble) {
-        // Logique pour attribuer une assurance à l'immeuble
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Fonctionnalité en développement");
-        alert.setHeaderText(null);
-        alert.setContentText("La fonctionnalité 'Attribuer Assurance' sera bientôt disponible.");
-        alert.showAndWait();
+    private void attribuerAssurance(int idBien) {
+        new VueAttribuerAssurance().startforBien(new Stage(), idBien);
     }
 
     @FXML
