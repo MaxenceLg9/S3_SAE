@@ -33,7 +33,7 @@ public class CtrlNewBien {
     @FXML
     private TextField fieldCodePostal;
     @FXML
-    private TextField FieldNumFisc;
+    private TextField fieldNumeroFiscal;
     @FXML
     private TextField fieldNbPieces;
     @FXML
@@ -42,7 +42,8 @@ public class CtrlNewBien {
     private ChoiceBox<TypeBien> listTypeBien;
     @FXML
     private List<TextField> fieldsLogement;
-
+    @FXML
+    private TextField fieldNumeroProprio;
 
     private ModeleDate currentDate;
 
@@ -118,7 +119,7 @@ public class CtrlNewBien {
                 add(fieldCodePostal);
                 add(fieldAdresse);
                 add(fieldNbPieces);
-                add(FieldNumFisc);
+                add(fieldNumeroFiscal);
                 add(fieldSurface);
             }
         };
@@ -133,9 +134,9 @@ public class CtrlNewBien {
                     if (fieldsNotEmptyBienLouable()) {
                         new Habitation.HBuilder(this.fieldLieuImmeuble.getText(),
                                 Integer.parseInt(this.fieldNbPieces.getText()),
-                                this.FieldNumFisc.getText(),
-                                this.listImmeubles.getValue(),
-                                Float.parseFloat(this.fieldSurface.getText()), this.datesql).build().save();
+                                this.fieldNumeroFiscal.getText(),
+                                this.listImmeubles.getItems().getFirst(),
+                                Float.parseFloat(this.fieldSurface.getText()), this.fieldNumeroProprio.getText(), this.datesql).build().save();
                     }else {
                         alertFieldsEmptybienLouable();
                     }
@@ -145,9 +146,9 @@ public class CtrlNewBien {
                     if (fieldsNotEmptyBienLouable()) {
                         new Garage.GBuilder(this.fieldLieuImmeuble.getText(),
                                 Integer.parseInt(this.fieldNbPieces.getText()),
-                                this.FieldNumFisc.getText(),
-                                this.listImmeubles.getValue(),
-                                Float.parseFloat(this.fieldSurface.getText()), this.datesql).build().save();
+                                this.fieldNumeroFiscal.getText(),
+                                this.listImmeubles.getItems().getFirst(),
+                                Float.parseFloat(this.fieldSurface.getText()), this.fieldNumeroProprio.getText(), this.datesql).build().save();
                     } else {
                         alertFieldsEmptybienLouable();
                     }
@@ -159,7 +160,8 @@ public class CtrlNewBien {
                                 this.fieldVille.getText(),
                                 Integer.parseInt(this.fieldCodePostal.getText()),
                                 this.fieldAdresse.getText(),
-                                this.FieldNumFisc.getText(),
+                                this.fieldNumeroFiscal.getText(),
+                                this.fieldNumeroProprio.getText(),
                                 this.datesql).build().save();
                     }else {
                         alertFieldsEmpty();
@@ -215,9 +217,6 @@ public class CtrlNewBien {
         alert.setContentText("Veuillez choisir un type de bien !");
         alert.showAndWait();
     }
-
-
-
 
     @FXML
     public void Annuler(ActionEvent event) {

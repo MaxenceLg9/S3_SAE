@@ -19,13 +19,14 @@ public class TestHabitation {
     public static final String NUMERO_FISCAL_IMMEUBLE = "6789012345";
     public static final int NBPIECES = 2;
     public static final float SURFACE = 2;
+    public static final String IDPROPRIO = "IMMEUBLE COMME JAIME";
     public static final Date DATE = Date.valueOf(LocalDate.now());
     private static Immeuble immeuble;
 
 
     @BeforeAll
     public static void setUp() throws Bien.BienException {
-        immeuble = new Immeuble.IBuilder(VILLE, CODE_POSTAL, ADRESSE, NUMERO_FISCAL_IMMEUBLE, DATE).build();
+        immeuble = new Immeuble.IBuilder(VILLE, CODE_POSTAL, ADRESSE, NUMERO_FISCAL_IMMEUBLE,IDPROPRIO, DATE).build();
         immeuble.save();
     }
 
@@ -36,13 +37,13 @@ public class TestHabitation {
 
     @Test
     public void testCreatingInstance() throws Bien.BienException {
-        Habitation habitation = new Habitation.HBuilder(COMPLEMENT_ADRESSE, NBPIECES, NUMERO_FISCAL, immeuble, SURFACE, DATE).build();
+        Habitation habitation = new Habitation.HBuilder(COMPLEMENT_ADRESSE, NBPIECES, NUMERO_FISCAL, immeuble, SURFACE,IDPROPRIO, DATE).build();
         assertEquals(-1,habitation.getIdBien());
     }
 
     @Test
     public void testFindAll() throws Bien.BienException{
-        Habitation habitation = new Habitation.HBuilder(COMPLEMENT_ADRESSE, NBPIECES, NUMERO_FISCAL, immeuble, SURFACE, DATE).build();
+        Habitation habitation = new Habitation.HBuilder(COMPLEMENT_ADRESSE, NBPIECES, NUMERO_FISCAL, immeuble, SURFACE,IDPROPRIO, DATE).build();
         habitation.save();
         assertEquals(1, Habitation.findAll().stream().filter(g -> g.getIdBien() == habitation.getIdBien()).count());
         assertEquals(habitation.getIdBien(), Habitation.findAll().getFirst().getIdBien());
@@ -52,7 +53,7 @@ public class TestHabitation {
 
     @Test
     public void testSaveModifyId() throws Bien.BienException {
-        Habitation habitation = new Habitation.HBuilder(COMPLEMENT_ADRESSE, NBPIECES, NUMERO_FISCAL, immeuble, SURFACE, DATE).build();
+        Habitation habitation = new Habitation.HBuilder(COMPLEMENT_ADRESSE, NBPIECES, NUMERO_FISCAL, immeuble, SURFACE,IDPROPRIO, DATE).build();
         habitation.save();
         assertNotEquals(-1, habitation.getIdBien());
         habitation.delete();
@@ -60,7 +61,7 @@ public class TestHabitation {
 
     @Test
     public void testSavingAndDeletingInstance() throws Bien.BienException {
-        Habitation habitation = new Habitation.HBuilder(COMPLEMENT_ADRESSE, NBPIECES, NUMERO_FISCAL, immeuble, SURFACE, DATE).build();
+        Habitation habitation = new Habitation.HBuilder(COMPLEMENT_ADRESSE, NBPIECES, NUMERO_FISCAL, immeuble, SURFACE,IDPROPRIO, DATE).build();
         habitation.save();
         assertNotEquals(-1, habitation.getIdBien());
         assertEquals(1, Habitation.findAll().stream().filter(g -> g.getNumeroFiscal().equals(NUMERO_FISCAL)).count());
@@ -70,7 +71,7 @@ public class TestHabitation {
 
     @Test
     public void testFactoryPatternInstance() throws Bien.BienException {
-        Habitation habitation = new Habitation.HBuilder(COMPLEMENT_ADRESSE, NBPIECES, NUMERO_FISCAL, immeuble, SURFACE, DATE).build();
+        Habitation habitation = new Habitation.HBuilder(COMPLEMENT_ADRESSE, NBPIECES, NUMERO_FISCAL, immeuble, SURFACE,IDPROPRIO, DATE).build();
         habitation.save();
         Habitation habitation2 = Habitation.findAll().stream().filter(g -> g.getNumeroFiscal().equals(NUMERO_FISCAL)).findAny().get();
         assertEquals(habitation, habitation2);
@@ -79,7 +80,7 @@ public class TestHabitation {
 
     @Test
     public void testModifyingFields() throws Bien.BienException {
-        Habitation habitation = new Habitation.HBuilder(COMPLEMENT_ADRESSE, NBPIECES, NUMERO_FISCAL, immeuble, SURFACE, DATE).build();
+        Habitation habitation = new Habitation.HBuilder(COMPLEMENT_ADRESSE, NBPIECES, NUMERO_FISCAL, immeuble, SURFACE,IDPROPRIO, DATE).build();
         habitation.save();
         habitation.setComplementAdresse("Batiment B, Appartement 87");
         habitation.setNbPieces(5);
@@ -99,7 +100,7 @@ public class TestHabitation {
 
     @Test
     public void testGetters() throws Bien.BienException {
-        Habitation habitation = new Habitation.HBuilder(COMPLEMENT_ADRESSE, NBPIECES, NUMERO_FISCAL, immeuble, SURFACE, DATE).build();
+        Habitation habitation = new Habitation.HBuilder(COMPLEMENT_ADRESSE, NBPIECES, NUMERO_FISCAL, immeuble, SURFACE,IDPROPRIO, DATE).build();
         assertEquals(COMPLEMENT_ADRESSE, habitation.getComplementAdresse());
         assertEquals(NBPIECES, habitation.getNbPieces());
         assertEquals(NUMERO_FISCAL, habitation.getNumeroFiscal());

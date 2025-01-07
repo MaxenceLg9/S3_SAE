@@ -28,8 +28,8 @@ public final class Immeuble extends Bien{
 	private int codePostal;
 	private List<Travaux> travauxAssocies;
 
-	private Immeuble(String ville, int codePostal, String adresse, String numeroFiscal, Date dateAjout, int idBien) {
-		super(idBien, numeroFiscal, dateAjout); // Initialisation des attributs hérités de Bien
+	private Immeuble(String ville, int codePostal, String adresse, String numeroFiscal, Date dateAjout, String idProprio, int idBien) {
+		super(idBien, numeroFiscal, dateAjout, idProprio); // Initialisation des attributs hérités de Bien
 		this.travauxAssocies = new ArrayList<>();
 		this.codePostal = codePostal;
 		this.adresse = adresse;
@@ -40,7 +40,7 @@ public final class Immeuble extends Bien{
 	}
 
 	private Immeuble(IBuilder iBuilder) {
-		this(iBuilder.ville, iBuilder.codePostal, iBuilder.adresse, iBuilder.getNumeroFiscal(), iBuilder.getDateAjout(), iBuilder.getIdBien());
+		this(iBuilder.ville, iBuilder.codePostal, iBuilder.adresse, iBuilder.getNumeroFiscal(), iBuilder.getDateAjout(), iBuilder.getIdProprio(), iBuilder.getIdBien());
 	}
 
 	public static Immeuble findByLocalisation(String adresse, int codePostal, String ville) throws ImmeubleException {
@@ -97,15 +97,6 @@ public final class Immeuble extends Bien{
 		return TypeBien.IMMEUBLE;
 	}
 
-	@Override
-	public float getSurface() {
-		return 0;
-	}
-
-	@Override
-	public int getNbPieces() {
-		return 0;
-	}
 
 	public List<Travaux> getTravauxAssocies() {
 		return travauxAssocies;
@@ -239,19 +230,19 @@ public final class Immeuble extends Bien{
 		private final String ville;
 		private final int codePostal;
 
-		IBuilder(String ville, int codePostal, String adresse, String numeroFiscal, java.sql.Date dateAjout, int idBien) {
-			super(idBien, numeroFiscal, dateAjout);
+		IBuilder(String ville, int codePostal, String adresse, String numeroFiscal, java.sql.Date dateAjout, String idProprio, int idBien) {
+			super(idBien, numeroFiscal, dateAjout, idProprio);
 			this.ville = ville;
 			this.codePostal = codePostal;
 			this.adresse = adresse;
 		}
 
 		IBuilder(Map<String,Object> args) {
-			this(args.get("Ville").toString(), Integer.parseInt(args.get("CodePostal").toString()), args.get("Adresse").toString(), args.get("NumeroFiscal").toString(), (Date) args.get("DateAjout"), (int) args.get("IdBien"));
+			this(args.get("Ville").toString(), Integer.parseInt(args.get("CodePostal").toString()), args.get("Adresse").toString(), args.get("NumeroFiscal").toString(), (Date) args.get("DateAjout"), args.get("IdProprio").toString(), (int) args.get("IdBien"));
 		}
 
-		public IBuilder(String ville, int codePostal, String adresse, String numeroFiscal, Date dateAjout) throws BienException {
-			this(ville, codePostal, adresse, numeroFiscal,dateAjout,-1);
+		public IBuilder(String ville, int codePostal, String adresse, String numeroFiscal,String idProprio, Date dateAjout) throws BienException {
+			this(ville, codePostal, adresse, numeroFiscal,dateAjout, idProprio, -1);
 		}
 
 		public IBuilder(int idBien) throws ImmeubleException {

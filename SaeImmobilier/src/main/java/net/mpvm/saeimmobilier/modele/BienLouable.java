@@ -29,8 +29,8 @@ public abstract class BienLouable extends Bien {
     private int nbPieces;
 
 
-    public BienLouable(String complementAdresse,int nbPieces, String numeroFiscal, Immeuble immeuble, float surface, Date dateAjout, int idBien) throws BienException {// Initialisation des attributs hérités de Bien
-        super(idBien, numeroFiscal, dateAjout);
+    public BienLouable(String complementAdresse,int nbPieces, String numeroFiscal, Immeuble immeuble, float surface, Date dateAjout, String idProprio, int idBien) throws BienException {// Initialisation des attributs hérités de Bien
+        super(idBien, numeroFiscal, dateAjout, idProprio);
         this.complementAdresse = complementAdresse;
         if(immeuble == null)
             throw new BienLouableException("L'immeuble doit être renseigné", null);
@@ -139,6 +139,7 @@ public abstract class BienLouable extends Bien {
     public int getNbPieces() {
         return nbPieces;
     }
+
     public void setNbPieces(int nbPieces) {
         this.nbPieces = nbPieces;
     }
@@ -217,8 +218,8 @@ public abstract class BienLouable extends Bien {
         private final float surface;
         private final Immeuble immeuble;
 
-        public BLBuilder(String complementAdresse,int nbPieces, String numeroFiscal, Immeuble immeuble, float surface, Date dateAjout, int idBien) {
-            super(idBien, numeroFiscal, dateAjout);
+        public BLBuilder(String complementAdresse,int nbPieces, String numeroFiscal, Immeuble immeuble, float surface, Date dateAjout, String idProprio, int idBien) {
+            super(idBien, numeroFiscal, dateAjout, idProprio);
             this.complementAdresse = complementAdresse;
             this.nbPieces = nbPieces;
             this.surface = surface;

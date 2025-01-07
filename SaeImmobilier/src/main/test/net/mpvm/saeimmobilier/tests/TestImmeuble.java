@@ -19,6 +19,7 @@ public class TestImmeuble {
     public static final String ADRESSE = "1 rue de la paix";
     public static final String NUMERO_FISCAL = "1234567890";
     public static final String NUMERO_FISCAL_IMMEUBLE = "6789012345";
+    public static final String IDPROPRIO = "IMMEUBLE COMME JAIME";
     public static final int NBPIECES = 2;
     public static final float SURFACE = 2;
     public static final Date DATE = Date.valueOf(LocalDate.now());
@@ -26,7 +27,7 @@ public class TestImmeuble {
 
     @Test
     public void testFactoryPatternInstance() throws Bien.BienException {
-        Immeuble immeuble = new Immeuble.IBuilder(VILLE, CODE_POSTAL, ADRESSE, NUMERO_FISCAL_IMMEUBLE, DATE).build();
+        Immeuble immeuble = new Immeuble.IBuilder(VILLE, CODE_POSTAL, ADRESSE, NUMERO_FISCAL_IMMEUBLE, IDPROPRIO, DATE).build();
         immeuble.save();
         Immeuble immeuble1 = new Immeuble.IBuilder(immeuble.getIdBien()).build();
         assertEquals(immeuble, immeuble1);

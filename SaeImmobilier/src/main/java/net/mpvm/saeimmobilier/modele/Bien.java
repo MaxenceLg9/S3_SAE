@@ -3,8 +3,6 @@ package net.mpvm.saeimmobilier.modele;
 import net.mpvm.saeimmobilier.sql.Query.QueryElement;
 import net.mpvm.saeimmobilier.sql.Query.Queryable;
 import net.mpvm.saeimmobilier.sql.Query.SelectQueryElement;
-import net.mpvm.saeimmobilier.sql.Query.UpdateQueryElement;
-
 import java.sql.Date;
 import java.sql.*;
 import java.util.ArrayList;
@@ -17,20 +15,20 @@ public abstract class Bien extends Queryable {
 
     private static final String SELECT_QUERY = "SELECT * FROM bien";
     private static final String SELECT_ID_QUERY = "SELECT IdBien FROM bien WHERE NumeroFiscal = ?";
-    public static final String DELETE_QUERY = "DELETE FROM bien WHERE IdBien = ?";
-
     private int idBien;
     private Optional<Assurance> assurance;
     private float iR; // Taux d'intérêt ou autre valeur
     private String numeroFiscal;
-    private final java.sql.Date dateAjout;
+    private final Date dateAjout;
+    private final String idProprio;
 
 
-    public Bien(int idBien, String numeroFiscal, java.sql.Date dateAjout) {
+    public Bien(int idBien, String numeroFiscal, Date dateAjout, String idProprio) {
         this.idBien = idBien;
         this.numeroFiscal = numeroFiscal;
         this.dateAjout = dateAjout;
         this.assurance = Optional.empty();
+        this.idProprio = idProprio;
     }
 
     public static Bien findById(int idBien) throws BienException {
@@ -39,9 +37,7 @@ public abstract class Bien extends Queryable {
             selectQueryElement.execute();
             List<Map<String, Object>> results = selectQueryElement.getResult();
 
-
-
-            Map<String, Object> result = results.get(0);
+            Map<String, Object> result = results.getFirst();
             TypeBien typeBien = TypeBien.valueOf(result.get("TypeBien").toString().toUpperCase());
 
             return switch (typeBien) {
@@ -134,29 +130,9 @@ public abstract class Bien extends Queryable {
         return getTypeBien().name();
     }
 
-    public float getSurface() {
-        Bien bien = this;
-        if (bien instanceof BienLouable){
-            return bien.getSurface();
-        }else{
-            return 0;}
-    }
-
-    public abstract int getNbPieces();
-    @Override
-    public void delete() throws Bien.BienException {
-        try(UpdateQueryElement updateQueryElement = new UpdateQueryElement(DELETE_QUERY, true)){
-            updateQueryElement.setArgs(
-                            Map.of(1,this.getIdBien()))
-                    .execute();
-        }catch(QueryElement.QEltException QEltException){
-            throw new BienLouable.BienLouableException("Erreur lors de la suppression du bien", QEltException.getSqlException());
-        }
-    }
-
     public static List<Bien> findByImmeuble(int idImmeuble) throws Bien.BienException {
         List<Bien> biens = new ArrayList<>();
-        String query = "SELECT * FROM Bien WHERE IdImmeuble = ? ";
+        String query = "SELECT * FROM immeuble WHERE idImmeuble = ?";
 
         try (SelectQueryElement selectQueryElement = new SelectQueryElement(query)) {
 
@@ -200,11 +176,13 @@ public abstract class Bien extends Queryable {
         private final int IdBien;
         private final String numeroFiscal;
         private final java.sql.Date dateAjout;
+        private final String idProprio;
 
-        public BBuilder(int idBien, String numeroFiscal, java.sql.Date dateAjout) {
+        public BBuilder(int idBien, String numeroFiscal, Date dateAjout, String idProprio) {
             this.IdBien = idBien;
             this.dateAjout = dateAjout;
             this.numeroFiscal = numeroFiscal;
+            this.idProprio = idProprio;
         }
 
         int getIdBien(){
@@ -215,8 +193,12 @@ public abstract class Bien extends Queryable {
             return numeroFiscal;
         }
 
-        java.sql.Date getDateAjout(){
+        Date getDateAjout(){
             return dateAjout;
+        }
+
+        String getIdProprio(){
+            return idProprio;
         }
     }
 

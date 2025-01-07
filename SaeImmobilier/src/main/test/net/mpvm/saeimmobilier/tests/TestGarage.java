@@ -18,13 +18,14 @@ public class TestGarage {
     public static final String NUMERO_FISCAL_IMMEUBLE = "6789012345";
     public static final int NBPIECES = 2;
     public static final float SURFACE = 2;
+    public static final String IDPROPRIO = "IMMEUBLE COMME JAIME";
     public static final Date DATE = Date.valueOf(LocalDate.now());
     private static Immeuble immeuble;
 
 
     @BeforeAll
     public static void setUp() throws Bien.BienException {
-        immeuble = new Immeuble.IBuilder(VILLE, CODE_POSTAL, ADRESSE, NUMERO_FISCAL_IMMEUBLE, DATE).build();
+        immeuble = new Immeuble.IBuilder(VILLE, CODE_POSTAL, ADRESSE, NUMERO_FISCAL_IMMEUBLE, IDPROPRIO, DATE).build();
         immeuble.save();
     }
 
@@ -35,14 +36,14 @@ public class TestGarage {
 
     @Test
     public void testCreatingInstance() throws Bien.BienException {
-        Immeuble immeuble = new Immeuble.IBuilder(VILLE, CODE_POSTAL, ADRESSE, "0123456789", DATE).build();
-        Garage garage = new Garage.GBuilder(COMPLEMENT_ADRESSE, NBPIECES, "2345678901", immeuble, SURFACE, DATE).build();
+        Immeuble immeuble = new Immeuble.IBuilder(VILLE, CODE_POSTAL, ADRESSE, "0123456789", IDPROPRIO, DATE).build();
+        Garage garage = new Garage.GBuilder(COMPLEMENT_ADRESSE, NBPIECES, "2345678901", immeuble, SURFACE, IDPROPRIO, DATE).build();
         assertEquals(-1,garage.getIdBien());
     }
 
     @Test
     public void testFindAll() throws Bien.BienException{
-        Garage garage = new Garage.GBuilder(COMPLEMENT_ADRESSE, NBPIECES, NUMERO_FISCAL, immeuble, SURFACE, DATE).build();
+        Garage garage = new Garage.GBuilder(COMPLEMENT_ADRESSE, NBPIECES, NUMERO_FISCAL, immeuble, SURFACE, IDPROPRIO, DATE).build();
         garage.save();
         assertEquals(1, Garage.findAll().stream().filter(g -> g.getIdBien() == garage.getIdBien()).count());
         Garage.findAll().stream().filter(g -> g.getNumeroFiscal().equals(garage.getNumeroFiscal())).findAny().ifPresent(g -> assertEquals(garage.getIdBien(), g.getIdBien()));
@@ -53,7 +54,7 @@ public class TestGarage {
 
     @Test
     public void testFactoryPatternInstance() throws Bien.BienException {
-        Garage garage = new Garage.GBuilder(COMPLEMENT_ADRESSE, NBPIECES, NUMERO_FISCAL, immeuble, SURFACE, DATE).build();
+        Garage garage = new Garage.GBuilder(COMPLEMENT_ADRESSE, NBPIECES, NUMERO_FISCAL, immeuble, SURFACE, IDPROPRIO, DATE).build();
         garage.save();
         Garage garage2 = Garage.findAll().stream().filter(g -> g.getNumeroFiscal().equals(NUMERO_FISCAL)).findAny().get();
         assertEquals(garage, garage2);
@@ -62,7 +63,7 @@ public class TestGarage {
 
     @Test
     public void testSaveModifyId() throws Bien.BienException {
-        Garage garage = new Garage.GBuilder(COMPLEMENT_ADRESSE, NBPIECES, NUMERO_FISCAL, immeuble, SURFACE, DATE).build();
+        Garage garage = new Garage.GBuilder(COMPLEMENT_ADRESSE, NBPIECES, NUMERO_FISCAL, immeuble, SURFACE, IDPROPRIO, DATE).build();
         garage.save();
         assertNotEquals(-1, garage.getIdBien());
         garage.delete();
@@ -70,7 +71,7 @@ public class TestGarage {
 
     @Test
     public void testSavingAndDeletingInstance() throws Bien.BienException {
-        Garage garage = new Garage.GBuilder(COMPLEMENT_ADRESSE, NBPIECES, NUMERO_FISCAL, immeuble, SURFACE, DATE).build();
+        Garage garage = new Garage.GBuilder(COMPLEMENT_ADRESSE, NBPIECES, NUMERO_FISCAL, immeuble, SURFACE, IDPROPRIO, DATE).build();
         garage.save();
         assertFalse(Garage.findAll().isEmpty());
         assertEquals(1, Garage.findAll().stream().filter(g -> g.getNumeroFiscal().equals(NUMERO_FISCAL)).count());
@@ -82,7 +83,7 @@ public class TestGarage {
 
     @Test
     public void testModifyingFields() throws Bien.BienException {
-        Garage garage = new Garage.GBuilder(COMPLEMENT_ADRESSE, NBPIECES, NUMERO_FISCAL, immeuble, SURFACE, DATE).build();
+        Garage garage = new Garage.GBuilder(COMPLEMENT_ADRESSE, NBPIECES, NUMERO_FISCAL, immeuble, SURFACE, IDPROPRIO, DATE).build();
         garage.save();
         garage.setComplementAdresse("Batiment B, Appartement 87");
         garage.setNbPieces(5);
@@ -102,7 +103,7 @@ public class TestGarage {
 
     @Test
     public void testGetters() throws Bien.BienException {
-        Garage garage = new Garage.GBuilder(COMPLEMENT_ADRESSE, NBPIECES, NUMERO_FISCAL, immeuble, SURFACE, DATE).build();
+        Garage garage = new Garage.GBuilder(COMPLEMENT_ADRESSE, NBPIECES, NUMERO_FISCAL, immeuble, SURFACE, IDPROPRIO, DATE).build();
         assertEquals(COMPLEMENT_ADRESSE, garage.getComplementAdresse());
         assertEquals(NBPIECES, garage.getNbPieces());
         assertEquals(NUMERO_FISCAL, garage.getNumeroFiscal());
