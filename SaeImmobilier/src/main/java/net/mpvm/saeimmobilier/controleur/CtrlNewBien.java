@@ -134,7 +134,7 @@ public class CtrlNewBien {
                         new Habitation.HBuilder(this.fieldLieuImmeuble.getText(),
                                 Integer.parseInt(this.fieldNbPieces.getText()),
                                 this.FieldNumFisc.getText(),
-                                this.listImmeubles.getItems().getFirst(),
+                                this.listImmeubles.getValue(),
                                 Float.parseFloat(this.fieldSurface.getText()), this.datesql).build().save();
                     }else {
                         alertFieldsEmptybienLouable();
@@ -146,7 +146,7 @@ public class CtrlNewBien {
                         new Garage.GBuilder(this.fieldLieuImmeuble.getText(),
                                 Integer.parseInt(this.fieldNbPieces.getText()),
                                 this.FieldNumFisc.getText(),
-                                this.listImmeubles.getItems().getFirst(),
+                                this.listImmeubles.getValue(),
                                 Float.parseFloat(this.fieldSurface.getText()), this.datesql).build().save();
                     } else {
                         alertFieldsEmptybienLouable();
