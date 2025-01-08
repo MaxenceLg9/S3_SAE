@@ -298,9 +298,8 @@ public class CtrlNewBien {
     }
 
     @FXML
-    public void Annuler(ActionEvent event) {
-        Stage stage = (Stage) this.listImmeubles.getScene().getWindow();
-        stage.close();
+    public void RetourAccueil() {
+        new VueAccueil().start(new Stage());
     }
 
 
