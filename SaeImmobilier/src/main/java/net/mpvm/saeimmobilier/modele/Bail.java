@@ -2,22 +2,26 @@ package net.mpvm.saeimmobilier.modele;
 
 
 import net.mpvm.saeimmobilier.sql.Query.Queryable;
+import net.mpvm.saeimmobilier.sql.Query.Result;
+import net.mpvm.saeimmobilier.sql.Query.SelectQueryElement;
+import net.mpvm.saeimmobilier.sql.Query.QueryElement;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
-
+import java.sql.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Bail extends Queryable {
 	private int idBail;
-	private int nbMoisLoues;
 	private float provisionSurCharge;
 	private float factureEau;
 	private float totalCharge;
 	private float loyer;
 	private float regularisationCharge;
-	private ModeleDate dateDebut;
-	private ModeleDate dateFin;
+	private Date dateDebut;
+	private Date dateFin;
 	private ArrayList<BienLouable> biens;
 	private ArrayList<Locataire> locataires;
 	private ArrayList<Charges> charges;
@@ -25,8 +29,12 @@ public class Bail extends Queryable {
 	private Map<Locataire, Float> repartitionElectricite;
 	private Map<Locataire, Float> repartitionOrduresMenageres;
 	private Map<Locataire, Float> repartitionEntretien;
+
 	private boolean colocation;
-	private Bail(int idBail, ModeleDate dateDebut){
+	private Date dateSignature;
+
+
+	private Bail(int idBail, Date dateDebut){
 		this.idBail = idBail;
 		this.dateDebut = dateDebut;
 		this.biens = new ArrayList<>();
@@ -38,7 +46,7 @@ public class Bail extends Queryable {
 		this.colocation = false;
 	}
 	// Constructeur
-	public Bail(ModeleDate dateDebut) {
+	public Bail(Date dateDebut) {
 		this.dateDebut = dateDebut;
 		this.biens = new ArrayList<>();
 		this.repartitionOrduresMenageres = new HashMap<>();
@@ -49,6 +57,41 @@ public class Bail extends Queryable {
 		this.repartitionEntretien = new HashMap<>();
 		this.colocation = false;
 	}
+
+	public static List<Bail> findByBien(int idBien) throws BailException {
+		List<Bail> baux = new ArrayList<>();
+		String query = "SELECT * FROM Bail WHERE IdBien = ?";
+
+		try (SelectQueryElement selectQueryElement = new SelectQueryElement(query)) {
+			selectQueryElement.setArgs(Map.of(1, idBien));
+			Result result = selectQueryElement.execute();
+			sortResult(baux, result);
+		} catch (QueryElement.QEltException e) {
+			throw new BailException("Erreur lors de la récupération des baux pour le bien ID " + idBien, e.getSqlException());
+		}
+
+		return baux;
+	}
+
+	private static void sortResult(List<Bail> baux, Result result) throws QueryElement.QEltException {
+		for (Map<String, Object> row : result) {
+			Bail bail = new Bail(
+					(int) row.get("IdBail"),
+					(Date) row.get("DateDebut")
+			);
+
+			bail.setDateFin((Date) row.get("DateFin"));
+			bail.setLoyer((float) row.get("MontantLoyer"));
+			bail.setColocation((boolean) row.get("Colocation"));
+			bail.setDateSignature((Date) row.get("DateSignature"));
+
+			baux.add(bail);
+		}
+	}
+
+
+
+
 
 	// Méthode pour savoir si le bail est en colocation
 	public boolean estEnColocation() {
@@ -109,17 +152,6 @@ public class Bail extends Queryable {
 		this.locataires.add(locataire);
 	}
 
-	// Méthode pour obtenir la date de fin en fonction de la durée
-	public ModeleDate calculerDateFin() {
-		if (this.dateDebut == null || this.nbMoisLoues <= 0) {
-			return null;
-		}
-
-		// Utilisation d'une méthode fictive `addMonths` pour calculer la date
-		return this.dateDebut.addMonths(this.nbMoisLoues);
-	}
-
-	// Getters et Setters
 
 	public int getIdBail() {
 		return idBail;
@@ -127,14 +159,6 @@ public class Bail extends Queryable {
 
 	public void setIdBail(int idBail) {
 		this.idBail = idBail;
-	}
-
-	public int getNbMoisLoues() {
-		return nbMoisLoues;
-	}
-
-	public void setNbMoisLoues(int nbMoisLoues) {
-		this.nbMoisLoues = nbMoisLoues;
 	}
 
 	public float getProvisionSurCharge() {
@@ -180,19 +204,19 @@ public class Bail extends Queryable {
 		this.regularisationCharge = regularisationCharge;
 	}
 
-	public ModeleDate getDateDebut() {
+	public Date getDateDebut() {
 		return dateDebut;
 	}
 
-	public void setDateDebut(ModeleDate dateDebut) {
+	public void setDateDebut(Date dateDebut) {
 		this.dateDebut = dateDebut;
 	}
 
-	public ModeleDate getDateFin() {
+	public Date getDateFin() {
 		return dateFin;
 	}
 
-	public void setDateFin(ModeleDate dateFin) {
+	public void setDateFin(Date dateFin) {
 		this.dateFin = dateFin;
 	}
 
@@ -298,10 +322,31 @@ public class Bail extends Queryable {
 	}
 
 	protected void setId(int id) throws QbleException {
-
+		this.idBail=id;
 	}
 
 	public int selectId() throws QbleException {
 		return 0;
+	}
+
+
+	public Date getDateSignature() {
+		return this.dateSignature;
+	}
+	public void setDateSignature(Date dateSignature) {
+		this.dateSignature = dateSignature;
+	}
+
+	public Boolean getColocation() {
+		return this.colocation;
+	}
+	public void setColocation(Boolean colocation) {
+		this.colocation = colocation;
+	}
+
+	public static class BailException extends QbleException {
+		public BailException(String message, SQLException sqlException) {
+			super(message, sqlException);
+		}
 	}
 }

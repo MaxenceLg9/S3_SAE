@@ -1,93 +1,97 @@
 package net.mpvm.saeimmobilier.controleur;
 
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+import net.mpvm.saeimmobilier.modele.Bail;
+import net.mpvm.saeimmobilier.util.JfxUtil;
+import net.mpvm.saeimmobilier.vue.VueAccueil;
 
 import java.util.List;
 
 public class CtrlViewBails {
-    @FXML
-    private Label Titre;
 
     @FXML
-    private GridPane gridPaneBiensLouables;
+    private VBox vBoxBails;
 
-    // Exemple de données des locations (à remplacer par les données réelles)
-    private List<Location> locations = List.of(
-            new Location("Location 1"),
-            new Location("Location 2"),
-            new Location("Location 3")
-    );
+    @FXML
+    private Button retourBiens;
+
+    private int idBien;
 
     @FXML
     public void initialize() {
-        afficherLocations();
+        afficheBails();
     }
 
-    private void afficherLocations() {
-        int row = 0;
-        for (Location location : locations) {
-            HBox hbox = new HBox(10);
-            hbox.getStyleClass().add("locationBox");
+    public void setIdBien(int idBien) {
+        this.idBien = idBien;
+        afficheBails();
+    }
 
-            Label label = new Label(location.getNom());
-            label.setStyle("-fx-font-size: 18; -fx-font-weight: bold;");
-            hbox.getChildren().add(label);
+    private void afficheBails() {
+        try {
+            Label titre = new Label("Liste des Baux");
+            titre.setStyle("-fx-font-size: 24px; -fx-text-fill: white; -fx-font-weight: bold; -fx-alignment: center;");
+            titre.setAlignment(Pos.CENTER);
+            vBoxBails.getChildren().clear();
+            vBoxBails.getChildren().add(titre);
 
-            // Bouton Calcul des charges
-            Button btnCharges = new Button("Calcul des Charges");
-            btnCharges.setOnAction(e -> viewCharges(location));
-            hbox.getChildren().add(btnCharges);
+            List<Bail> baux = Bail.findByBien(idBien);
 
-            // Bouton Locataires
-            Button btnLocataires = new Button("Locataires");
-            btnLocataires.setOnAction(e -> viewLocataires(location));
-            hbox.getChildren().add(btnLocataires);
+            if (baux.isEmpty()) {
+                Label label = new Label("Aucun bail trouvé.");
+                label.getStyleClass().add("bail-title");
+                vBoxBails.getChildren().add(label);
+                return;
+            }
 
-            // Bouton Bien concerné
-            Button btnBien = new Button("Bien Concerné");
-            btnBien.setOnAction(e -> viewBienLouable(location));
-            hbox.getChildren().add(btnBien);
+            retourBiens = new Button("Retour aux biens");
+            retourBiens.setOnAction(event -> retourBiens());
+            retourBiens.getStyleClass().add("button-supprimer");
+            vBoxBails.getChildren().add(retourBiens);
 
-            // Bouton Documents
-            Button btnDocuments = new Button("Documents");
-            btnDocuments.setOnAction(e -> viewDocuments(location));
-            hbox.getChildren().add(btnDocuments);
+            for (Bail bail : baux) {
+                GridPane gp = new GridPane();
+                gp.setHgap(10);
+                gp.setVgap(5);
+                gp.setAlignment(Pos.TOP_CENTER);
+                gp.getStyleClass().add("bail-gridpane");
 
-            gridPaneBiensLouables.add(hbox, 0, row++);
+                Label dateDebut = new Label("Début " + bail.getDateDebut());
+                Label dateFin = new Label("Fin " + bail.getDateFin());
+                Label montantLoyer = new Label("Loyer " + bail.getLoyer() + " €");
+                Label dateSignature = new Label("Signature " + bail.getDateSignature());
+                Label colocation = new Label("Colocation "+bail.getColocation());
+
+
+                dateDebut.getStyleClass().add("assurance-label");
+                dateFin.getStyleClass().add("assurance-label");
+                montantLoyer.getStyleClass().add("assurance-label");
+                dateSignature.getStyleClass().add("assurance-label");
+                colocation.getStyleClass().add("assurance-label");
+
+                gp.add(dateDebut, 0, 0);
+                gp.add(dateFin, 1, 0);
+                gp.add(montantLoyer, 2, 0);
+                gp.add(dateSignature, 3, 0);
+
+                vBoxBails.getChildren().add(gp);
+            }
+        } catch (Bail.BailException e) {
+            JfxUtil.displayError("Erreur lors du chargement des baux", e.getMessage());
+            e.printStackTrace();
         }
     }
 
-    // Méthodes pour chaque action (à implémenter)
-    private void viewCharges(Location location) {
-        System.out.println("Afficher les charges pour : " + location.getNom());
-    }
-
-    private void viewLocataires(Location location) {
-        System.out.println("Afficher les locataires pour : " + location.getNom());
-    }
-
-    private void viewBienLouable(Location location) {
-        System.out.println("Afficher le bien pour : " + location.getNom());
-    }
-
-    private void viewDocuments(Location location) {
-        System.out.println("Afficher les documents pour : " + location.getNom());
-    }
-
-    // Classe interne représentant une location (à remplacer par votre modèle réel)
-    public static class Location {
-        private String nom;
-
-        public Location(String nom) {
-            this.nom = nom;
-        }
-
-        public String getNom() {
-            return nom;
-        }
+    @FXML
+    private void retourBiens() {
+        Stage stage = (Stage) retourBiens.getScene().getWindow();
+        stage.close();
     }
 }
