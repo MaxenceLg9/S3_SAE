@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane style="-fx-background-color: linear-gradient(to right bottom, #33435c, #1e2d3e);" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.mpvm.saeimmobilier.controleur.CtrlInscription">
+<BorderPane prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: linear-gradient(to right bottom, #33435c, #1e2d3e);" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.mpvm.saeimmobilier.controleur.CtrlInscription">
    <bottom>
       <GridPane alignment="CENTER" nodeOrientation="LEFT_TO_RIGHT" BorderPane.alignment="CENTER">
          <columnConstraints>
