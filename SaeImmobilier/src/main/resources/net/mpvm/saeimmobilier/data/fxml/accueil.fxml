@@ -95,27 +95,27 @@
                     <tabs>
                         <Tab text="Assurances">
                             <content>
-                                <TableView fx:id="tableViewAssurances" prefHeight="200.0" prefWidth="200.0" styleClass="backgroundColor">
+                                <TableView fx:id="tableViewAssurances" prefHeight="200.0" prefWidth="200.0">
                                     <columns>
-                                        <TableColumn prefWidth="75.0" text="idAssurance" />
-                                        <TableColumn prefWidth="75.0" text="QuotiteJurisprudence" />
-                                        <TableColumn prefWidth="75.0" text="ProtectionJuridique" />
-                                        <TableColumn prefWidth="75.0" text="Prime" />
-                                        <TableColumn prefWidth="75.0" text="TypeContrat" />
+                                        <TableColumn fx:id="clnIdAssurance" prefWidth="75.0" text="idAssurance" />
+                                        <TableColumn fx:id="clnQuotite" prefWidth="139.20001983642578" text="QuotiteJurisprudence" />
+                                        <TableColumn fx:id="clnProtection" prefWidth="117.5999755859375" text="ProtectionJuridique" />
+                                        <TableColumn fx:id="clnPrime" minWidth="0.0" prefWidth="78.4000244140625" text="Prime" />
+                                        <TableColumn fx:id="clnTypeContrat" minWidth="0.0" prefWidth="91.99993896484375" text="TypeContrat" />
                                     </columns>
                                 </TableView>
                             </content>
                         </Tab>
                         <Tab text="Locataires">
                             <content>
-                                <TableView fx:id="tableViewLocataires" prefHeight="200.0" prefWidth="200.0" styleClass="backgroundColor">
+                                <TableView fx:id="tableViewLocataires" prefHeight="200.0" prefWidth="200.0">
                                     <columns>
-                                        <TableColumn prefWidth="75.0" text="IdLocataire" />
-                                        <TableColumn prefWidth="75.0" text="Nom" />
-                                        <TableColumn prefWidth="75.0" text="Prénom" />
-                                        <TableColumn prefWidth="75.0" text="Sexe" />
-                                        <TableColumn prefWidth="75.0" text="Téléphone" />
-                                        <TableColumn prefWidth="75.0" text="Email" />
+                                        <TableColumn fx:id="clnIdLoc" prefWidth="75.0" text="IdLocataire" />
+                                        <TableColumn fx:id="clnNom" prefWidth="75.0" text="Nom" />
+                                        <TableColumn fx:id="clnPrenom" prefWidth="75.0" text="Prénom" />
+                                        <TableColumn fx:id="clnSexe" prefWidth="75.0" text="Sexe" />
+                                        <TableColumn fx:id="clnTel" prefWidth="75.0" text="Téléphone" />
+                                        <TableColumn fx:id="clnEmail" prefWidth="75.0" text="Email" />
                                     </columns>
                                 </TableView>
                             </content>
@@ -124,18 +124,18 @@
                             <content>
                                 <TableView fx:id="tableViewBiens" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #FFFFFF;">
                                     <columns>
-                                        <TableColumn prefWidth="75.0" text="idBien" />
-                                        <TableColumn prefWidth="139.0" text="ComplémentAdresse" />
-                                        <TableColumn prefWidth="11.0" text="Adresse" />
-                                        <TableColumn prefWidth="75.0" text="Ville" />
-                                        <TableColumn prefWidth="75.0" text="CodePostal" />
-                                        <TableColumn prefWidth="75.0" text="TypeBien" />
-                                        <TableColumn prefWidth="75.0" text="Surface" />
-                                        <TableColumn prefWidth="75.0" text="NombrePieces" />
-                                        <TableColumn prefWidth="75.0" text="NumeroFiscal" />
-                                        <TableColumn prefWidth="75.0" text="DateAjout" />
-                                        <TableColumn prefWidth="75.0" text="Id_Assurance" />
-                                        <TableColumn prefWidth="75.0" text="Id_Propriétaire" />
+                                        <TableColumn fx:id="clnIdBien" prefWidth="75.0" text="idBien" />
+                                        <TableColumn fx:id="clnComplement" prefWidth="139.0" text="ComplémentAdresse" />
+                                        <TableColumn fx:id="clnAdresse" prefWidth="64.0" text="Adresse" />
+                                        <TableColumn fx:id="clnVille" minWidth="8.800048828125" prefWidth="63.20001220703125" text="Ville" />
+                                        <TableColumn fx:id="clnCodePostal" prefWidth="90.4000244140625" text="CodePostal" />
+                                        <TableColumn fx:id="clnTypeBien" prefWidth="77.60000610351562" text="TypeBien" />
+                                        <TableColumn fx:id="clnSurface" prefWidth="50.4000244140625" text="Surface" />
+                                        <TableColumn fx:id="clnNbPieces" prefWidth="102.4000244140625" text="NombrePieces" />
+                                        <TableColumn fx:id="clnNumFisc" prefWidth="94.39996337890625" text="NumeroFiscal" />
+                                        <TableColumn fx:id="clnDateAjout" minWidth="0.0" prefWidth="86.40008544921875" text="DateAjout" />
+                                        <TableColumn fx:id="clnIdAssu_Imm" prefWidth="88.7999267578125" text="Id_Assurance" />
+                                        <TableColumn fx:id="clnIdProp_Imm" prefWidth="98.4000244140625" text="Id_Propriétaire" />
                                     </columns>
                                 </TableView>
                             </content>
