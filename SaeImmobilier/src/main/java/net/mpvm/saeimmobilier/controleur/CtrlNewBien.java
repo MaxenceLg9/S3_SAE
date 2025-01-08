@@ -161,8 +161,8 @@ public class CtrlNewBien {
                                 Integer.parseInt(this.fieldCodePostal.getText()),
                                 this.fieldAdresse.getText(),
                                 this.fieldNumeroFiscal.getText(),
-                                this.fieldNumeroProprio.getText(),
-                                this.datesql).build().save();
+                                this.datesql,
+                                this.fieldNumeroProprio.getText()).build().save();
                     }else {
                         alertFieldsEmpty();
                     }
