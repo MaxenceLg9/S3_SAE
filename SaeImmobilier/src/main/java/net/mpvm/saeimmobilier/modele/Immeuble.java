@@ -21,7 +21,7 @@ public final class Immeuble extends Bien{
 	public static final String SELECT_COUNT_BL = "SELECT Count(*) FROM Bien WHERE IdImmeuble = ? AND TypeBien = 'GARAGE' OR TypeBien = 'HABITATION'";
 	public static final String SELECT_LOCALISATION = "SELECT IdImmeuble FROM Bien WHERE Adresse = ? AND Ville = ? AND CodePostal = ? AND TypeBien = 'IMMEUBLE'";
 
-	private static final Map<Integer, net.mpvm.saeimmobilier.modele.Immeuble> immeubles = new HashMap<>();
+	private static final Map<Integer, Immeuble> immeubles = new HashMap<>();
 
 	private String adresse;
 	private String ville;

@@ -12,6 +12,6 @@ public class VueImmeubles extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        JfxUtil.updateStage(primaryStage, "viewImmeubles.fxml", "Liste des Immeubles",750, 800);
+        JfxUtil.updateStage(primaryStage, "viewImmeubles.fxml", "Liste des Immeubles",750, 1200);
     }
 }
