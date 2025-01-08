@@ -6,6 +6,7 @@ import javafx.scene.control.*;
 import net.mpvm.saeimmobilier.modele.Assurance;
 import net.mpvm.saeimmobilier.modele.TypeContrat;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +26,9 @@ public class CtrlNewAssurance {
     private List<TextField> fieldsAssurance;
     @FXML
     private TextField fieldAnnee;
+
+    @FXML
+    private TextField fieldNom;
     public CtrlNewAssurance() {
         System.out.println("Constructeur de CtrlNewAssurance appele");
     }
@@ -43,6 +47,7 @@ public class CtrlNewAssurance {
         fieldsAssurance = new ArrayList<>() {
             {
                 add(fieldAnnee);
+                add(fieldNom);
                 add(fieldProtectionJuridique);
                 add(fieldNumeroDeContrat);
                 add(fieldPrime);
@@ -61,6 +66,7 @@ public class CtrlNewAssurance {
                 String numeroContrat = fieldNumeroDeContrat.getText();
                 float prime = Float.parseFloat(fieldPrime.getText());
                 TypeContrat typeContrat = comboTypeContrat.getValue();
+                String nomAssurance = fieldNom.getText();
 
                 if (typeContrat == null) {
                     alertError("Type de contrat manquant", "Veuillez selectionner un type de contrat.");
@@ -71,7 +77,7 @@ public class CtrlNewAssurance {
                     return;
                 }
                 // Enregistrement de l'assurance dans la base de donnees
-                new Assurance.ABuilder(typeContrat,annee,protectionJuridique,prime,numeroContrat).build().save();
+                new Assurance.ABuilder(typeContrat,annee,protectionJuridique,prime,numeroContrat,nomAssurance).build().save();
 
             } catch (NumberFormatException e) {
                 alertError("Format des champs invalide", "Veuillez saisir des valeurs numeriques pour les champs appropriés.");
@@ -86,11 +92,30 @@ public class CtrlNewAssurance {
     private void validateFields() throws NumberFormatException {
         for (TextField field : fieldsAssurance) {
             String text = field.getText().replace(",", "."); // Convertir les virgules en points pour Java
-            if (!text.matches("^[0-9]*\\.?[0-9]+$")) { // Vérifie si le champ contient uniquement des nombres
-                throw new NumberFormatException("Champs contenant des caractères invalides.");
+            if (field == fieldAnnee) {
+                if (!text.matches("^[0-9]+$")) {
+                    throw new NumberFormatException("Le champ 'Année' doit contenir uniquement des chiffres.");
+                }
+            } else if (field == fieldProtectionJuridique) {
+                if (!text.matches("^[0-9]*\\.?[0-9]+$")) {
+                    throw new NumberFormatException("Le champ 'Protection Juridique' doit être un nombre (par exemple : 100 ou 100.5).");
+                }
+            } else if (field == fieldPrime) {
+                if (!text.matches("^[0-9]*\\.?[0-9]+$")) {
+                    throw new NumberFormatException("Le champ 'Prime' doit être un nombre (par exemple : 50 ou 50.5).");
+                }
+            } else if (field == fieldNumeroDeContrat) {
+                if (!text.matches("^[a-zA-Z0-9]+$")) {
+                    throw new NumberFormatException("Le champ 'Numéro de Contrat' doit contenir uniquement des lettres et/ou des chiffres.");
+                }
+            } else if (field == fieldNom) {
+                if (!text.matches("^[a-zA-Z ]+$")) {
+                    throw new NumberFormatException("Le champ 'Nom de l'Assurance' doit contenir uniquement des lettres.");
+                }
             }
         }
     }
+
     private void alertFieldsEmpty() {
         alertError("Champs vides", "Veuillez remplir tous les champs avant de valider.");
     }
@@ -115,6 +140,7 @@ public class CtrlNewAssurance {
     @FXML
     public void Annuler(ActionEvent actionEvent) {
         fieldAnnee.clear();
+        fieldNom.clear();
         fieldNumeroDeContrat.clear();
         fieldProtectionJuridique.clear();
         comboTypeContrat.getItems().clear();
