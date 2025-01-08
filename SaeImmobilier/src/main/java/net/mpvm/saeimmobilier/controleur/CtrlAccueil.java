@@ -83,4 +83,11 @@ public class CtrlAccueil {
         }
 
     }
+
+    @FXML
+    public void ajouterAssurance(ActionEvent event) {
+        Stage stage = new Stage();
+        JfxUtil.showWindow(stage, VueNewAssurance.class);
+        stage.getProperties().put("parent", this);
+    }
 }

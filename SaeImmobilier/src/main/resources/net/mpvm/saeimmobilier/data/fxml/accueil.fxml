@@ -49,31 +49,36 @@
                     <children>
                         <VBox alignment="TOP_CENTER" prefHeight="316.0" prefWidth="226.0" spacing="20.0">
                             <children>
-                                <Button fx:id="btnAjoutBien" mnemonicParsing="false" onAction="#ajouterBien" prefWidth="190.0" text="Ajout d'un bien" textFill="WHITE">
+                                <Button fx:id="btnAjoutBien" mnemonicParsing="false" onAction="#ajouterBien" prefWidth="200.0" text="Ajout d'un bien" textFill="WHITE">
                                     <font>
                                         <Font name="System Bold" size="14.0" />
                                     </font>
                                 </Button>
-                                <Button fx:id="btnAjoutLocataire" mnemonicParsing="false" onAction="#ajouterLocataire" prefWidth="190.0" text="Ajout d'un locataire" textFill="WHITE">
+                                <Button fx:id="btnAjoutLocataire" mnemonicParsing="false" onAction="#ajouterLocataire" prefWidth="200.0" text="Ajout d'un locataire" textFill="WHITE">
                                     <font>
                                         <Font name="System Bold" size="14.0" />
                                     </font>
                                 </Button>
-                                <Button fx:id="btnViewBien" mnemonicParsing="false" onAction="#vueImmeubles" prefWidth="190.0" text="Vue des biens" textFill="WHITE">
+                                <Button fx:id="btnViewBien" mnemonicParsing="false" onAction="#vueImmeubles" prefWidth="200.0" text="Vue des biens" textFill="WHITE">
                                     <font>
                                         <Font name="System Bold" size="14.0" />
                                     </font>
                                 </Button>
-                                <Button fx:id="btnViewLocataire" mnemonicParsing="false" onAction="#vueLocataires" prefWidth="190.0" text="Vue des locataires" textFill="WHITE">
+                                <Button fx:id="btnViewLocataire" mnemonicParsing="false" onAction="#vueLocataires" prefWidth="200.0" text="Vue des locataires" textFill="WHITE">
                                     <font>
                                         <Font name="System Bold" size="14.0" />
                                     </font>
                                 </Button>
-                                <Button fx:id="btnLocations" mnemonicParsing="false" onAction="#gererLocation" prefWidth="190.0" text="Gérer les locations" textFill="WHITE">
+                                <Button fx:id="btnLocations" mnemonicParsing="false" onAction="#gererLocation" prefWidth="200.0" text="Gérer les locations" textFill="WHITE">
                                     <font>
                                         <Font name="System Bold" size="14.0" />
                                     </font>
                                 </Button>
+                        <Button fx:id="btnAjoutAssurance" mnemonicParsing="false" onAction="#ajouterAssurance" prefWidth="200.0" text="Ajout d'une Assurance" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Button>
                             </children>
                             <padding>
                                 <Insets top="20.0" />
