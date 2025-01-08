@@ -48,7 +48,6 @@ public class CtrlViewImmeubles {
             retourAccueil.getStyleClass().add("button-supprimer");
             vBoxImmeubles.getChildren().add(retourAccueil);
 
-            // Récupérer la liste des immeubles
             List<Immeuble> immeubles = Immeuble.findAll();
 
             if (immeubles.isEmpty()) {
@@ -65,7 +64,7 @@ public class CtrlViewImmeubles {
                 gp.setVgap(5);
                 gp.setAlignment(Pos.TOP_CENTER);
                 gp.getStyleClass().add("locataire-gridpane");
-
+                Label nom = new Label("Nom " + immeuble.getIdProprio());
                 Label adresse = new Label("Adresse " + immeuble.getAdresse());
                 Label codepostal = new Label("Code Postal " + immeuble.getCodePostal());
                 Label ville = new Label("Ville " + immeuble.getVille());
@@ -79,23 +78,24 @@ public class CtrlViewImmeubles {
 
                 Button supprimerButton = new Button("Supprimer");
                 supprimerButton.setOnAction(event -> supprimerImmeuble(immeuble));
-
+                nom.getStyleClass().add("assurance-label");
+                nom.getStyleClass().add("assurance-title");
                 adresse.getStyleClass().add("assurance-label");
-                adresse.getStyleClass().add("assurance-title");
+
                 codepostal.getStyleClass().add("assurance-label");
                 ville.getStyleClass().add("assurance-label");
                 nbAppartements.getStyleClass().add("assurance-label");
                 voirBiensButton.getStyleClass().add("button-valider");
                 attribuerAssuranceButton.getStyleClass().add("button-valider");
                 supprimerButton.getStyleClass().add("button-supprimer");
-
-                gp.add(adresse, 0, 0);
-                gp.add(codepostal, 1, 0);
-                gp.add(ville, 2, 0);
-                gp.add(nbAppartements, 3, 0);
-                gp.add(voirBiensButton, 4, 0);
-                gp.add(attribuerAssuranceButton, 5, 0);
-                gp.add(supprimerButton, 6, 0);
+                gp.add(nom, 0, 0);
+                gp.add(adresse, 1, 0);
+                gp.add(codepostal, 2, 0);
+                gp.add(ville, 3, 0);
+                gp.add(nbAppartements, 4, 0);
+                gp.add(voirBiensButton, 5, 0);
+                gp.add(attribuerAssuranceButton, 6, 0);
+                gp.add(supprimerButton, 7, 0);
 
                 vBoxImmeubles.getChildren().add(gp);
             }
@@ -127,11 +127,15 @@ public class CtrlViewImmeubles {
     }
 
     private void afficheBiensPourImmeuble(int idBien) {
-        new VueBiensLouables().startForImmeuble(new Stage(), idBien);
+        Stage s = new Stage();
+        s.getProperties().put("bien",idBien);
+        new VueBiensLouables(idBien).startForImmeuble(s);
     }
 
     private void attribuerAssurance(int idBien) {
-        new VueAttribuerAssurance().startforBien(new Stage(), idBien);
+        Stage s = new Stage();
+        s.getProperties().put("bien",idBien);
+        JfxUtil.showWindow(s, VueAttribuerAssurance.class);
     }
 
     @FXML
