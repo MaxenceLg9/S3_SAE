@@ -10,43 +10,70 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import net.mpvm.saeimmobilier.modele.Bien;
+import net.mpvm.saeimmobilier.modele.BienLouable;
 import net.mpvm.saeimmobilier.util.JfxUtil;
 import net.mpvm.saeimmobilier.vue.VueAccueil;
 import net.mpvm.saeimmobilier.vue.VueAttribuerAssurance;
 import net.mpvm.saeimmobilier.vue.VueBails;
-import net.mpvm.saeimmobilier.vue.VueBiensLouables;
-
 import java.util.List;
 
 public class CtrlViewBiensLouables {
 
     @FXML
     private VBox vBoxBiensLouables;
-
     @FXML
     private Button retourAccueil;
 
     private int idImmeuble;
 
+
+
     @FXML
     public void initialize() {
-        afficheBiens();
+        vBoxBiensLouables.sceneProperty().addListener((observable, oldScene, newScene) -> {
+            if (newScene != null) {
+                Stage stage = (Stage) newScene.getWindow();
+                if (stage != null) {
+                    setIdImmeuble(stage);
+                    afficheBiens();
+                }else{
+                    System.out.println("pas de stage");
+
+                }
+            }else{
+                System.out.println("pas de scène");
+            }
+        });
     }
 
-    public void setIdImmeuble(int idImmeuble) {
-        this.idImmeuble = idImmeuble;
-        afficheBiens();
+
+
+    // Mise à jour de l'ID immeuble et rafraîchissement des biens
+    public void setIdImmeuble(Stage stage) {
+        Object id = stage.getProperties().get("bien");
+        if (id instanceof Integer) {
+            this.idImmeuble = (int) id;
+        } else {
+            throw new IllegalStateException("Propriété 'bien' manquante ou incorrecte.");
+        }
     }
 
+
+
+    // Affiche la liste des biens louables de l'immeuble
     private void afficheBiens() {
         try {
             Label titre = new Label("Liste des Biens Louables");
-            titre.setStyle("-fx-font-size: 24px; -fx-text-fill: white; -fx-font-weight: bold; -fx-alignment: center;");
+            titre.setStyle("-fx-font-size: 24px; -fx-text-fill: white; -fx-font-weight: bold;");
             titre.setAlignment(Pos.CENTER);
+
             vBoxBiensLouables.getChildren().clear();
             vBoxBiensLouables.getChildren().add(titre);
-
-            List<Bien> biens = Bien.findByImmeuble(idImmeuble);
+            retourAccueil = new Button("Retour à l'accueil");
+            retourAccueil.setOnAction(event -> retourAccueil());
+            retourAccueil.getStyleClass().add("button-supprimer");
+            vBoxBiensLouables.getChildren().add(retourAccueil);
+            List<BienLouable> biens = BienLouable.findByImmeuble(idImmeuble);
 
             if (biens.isEmpty()) {
                 Label label = new Label("Aucun bien trouvé.");
@@ -54,21 +81,20 @@ public class CtrlViewBiensLouables {
                 vBoxBiensLouables.getChildren().add(label);
                 return;
             }
-            retourAccueil = new Button("Retour à l'accueil");
-            retourAccueil.setOnAction(event -> retourAccueil());
-            retourAccueil.getStyleClass().add("button-supprimer");
-            vBoxBiensLouables.getChildren().add(retourAccueil);
-            for (Bien bien : biens) {
+
+
+
+            for (BienLouable bien : biens) {
                 GridPane gp = new GridPane();
                 gp.setHgap(10);
                 gp.setVgap(5);
                 gp.setAlignment(Pos.TOP_CENTER);
                 gp.getStyleClass().add("locataire-gridpane");
-                Label typeBien = new Label("Type " + bien.getTypeBien());
-                Label adresse = new Label("Adresse " + bien.getAdresse());
 
-                Label surface = new Label("Surface " + bien.getSurface() + " m²");
-                Label nbPieces = new Label("Pièces " + bien.getNbPieces());
+                Label typeBien = new Label("Type: " + bien.getTypeBien());
+                Label adresse = new Label("Adresse: " + bien.getAdresse());
+                Label surface = new Label("Surface: " + bien.getSurface() + " m²");
+                Label nbPieces = new Label("Pièces: " + bien.getNbPieces());
 
                 Button gererLocatairesButton = new Button("Gérer Locataires");
                 gererLocatairesButton.setOnAction(event -> gererBails(bien.getIdBien()));
@@ -79,17 +105,16 @@ public class CtrlViewBiensLouables {
                 Button supprimerButton = new Button("Supprimer");
                 supprimerButton.setOnAction(event -> supprimerBien(bien));
 
-                typeBien.getStyleClass().add("assurance-title");
-                typeBien.getStyleClass().add("assurance-label");
-                adresse.getStyleClass().add("assurance-label");
-                surface.getStyleClass().add("assurance-label");
-                nbPieces.getStyleClass().add("assurance-label");
+                // Application de styles aux éléments de l'interface
+                List<Label> labels = List.of(typeBien, adresse, surface, nbPieces);
+                labels.forEach(label -> label.getStyleClass().add("assurance-label"));
+
                 gererLocatairesButton.getStyleClass().add("button-valider");
                 attribuerAssuranceButton.getStyleClass().add("button-valider");
                 supprimerButton.getStyleClass().add("button-supprimer");
 
-                gp.add(adresse, 1, 0);
                 gp.add(typeBien, 0, 0);
+                gp.add(adresse, 1, 0);
                 gp.add(surface, 2, 0);
                 gp.add(nbPieces, 3, 0);
                 gp.add(gererLocatairesButton, 4, 0);
@@ -104,32 +129,30 @@ public class CtrlViewBiensLouables {
         }
     }
 
-    private void supprimerBien(Bien bien) {
+    private void supprimerBien(BienLouable bien) {
         try {
-            bien.delete();
-            afficheBiens();
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Suppression réussie");
-            alert.setHeaderText(null);
-            alert.setContentText("Le bien a été supprimé avec succès.");
-            alert.showAndWait();
+            bien.delete(); // Suppression de l'objet Bien
+            afficheBiens(); // Mise à jour de l'affichage des biens
+            JfxUtil.setAlert(Alert.AlertType.INFORMATION,
+                    "Suppression réussie",
+                    null,
+                    "Le bien a été supprimé avec succès."); // Affichage d'une alerte d'information
         } catch (Bien.BienException e) {
-            JfxUtil.displayError("Erreur lors de la suppression du bien", e.getMessage());
-            e.printStackTrace();
+            JfxUtil.displayError("Erreur lors de la suppression", e.getMessage()); // Gestion des erreurs avec l'alerte
         }
     }
+
 
     private void gererBails(int idBien) {
         new VueBails().startForBiensLouables(new Stage(), idBien);
     }
 
     private void attribuerAssurance(int idBien) {
-        new VueAttribuerAssurance().startforBien(new Stage(), idBien);
+        JfxUtil.showWindow(new Stage(), VueAttribuerAssurance.class);
     }
 
     @FXML
     private void retourAccueil() {
-        new VueAccueil().start(new javafx.stage.Stage());
+        new VueAccueil().start(new Stage());
     }
-
 }
