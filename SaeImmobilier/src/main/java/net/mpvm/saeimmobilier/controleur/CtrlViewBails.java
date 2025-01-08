@@ -9,6 +9,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import net.mpvm.saeimmobilier.modele.Bail;
+import net.mpvm.saeimmobilier.sql.Query.Queryable;
 import net.mpvm.saeimmobilier.util.JfxUtil;
 import net.mpvm.saeimmobilier.vue.VueAccueil;
 
@@ -26,35 +27,52 @@ public class CtrlViewBails {
 
     @FXML
     public void initialize() {
-        afficheBails();
+        vBoxBails.sceneProperty().addListener((observable, oldScene, newScene) -> {
+            if (newScene != null) {
+                Stage stage = (Stage) newScene.getWindow();
+                if (stage != null) {
+                    setIdBien(stage);
+                    afficheBails();
+                } else {
+                    System.out.println("pas de stage");
+                }
+            } else {
+                System.out.println("pas de scène");
+            }
+        });
     }
 
-    public void setIdBien(int idBien) {
-        this.idBien = idBien;
-        afficheBails();
+    public void setIdBien(Stage stage) {
+        Object id = stage.getProperties().get("bien");
+        if (id instanceof Integer) {
+            this.idBien = (int) id;
+        } else {
+            throw new IllegalStateException("Propriété 'bien' manquante ou incorrecte.");
+        }
     }
 
     private void afficheBails() {
         try {
             Label titre = new Label("Liste des Baux");
-            titre.setStyle("-fx-font-size: 24px; -fx-text-fill: white; -fx-font-weight: bold; -fx-alignment: center;");
+            titre.setStyle("-fx-font-size: 24px; -fx-text-fill: white; -fx-font-weight: bold;");
             titre.setAlignment(Pos.CENTER);
+
             vBoxBails.getChildren().clear();
             vBoxBails.getChildren().add(titre);
-
-            List<Bail> baux = Bail.findByBien(idBien);
-
-            if (baux.isEmpty()) {
-                Label label = new Label("Aucun bail trouvé.");
-                label.getStyleClass().add("bail-title");
-                vBoxBails.getChildren().add(label);
-                return;
-            }
 
             retourBiens = new Button("Retour aux biens");
             retourBiens.setOnAction(event -> retourBiens());
             retourBiens.getStyleClass().add("button-supprimer");
             vBoxBails.getChildren().add(retourBiens);
+
+            List<Bail> baux = Bail.findByBien(idBien);
+
+            if (baux.isEmpty()) {
+                Label label = new Label("Aucun bail trouvé.");
+                label.getStyleClass().add("assurance-title");
+                vBoxBails.getChildren().add(label);
+                return;
+            }
 
             for (Bail bail : baux) {
                 GridPane gp = new GridPane();
@@ -63,29 +81,58 @@ public class CtrlViewBails {
                 gp.setAlignment(Pos.TOP_CENTER);
                 gp.getStyleClass().add("bail-gridpane");
 
-                Label dateDebut = new Label("Début " + bail.getDateDebut());
-                Label dateFin = new Label("Fin " + bail.getDateFin());
-                Label montantLoyer = new Label("Loyer " + bail.getLoyer() + " €");
-                Label dateSignature = new Label("Signature " + bail.getDateSignature());
-                Label colocation = new Label("Colocation "+bail.getColocation());
+                Label dateDebut = new Label("Début : " + bail.getDateDebut());
+                Label dateFin = new Label("Fin : " + bail.getDateFin());
+                Label montantLoyer = new Label("Loyer : " + bail.getLoyer() + " €");
+                Label dateSignature = new Label("Signature : " + bail.getDateSignature());
+                Label colocation = new Label("Colocation : " + bail.getColocation());
 
+                Button gererLocatairesButton = new Button("Gérer Locataires");
+                gererLocatairesButton.setOnAction(event -> gererLocataires(bail.getIdBail()));
 
-                dateDebut.getStyleClass().add("assurance-label");
-                dateFin.getStyleClass().add("assurance-label");
-                montantLoyer.getStyleClass().add("assurance-label");
-                dateSignature.getStyleClass().add("assurance-label");
-                colocation.getStyleClass().add("assurance-label");
+                Button resilierBailButton = new Button("Résilier");
+                resilierBailButton.setOnAction(event -> resilierBail(bail));
+
+                // Application des styles
+                List<Label> labels = List.of(dateDebut, dateFin, montantLoyer, dateSignature, colocation);
+                labels.forEach(label -> label.getStyleClass().add("assurance-label"));
+
+                gererLocatairesButton.getStyleClass().add("button-valider");
+                resilierBailButton.getStyleClass().add("button-supprimer");
 
                 gp.add(dateDebut, 0, 0);
                 gp.add(dateFin, 1, 0);
                 gp.add(montantLoyer, 2, 0);
                 gp.add(dateSignature, 3, 0);
+                gp.add(colocation, 4, 0);
+                gp.add(gererLocatairesButton, 5, 0);
+                gp.add(resilierBailButton, 6, 0);
 
                 vBoxBails.getChildren().add(gp);
             }
         } catch (Bail.BailException e) {
             JfxUtil.displayError("Erreur lors du chargement des baux", e.getMessage());
             e.printStackTrace();
+        }
+    }
+
+    private void gererLocataires(int idBail) {
+        System.out.println("Gérer les locataires pour le bail ID : " + idBail);
+        // Implémentez la logique pour ouvrir une vue dédiée à la gestion des locataires
+    }
+
+    private void resilierBail(Bail bail) {
+        try {
+            bail.delete();
+            afficheBails();
+            JfxUtil.setAlert(Alert.AlertType.INFORMATION,
+                    "Résiliation réussie",
+                    null,
+                    "Le bail a été résilié avec succès.");
+        } catch (Bail.BailException e) {
+            JfxUtil.displayError("Erreur lors de la résiliation", e.getMessage());
+        } catch (Queryable.QbleException e) {
+            throw new RuntimeException(e);
         }
     }
 
