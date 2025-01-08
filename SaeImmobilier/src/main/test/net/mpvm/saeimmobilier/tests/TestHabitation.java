@@ -26,7 +26,7 @@ public class TestHabitation {
 
     @BeforeAll
     public static void setUp() throws Bien.BienException {
-        immeuble = new Immeuble.IBuilder(VILLE, CODE_POSTAL, ADRESSE, NUMERO_FISCAL_IMMEUBLE,IDPROPRIO, DATE).build();
+        immeuble = new Immeuble.IBuilder(VILLE, CODE_POSTAL, ADRESSE, NUMERO_FISCAL_IMMEUBLE,DATE,IDPROPRIO).build();
         immeuble.save();
     }
 

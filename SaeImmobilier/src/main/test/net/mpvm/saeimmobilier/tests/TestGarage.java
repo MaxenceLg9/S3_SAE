@@ -25,7 +25,7 @@ public class TestGarage {
 
     @BeforeAll
     public static void setUp() throws Bien.BienException {
-        immeuble = new Immeuble.IBuilder(VILLE, CODE_POSTAL, ADRESSE, NUMERO_FISCAL_IMMEUBLE, IDPROPRIO, DATE).build();
+        immeuble = new Immeuble.IBuilder(VILLE, CODE_POSTAL, ADRESSE, NUMERO_FISCAL_IMMEUBLE,DATE,IDPROPRIO).build();
         immeuble.save();
     }
 
@@ -36,7 +36,7 @@ public class TestGarage {
 
     @Test
     public void testCreatingInstance() throws Bien.BienException {
-        Immeuble immeuble = new Immeuble.IBuilder(VILLE, CODE_POSTAL, ADRESSE, "0123456789", IDPROPRIO, DATE).build();
+        Immeuble immeuble = new Immeuble.IBuilder(VILLE, CODE_POSTAL, ADRESSE, "0123456789",DATE,IDPROPRIO).build();
         Garage garage = new Garage.GBuilder(COMPLEMENT_ADRESSE, NBPIECES, "2345678901", immeuble, SURFACE, IDPROPRIO, DATE).build();
         assertEquals(-1,garage.getIdBien());
     }
@@ -89,6 +89,7 @@ public class TestGarage {
         garage.setNbPieces(5);
         garage.setNumeroFiscal("0987654321");
         garage.setSurface(62f);
+        garage.setIdProprio("JAIMELESFRITES");
         garage.modify();
 
         Garage garage2 = Garage.findAll().stream().filter(g -> g.getIdBien() == garage.getIdBien()).findFirst().get();
@@ -97,6 +98,7 @@ public class TestGarage {
         assertEquals(5, garage2.getNbPieces());
         assertEquals("0987654321", garage2.getNumeroFiscal());
         assertEquals(62f, garage2.getSurface());
+        assertEquals("JAIMELESFRITES",garage2.getIdProprio());
 
         garage.delete();
     }

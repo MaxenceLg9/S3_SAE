@@ -27,10 +27,38 @@ public class TestImmeuble {
 
     @Test
     public void testFactoryPatternInstance() throws Bien.BienException {
-        Immeuble immeuble = new Immeuble.IBuilder(VILLE, CODE_POSTAL, ADRESSE, NUMERO_FISCAL_IMMEUBLE, IDPROPRIO, DATE).build();
+        Immeuble immeuble = new Immeuble.IBuilder(VILLE, CODE_POSTAL, ADRESSE, NUMERO_FISCAL_IMMEUBLE,DATE,IDPROPRIO).build();
         immeuble.save();
         Immeuble immeuble1 = new Immeuble.IBuilder(immeuble.getIdBien()).build();
         assertEquals(immeuble, immeuble1);
         immeuble.delete();
+    }
+
+    @Test
+    public void testModifyImmeuble() throws Bien.BienException {
+        Immeuble immeuble = new Immeuble.IBuilder(VILLE, CODE_POSTAL, ADRESSE, NUMERO_FISCAL_IMMEUBLE,DATE,IDPROPRIO).build();
+        immeuble.save();
+
+        immeuble.setIdProprio("AAAAAAAAAAAA");
+        immeuble.setVille("LAVILLE");
+        immeuble.setCodePostal(41025);
+        immeuble.setNumeroFiscal("521425315");
+        immeuble.modify();
+
+        int id = immeuble.getIdBien();
+
+        immeuble = null;
+
+        Immeuble immeuble1 = new Immeuble.IBuilder(id).build();
+        assertEquals(id, immeuble1.getIdBien());
+        assertEquals("LAVILLE",immeuble1.getVille());
+        assertEquals(41025,immeuble1.getCodePostal());
+        assertEquals("521425315",immeuble1.getNumeroFiscal());
+        immeuble1.delete();
+    }
+
+    @Test
+    public void testGetImmeuble(){
+
     }
 }
