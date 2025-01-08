@@ -1,10 +1,7 @@
 package net.mpvm.saeimmobilier.modele;
 
 
-import net.mpvm.saeimmobilier.sql.Query.Queryable;
-import net.mpvm.saeimmobilier.sql.Query.Result;
-import net.mpvm.saeimmobilier.sql.Query.SelectQueryElement;
-import net.mpvm.saeimmobilier.sql.Query.QueryElement;
+import net.mpvm.saeimmobilier.sql.Query.*;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -32,6 +29,8 @@ public class Bail extends Queryable {
 
 	private boolean colocation;
 	private Date dateSignature;
+
+	public static final String DELETE_QUERY = "DELETE FROM Bail WHERE IdBail = ?";
 
 
 	private Bail(int idBail, Date dateDebut){
@@ -312,8 +311,15 @@ public class Bail extends Queryable {
 	}
 
 	@Override
-	public void delete() throws QbleException {
-
+	public void delete() throws Bail.BailException {
+		if(this.getIdBail() == -1)
+			throw new Bail.BailException("Le bail n'existe pas dans la table", null);
+		try(UpdateQueryElement query = new UpdateQueryElement(DELETE_QUERY, true)){
+			query.setArgs(Map.of(1,this.getIdBail())).execute();
+		}
+		catch (QueryElement.QEltException e) {
+			throw new Bail.BailException("Erreur lors de la suppression du bien", e.getSqlException());
+		}
 	}
 
 	@Override
