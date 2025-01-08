@@ -53,7 +53,7 @@ public final class Immeuble extends Bien{
 			query.execute();
 			List<Map<String, Object>> result = query.getResult();
 			if (!result.isEmpty()) {
-				int idBien = (int) result.get(0).get("IdImmeuble");
+				int idBien = (int) result.getFirst().get("IdImmeuble");
 				return new IBuilder(idBien).build();
 			}
 		} catch (QueryElement.QEltException e) {
@@ -224,7 +224,7 @@ public final class Immeuble extends Bien{
 			query.execute();
 			List<Map<String,Object>> result = query.getResult();
 			if (!result.isEmpty()) {
-				return Integer.parseInt(result.get(0).get("Count(*)").toString());
+				return Integer.parseInt(result.getFirst().get("Count(*)").toString());
 			}
 		} catch (QueryElement.QEltException QEltException) {
 			QEltException.printStackTrace();
