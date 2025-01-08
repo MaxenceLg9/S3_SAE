@@ -130,22 +130,7 @@ public abstract class Bien extends Queryable {
         return getTypeBien().name();
     }
 
-    public static List<Bien> findByImmeuble(int idImmeuble) throws Bien.BienException {
-        List<Bien> biens = new ArrayList<>();
-        String query = "SELECT * FROM immeuble WHERE idImmeuble = ?";
 
-        try (SelectQueryElement selectQueryElement = new SelectQueryElement(query)) {
-
-            // Remplacez le paramètre par l'id de l'immeuble
-            selectQueryElement.setArgs(Map.of(1, idImmeuble));
-
-            sortResult(biens, selectQueryElement);
-        } catch (QueryElement.QEltException e) {
-            throw new BienException("Erreur lors de la récupération des biens pour l'immeuble ID " + idImmeuble, e.getSqlException());
-        }
-
-        return biens;
-    }
 
     public void setIdProprio(String idProprio) {
         this.idProprio = idProprio;

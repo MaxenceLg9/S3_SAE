@@ -11,7 +11,7 @@ import java.sql.Date;
 
 public final class Immeuble extends Bien{
 
-	public static final String INSERT_QUERY = "INSERT INTO Bien (Adresse, Ville, CodePostal, TypeBien, NumeroFiscal, IdProprio) VALUES (?, ?, ?, ?, ?, ?)";
+	public static final String INSERT_QUERY = "INSERT INTO Bien (Adresse, Ville, CodePostal, TypeBien, NumeroFiscal, IdProprio, DateAjout) VALUES (?, ?, ?, ?, ?, ?, ?)";
 	public static final String SELECT_QUERY = "SELECT * FROM Bien WHERE TypeBien = 'IMMEUBLE'";
 	public static final String SELECT_WHERE_QUERY = "SELECT * FROM Bien WHERE Adresse = ? AND Ville = ? AND CodePostal = ?";
 	public static final String DELETE_QUERY = "DELETE FROM Bien WHERE IdBien = ? AND TypeBien = 'IMMEUBLE'";
@@ -167,7 +167,8 @@ public final class Immeuble extends Bien{
 									3, this.getCodePostal(),
 									4, TypeBien.IMMEUBLE.name(),
 									5, this.getNumeroFiscal(),
-									6, this.getIdProprio()))
+									6, this.getIdProprio(),
+											7, this.getDateAjout()))
 					.execute();
 			super.save();
 			immeubles.put(this.getIdBien(),this);

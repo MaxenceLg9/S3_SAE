@@ -20,7 +20,7 @@ public class CtrlNewBien {
     @FXML
     private ChoiceBox<Immeuble> listImmeubles;
 
-    private java.sql.Date datesql;
+    private Date datesql;
 
     @FXML
     private TextField fieldLieuImmeuble;
@@ -45,26 +45,21 @@ public class CtrlNewBien {
     @FXML
     private TextField fieldNumeroProprio;
 
-    private ModeleDate currentDate;
+    private Date currentDate;
 
 
     @FXML
     public void initialize() {
-        this.datesql = new Date(new ModeleDate(1, 1, 1).getCurrentDateAsLong());
+        this.datesql = Date.valueOf(LocalDate.now());
         fieldsetup();
 
         LocalDate currentDate = LocalDate.now();
 
-        // Formater la date au format désiré (par exemple, dd/MM/yyyy)
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         String formattedDate = currentDate.format(formatter);
 
-        // Afficher la date dans le TextField
         this.LabelDate.setText(formattedDate);
-
-        // Initialize the list of Immeubles
         refreshImmeubles();
-
 
         for (TypeBien b : TypeBien.values()){
             this.listTypeBien.getItems().add(b);
@@ -133,52 +128,121 @@ public class CtrlNewBien {
     @FXML
     public void ajouterBien(ActionEvent actionEvent) {
         try {
+            // Vérification du type de bien sélectionné
+            if (this.listTypeBien.getValue() == null) {
+                alertTypeEmpty(); // Si aucun type de bien n'est sélectionné
+                return;
+            }
+
             switch (this.listTypeBien.getValue()) {
-                case TypeBien.HABITATION:
-                    if (fieldsNotEmptyBienLouable()) {
-                        new Habitation.HBuilder(this.fieldLieuImmeuble.getText(),
-                                Integer.parseInt(this.fieldNbPieces.getText()),
-                                this.fieldNumeroFiscal.getText(),
-                                this.listImmeubles.getItems().getFirst(),
-                                Float.parseFloat(this.fieldSurface.getText()), this.fieldNumeroProprio.getText(), this.datesql).build().save();
-                    }else {
-                        alertFieldsEmptybienLouable();
-                    }
-                    break;
+                case HABITATION:
+                case GARAGE:
+                    // Validation des champs pour Habitation et Garage
+                    if (fieldsNotEmptyBienLouable() && isCodePostalValid() && isNumeroFiscalValid()) {
+                        if (this.listTypeBien.getValue() == TypeBien.HABITATION) {
+                            // Ajout d'une Habitation
+                            new Habitation.HBuilder(
+                                    this.fieldLieuImmeuble.getText(),
+                                    Integer.parseInt(this.fieldNbPieces.getText()),
+                                    this.fieldNumeroFiscal.getText(),
+                                    this.listImmeubles.getValue(),
+                                    Float.parseFloat(this.fieldSurface.getText()),
+                                    this.fieldNumeroProprio.getText(),
+                                    this.datesql
+                            ).build().save();
 
-                case TypeBien.GARAGE:
-                    if (fieldsNotEmptyBienLouable()) {
-                        new Garage.GBuilder(this.fieldLieuImmeuble.getText(),
-                                Integer.parseInt(this.fieldNbPieces.getText()),
-                                this.fieldNumeroFiscal.getText(),
-                                this.listImmeubles.getItems().getFirst(),
-                                Float.parseFloat(this.fieldSurface.getText()), this.fieldNumeroProprio.getText(), this.datesql).build().save();
+                            JfxUtil.setAlert(Alert.AlertType.INFORMATION, "Succès", "Ajout du bien", "Le bien de type Habitation a été ajouté avec succès !");
+                        } else {
+                            // Ajout d'un Garage
+                            new Garage.GBuilder(
+                                    this.fieldLieuImmeuble.getText(),
+                                    Integer.parseInt(this.fieldNbPieces.getText()),
+                                    this.fieldNumeroFiscal.getText(),
+                                    this.listImmeubles.getValue(),
+                                    Float.parseFloat(this.fieldSurface.getText()),
+                                    this.fieldNumeroProprio.getText(),
+                                    this.datesql
+                            ).build().save();
+
+                            JfxUtil.setAlert(Alert.AlertType.INFORMATION, "Succès", "Ajout du bien", "Le bien de type Garage a été ajouté avec succès !");
+                        }
                     } else {
+                        // Champs invalides
                         alertFieldsEmptybienLouable();
                     }
                     break;
 
-                case TypeBien.IMMEUBLE:
-                    if (fieldsNotEmptyImmeuble()){
+                case IMMEUBLE:
+                    // Validation des champs pour Immeuble
+                    if (fieldsNotEmptyImmeuble() && isCodePostalValid() && isNumeroFiscalValid()) {
+                        // Ajout d'un Immeuble
                         new Immeuble.IBuilder(
                                 this.fieldVille.getText(),
                                 Integer.parseInt(this.fieldCodePostal.getText()),
                                 this.fieldAdresse.getText(),
                                 this.fieldNumeroFiscal.getText(),
                                 this.datesql,
-                                this.fieldNumeroProprio.getText()).build().save();
-                        refreshImmeubles();
-                    }else {
+                                this.fieldNumeroProprio.getText()
+                        ).build().save();
+
+                        refreshImmeubles(); // Mettre à jour la liste des immeubles
+                        JfxUtil.setAlert(Alert.AlertType.INFORMATION, "Succès", "Ajout du bien", "Le bien de type Immeuble a été ajouté avec succès !");
+                    } else {
                         alertFieldsEmpty();
                     }
                     break;
-            }
 
+                default:
+                    alertTypeEmpty();
+                    break;
+            }
         } catch (Queryable.QbleException e) {
+            // Gérer les exceptions SQL
+            JfxUtil.setAlert(Alert.AlertType.ERROR, "Erreur", "Erreur SQL", "Une erreur est survenue lors de l'ajout du bien : " + e.getMessage());
             e.getSqlException().printStackTrace();
+        } catch (NumberFormatException e) {
+            // Gérer les erreurs de conversion de chaîne en nombre
+            JfxUtil.setAlert(Alert.AlertType.ERROR, "Erreur", "Format invalide", "Veuillez vérifier les valeurs numériques des champs !");
         }
-        JfxUtil.setAlert(Alert.AlertType.INFORMATION, "Succès", "Ajout du bien", "Le bien a été ajouté! Vous pouvez maintenant retourner sur la page d'accueil");
     }
+    private boolean isCodePostalValid() {
+        if (this.fieldCodePostal.getText().length() != 5) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erreur");
+            alert.setHeaderText("Code Postal invalide");
+            alert.setContentText("Le code postal doit comporter exactement 5 chiffres !");
+            alert.showAndWait();
+            return false;
+        }
+        return true;
+    }
+    private boolean isNumeroFiscalValid() {
+        String numeroFiscal = this.fieldNumeroFiscal.getText();
+
+        // Vérifier la longueur
+        if (numeroFiscal.length() != 13) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erreur");
+            alert.setHeaderText("Numéro Fiscal invalide");
+            alert.setContentText("Le numéro fiscal doit comporter exactement 13 chiffres !");
+            alert.showAndWait();
+            return false;
+        }
+
+        // Vérifier la première valeur
+        char firstChar = numeroFiscal.charAt(0);
+        if (firstChar != '0' && firstChar != '1' && firstChar != '2' && firstChar != '3') {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erreur");
+            alert.setHeaderText("Numéro Fiscal invalide");
+            alert.setContentText("Le numéro fiscal doit commencer par 0, 1, 2 ou 3 !");
+            alert.showAndWait();
+            return false;
+        }
+
+        return true;
+    }
+
 
     private boolean fieldsNotEmptyBienLouable() {
         for(TextField textField : fieldsLogement){
