@@ -51,7 +51,8 @@ CREATE TABLE Assurance(
                           PRIMARY KEY(IdAssurance)
 );
 
-
+ALTER TABLE Assurance
+    ADD CONSTRAINT FOREIGN KEY (IdBail) REFERENCES Bail(IdBail);
 
 CREATE TABLE Proprietaire(
                              IdProprietaire INT auto_increment,
@@ -62,6 +63,7 @@ CREATE TABLE Proprietaire(
 
 CREATE TABLE Bien(
                      IdBien INT auto_increment,
+                     IdProprio VARCHAR(50),
                      ComplementAdresse VARCHAR(50),
                      Adresse VARCHAR(50),
                      Ville VARCHAR(50),
@@ -125,16 +127,18 @@ CREATE TABLE Bail(
                      DateDebut DATE,
                      DateFin DATE,
                      TotalCharges DOUBLE,
-                     DepotGarantie DOUBLE,
+                     DepotGaranti DOUBLE,
                      MontantLoyer DOUBLE,
                      Archive BOOLEAN,
+                     TypeBail VARCHAR(50),
                      Renouvelable BOOLEAN,
                      CheminDocument VARCHAR(50),
                      DateSignature DATE,
+                     Etat VARCHAR(50),
                      RepartitionEntretien DOUBLE,
+                     QuotiteLoyer DOUBLE,
                      RepartitionElectricite VARCHAR(50),
                      RepartitionOrdures_Menageres VARCHAR(50),
-                     Colocation BOOLEAN,
                      IdBien INT NOT NULL,
                      PRIMARY KEY(IdBail),
                      FOREIGN KEY(IdBien) REFERENCES Bien(IdBien)
@@ -273,7 +277,6 @@ END;
 //
 DELIMITER ;
 
-
 DELIMITER //
 CREATE TRIGGER CalculMontantADeclarer
     AFTER INSERT ON Travaux
@@ -288,6 +291,8 @@ DELIMITER ;
 
 
 
-
-
-
+INSERT INTO Assurance (
+    ProtectionJuridique, Prime, Annee, TypeContrat, NumeroContrat
+) VALUES (
+             1000.0, 1500.0,  2024, 'PROPRIETAIRE',11111111
+         );

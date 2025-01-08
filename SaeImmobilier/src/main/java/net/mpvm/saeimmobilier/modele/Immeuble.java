@@ -15,7 +15,7 @@ public final class Immeuble extends Bien{
 	public static final String SELECT_QUERY = "SELECT * FROM Bien WHERE TypeBien = 'IMMEUBLE'";
 	public static final String SELECT_WHERE_QUERY = "SELECT * FROM Bien WHERE Adresse = ? AND Ville = ? AND CodePostal = ?";
 	public static final String DELETE_QUERY = "DELETE FROM Bien WHERE IdBien = ? AND TypeBien = 'IMMEUBLE'";
-	public static final String UPDATE_QUERY = "UPDATE Bien SET Adresse = ?, Ville = ?, CodePostal = ?";
+	public static final String UPDATE_QUERY = "UPDATE Bien SET Adresse = ?, Ville = ?, CodePostal = ?, IdProprio = ? WHERE IdBien = ?";
 	public static final String SELECT_FROM_ID = "SELECT * FROM Bien WHERE IdBien = ? AND TypeBien = 'IMMEUBLE'";
 	public static final String SELECT_BIENS_IMMEUBLES = "SELECT * FROM Bien WHERE IdImmeuble = ? AND TypeBien = 'GARAGE' OR TypeBien = 'HABITATION'";
 	public static final String SELECT_COUNT_BL = "SELECT Count(*) FROM Bien WHERE IdImmeuble = ? AND TypeBien = 'GARAGE' OR TypeBien = 'HABITATION'";
@@ -28,8 +28,8 @@ public final class Immeuble extends Bien{
 	private int codePostal;
 	private List<Travaux> travauxAssocies;
 
-	private Immeuble(String ville, int codePostal, String adresse, String numeroFiscal, Date dateAjout, int idBien) {
-		super(idBien, numeroFiscal, dateAjout); // Initialisation des attributs hérités de Bien
+	private Immeuble(String ville, int codePostal, String adresse, String numeroFiscal, Date dateAjout, String idProprio, int idBien) {
+		super(idBien, numeroFiscal, dateAjout, idProprio); // Initialisation des attributs hérités de Bien
 		this.travauxAssocies = new ArrayList<>();
 		this.codePostal = codePostal;
 		this.adresse = adresse;
@@ -40,7 +40,7 @@ public final class Immeuble extends Bien{
 	}
 
 	private Immeuble(IBuilder iBuilder) {
-		this(iBuilder.ville, iBuilder.codePostal, iBuilder.adresse, iBuilder.getNumeroFiscal(), iBuilder.getDateAjout(), iBuilder.getIdBien());
+		this(iBuilder.ville, iBuilder.codePostal, iBuilder.adresse, iBuilder.getNumeroFiscal(), iBuilder.getDateAjout(), iBuilder.getIdProprio(), iBuilder.getIdBien());
 	}
 
 	public static Immeuble findByLocalisation(String adresse, int codePostal, String ville) throws ImmeubleException {
@@ -97,15 +97,6 @@ public final class Immeuble extends Bien{
 		return TypeBien.IMMEUBLE;
 	}
 
-	@Override
-	public float getSurface() {
-		return 0;
-	}
-
-	@Override
-	public int getNbPieces() {
-		return 0;
-	}
 
 	public List<Travaux> getTravauxAssocies() {
 		return travauxAssocies;
@@ -146,7 +137,7 @@ public final class Immeuble extends Bien{
 			List<Map<String,Object>> result = selectQueryElement.getResult();
 			for(Map<String,Object> row : result){
 				// Ajout de l'IdBien s'il est nécessaire dans le constructeur
-				immeubles.add(new net.mpvm.saeimmobilier.modele.Immeuble.IBuilder(row).build());
+				immeubles.add(new Immeuble.IBuilder(row).build());
 			}
 		} catch (QueryElement.QEltException qEltException) {
 			qEltException.getSqlException().printStackTrace();
@@ -162,9 +153,9 @@ public final class Immeuble extends Bien{
 				"Adresse", this.adresse,
 				"NumeroFiscal", this.getNumeroFiscal(),
 				"DateAjout", this.getDateAjout(),
-				"IdBien", this.getIdBien());
+				"IdBien", this.getIdBien(),
+				"IdProprio", this.getIdProprio());
 	}
-
 
 	@Override
 	public void save() throws ImmeubleException {
@@ -194,7 +185,9 @@ public final class Immeuble extends Bien{
 			query.setArgs(
 							Map.of(1, this.getAdresse(),
 									2, this.getVille(),
-									3, this.getCodePostal()))
+									3, this.getCodePostal(),
+									4, this.getIdProprio(),
+									5, this.getIdBien()))
 					.execute();
 		}catch(QueryElement.QEltException QEltException){
 			throw new ImmeubleException("Erreur lors de la modification du bien", QEltException.getSqlException());
@@ -239,19 +232,19 @@ public final class Immeuble extends Bien{
 		private final String ville;
 		private final int codePostal;
 
-		IBuilder(String ville, int codePostal, String adresse, String numeroFiscal, java.sql.Date dateAjout, int idBien) {
-			super(idBien, numeroFiscal, dateAjout);
+		IBuilder(String ville, int codePostal, String adresse, String numeroFiscal, java.sql.Date dateAjout, String idProprio, int idBien) {
+			super(idBien, numeroFiscal, dateAjout, idProprio);
 			this.ville = ville;
 			this.codePostal = codePostal;
 			this.adresse = adresse;
 		}
 
 		IBuilder(Map<String,Object> args) {
-			this(args.get("Ville").toString(), Integer.parseInt(args.get("CodePostal").toString()), args.get("Adresse").toString(), args.get("NumeroFiscal").toString(), (Date) args.get("DateAjout"), (int) args.get("IdBien"));
+			this(args.get("Ville").toString(), Integer.parseInt(args.get("CodePostal").toString()), args.get("Adresse").toString(), args.get("NumeroFiscal").toString(), (Date) args.get("DateAjout"), args.get("IdProprio").toString(), (int) args.get("IdBien"));
 		}
 
-		public IBuilder(String ville, int codePostal, String adresse, String numeroFiscal, Date dateAjout) throws BienException {
-			this(ville, codePostal, adresse, numeroFiscal,dateAjout,-1);
+		public IBuilder(String ville, int codePostal, String adresse, String numeroFiscal, Date dateAjout,String idProprio) throws BienException {
+			this(ville, codePostal, adresse, numeroFiscal,dateAjout, idProprio, -1);
 		}
 
 		public IBuilder(int idBien) throws ImmeubleException {
