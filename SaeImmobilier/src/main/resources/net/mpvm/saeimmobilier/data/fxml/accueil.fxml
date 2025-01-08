@@ -5,6 +5,8 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -47,36 +49,31 @@
                     <children>
                         <VBox alignment="TOP_CENTER" prefHeight="316.0" prefWidth="226.0" spacing="20.0">
                             <children>
-                                <Button fx:id="btnAjoutBien" mnemonicParsing="false" onAction="#ajouterBien" prefWidth="200.0" text="Ajout d'un bien" textFill="WHITE">
+                                <Button fx:id="btnAjoutBien" mnemonicParsing="false" onAction="#ajouterBien" prefWidth="190.0" text="Ajout d'un bien" textFill="WHITE">
                                     <font>
                                         <Font name="System Bold" size="14.0" />
                                     </font>
                                 </Button>
-                                <Button fx:id="btnAjoutLocataire" mnemonicParsing="false" onAction="#ajouterLocataire" prefWidth="200.0" text="Ajout d'un locataire" textFill="WHITE">
+                                <Button fx:id="btnAjoutLocataire" mnemonicParsing="false" onAction="#ajouterLocataire" prefWidth="190.0" text="Ajout d'un locataire" textFill="WHITE">
                                     <font>
                                         <Font name="System Bold" size="14.0" />
                                     </font>
                                 </Button>
-                                <Button fx:id="btnViewBien" mnemonicParsing="false" onAction="#vueImmeubles" prefWidth="200.0" text="Vue des biens" textFill="WHITE">
+                                <Button fx:id="btnViewBien" mnemonicParsing="false" onAction="#vueImmeubles" prefWidth="190.0" text="Vue des biens" textFill="WHITE">
                                     <font>
                                         <Font name="System Bold" size="14.0" />
                                     </font>
                                 </Button>
-                                <Button fx:id="btnViewLocataire" mnemonicParsing="false" onAction="#vueLocataires" prefWidth="200.0" text="Vue des locataires" textFill="WHITE">
+                                <Button fx:id="btnViewLocataire" mnemonicParsing="false" onAction="#vueLocataires" prefWidth="190.0" text="Vue des locataires" textFill="WHITE">
                                     <font>
                                         <Font name="System Bold" size="14.0" />
                                     </font>
                                 </Button>
-                                <Button fx:id="btnLocations" mnemonicParsing="false" onAction="#gererLocation" prefWidth="200.0" text="Gérer les locations" textFill="WHITE">
+                                <Button fx:id="btnLocations" mnemonicParsing="false" onAction="#gererLocation" prefWidth="190.0" text="Gérer les locations" textFill="WHITE">
                                     <font>
                                         <Font name="System Bold" size="14.0" />
                                     </font>
                                 </Button>
-                        <Button fx:id="btnAjoutAssurance" mnemonicParsing="false" onAction="#ajouterAssurance" prefWidth="200.0" text="Ajout d'une Assurance" textFill="WHITE">
-                           <font>
-                              <Font name="System Bold" size="14.0" />
-                           </font>
-                        </Button>
                             </children>
                             <padding>
                                 <Insets top="20.0" />
@@ -96,33 +93,52 @@
             <center>
                 <TabPane fx:id="tabPane" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" tabMaxHeight="1.7976931034862315E308" tabMaxWidth="1.7976931034862315E308" BorderPane.alignment="CENTER">
                     <tabs>
+                        <Tab text="Assurances">
+                            <content>
+                                <TableView fx:id="tableViewAssurances" prefHeight="200.0" prefWidth="200.0" styleClass="backgroundColor">
+                                    <columns>
+                                        <TableColumn prefWidth="75.0" text="idAssurance" />
+                                        <TableColumn prefWidth="75.0" text="QuotiteJurisprudence" />
+                                        <TableColumn prefWidth="75.0" text="ProtectionJuridique" />
+                                        <TableColumn prefWidth="75.0" text="Prime" />
+                                        <TableColumn prefWidth="75.0" text="TypeContrat" />
+                                    </columns>
+                                </TableView>
+                            </content>
+                        </Tab>
                         <Tab text="Locataires">
-                     <content>
-                        <VBox prefHeight="200.0" prefWidth="100.0">
-                           <children>
-                              <GridPane>
-                                <columnConstraints>
-                                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                </columnConstraints>
-                                <rowConstraints>
-                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                </rowConstraints>
-                                 <children>
-                                    <Label text="Label" textFill="WHITE" />
-                                    <Label text="Label" textFill="WHITE" GridPane.rowIndex="1" />
-                                    <Label text="Label" textFill="WHITE" GridPane.rowIndex="2" />
-                                 </children>
-                              </GridPane>
-                           </children>
-                        </VBox>
-                     </content>
+                            <content>
+                                <TableView fx:id="tableViewLocataires" prefHeight="200.0" prefWidth="200.0" styleClass="backgroundColor">
+                                    <columns>
+                                        <TableColumn prefWidth="75.0" text="IdLocataire" />
+                                        <TableColumn prefWidth="75.0" text="Nom" />
+                                        <TableColumn prefWidth="75.0" text="Prénom" />
+                                        <TableColumn prefWidth="75.0" text="Sexe" />
+                                        <TableColumn prefWidth="75.0" text="Téléphone" />
+                                        <TableColumn prefWidth="75.0" text="Email" />
+                                    </columns>
+                                </TableView>
+                            </content>
                         </Tab>
                         <Tab text="Immeubles">
-                     <content>
-                        <VBox prefHeight="200.0" prefWidth="100.0" />
-                     </content>
+                            <content>
+                                <TableView fx:id="tableViewBiens" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #FFFFFF;">
+                                    <columns>
+                                        <TableColumn prefWidth="75.0" text="idBien" />
+                                        <TableColumn prefWidth="139.0" text="ComplémentAdresse" />
+                                        <TableColumn prefWidth="11.0" text="Adresse" />
+                                        <TableColumn prefWidth="75.0" text="Ville" />
+                                        <TableColumn prefWidth="75.0" text="CodePostal" />
+                                        <TableColumn prefWidth="75.0" text="TypeBien" />
+                                        <TableColumn prefWidth="75.0" text="Surface" />
+                                        <TableColumn prefWidth="75.0" text="NombrePieces" />
+                                        <TableColumn prefWidth="75.0" text="NumeroFiscal" />
+                                        <TableColumn prefWidth="75.0" text="DateAjout" />
+                                        <TableColumn prefWidth="75.0" text="Id_Assurance" />
+                                        <TableColumn prefWidth="75.0" text="Id_Propriétaire" />
+                                    </columns>
+                                </TableView>
+                            </content>
                         </Tab>
                     </tabs>
                     <BorderPane.margin>
