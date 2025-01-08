@@ -65,7 +65,7 @@ public class JfxUtil {
         try {
             ((Application) applicationClass.getConstructors()[0].newInstance()).start(stage);
         } catch (Exception e) {
-            System.out.println("والآن أصبحت الموت، مدمر العالم");
+            System.out.println("Erreur lors de l'affichage de l'application");
         }
     }
 

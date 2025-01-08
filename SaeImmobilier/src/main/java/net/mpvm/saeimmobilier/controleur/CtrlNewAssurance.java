@@ -112,7 +112,6 @@ public class CtrlNewAssurance {
         return true;
     }
 
-
     @FXML
     public void Annuler(ActionEvent actionEvent) {
         fieldAnnee.clear();
