@@ -63,6 +63,7 @@ CREATE TABLE Proprietaire(
 
 CREATE TABLE Bien(
                      IdBien INT auto_increment,
+                     IdProprio VARCHAR(50),
                      ComplementAdresse VARCHAR(50),
                      Adresse VARCHAR(50),
                      Ville VARCHAR(50),

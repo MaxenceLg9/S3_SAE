@@ -18,15 +18,15 @@ public final class Garage extends BienLouable {
 
 	private static final Map<Integer,Garage> garages = new HashMap<>();
 
-	Garage(String complementAdresse, int nbPieces, String NumeroFiscal, Immeuble immeuble, float surface, Date dateAjout, int idBien) throws BienException {
-		super(complementAdresse, nbPieces, NumeroFiscal, immeuble, surface, dateAjout, idBien);
+	Garage(String complementAdresse, int nbPieces, String NumeroFiscal, Immeuble immeuble, float surface, Date dateAjout, String idProprio, int idBien) throws BienException {
+		super(complementAdresse, nbPieces, NumeroFiscal, immeuble, surface, dateAjout, idProprio, idBien);
 		if((!garages.containsKey(this.getIdBien()) || garages.get(this.getIdBien()) == null) && idBien != -1){
 			garages.put(this.getIdBien(),this);
 		}
 	}
 
 	private Garage(GBuilder gBuilder) throws BienException {
-		this(gBuilder.getComplementAdresse(),gBuilder.getNbPieces(),gBuilder.getNumeroFiscal(),gBuilder.getImmeuble(),gBuilder.getSurface(),gBuilder.getDateAjout(),gBuilder.getIdBien());
+		this(gBuilder.getComplementAdresse(),gBuilder.getNbPieces(),gBuilder.getNumeroFiscal(),gBuilder.getImmeuble(),gBuilder.getSurface(),gBuilder.getDateAjout(), gBuilder.getIdProprio(), gBuilder.getIdBien());
 	}
 
 	public void save() throws BienException {
@@ -57,12 +57,12 @@ public final class Garage extends BienLouable {
 
 	public static class GBuilder extends BLBuilder {
 		
-		public GBuilder(String complementAdresse, int nbPieces, String NumeroFiscal, @NotNull Immeuble immeuble, float surface, @NotNull Date dateAjout) {
-			this(complementAdresse, nbPieces,NumeroFiscal,immeuble,surface,dateAjout, -1);
+		public GBuilder(String complementAdresse, int nbPieces, String NumeroFiscal, @NotNull Immeuble immeuble, float surface, String idProprio, @NotNull Date dateAjout) {
+			this(complementAdresse, nbPieces,NumeroFiscal,immeuble,surface,dateAjout, idProprio, -1);
 		}
 
-		GBuilder(String complementAdresse, int nbPieces, String NumeroFiscal, Immeuble immeuble, float surface, Date dateAjout, int idBien) {
-			super(complementAdresse, nbPieces,NumeroFiscal,immeuble,surface,dateAjout, idBien);
+		GBuilder(String complementAdresse, int nbPieces, String NumeroFiscal, Immeuble immeuble, float surface, Date dateAjout, String idProprio, int idBien) {
+			super(complementAdresse, nbPieces,NumeroFiscal,immeuble,surface,dateAjout, idProprio, idBien);
 		}
 
 		GBuilder(Map<String, Object> args) throws BienException {
@@ -72,6 +72,7 @@ public final class Garage extends BienLouable {
 					new Immeuble.IBuilder((int) args.get("IdImmeuble")).build(),
 					((Double) args.get("Surface")).floatValue(),
 					(Date) args.get("DateAjout"),
+					args.get("IdProprio").toString(),
 					(int) args.get("IdBien"));
 		}
 

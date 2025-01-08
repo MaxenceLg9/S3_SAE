@@ -20,15 +20,15 @@ public final class Habitation extends BienLouable {
         return TypeBien.HABITATION;
     }
 
-    private Habitation(String complementAdresse, int nbPieces, String NumeroFiscal, Immeuble immeuble, float surface, Date dateAjout, int idBien) throws BienException {
-        super(complementAdresse, nbPieces,NumeroFiscal,immeuble,surface,dateAjout, idBien);
+    private Habitation(String complementAdresse, int nbPieces, String NumeroFiscal, Immeuble immeuble, float surface, Date dateAjout, String idProprio, int idBien) throws BienException {
+        super(complementAdresse, nbPieces,NumeroFiscal,immeuble,surface,dateAjout, idProprio, idBien);
         if((!habitations.containsKey(this.getIdBien()) || habitations.get(this.getIdBien()) == null) && idBien != -1){
             habitations.put(this.getIdBien(),this);
         }
     }
 
     private Habitation(HBuilder hBuilder) throws BienException {
-        this(hBuilder.getComplementAdresse(),hBuilder.getNbPieces(),hBuilder.getNumeroFiscal(),hBuilder.getImmeuble(),hBuilder.getSurface(),hBuilder.getDateAjout(),hBuilder.getIdBien());
+        this(hBuilder.getComplementAdresse(),hBuilder.getNbPieces(),hBuilder.getNumeroFiscal(),hBuilder.getImmeuble(),hBuilder.getSurface(),hBuilder.getDateAjout(),hBuilder.getIdProprio(),hBuilder.getIdBien());
     }
 
     public static List<Habitation> findAll() throws HabitationException {
@@ -52,12 +52,12 @@ public final class Habitation extends BienLouable {
     }
 
     public static class HBuilder extends BLBuilder {
-        public HBuilder(String complementAdresse, int nbPieces, String NumeroFiscal, Immeuble immeuble, float surface, Date dateAjout) {
-            this(complementAdresse, nbPieces,NumeroFiscal,immeuble,surface,dateAjout, -1);
+        public HBuilder(String complementAdresse, int nbPieces, String NumeroFiscal, Immeuble immeuble, float surface,  String idProprio, Date dateAjout) {
+            this(complementAdresse, nbPieces,NumeroFiscal,immeuble,surface,dateAjout, idProprio, -1);
         }
 
-        HBuilder(String complementAdresse, int nbPieces, String NumeroFiscal, Immeuble immeuble, float surface, Date dateAjout, int idBien) {
-            super(complementAdresse, nbPieces,NumeroFiscal,immeuble,surface,dateAjout, idBien);
+        HBuilder(String complementAdresse, int nbPieces, String NumeroFiscal, Immeuble immeuble, float surface, Date dateAjout, String idProprio, int idBien) {
+            super(complementAdresse, nbPieces,NumeroFiscal,immeuble,surface,dateAjout, idProprio, idBien);
         }
 
         HBuilder(Map<String, Object> args) throws BienException {
@@ -67,6 +67,7 @@ public final class Habitation extends BienLouable {
                     new Immeuble.IBuilder((int) args.get("IdImmeuble")).build(),
                     ((Double) args.get("Surface")).floatValue(),
                     (Date) args.get("DateAjout"),
+                    args.get("IdProprio").toString(),
                     (int) args.get("IdBien"));
         }
 
