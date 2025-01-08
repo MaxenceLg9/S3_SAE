@@ -48,6 +48,7 @@ CREATE TABLE Assurance(
                           TypeContrat VARCHAR(20),
                           Annee INT,
                           IdBail INTEGER,
+                          NomAssurance VARCHAR(50),
                           PRIMARY KEY(IdAssurance)
 );
 
