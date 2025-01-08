@@ -20,7 +20,7 @@ public abstract class Bien extends Queryable {
     private float iR; // Taux d'intérêt ou autre valeur
     private String numeroFiscal;
     private final Date dateAjout;
-    private final String idProprio;
+    private String idProprio;
 
 
     public Bien(int idBien, String numeroFiscal, Date dateAjout, String idProprio) {
@@ -147,6 +147,10 @@ public abstract class Bien extends Queryable {
         return biens;
     }
 
+    public void setIdProprio(String idProprio) {
+        this.idProprio = idProprio;
+    }
+
     public Optional<Assurance> getAssuranceActuelle() {
         return this.assurance;
     }
@@ -169,6 +173,10 @@ public abstract class Bien extends Queryable {
     }
 
     public void update() {
+    }
+
+    public String getIdProprio() {
+        return this.idProprio;
     }
 
     public abstract static class BBuilder extends Queryable.Builder{

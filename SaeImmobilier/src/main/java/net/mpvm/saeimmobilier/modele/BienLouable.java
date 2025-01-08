@@ -14,9 +14,9 @@ import java.util.Map;
 
 public abstract class BienLouable extends Bien {
 
-    public static final String INSERT_QUERY = "INSERT INTO bien (ComplementAdresse, TypeBien, Surface, NombrePieces, NumeroFiscal, DateAjout, IdImmeuble) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    public static final String INSERT_QUERY = "INSERT INTO bien (ComplementAdresse, TypeBien, Surface, NombrePieces, NumeroFiscal, DateAjout, IdImmeuble, IdProprio) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     public static final String DELETE_QUERY = "DELETE FROM bien WHERE IdBien = ?";
-    public static final String UPDATE_QUERY = "UPDATE bien SET ComplementAdresse = ?, Surface = ?, NombrePieces = ? , NumeroFiscal = ? WHERE IdBien = ?";
+    public static final String UPDATE_QUERY = "UPDATE bien SET ComplementAdresse = ?, Surface = ?, NombrePieces = ? , NumeroFiscal = ?, IdProprio = ? WHERE IdBien = ?";
     public static final String SELECT_QUERY = "SELECT * FROM bien WHERE TypeBien in ('HABITATION','GARAGE')";
 
     private String complementAdresse;
@@ -156,7 +156,8 @@ public abstract class BienLouable extends Bien {
                             4, this.getNbPieces(),
                             5, this.getNumeroFiscal(),
                             6, this.getDateAjout(),
-                            7, this.getImmeuble().getIdBien()
+                            7, this.getImmeuble().getIdBien(),
+                            8, this.getIdProprio()
                     )).execute();
             super.save();
         }
@@ -194,7 +195,8 @@ public abstract class BienLouable extends Bien {
                             2, this.getSurface(),
                             3, this.getNbPieces(),
                             4, this.getNumeroFiscal(),
-                            5, this.getIdBien()
+                            5, this.getIdProprio(),
+                            6, this.getIdBien()
                     )).execute();
         }catch(QueryElement.QEltException QEltException){
             throw new BienLouableException("Erreur lors de la modification du bien : " + QEltException.getMessage(), QEltException.getSqlException());

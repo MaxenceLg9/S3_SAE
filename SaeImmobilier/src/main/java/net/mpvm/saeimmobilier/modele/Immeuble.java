@@ -15,7 +15,7 @@ public final class Immeuble extends Bien{
 	public static final String SELECT_QUERY = "SELECT * FROM Bien WHERE TypeBien = 'IMMEUBLE'";
 	public static final String SELECT_WHERE_QUERY = "SELECT * FROM Bien WHERE Adresse = ? AND Ville = ? AND CodePostal = ?";
 	public static final String DELETE_QUERY = "DELETE FROM Bien WHERE IdBien = ? AND TypeBien = 'IMMEUBLE'";
-	public static final String UPDATE_QUERY = "UPDATE Bien SET Adresse = ?, Ville = ?, CodePostal = ?";
+	public static final String UPDATE_QUERY = "UPDATE Bien SET Adresse = ?, Ville = ?, CodePostal = ?, IdProprio = ? WHERE IdBien = ?";
 	public static final String SELECT_FROM_ID = "SELECT * FROM Bien WHERE IdBien = ? AND TypeBien = 'IMMEUBLE'";
 	public static final String SELECT_BIENS_IMMEUBLES = "SELECT * FROM Bien WHERE IdImmeuble = ? AND TypeBien = 'GARAGE' OR TypeBien = 'HABITATION'";
 	public static final String SELECT_COUNT_BL = "SELECT Count(*) FROM Bien WHERE IdImmeuble = ? AND TypeBien = 'GARAGE' OR TypeBien = 'HABITATION'";
@@ -137,7 +137,7 @@ public final class Immeuble extends Bien{
 			List<Map<String,Object>> result = selectQueryElement.getResult();
 			for(Map<String,Object> row : result){
 				// Ajout de l'IdBien s'il est nécessaire dans le constructeur
-				immeubles.add(new net.mpvm.saeimmobilier.modele.Immeuble.IBuilder(row).build());
+				immeubles.add(new Immeuble.IBuilder(row).build());
 			}
 		} catch (QueryElement.QEltException qEltException) {
 			qEltException.getSqlException().printStackTrace();
@@ -153,9 +153,9 @@ public final class Immeuble extends Bien{
 				"Adresse", this.adresse,
 				"NumeroFiscal", this.getNumeroFiscal(),
 				"DateAjout", this.getDateAjout(),
-				"IdBien", this.getIdBien());
+				"IdBien", this.getIdBien(),
+				"IdProprio", this.getIdProprio());
 	}
-
 
 	@Override
 	public void save() throws ImmeubleException {
@@ -185,7 +185,9 @@ public final class Immeuble extends Bien{
 			query.setArgs(
 							Map.of(1, this.getAdresse(),
 									2, this.getVille(),
-									3, this.getCodePostal()))
+									3, this.getCodePostal(),
+									4, this.getIdProprio(),
+									5, this.getIdBien()))
 					.execute();
 		}catch(QueryElement.QEltException QEltException){
 			throw new ImmeubleException("Erreur lors de la modification du bien", QEltException.getSqlException());
@@ -241,7 +243,7 @@ public final class Immeuble extends Bien{
 			this(args.get("Ville").toString(), Integer.parseInt(args.get("CodePostal").toString()), args.get("Adresse").toString(), args.get("NumeroFiscal").toString(), (Date) args.get("DateAjout"), args.get("IdProprio").toString(), (int) args.get("IdBien"));
 		}
 
-		public IBuilder(String ville, int codePostal, String adresse, String numeroFiscal,String idProprio, Date dateAjout) throws BienException {
+		public IBuilder(String ville, int codePostal, String adresse, String numeroFiscal, Date dateAjout,String idProprio) throws BienException {
 			this(ville, codePostal, adresse, numeroFiscal,dateAjout, idProprio, -1);
 		}
 
