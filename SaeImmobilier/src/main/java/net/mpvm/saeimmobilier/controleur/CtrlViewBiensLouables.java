@@ -15,6 +15,8 @@ import net.mpvm.saeimmobilier.util.JfxUtil;
 import net.mpvm.saeimmobilier.vue.VueAccueil;
 import net.mpvm.saeimmobilier.vue.VueAttribuerAssurance;
 import net.mpvm.saeimmobilier.vue.VueBails;
+import net.mpvm.saeimmobilier.vue.VueBiensLouables;
+
 import java.util.List;
 
 public class CtrlViewBiensLouables {
@@ -96,7 +98,7 @@ public class CtrlViewBiensLouables {
                 Label surface = new Label("Surface: " + bien.getSurface() + " m²");
                 Label nbPieces = new Label("Pièces: " + bien.getNbPieces());
 
-                Button gererLocatairesButton = new Button("Gérer Locataires");
+                Button gererLocatairesButton = new Button("Gérer Bails");
                 gererLocatairesButton.setOnAction(event -> gererBails(bien.getIdBien()));
 
                 Button attribuerAssuranceButton = new Button("Attribuer Assurance");
@@ -105,7 +107,6 @@ public class CtrlViewBiensLouables {
                 Button supprimerButton = new Button("Supprimer");
                 supprimerButton.setOnAction(event -> supprimerBien(bien));
 
-                // Application de styles aux éléments de l'interface
                 List<Label> labels = List.of(typeBien, adresse, surface, nbPieces);
                 labels.forEach(label -> label.getStyleClass().add("assurance-label"));
 
@@ -144,7 +145,9 @@ public class CtrlViewBiensLouables {
 
 
     private void gererBails(int idBien) {
-        new VueBails().startForBiensLouables(new Stage(), idBien);
+        Stage s = new Stage();
+        s.getProperties().put("bien",idBien);
+        new VueBails().startForBiensLouables(s, idBien);
     }
 
     private void attribuerAssurance(int idBien) {

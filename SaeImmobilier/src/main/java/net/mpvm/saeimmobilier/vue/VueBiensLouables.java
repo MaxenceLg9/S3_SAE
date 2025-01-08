@@ -15,6 +15,6 @@ public class VueBiensLouables {
 
     public void startForImmeuble(Stage stage) {
         stage.getProperties().put("bien", this.idImmeuble);
-        JfxUtil.updateStage(stage, "viewbienslouables.fxml", "Biens Louables de l'Immeuble", 750, 800);
+        JfxUtil.updateStage(stage, "viewbienslouables.fxml", "Biens Louables de l'Immeuble", 750, 1200);
     }
 }
