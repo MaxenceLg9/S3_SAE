@@ -63,11 +63,7 @@ public class CtrlNewBien {
         this.LabelDate.setText(formattedDate);
 
         // Initialize the list of Immeubles
-        try {
-            listImmeubles.getItems().addAll(Immeuble.findAll());
-        } catch (Immeuble.ImmeubleException e) {
-            JfxUtil.setAlert(Alert.AlertType.ERROR, "Erreur", "Erreur lors de la récupération des immeubles", "");
-        }
+        refreshImmeubles();
 
 
         for (TypeBien b : TypeBien.values()){
@@ -110,6 +106,14 @@ public class CtrlNewBien {
         });
 
 
+    }
+
+    private void refreshImmeubles() {
+        try {
+            listImmeubles.getItems().addAll(Immeuble.findAll());
+        } catch (Immeuble.ImmeubleException e) {
+            JfxUtil.setAlert(Alert.AlertType.ERROR, "Erreur", "Erreur lors de la récupération des immeubles", "");
+        }
     }
 
     private void fieldsetup() {
@@ -163,6 +167,7 @@ public class CtrlNewBien {
                                 this.fieldNumeroFiscal.getText(),
                                 this.datesql,
                                 this.fieldNumeroProprio.getText()).build().save();
+                        refreshImmeubles();
                     }else {
                         alertFieldsEmpty();
                     }
