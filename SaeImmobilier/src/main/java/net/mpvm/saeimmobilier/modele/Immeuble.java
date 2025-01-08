@@ -11,7 +11,7 @@ import java.sql.Date;
 
 public final class Immeuble extends Bien{
 
-	public static final String INSERT_QUERY = "INSERT INTO Bien (Adresse, Ville, CodePostal, TypeBien, NumeroFiscal) VALUES (?, ?, ?, ?, ?)";
+	public static final String INSERT_QUERY = "INSERT INTO Bien (Adresse, Ville, CodePostal, TypeBien, NumeroFiscal, IdProprio) VALUES (?, ?, ?, ?, ?, ?)";
 	public static final String SELECT_QUERY = "SELECT * FROM Bien WHERE TypeBien = 'IMMEUBLE'";
 	public static final String SELECT_WHERE_QUERY = "SELECT * FROM Bien WHERE Adresse = ? AND Ville = ? AND CodePostal = ?";
 	public static final String DELETE_QUERY = "DELETE FROM Bien WHERE IdBien = ? AND TypeBien = 'IMMEUBLE'";
@@ -130,14 +130,13 @@ public final class Immeuble extends Bien{
 		return bienLouablesAssocies;
 	}
 
-	public static List<net.mpvm.saeimmobilier.modele.Immeuble> findAll() throws ImmeubleException {
-		List<net.mpvm.saeimmobilier.modele.Immeuble> immeubles = new LinkedList<>();
+	public static List<Immeuble> findAll() throws ImmeubleException {
+		List<Immeuble> immeubles = new LinkedList<>();
 		try (SelectQueryElement selectQueryElement = new SelectQueryElement(SELECT_QUERY)) {
 			selectQueryElement.execute();
 			List<Map<String,Object>> result = selectQueryElement.getResult();
 			for(Map<String,Object> row : result){
-				// Ajout de l'IdBien s'il est nécessaire dans le constructeur
-				immeubles.add(new net.mpvm.saeimmobilier.modele.Immeuble.IBuilder(row).build());
+				immeubles.add(new Immeuble.IBuilder(row).build());
 			}
 		} catch (QueryElement.QEltException qEltException) {
 			qEltException.getSqlException().printStackTrace();
@@ -167,7 +166,8 @@ public final class Immeuble extends Bien{
 									2, this.getVille(),
 									3, this.getCodePostal(),
 									4, TypeBien.IMMEUBLE.name(),
-									5, this.getNumeroFiscal()))
+									5, this.getNumeroFiscal(),
+									6, this.getIdProprio()))
 					.execute();
 			super.save();
 			immeubles.put(this.getIdBien(),this);
@@ -276,8 +276,8 @@ public final class Immeuble extends Bien{
 
 	public static class ImmeubleException extends BienException {
 
-        public ImmeubleException(String message, SQLException e) {
-            super(message, e);
-        }
-    }
+		public ImmeubleException(String message, SQLException e) {
+			super(message, e);
+		}
+	}
 }
