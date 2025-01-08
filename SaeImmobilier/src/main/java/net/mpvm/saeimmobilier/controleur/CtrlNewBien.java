@@ -105,6 +105,7 @@ public class CtrlNewBien {
 
     private void refreshImmeubles() {
         try {
+            listImmeubles.getItems().clear();
             listImmeubles.getItems().addAll(Immeuble.findAll());
         } catch (Immeuble.ImmeubleException e) {
             JfxUtil.setAlert(Alert.AlertType.ERROR, "Erreur", "Erreur lors de la récupération des immeubles", "");
@@ -112,6 +113,7 @@ public class CtrlNewBien {
     }
 
     private void fieldsetup() {
+
         fieldsLogement = new ArrayList<>(){
             {
                 add(fieldVille);
@@ -120,8 +122,16 @@ public class CtrlNewBien {
                 add(fieldNbPieces);
                 add(fieldNumeroFiscal);
                 add(fieldSurface);
+                add(fieldNumeroProprio);
             }
         };
+        fieldCodePostal.setTextFormatter(new TextFormatter<>(change ->
+                change.getControlNewText().length() <= 5 ? change : null
+        ));
+
+        fieldNumeroFiscal.setTextFormatter(new TextFormatter<>(change ->
+                change.getControlNewText().length() <= 13 ? change : null
+        ));
     }
 
 
