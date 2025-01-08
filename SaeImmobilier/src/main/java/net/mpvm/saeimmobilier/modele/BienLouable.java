@@ -149,17 +149,22 @@ public abstract class BienLouable extends Bien {
         if(this.getIdBien() != -1)
             throw new BienException("Le bien existe déjà !",null);
         try(UpdateQueryElement updateQueryElement = new UpdateQueryElement(INSERT_QUERY, true)){
-            updateQueryElement.setArgs(
-                    Map.of(1,this.getComplementAdresse(),
-                            2, this.getTypeBienString(),
-                            3, this.getSurface(),
-                            4, this.getNbPieces(),
-                            5, this.getNumeroFiscal(),
-                            6, this.getDateAjout(),
-                            7, this.getImmeuble().getIdBien(),
-                            8, this.getIdProprio()
-                    )).execute();
-            super.save();
+            int length = String.valueOf(this.getCodePostal()).length();
+            int lengthnF=this.getNumeroFiscal().length();
+
+            if (length == 5 && lengthnF == 13 ) {
+                updateQueryElement.setArgs(
+                        Map.of(1, this.getComplementAdresse(),
+                                2, this.getTypeBienString(),
+                                3, this.getSurface(),
+                                4, this.getNbPieces(),
+                                5, this.getNumeroFiscal(),
+                                6, this.getDateAjout(),
+                                7, this.getImmeuble().getIdBien(),
+                                8, this.getIdProprio()
+                        )).execute();
+                super.save();
+            }
         }
         catch (QueryElement.QEltException QEltException){
             throw new BienException("Erreur lors de l'ajout du bien : " + QEltException.getSqlException().getMessage(), QEltException.getSqlException());
@@ -184,7 +189,34 @@ public abstract class BienLouable extends Bien {
         }
         return biens;
     }
+    public static List<BienLouable> findByImmeuble(int idImmeuble) throws Bien.BienException {
+        List<BienLouable> biens = new ArrayList<>();
+        String query = "SELECT * FROM Bien WHERE IdImmeuble = ? AND TypeBien = 'HABITATION' OR TypeBien = 'GARAGE'";
+        try (SelectQueryElement selectQueryElement = new SelectQueryElement(query)) {
+            selectQueryElement.setArgs(Map.of(1, idImmeuble));
+            sortResult(biens, selectQueryElement);
+        } catch (QueryElement.QEltException e) {
+            throw new BienException("Erreur lors de la récupération des biens pour l'immeuble ID " + idImmeuble, e.getSqlException());
+        }
 
+        return biens;
+    }
+    private static void sortResult(List<BienLouable> biens, SelectQueryElement selectQueryElement) throws QueryElement.QEltException {
+        selectQueryElement.execute();
+        List<Map<String, Object>> result = selectQueryElement.getResult();
+        for (Map<String, Object> args : result) {
+            switch (TypeBien.valueOf(args.get("TypeBien").toString().toUpperCase())) {
+                case TypeBien.HABITATION:
+                    biens.add(new Habitation.HBuilder(args).build());
+                    break;
+                case TypeBien.GARAGE:
+                    biens.add(new Garage.GBuilder(args).build());
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
     @Override
     public void modify() throws BienLouableException {
         if(getIdBien() == -1)
