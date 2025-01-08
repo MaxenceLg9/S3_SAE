@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+<GridPane fx:id="root" prefHeight="720.0" prefWidth="1280.0" styleClass="backgroundColor" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.mpvm.saeimmobilier.controleur.CtrlLouerUnBien">
+    <!-- Column Constraints -->
+    <columnConstraints>
+        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
+    </columnConstraints>
+
+    <!-- Row Constraints -->
+    <rowConstraints>
+        <!-- Header Row -->
+        <RowConstraints minHeight="50.0" prefHeight="60.0" vgrow="NEVER" />
+        <!-- Form Section -->
+        <RowConstraints minHeight="200.0" vgrow="SOMETIMES" />
+        <!-- Button Section -->
+        <RowConstraints vgrow="NEVER" />
+    </rowConstraints>
+
+    <!-- Header -->
+    <Label text="Visualisation du bien" textFill="WHITE" GridPane.rowIndex="0">
+        <font>
+            <Font name="Calibri Bold" size="36.0" />
+        </font>
+        <GridPane.margin>
+            <Insets bottom="20.0" top="20.0" />
+        </GridPane.margin>
+    </Label>
+    <GridPane alignment="CENTER" hgap="10.0" style="-fx-background-color: #00002255; -fx-background-radius: 15px; -fx-border-color: #FFFFFF; -fx-border-radius: 15px;" vgap="10.0" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+        <columnConstraints>
+            <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" />
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints minHeight="10.0" valignment="TOP" vgrow="NEVER" />
+            <RowConstraints minHeight="10.0" vgrow="NEVER" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+        <children>
+            <Label fx:id="fieldNomBienL" text="Nom" textFill="#ff4a4a">
+                <font>
+                    <Font name="Arial Black" size="18.0" />
+                </font>
+            </Label>
+            <Label fx:id="fieldAdresseBienL" text="Adresse" textFill="#ff4a4a" GridPane.rowIndex="1">
+                <font>
+                    <Font name="Arial Black" size="18.0" />
+                </font>
+            </Label>
+            <Label fx:id="fieldAdresseBienL1" text="Type" textFill="#ff4a4a" GridPane.rowIndex="2">
+                <font>
+                    <Font name="Arial Black" size="18.0" />
+                </font>
+            </Label>
+            <Label fx:id="fieldAdresseBienL2" text="NbPieces" textFill="#ff4a4a" GridPane.rowIndex="4">
+                <font>
+                    <Font name="Arial Black" size="18.0" />
+                </font>
+            </Label>
+            <Label fx:id="fieldAdresseBienL11" text="Immeuble" textFill="#ff4a4a" GridPane.rowIndex="5">
+                <font>
+                    <Font name="Arial Black" size="18.0" />
+                </font>
+            </Label>
+            <Label fx:id="fieldAdresseBienL12" text="Adresse" textFill="#ff4a4a" GridPane.rowIndex="6">
+                <font>
+                    <Font name="Arial Black" size="18.0" />
+                </font>
+            </Label>
+            <Label fx:id="fieldAdresseBienL13" prefHeight="0.0" text="NumeroFiscal" textFill="#ff4a4a" GridPane.rowIndex="3">
+                <font>
+                    <Font name="Arial Black" size="18.0" />
+                </font>
+            </Label>
+        </children>
+        <GridPane.margin>
+            <Insets bottom="50.0" left="100.0" right="100.0" top="50.0" />
+        </GridPane.margin>
+        <padding>
+            <Insets top="20.0" />
+        </padding>
+    </GridPane>
+
+    <!-- Buttons Section -->
+    <GridPane hgap="20.0" GridPane.rowIndex="2">
+        <columnConstraints>
+            <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" />
+            <ColumnConstraints halignment="RIGHT" hgrow="NEVER" />
+            <ColumnConstraints halignment="RIGHT" hgrow="NEVER" />
+            <ColumnConstraints halignment="RIGHT" hgrow="NEVER" />
+        </columnConstraints>
+        <children>
+            <!-- Valider Button -->
+            <Button alignment="CENTER" prefHeight="35.0" prefWidth="150.0" style="-fx-background-color: #4444FF;" text="Valider" GridPane.columnIndex="3">
+                <GridPane.margin>
+                    <Insets />
+                </GridPane.margin>
+                <font>
+                    <Font name="Arial" size="13.0" />
+                </font>
+            </Button>
+            <!-- Annuler Button -->
+            <Button prefHeight="35.0" prefWidth="150.0" style="-fx-background-color: #FF3333;" text="Annuler">
+                <GridPane.margin>
+                    <Insets />
+                </GridPane.margin>
+                <font>
+                    <Font name="Arial" size="13.0" />
+                </font>
+            </Button>
+            <Button mnemonicParsing="false" style="-fx-background-color: #FF8822;" text="Consulter le bail actuel/Commencer un bail" GridPane.columnIndex="2">
+                <font>
+                    <Font name="Arial" size="13.0" />
+                </font>
+            </Button>
+            <Button mnemonicParsing="false" style="-fx-background-color: #22FF55;" text="Voir tous les baux" GridPane.columnIndex="1">
+                <font>
+                    <Font name="Arial" size="13.0" />
+                </font>
+            </Button>
+        </children>
+        <rowConstraints>
+            <RowConstraints vgrow="NEVER" />
+        </rowConstraints>
+        <GridPane.margin>
+            <Insets bottom="20.0" left="20.0" right="20.0" />
+        </GridPane.margin>
+    </GridPane>
+</GridPane>
