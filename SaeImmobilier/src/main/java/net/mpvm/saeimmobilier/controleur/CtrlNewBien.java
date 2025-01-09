@@ -80,7 +80,7 @@ public class CtrlNewBien {
             if (listImmeubles.getValue() != null) {
                 this.fieldAdresse.setText(listImmeubles.getValue().getAdresse());
                 this.fieldAdresse.setDisable(true);
-                this.fieldCodePostal.setText(String.valueOf(listImmeubles.getValue().getCodePostal()));
+                this.fieldCodePostal.setText(listImmeubles.getValue().getCodePostal());
                 this.fieldCodePostal.setDisable(true);
                 this.fieldVille.setText(listImmeubles.getValue().getVille());
                 this.fieldVille.setDisable(true);
@@ -119,11 +119,11 @@ public class CtrlNewBien {
             }
         };
         fieldCodePostal.setTextFormatter(new TextFormatter<>(change ->
-                change.getControlNewText().length() <= 5 ? change : null
+                change.getControlNewText().length() <= 5 && change.getControlNewText().matches("\\d*") ? change : null
         ));
 
         fieldNumeroFiscal.setTextFormatter(new TextFormatter<>(change ->
-                change.getControlNewText().length() <= 13 ? change : null
+                change.getControlNewText().length() <= 13 && change.getControlNewText().matches("\\d*") ? change : null
         ));
     }
 
@@ -228,7 +228,7 @@ public class CtrlNewBien {
                         // Ajout d'un Immeuble
                         new Immeuble.IBuilder(
                                 this.fieldVille.getText(),
-                                Integer.parseInt(this.fieldCodePostal.getText()),
+                                this.fieldCodePostal.getText(),
                                 this.fieldAdresse.getText(),
                                 this.fieldNumeroFiscal.getText(),
                                 this.datesql,
@@ -300,9 +300,9 @@ public class CtrlNewBien {
         return true;
     }
 
-
     private boolean isCodePostalValid() {
-        if (this.fieldCodePostal.getText().length() != 5) {
+        String codePostal = this.fieldCodePostal.getText();
+        if (codePostal.length() != 5 || !codePostal.matches("\\d{5}")) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Erreur");
             alert.setHeaderText("Code Postal invalide");

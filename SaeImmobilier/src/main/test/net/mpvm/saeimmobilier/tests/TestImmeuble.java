@@ -15,7 +15,7 @@ public class TestImmeuble {
 
     public static final String COMPLEMENT_ADRESSE = "Batiment A, Appartement 86";
     public static final String VILLE = "Toulouse";
-    public static final int CODE_POSTAL= 31000;
+    public static final String CODE_POSTAL= "31000";
     public static final String ADRESSE = "1 rue de la paix";
     public static final String NUMERO_FISCAL = "1234567890";
     public static final String NUMERO_FISCAL_IMMEUBLE = "6789012345";
@@ -41,7 +41,7 @@ public class TestImmeuble {
 
         immeuble.setIdProprio("AAAAAAAAAAAA");
         immeuble.setVille("LAVILLE");
-        immeuble.setCodePostal(41025);
+        immeuble.setCodePostal("41025");
         immeuble.setNumeroFiscal("521425315");
         immeuble.modify();
 

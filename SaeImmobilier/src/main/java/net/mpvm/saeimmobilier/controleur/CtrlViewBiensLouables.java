@@ -143,7 +143,7 @@ public class CtrlViewBiensLouables {
     }
 
     private void attribuerAssurance(int idBien) {
-        JfxUtil.showWindow(new Stage(), VueAttribuerAssurance.class);
+
     }
 
     @FXML

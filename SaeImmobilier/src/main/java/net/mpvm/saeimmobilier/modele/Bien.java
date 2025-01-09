@@ -15,6 +15,8 @@ public abstract class Bien extends Queryable {
 
     private static final String SELECT_QUERY = "SELECT * FROM bien";
     private static final String SELECT_ID_QUERY = "SELECT IdBien FROM bien WHERE NumeroFiscal = ?";
+    private static final String SELECT_QUERY_BY_ID = "SELECT * FROM bien WHERE IdBien = ?";
+
     private int idBien;
     private Optional<Assurance> assurance;
     private float iR; // Taux d'intérêt ou autre valeur
@@ -32,7 +34,7 @@ public abstract class Bien extends Queryable {
     }
 
     public static Bien findById(int idBien) throws BienException {
-        try (SelectQueryElement selectQueryElement = new SelectQueryElement(SELECT_ID_QUERY)) {
+        try (SelectQueryElement selectQueryElement = new SelectQueryElement(SELECT_QUERY_BY_ID)) {
             selectQueryElement.setArgs(Map.of(1, idBien));
             selectQueryElement.execute();
             List<Map<String, Object>> results = selectQueryElement.getResult();
@@ -60,9 +62,9 @@ public abstract class Bien extends Queryable {
 
     public abstract void setVille(String ville);
 
-    public abstract int getCodePostal();
+    public abstract String getCodePostal();
 
-    public abstract void setCodePostal(int codePostal);
+    public abstract void setCodePostal(String codePostal);
 
     public Optional<Assurance> getAssurance() {
         return this.assurance;

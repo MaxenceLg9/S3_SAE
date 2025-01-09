@@ -25,10 +25,10 @@ public final class Immeuble extends Bien{
 
 	private String adresse;
 	private String ville;
-	private int codePostal;
+	private String codePostal;
 	private List<Travaux> travauxAssocies;
 
-	private Immeuble(String ville, int codePostal, String adresse, String numeroFiscal, Date dateAjout, String idProprio, int idBien) {
+	private Immeuble(String ville, String codePostal, String adresse, String numeroFiscal, Date dateAjout, String idProprio, int idBien) {
 		super(idBien, numeroFiscal, dateAjout, idProprio); // Initialisation des attributs hérités de Bien
 		this.travauxAssocies = new ArrayList<>();
 		this.codePostal = codePostal;
@@ -43,7 +43,7 @@ public final class Immeuble extends Bien{
 		this(iBuilder.ville, iBuilder.codePostal, iBuilder.adresse, iBuilder.getNumeroFiscal(), iBuilder.getDateAjout(), iBuilder.getIdProprio(), iBuilder.getIdBien());
 	}
 
-	public static Immeuble findByLocalisation(String adresse, int codePostal, String ville) throws ImmeubleException {
+	public static Immeuble findByLocalisation(String adresse, String codePostal, String ville) throws ImmeubleException {
 		try (SelectQueryElement query = new SelectQueryElement(SELECT_LOCALISATION)) {
 			query.setArgs(Map.of(
 					1, adresse,
@@ -73,12 +73,12 @@ public final class Immeuble extends Bien{
 	}
 
 	@Override
-	public int getCodePostal() {
+	public String getCodePostal() {
 		return this.codePostal;
 	}
 
 	@Override
-	public void setCodePostal(int codePostal) {
+	public void setCodePostal(String codePostal) {
 		this.codePostal = codePostal;
 	}
 
@@ -212,7 +212,7 @@ public final class Immeuble extends Bien{
 		return this.getIdProprio()+" " + this.getAdresse() + " " + this.getVille() + ", " + this.getCodePostal();
 	}
 
-	public int getNbAppartements(int idImmeuble) {
+	public int getNbAppartements() {
 		try (SelectQueryElement query = new SelectQueryElement(SELECT_COUNT_BL)) {
 			query.setArgs(Map.of(1, this.getIdBien()));
 			query.execute();
@@ -231,9 +231,9 @@ public final class Immeuble extends Bien{
 
 		private final String adresse;
 		private final String ville;
-		private final int codePostal;
+		private final String codePostal;
 
-		IBuilder(String ville, int codePostal, String adresse, String numeroFiscal, java.sql.Date dateAjout, String idProprio, int idBien) {
+		IBuilder(String ville, String codePostal, String adresse, String numeroFiscal, java.sql.Date dateAjout, String idProprio, int idBien) {
 			super(idBien, numeroFiscal, dateAjout, idProprio);
 			this.ville = ville;
 			this.codePostal = codePostal;
@@ -241,10 +241,10 @@ public final class Immeuble extends Bien{
 		}
 
 		IBuilder(Map<String,Object> args) {
-			this(args.get("Ville").toString(), Integer.parseInt(args.get("CodePostal").toString()), args.get("Adresse").toString(), args.get("NumeroFiscal").toString(), (Date) args.get("DateAjout"), args.get("IdProprio").toString(), (int) args.get("IdBien"));
+			this(args.get("Ville").toString(), args.get("CodePostal").toString(), args.get("Adresse").toString(), args.get("NumeroFiscal").toString(), (Date) args.get("DateAjout"), args.get("IdProprio").toString(), (int) args.get("IdBien"));
 		}
 
-		public IBuilder(String ville, int codePostal, String adresse, String numeroFiscal, Date dateAjout,String idProprio) throws BienException {
+		public IBuilder(String ville, String codePostal, String adresse, String numeroFiscal, Date dateAjout,String idProprio) throws BienException {
 			this(ville, codePostal, adresse, numeroFiscal,dateAjout, idProprio, -1);
 		}
 

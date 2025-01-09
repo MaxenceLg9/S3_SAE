@@ -12,7 +12,7 @@ public class TestGarage {
 
     public static final String COMPLEMENT_ADRESSE = "Batiment A, Appartement 86";
     public static final String VILLE = "Toulouse";
-    public static final int CODE_POSTAL= 31000;
+    public static final String CODE_POSTAL= "31000";
     public static final String ADRESSE = "1 rue de la paix";
     public static final String NUMERO_FISCAL = "1234567890";
     public static final String NUMERO_FISCAL_IMMEUBLE = "6789012345";
@@ -36,8 +36,8 @@ public class TestGarage {
 
     @Test
     public void testCreatingInstance() throws Bien.BienException {
-        Immeuble immeuble = new Immeuble.IBuilder(VILLE, CODE_POSTAL, ADRESSE, "0123456789",DATE,IDPROPRIO).build();
-        Garage garage = new Garage.GBuilder(COMPLEMENT_ADRESSE, NBPIECES, "2345678901", immeuble, SURFACE, IDPROPRIO, DATE).build();
+        Immeuble immeuble = new Immeuble.IBuilder(VILLE, CODE_POSTAL, ADRESSE, "0123456789123",DATE,IDPROPRIO).build();
+        Garage garage = new Garage.GBuilder(COMPLEMENT_ADRESSE, NBPIECES, "2345678901123", immeuble, SURFACE, IDPROPRIO, DATE).build();
         assertEquals(-1,garage.getIdBien());
     }
 

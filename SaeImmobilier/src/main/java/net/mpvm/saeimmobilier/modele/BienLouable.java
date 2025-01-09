@@ -65,12 +65,12 @@ public abstract class BienLouable extends Bien {
     }
 
     @Override
-    public int getCodePostal(){
+    public String getCodePostal(){
         return this.immeuble.getCodePostal();
     }
 
     @Override
-    public void setCodePostal(int codePostal) {
+    public void setCodePostal(String codePostal) {
         this.immeuble.setCodePostal(codePostal);
     }
 
