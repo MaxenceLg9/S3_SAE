@@ -42,7 +42,7 @@ public class Assurance extends Queryable{
     // Méthode pour récupérer toutes les assurances
     public static List<Assurance> findAll() throws AssuranceException {
         List<Assurance> assurances = new ArrayList<>();
-        String SELECT_QUERY = "SELECT * FROM Assurance";
+        String SELECT_QUERY = "SELECT IdAssurance,ProtectionJuridique,Prime,TypeContrat,Annee,NomAssurance,NumeroContrat FROM Assurance";
 
         try (SelectQueryElement query = new SelectQueryElement(SELECT_QUERY)) {
             Result rs = query.execute();
@@ -245,7 +245,7 @@ public class Assurance extends Queryable{
     }
 
     public String toString(){
-        return this.typeContrat + " " + this.annee + " " + this.prime + " " + this.numeroContrat;
+        return this.nomAssurance+" "+this.typeContrat + " " + this.annee + " " + this.prime + " " + this.numeroContrat;
     }
 
     public void update() throws AssuranceException {

@@ -290,7 +290,7 @@ DELIMITER ;
 
 
 INSERT INTO Assurance (
-    ProtectionJuridique, Prime, Annee, TypeContrat, NumeroContrat
+    ProtectionJuridique, Prime, Annee, TypeContrat, NumeroContrat, NomAssurance
 ) VALUES (
-             1000.0, 1500.0,  2024, 'PROPRIETAIRE',11111111
+             1000.0, 1500.0,  2024, 'PROPRIETAIRE',11111111, 'MAIF'
          );

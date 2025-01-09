@@ -9,9 +9,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
+import javafx.stage.Stage;
 import net.mpvm.saeimmobilier.modele.Assurance;
 import net.mpvm.saeimmobilier.modele.Bien;
 import net.mpvm.saeimmobilier.util.JfxUtil;
+import net.mpvm.saeimmobilier.vue.VueAccueil;
 
 import java.util.Map;
 import java.util.Optional;
@@ -24,20 +26,35 @@ public class CtrlAttribuerAssurance {
     public VBox vBoxContent;
 
     private Map<Integer, Assurance> assurances;
+    private int IdBien;
 
     public void initialize() {
         afficheAssurances();
     }
-
+    public void setIdBien(Stage stage) {
+        Object id = stage.getProperties().get("bien");
+        if (id instanceof Integer) {
+            this.IdBien = (int) id;
+        } else {
+            throw new IllegalStateException("Propriété 'bien' manquante ou incorrecte.");
+        }
+    }
     private void afficheAssurances() {
         try {
             assurances = Assurance.findAll().stream().collect(Collectors.toMap(Assurance::getIdAssurance, Function.identity()));
         } catch (Assurance.AssuranceException assuranceException) {
             JfxUtil.displayError("Erreur lors de la récupération des assurances", "Vérifiez votre connexion Internet");
         }
+        Label titre = new Label("Assurances à Attribuer");
+        titre.setStyle("-fx-font-size: 24px; -fx-text-fill: white; -fx-font-weight: bold;");
+        titre.setAlignment(Pos.CENTER);
 
         vBoxContent.getChildren().clear();
-
+        vBoxContent.getChildren().add(titre);
+        Button retourAccueil = new Button("Retour à l'accueil");
+        retourAccueil.setOnAction(event -> retourAccueil());
+        retourAccueil.getStyleClass().add("button-supprimer");
+        vBoxContent.getChildren().add(retourAccueil);
         for (Assurance a : assurances.values()) {
             GridPane gp = new GridPane();
             ColumnConstraints col1 = new ColumnConstraints();
@@ -47,71 +64,56 @@ public class CtrlAttribuerAssurance {
 
             gp.getColumnConstraints().addAll(col1, col1, col1);
 
-            Label idAssurance = new Label("Assurance " + a.getIdAssurance());
+            // Ajout des labels requis
+            Label nomAssurance = new Label("Nom Assurance " + a.getNomAssurance());
             Label protectionJuridique = new Label("Protection Juridique " + a.getProtectionJuridique());
-            Label prime = new Label("Prime " + a.getPrime());
-            Label totalPrime = new Label("Total Prime " + a.getTotalPrime());
-            Label augmentation = new Label("Augmentation " + a.getAugmentationAnnuelle() + " %");
+            Label prime = new Label("Prime : " + a.getPrime());
             Label typeContrat = new Label("Type de Contrat " + a.getTypeContrat());
             Label annee = new Label("Année " + a.getAnnee());
+            Label totalPrime = new Label("Total Prime " + a.getTotalPrime());
             Button deleteButton = new Button("Supprimer l'assurance");
-            Button chooseButton = new Button("Choisir");
+            Button chooseButton = new Button("  Choisir  ");
 
             deleteButton.setOnAction(event -> askForDelete(a.getIdAssurance()));
+            chooseButton.setOnAction(event -> attribuerAssurance(IdBien, a));
 
-            chooseButton.setOnAction(event -> {
-                // Action future pour le bouton "Choisir"
-                System.out.println("Assurance choisie : " + a.getIdAssurance());
-            });
-
-            // Styles CSS pour les labels et boutons
-            idAssurance.getStyleClass().add("assurance-label");
-            idAssurance.getStyleClass().add("assurance-title");
+            // Styles CSS
+            nomAssurance.getStyleClass().add("assurance-title");
             protectionJuridique.getStyleClass().add("assurance-label");
             prime.getStyleClass().add("assurance-label");
-            totalPrime.getStyleClass().add("assurance-label");
-            augmentation.getStyleClass().add("assurance-label");
             typeContrat.getStyleClass().add("assurance-label");
             annee.getStyleClass().add("assurance-label");
-            annee.getStyleClass().add("assurance-title");
-            deleteButton.getStyleClass().add("assurance-button");
+            totalPrime.getStyleClass().add("assurance-label");
             deleteButton.getStyleClass().add("button-supprimer");
-            chooseButton.getStyleClass().add("assurance-button");
             chooseButton.getStyleClass().add("button-valider");
 
             // Ajout des labels et boutons au GridPane
-            gp.add(idAssurance, 0, 0);
-            gp.add(protectionJuridique, 0, 1);
+            gp.add(nomAssurance, 0, 0);
+            gp.add(annee, 0, 1);
             gp.add(prime, 1, 0);
-            gp.add(totalPrime, 1, 1);
-            gp.add(augmentation, 1, 2);
-            gp.add(typeContrat, 1, 3);
-            gp.add(annee, 2, 0);
-            gp.add(deleteButton, 2, 3);
-            gp.add(chooseButton, 2, 2);
+            gp.add(typeContrat, 0, 2);
+            gp.add(totalPrime, 1, 2);
+            gp.add(protectionJuridique, 1, 1);
+            gp.add(deleteButton, 2, 2);
+            gp.add(chooseButton, 2, 0);
 
             gp.setAlignment(Pos.TOP_CENTER);
-            GridPane.setHalignment(idAssurance, HPos.LEFT);
-            GridPane.setHalignment(protectionJuridique, HPos.LEFT);
-            GridPane.setHalignment(prime, HPos.LEFT);
-            GridPane.setHalignment(totalPrime, HPos.LEFT);
-            GridPane.setHalignment(augmentation, HPos.LEFT);
-            GridPane.setHalignment(typeContrat, HPos.LEFT);
-            GridPane.setHalignment(annee, HPos.LEFT);
-            GridPane.setValignment(idAssurance, VPos.CENTER);
-
-            gp.getStyleClass().add("assurance-gridpane");
             gp.setHgap(10);
             gp.setVgap(5);
 
+            gp.getStyleClass().add("assurance-gridpane");
             gp.setPrefWidth(Region.USE_COMPUTED_SIZE);
             gp.setMaxWidth(Region.USE_COMPUTED_SIZE);
-            int bienId = 0;
-            chooseButton.setOnAction(event -> attribuerAssurance(bienId, a));
 
             vBoxContent.getChildren().add(gp);
         }
     }
+
+    private void retourAccueil() {
+        new VueAccueil().start(new Stage());
+    }
+
+
     public void attribuerAssurance(int idBien, Assurance nouvelleAssurance) {
         try {
             // Récupérer le bien concerné
