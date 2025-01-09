@@ -19,6 +19,7 @@ import net.mpvm.saeimmobilier.vue.VueBiensLouables;
 
 import java.util.List;
 
+
 public class CtrlViewBiensLouables {
 
     @FXML
@@ -28,8 +29,6 @@ public class CtrlViewBiensLouables {
 
     private int idImmeuble;
 
-
-
     @FXML
     public void initialize() {
         vBoxBiensLouables.sceneProperty().addListener((observable, oldScene, newScene) -> {
@@ -38,19 +37,15 @@ public class CtrlViewBiensLouables {
                 if (stage != null) {
                     setIdImmeuble(stage);
                     afficheBiens();
-                }else{
-                    System.out.println("pas de stage");
-
+                } else {
+                    System.out.println("Pas de stage");
                 }
-            }else{
-                System.out.println("pas de scène");
+            } else {
+                System.out.println("Pas de scène");
             }
         });
     }
 
-
-
-    // Mise à jour de l'ID immeuble et rafraîchissement des biens
     public void setIdImmeuble(Stage stage) {
         Object id = stage.getProperties().get("bien");
         if (id instanceof Integer) {
@@ -62,7 +57,6 @@ public class CtrlViewBiensLouables {
 
 
 
-    // Affiche la liste des biens louables de l'immeuble
     private void afficheBiens() {
         try {
             Label titre = new Label("Liste des Biens Louables");
@@ -84,9 +78,8 @@ public class CtrlViewBiensLouables {
                 return;
             }
 
-
-
             for (BienLouable bien : biens) {
+
                 GridPane gp = new GridPane();
                 gp.setHgap(10);
                 gp.setVgap(5);
@@ -143,10 +136,9 @@ public class CtrlViewBiensLouables {
         }
     }
 
-
     private void gererBails(int idBien) {
         Stage s = new Stage();
-        s.getProperties().put("bien",idBien);
+        s.getProperties().put("bien", idBien);
         new VueBails().startForBiensLouables(s, idBien);
     }
 

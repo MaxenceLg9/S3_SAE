@@ -18,7 +18,7 @@ public final class Immeuble extends Bien{
 	public static final String UPDATE_QUERY = "UPDATE Bien SET Adresse = ?, Ville = ?, CodePostal = ?, IdProprio = ? WHERE IdBien = ?";
 	public static final String SELECT_FROM_ID = "SELECT * FROM Bien WHERE IdBien = ? AND TypeBien = 'IMMEUBLE'";
 	public static final String SELECT_BIENS_IMMEUBLES = "SELECT * FROM Bien WHERE IdImmeuble = ? AND TypeBien = 'GARAGE' OR TypeBien = 'HABITATION'";
-	public static final String SELECT_COUNT_BL = "SELECT Count(*) FROM Bien WHERE IdImmeuble = ? AND TypeBien = 'GARAGE' OR TypeBien = 'HABITATION'";
+	public static final String SELECT_COUNT_BL = "SELECT Count(*) FROM Bien WHERE IdImmeuble = ? AND (TypeBien = 'GARAGE' OR TypeBien = 'HABITATION')";
 	public static final String SELECT_LOCALISATION = "SELECT IdImmeuble FROM Bien WHERE Adresse = ? AND Ville = ? AND CodePostal = ? AND TypeBien = 'IMMEUBLE'";
 
 	private static final Map<Integer, Immeuble> immeubles = new HashMap<>();
@@ -212,7 +212,7 @@ public final class Immeuble extends Bien{
 		return this.getIdProprio()+" " + this.getAdresse() + " " + this.getVille() + ", " + this.getCodePostal();
 	}
 
-	public int getNbAppartements() {
+	public int getNbAppartements(int idImmeuble) {
 		try (SelectQueryElement query = new SelectQueryElement(SELECT_COUNT_BL)) {
 			query.setArgs(Map.of(1, this.getIdBien()));
 			query.execute();

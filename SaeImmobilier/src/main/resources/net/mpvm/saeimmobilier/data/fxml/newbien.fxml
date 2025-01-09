@@ -41,7 +41,7 @@
                         <ColumnConstraints fillWidth="false" halignment="LEFT" hgrow="ALWAYS" percentWidth="60.0" />
                     </columnConstraints>
                     <rowConstraints>
-                  <RowConstraints maxHeight="50.0" minHeight="30.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="50.0" minHeight="30.0" prefHeight="40.0" vgrow="SOMETIMES" />
                         <RowConstraints maxHeight="50.0" minHeight="30.0" prefHeight="40.0" vgrow="SOMETIMES" />
                         <RowConstraints maxHeight="50.0" minHeight="30.0" prefHeight="40.0" vgrow="ALWAYS" />
                         <RowConstraints maxHeight="50.0" minHeight="30.0" prefHeight="40.0" vgrow="SOMETIMES" />
@@ -50,9 +50,9 @@
                         <RowConstraints maxHeight="50.0" minHeight="30.0" prefHeight="40.0" vgrow="SOMETIMES" />
                         <RowConstraints maxHeight="0.0" minHeight="20.0" prefHeight="20.0" vgrow="SOMETIMES" />
                         <RowConstraints maxHeight="50.0" minHeight="0.0" prefHeight="33.20001220703125" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="50.0" minHeight="0.0" prefHeight="33.20001220703125" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="33.20001220703125" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="33.20001220703125" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="50.0" minHeight="0.0" prefHeight="33.20001220703125" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="33.20001220703125" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="33.20001220703125" vgrow="SOMETIMES" />
                     </rowConstraints>
                     <children>
                         <Label prefHeight="17.0" text="Adresse du bien" textFill="WHITE" GridPane.rowIndex="3" GridPane.valignment="CENTER">
@@ -156,12 +156,12 @@
                                 <Insets right="10.0" />
                             </GridPane.margin>
                         </ChoiceBox>
-                  <Label prefHeight="17.0" text="Nom arbitraire du bien" textFill="WHITE">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Label>
-                  <TextField fx:id="fieldNumeroProprio" maxWidth="1.7976931348623157E308" minHeight="30.0" minWidth="100.0" prefWidth="300.0" promptText="Nom d'enregistrement" GridPane.columnIndex="1" />
+                        <Label prefHeight="17.0" text="Nom arbitraire du bien" textFill="WHITE">
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                        </Label>
+                        <TextField fx:id="fieldNumeroProprio" maxWidth="1.7976931348623157E308" minHeight="30.0" minWidth="100.0" prefWidth="300.0" promptText="Nom d'enregistrement" GridPane.columnIndex="1" />
                     </children>
                     <opaqueInsets>
                         <Insets />
@@ -219,9 +219,9 @@
             <padding>
                 <Insets bottom="10.0" left="5.0" right="5.0" />
             </padding>
-         <opaqueInsets>
-            <Insets left="5.0" right="5.0" />
-         </opaqueInsets>
+            <opaqueInsets>
+                <Insets left="5.0" right="5.0" />
+            </opaqueInsets>
         </GridPane>
     </bottom>
     <top>

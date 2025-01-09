@@ -18,6 +18,7 @@ public abstract class BienLouable extends Bien {
     public static final String DELETE_QUERY = "DELETE FROM bien WHERE IdBien = ?";
     public static final String UPDATE_QUERY = "UPDATE bien SET ComplementAdresse = ?, Surface = ?, NombrePieces = ? , NumeroFiscal = ?, IdProprio = ? WHERE IdBien = ?";
     public static final String SELECT_QUERY = "SELECT * FROM bien WHERE TypeBien in ('HABITATION','GARAGE')";
+    public static final String SELECT_QUERY_ID = "SELECT IdImmeuble FROM bien WHERE IdBien = ?";
 
     private String complementAdresse;
     private ArrayList<Travaux> travaux;
@@ -191,7 +192,7 @@ public abstract class BienLouable extends Bien {
     }
     public static List<BienLouable> findByImmeuble(int idImmeuble) throws Bien.BienException {
         List<BienLouable> biens = new ArrayList<>();
-        String query = "SELECT * FROM Bien WHERE IdImmeuble = ? AND TypeBien = 'HABITATION' OR TypeBien = 'GARAGE'";
+        String query = "SELECT * FROM Bien WHERE IdImmeuble = ? AND (TypeBien = 'HABITATION' OR TypeBien = 'GARAGE')";
         try (SelectQueryElement selectQueryElement = new SelectQueryElement(query)) {
             selectQueryElement.setArgs(Map.of(1, idImmeuble));
             sortResult(biens, selectQueryElement);
@@ -201,6 +202,22 @@ public abstract class BienLouable extends Bien {
 
         return biens;
     }
+
+    public static int findIdImmeuble(int idBien) throws Bien.BienException {
+        try (SelectQueryElement selectQueryElement = new SelectQueryElement(SELECT_QUERY_ID)) {
+            selectQueryElement.setArgs(Map.of(1, idBien));
+            selectQueryElement.execute();
+            List<Map<String, Object>> result = selectQueryElement.getResult();
+            if (!result.isEmpty()) {
+                return Integer.parseInt(result.get(0).get("IdImmeuble").toString());
+            } else {
+                throw new BienException("Aucun immeuble trouvé pour le bien avec ID " + idBien, null);
+            }
+        } catch (QueryElement.QEltException e) {
+            throw new BienException("Erreur lors de la récupération de l'ID immeuble pour le bien avec ID " + idBien, e.getSqlException());
+        }
+    }
+
     private static void sortResult(List<BienLouable> biens, SelectQueryElement selectQueryElement) throws QueryElement.QEltException {
         selectQueryElement.execute();
         List<Map<String, Object>> result = selectQueryElement.getResult();

@@ -68,7 +68,7 @@ public class CtrlViewImmeubles {
                 Label adresse = new Label("Adresse " + immeuble.getAdresse());
                 Label codepostal = new Label("Code Postal " + immeuble.getCodePostal());
                 Label ville = new Label("Ville " + immeuble.getVille());
-                Label nbAppartements = new Label("Nombre d'appartements " + immeuble.getNbAppartements());
+                Label nbAppartements = new Label("Nombre d'appartements " + immeuble.getNbAppartements(immeuble.getIdBien()));
 
                 Button voirBiensButton = new Button("Voir les biens");
                 voirBiensButton.setOnAction(event -> afficheBiensPourImmeuble(immeuble.getIdBien()));

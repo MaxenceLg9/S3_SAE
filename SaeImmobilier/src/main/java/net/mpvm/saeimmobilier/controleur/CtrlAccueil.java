@@ -75,7 +75,7 @@ public class CtrlAccueil {
         Label l1 = new Label("Adresse :" + i.getAdresse());
         Label l2 = new Label("Code Postal :" + i.getCodePostal());
         Label l3 = new Label("Ville :" + i.getVille());
-        Label l4 = new Label("Nombre d'appartements :" + i.getNbAppartements());
+        Label l4 = new Label("Nombre d'appartements :" + i.getNbAppartements(i.getIdBien()));
         gP.addColumn(0, l1,l2,l3,l4);
 
         // Center-align content in the grid
