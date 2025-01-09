@@ -47,7 +47,6 @@ public class CtrlNewBien {
 
     private Date currentDate;
 
-
     @FXML
     public void initialize() {
         this.datesql = Date.valueOf(LocalDate.now());
@@ -61,22 +60,19 @@ public class CtrlNewBien {
         this.LabelDate.setText(formattedDate);
         refreshImmeubles();
 
-        for (TypeBien b : TypeBien.values()){
+        for (TypeBien b : TypeBien.values()) {
             this.listTypeBien.getItems().add(b);
         }
 
-        this.listTypeBien.setOnAction(actionEvent -> {
-            if(this.listTypeBien.getValue()==TypeBien.IMMEUBLE){
-                this.fieldNbPieces.setDisable(true);
-                this.fieldSurface.setDisable(true);
-                this.listImmeubles.setDisable(true);
-                this.fieldLieuImmeuble.setDisable(true);
+        // Reset all fields initially and enable only listTypeBien
+        resetFields(); // Nouvelle méthode pour vider les champs
 
-            } else {
-                this.fieldNbPieces.setDisable(false);
-                this.fieldSurface.setDisable(false);
-                this.listImmeubles.setDisable(false);
-                this.fieldLieuImmeuble.setDisable(false);
+        this.listTypeBien.setOnAction(actionEvent -> {
+            resetFields(); // Vider les champs à chaque changement de type de bien
+            if (this.listTypeBien.getValue() == TypeBien.IMMEUBLE) {
+                enableFieldsForImmeuble();
+            } else if (this.listTypeBien.getValue() == TypeBien.HABITATION || this.listTypeBien.getValue() == TypeBien.GARAGE) {
+                enableFieldsForHabitationOrGarage();
             }
         });
 
@@ -99,8 +95,6 @@ public class CtrlNewBien {
                 this.listTypeBien.getItems().add(TypeBien.IMMEUBLE);
             }
         });
-
-
     }
 
     private void refreshImmeubles() {
@@ -113,8 +107,7 @@ public class CtrlNewBien {
     }
 
     private void fieldsetup() {
-
-        fieldsLogement = new ArrayList<>(){
+        fieldsLogement = new ArrayList<>() {
             {
                 add(fieldVille);
                 add(fieldCodePostal);
@@ -134,6 +127,44 @@ public class CtrlNewBien {
         ));
     }
 
+    private void resetFields() {
+        for (TextField field : fieldsLogement) {
+            field.setText("");
+            field.setDisable(true);
+        }
+        fieldLieuImmeuble.setText("");
+        fieldLieuImmeuble.setDisable(true);
+        fieldSurface.setText("");
+        fieldSurface.setDisable(true);
+        fieldNbPieces.setText("");
+        fieldNbPieces.setDisable(true);
+        fieldAdresse.setText("");
+        fieldAdresse.setDisable(true);
+        fieldVille.setText("");
+        fieldVille.setDisable(true);
+        fieldCodePostal.setText("");
+        fieldCodePostal.setDisable(true);
+        listImmeubles.setValue(null);
+        listImmeubles.setDisable(true);
+        listTypeBien.setDisable(false);
+    }
+
+    private void enableFieldsForHabitationOrGarage() {
+        fieldNbPieces.setDisable(false);
+        fieldSurface.setDisable(false);
+        fieldNumeroFiscal.setDisable(false);
+        fieldNumeroProprio.setDisable(false);
+        fieldLieuImmeuble.setDisable(false);
+        listImmeubles.setDisable(false);
+    }
+
+    private void enableFieldsForImmeuble() {
+        fieldAdresse.setDisable(false);
+        fieldVille.setDisable(false);
+        fieldCodePostal.setDisable(false);
+        fieldNumeroFiscal.setDisable(false);
+        fieldNumeroProprio.setDisable(false);
+    }
 
     @FXML
     public void ajouterBien(ActionEvent actionEvent) {
@@ -147,10 +178,19 @@ public class CtrlNewBien {
             switch (this.listTypeBien.getValue()) {
                 case HABITATION:
                 case GARAGE:
+                    // Vérifier si un immeuble est sélectionné
+                    if (this.listImmeubles.getValue() == null) {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Erreur");
+                        alert.setHeaderText("Sélection requise");
+                        alert.setContentText("Veuillez sélectionner un immeuble dans la liste des immeubles !");
+                        alert.showAndWait();
+                        return;
+                    }
+
                     // Validation des champs pour Habitation et Garage
-                    if (fieldsNotEmptyBienLouable() && isCodePostalValid() && isNumeroFiscalValid()) {
+                    if (fieldsNotEmptyBienLouable() && isCodePostalValid() && isNumeroFiscalValid() && isSurfaceValid() && isNbPiecesValid()) {
                         if (this.listTypeBien.getValue() == TypeBien.HABITATION) {
-                            // Ajout d'une Habitation
                             new Habitation.HBuilder(
                                     this.fieldLieuImmeuble.getText(),
                                     Integer.parseInt(this.fieldNbPieces.getText()),
@@ -195,7 +235,7 @@ public class CtrlNewBien {
                                 this.fieldNumeroProprio.getText()
                         ).build().save();
 
-                        refreshImmeubles(); // Mettre à jour la liste des immeubles
+                        refreshImmeubles();
                         JfxUtil.setAlert(Alert.AlertType.INFORMATION, "Succès", "Ajout du bien", "Le bien de type Immeuble a été ajouté avec succès !");
                     } else {
                         alertFieldsEmpty();
@@ -215,6 +255,52 @@ public class CtrlNewBien {
             JfxUtil.setAlert(Alert.AlertType.ERROR, "Erreur", "Format invalide", "Veuillez vérifier les valeurs numériques des champs !");
         }
     }
+
+    private boolean isSurfaceValid() {
+        try {
+            float surface = Float.parseFloat(this.fieldSurface.getText());
+            if (surface < 2 || surface > 2000) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Erreur");
+                alert.setHeaderText("Surface invalide");
+                alert.setContentText("La surface doit être comprise entre 2 et 2000 !");
+                alert.showAndWait();
+                return false;
+            }
+        } catch (NumberFormatException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erreur");
+            alert.setHeaderText("Format invalide");
+            alert.setContentText("Veuillez entrer une surface valide (nombre) !");
+            alert.showAndWait();
+            return false;
+        }
+        return true;
+    }
+
+    private boolean isNbPiecesValid() {
+        try {
+            int nbPieces = Integer.parseInt(this.fieldNbPieces.getText());
+            if (nbPieces < 1 || nbPieces > 100) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Erreur");
+                alert.setHeaderText("Nombre de pièces invalide");
+                alert.setContentText("Le nombre de pièces doit être compris entre 1 et 100 !");
+                alert.showAndWait();
+                return false;
+            }
+        } catch (NumberFormatException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erreur");
+            alert.setHeaderText("Format invalide");
+            alert.setContentText("Veuillez entrer un nombre de pièces valide (nombre entier) !");
+            alert.showAndWait();
+            return false;
+        }
+        return true;
+    }
+
+
     private boolean isCodePostalValid() {
         if (this.fieldCodePostal.getText().length() != 5) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -226,6 +312,7 @@ public class CtrlNewBien {
         }
         return true;
     }
+
     private boolean isNumeroFiscalValid() {
         String numeroFiscal = this.fieldNumeroFiscal.getText();
 
@@ -253,18 +340,16 @@ public class CtrlNewBien {
         return true;
     }
 
-
     private boolean fieldsNotEmptyBienLouable() {
-        for(TextField textField : fieldsLogement){
-            if(textField.getText().isEmpty()){
+        for (TextField textField : fieldsLogement) {
+            if (textField.getText().isEmpty()) {
                 return false;
             }
         }
         return true;
     }
 
-
-    private boolean fieldsNotEmptyImmeuble(){
+    private boolean fieldsNotEmptyImmeuble() {
         for (int i = 0; i < 3; i++) {
             if (this.fieldsLogement.get(i).getText().isEmpty()) {
                 return false;
@@ -274,19 +359,23 @@ public class CtrlNewBien {
     }
 
     private void alertFieldsEmptybienLouable() {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Erreur");
-        alert.setHeaderText("Champs vides");
-        alert.setContentText("Veuillez remplir tous les champs pour un bien louable");
-        alert.showAndWait();
+        if (!fieldsNotEmptyBienLouable()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erreur");
+            alert.setHeaderText("Champs vides");
+            alert.setContentText("Veuillez remplir tous les champs pour un bien louable");
+            alert.showAndWait();
+        }
     }
 
-    private void alertFieldsEmpty(){
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Erreur");
-        alert.setHeaderText("Champs vides");
-        alert.setContentText("Veuillez remplir tous les champs pour un Immeuble");
-        alert.showAndWait();
+    private void alertFieldsEmpty() {
+        if (!fieldsNotEmptyImmeuble()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erreur");
+            alert.setHeaderText("Champs vides");
+            alert.setContentText("Veuillez remplir tous les champs pour un Immeuble");
+            alert.showAndWait();
+        }
     }
 
     private void alertTypeEmpty() {
@@ -302,20 +391,13 @@ public class CtrlNewBien {
         new VueAccueil().start(new Stage());
     }
 
-
     public void Accueil(ActionEvent event) {
         Stage stage = (Stage) this.listImmeubles.getScene().getWindow();
         JfxUtil.showWindow(stage, VueAccueil.class);
     }
 
     public void Clear(ActionEvent actionEvent) {
-        for(TextField textField : fieldsLogement){
-            if(!textField.getText().isEmpty()){
-                textField.setText("");
-                textField.setEditable(true);
-            }
-        }
-        this.listImmeubles.setValue(null);
+        resetFields();
         this.listTypeBien.setValue(null);
     }
 }

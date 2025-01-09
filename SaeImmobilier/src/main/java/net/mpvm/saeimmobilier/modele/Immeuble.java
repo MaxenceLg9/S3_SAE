@@ -209,7 +209,7 @@ public final class Immeuble extends Bien{
 
 	@Override
 	public String toString(){
-		return this.getAdresse() + " " + this.getVille() + ", " + this.getCodePostal();
+		return this.getIdProprio()+" " + this.getAdresse() + " " + this.getVille() + ", " + this.getCodePostal();
 	}
 
 	public int getNbAppartements() {

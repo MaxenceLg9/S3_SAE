@@ -78,7 +78,7 @@
                                 <Insets right="10.0" />
                             </GridPane.margin>
                         </TextField>
-                        <Label prefHeight="17.0" text="Surface habitable du bien" textFill="WHITE" GridPane.rowIndex="9" GridPane.valignment="CENTER">
+                        <Label prefHeight="17.0" text="Surface du bien (m²)" textFill="WHITE" GridPane.rowIndex="9" GridPane.valignment="CENTER">
                             <GridPane.margin>
                                 <Insets />
                             </GridPane.margin>
