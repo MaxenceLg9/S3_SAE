@@ -131,7 +131,6 @@ public class CtrlNewAssurance {
     public void retourAccueil(ActionEvent event) {
         Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         stage.close();
-        new VueAccueil().start(new Stage());
     }
 
     private void validateFields() throws NumberFormatException {
