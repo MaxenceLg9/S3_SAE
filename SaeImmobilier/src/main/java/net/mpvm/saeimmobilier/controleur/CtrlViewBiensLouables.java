@@ -12,10 +12,7 @@ import javafx.stage.Stage;
 import net.mpvm.saeimmobilier.modele.Bien;
 import net.mpvm.saeimmobilier.modele.BienLouable;
 import net.mpvm.saeimmobilier.util.JfxUtil;
-import net.mpvm.saeimmobilier.vue.VueAccueil;
-import net.mpvm.saeimmobilier.vue.VueAttribuerAssurance;
-import net.mpvm.saeimmobilier.vue.VueBails;
-import net.mpvm.saeimmobilier.vue.VueBiensLouables;
+import net.mpvm.saeimmobilier.vue.*;
 
 import java.util.List;
 
@@ -151,6 +148,5 @@ public class CtrlViewBiensLouables {
     private void retourAccueil(ActionEvent event) {
         Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         stage.close();
-        new VueAccueil().start(new Stage());
     }
 }

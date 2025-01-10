@@ -9,16 +9,12 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Paint;
-import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import net.mpvm.saeimmobilier.modele.Immeuble;
 import net.mpvm.saeimmobilier.modele.Locataire;
 import net.mpvm.saeimmobilier.sql.Query.Queryable;
 import net.mpvm.saeimmobilier.util.JfxUtil;
 import net.mpvm.saeimmobilier.vue.*;
-
-import static javafx.geometry.NodeOrientation.INHERIT;
 
 public class CtrlAccueil {
 
@@ -128,7 +124,7 @@ public class CtrlAccueil {
     }
 
     @FXML
-    public void ajouterAssurance(ActionEvent event) {
+    public void ajouterAssurance() {
         Stage stage = new Stage();
         JfxUtil.showWindow(stage, VueNewAssurance.class);
         stage.getProperties().put("parent", this);
