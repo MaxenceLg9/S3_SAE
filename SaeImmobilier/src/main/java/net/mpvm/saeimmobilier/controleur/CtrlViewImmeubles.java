@@ -132,8 +132,6 @@ public class CtrlViewImmeubles {
     }
 
     private void attribuerAssurance(int idBien,ActionEvent event) {
-        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-        stage.close();
         Stage s = new Stage();
         s.getProperties().put("bien",idBien);
         new VueAttribuerAssurance(idBien).startForImmeuble(s);
