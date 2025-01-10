@@ -3,17 +3,20 @@ package net.mpvm.saeimmobilier.controleur;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.stage.Stage;
 import net.mpvm.saeimmobilier.modele.Assurance;
 import net.mpvm.saeimmobilier.modele.TypeContrat;
-
+import net.mpvm.saeimmobilier.util.JfxUtil;
+import net.mpvm.saeimmobilier.vue.VueAccueil;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class CtrlNewAssurance {
 
-    public Button btnAnnuler;
-    public Button btnAjouterAssurance;
     @FXML
     private TextField fieldProtectionJuridique;
     @FXML
@@ -26,9 +29,12 @@ public class CtrlNewAssurance {
     private List<TextField> fieldsAssurance;
     @FXML
     private TextField fieldAnnee;
-
     @FXML
     private TextField fieldNom;
+
+    @FXML
+    private GridPane bottomGridPane;
+
     public CtrlNewAssurance() {
         System.out.println("Constructeur de CtrlNewAssurance appele");
     }
@@ -37,6 +43,7 @@ public class CtrlNewAssurance {
     public void initialize() {
         fieldSetup();
         setupComboBox();
+        setupButtons();
     }
 
     private void setupComboBox() {
@@ -55,6 +62,24 @@ public class CtrlNewAssurance {
         };
     }
 
+    private void setupButtons() {
+        Button btnAjouterAssurance = new Button("Ajouter Assurance");
+        btnAjouterAssurance.getStyleClass().add("button-valider");
+        btnAjouterAssurance.setOnAction(this::ajouterAssurance);
+
+        Button btnAnnuler = new Button("Annuler");
+        btnAnnuler.getStyleClass().add("button-supprimer");
+        btnAnnuler.setOnAction(this::Effacer);
+
+        Button btnRetourAccueil = new Button("Retour à l'Accueil");
+        btnRetourAccueil.getStyleClass().add("button-supprimer");
+        btnRetourAccueil.setOnAction(this::retourAccueil);
+
+        bottomGridPane.add(btnAjouterAssurance, 2, 0);
+        bottomGridPane.add(btnAnnuler, 1, 0);
+        bottomGridPane.add(btnRetourAccueil, 0, 0);
+
+    }
 
     @FXML
     public void ajouterAssurance(ActionEvent event) {
@@ -69,18 +94,20 @@ public class CtrlNewAssurance {
                 String nomAssurance = fieldNom.getText();
 
                 if (typeContrat == null) {
-                    alertError("Type de contrat manquant", "Veuillez selectionner un type de contrat.");
+                    alertError("Type de contrat manquant", "Veuillez sélectionner un type de contrat.");
                     return;
                 }
                 if (annee < 1950 || annee > 2050) {
                     alertError("Année invalide", "L'année doit être comprise entre 1950 et 2050.");
                     return;
                 }
-                // Enregistrement de l'assurance dans la base de donnees
-                new Assurance.ABuilder(typeContrat,annee,protectionJuridique,prime,numeroContrat,nomAssurance).build().save();
-
+                // Enregistrement de l'assurance dans la base de données
+                new Assurance.ABuilder(typeContrat, annee, protectionJuridique, prime, numeroContrat, nomAssurance)
+                        .build()
+                        .save();
+                JfxUtil.setAlert(Alert.AlertType.INFORMATION, "Succès", "Ajout de l'Assurance", "L'assurance a été ajoutée avec succès !");
             } catch (NumberFormatException e) {
-                alertError("Format des champs invalide", "Veuillez saisir des valeurs numeriques pour les champs appropriés.");
+                alertError("Format des champs invalide", "Veuillez saisir des valeurs numériques pour les champs appropriés.");
             } catch (Assurance.AssuranceException e) {
                 System.out.println(e.getMessage());
                 alertError("Erreur lors de l'enregistrement", "Une erreur est survenue lors de l'ajout de l'assurance.");
@@ -89,20 +116,38 @@ public class CtrlNewAssurance {
             alertFieldsEmpty();
         }
     }
+
+    @FXML
+    public void Effacer(ActionEvent actionEvent) {
+        fieldAnnee.clear();
+        fieldNom.clear();
+        fieldNumeroDeContrat.clear();
+        fieldProtectionJuridique.clear();
+        comboTypeContrat.getItems().clear();
+        fieldsAssurance.clear();
+        fieldPrime.clear();
+    }
+
+    public void retourAccueil(ActionEvent event) {
+        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+        stage.close();
+        new VueAccueil().start(new Stage());
+    }
+
     private void validateFields() throws NumberFormatException {
         for (TextField field : fieldsAssurance) {
-            String text = field.getText().replace(",", "."); // Convertir les virgules en points pour Java
+            String text = field.getText().replace(",", ".");
             if (field == fieldAnnee) {
                 if (!text.matches("^[0-9]+$")) {
                     throw new NumberFormatException("Le champ 'Année' doit contenir uniquement des chiffres.");
                 }
             } else if (field == fieldProtectionJuridique) {
                 if (!text.matches("^[0-9]*\\.?[0-9]+$")) {
-                    throw new NumberFormatException("Le champ 'Protection Juridique' doit être un nombre (par exemple : 100 ou 100.5).");
+                    throw new NumberFormatException("Le champ 'Protection Juridique' doit être un nombre.");
                 }
             } else if (field == fieldPrime) {
                 if (!text.matches("^[0-9]*\\.?[0-9]+$")) {
-                    throw new NumberFormatException("Le champ 'Prime' doit être un nombre (par exemple : 50 ou 50.5).");
+                    throw new NumberFormatException("Le champ 'Prime' doit être un nombre.");
                 }
             } else if (field == fieldNumeroDeContrat) {
                 if (!text.matches("^[a-zA-Z0-9]+$")) {
@@ -135,16 +180,5 @@ public class CtrlNewAssurance {
             }
         }
         return true;
-    }
-
-    @FXML
-    public void Annuler(ActionEvent actionEvent) {
-        fieldAnnee.clear();
-        fieldNom.clear();
-        fieldNumeroDeContrat.clear();
-        fieldProtectionJuridique.clear();
-        comboTypeContrat.getItems().clear();
-        fieldsAssurance.clear();
-        fieldPrime.clear();
     }
 }

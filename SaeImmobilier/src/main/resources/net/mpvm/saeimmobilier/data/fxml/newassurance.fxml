@@ -25,9 +25,10 @@
                         <Font size="48.0" />
                     </font>
                 </Label>
+
             </top>
             <center>
-                <GridPane alignment="CENTER" hgap="15.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="470.0" prefWidth="770.0" vgap="30.0">
+                <GridPane alignment="CENTER" hgap="15.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="470.0" prefWidth="770.0" vgap="25.0">
                     <children>
                         <!-- Nom de l'Assurance -->
                         <Label text="Nom" textFill="WHITE" GridPane.rowIndex="0">
@@ -103,35 +104,30 @@
                 <Cursor fx:constant="DEFAULT" />
             </cursor>
             <bottom>
-                <GridPane alignment="CENTER" hgap="50.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" BorderPane.alignment="CENTER">
+                <GridPane fx:id="bottomGridPane" alignment="CENTER" hgap="50.0" BorderPane.alignment="CENTER">
                     <columnConstraints>
-                        <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
-                        <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
+                        <!-- Première colonne alignée à droite -->
+                        <ColumnConstraints halignment="RIGHT" hgrow="ALWAYS" />
+                        <!-- Deuxième colonne alignée à droite -->
+                        <ColumnConstraints halignment="RIGHT" hgrow="ALWAYS" />
+                        <!-- Troisième colonne alignée à gauche -->
+                        <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" />
                     </columnConstraints>
                     <rowConstraints>
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints vgrow="SOMETIMES" />
                     </rowConstraints>
-                    <children>
-                        <Button fx:id="btnAjouterAssurance" alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" onAction="#ajouterAssurance" style="-fx-font-size: 16; -fx-background-color: #5DADEC;" text="Ajouter Assurance" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER">
-                            <font>
-                                <Font name="Calibri" size="16.0" />
-                            </font>
-                        </Button>
-                        <Button fx:id="btnAnnuler" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#Annuler" style="-fx-background-color: #e12816;" text="Annuler" textFill="WHITE" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER">
-                            <font>
-                                <Font name="Calibri" size="16.0" />
-                            </font>
-                        </Button>
-                    </children>
-                    <BorderPane.margin>
-                        <Insets top="30.0" />
-                    </BorderPane.margin>
+                    <GridPane.margin>
+                        <Insets bottom="30" />
+                    </GridPane.margin>
                 </GridPane>
             </bottom>
+
+            <padding>
+                <Insets bottom="30.0" />
+            </padding>
         </BorderPane>
     </children>
+
     <cursor>
         <Cursor fx:constant="DEFAULT" />
     </cursor>
