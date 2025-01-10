@@ -1,5 +1,6 @@
 package net.mpvm.saeimmobilier.controleur;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
@@ -9,8 +10,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
+import javafx.stage.Stage;
 import net.mpvm.saeimmobilier.modele.Locataire;
 import net.mpvm.saeimmobilier.util.JfxUtil;
+import net.mpvm.saeimmobilier.vue.VueAccueil;
 
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -21,7 +24,9 @@ import java.util.stream.Collectors;
 public class CtrlViewLocataires {
 
     @FXML
-    public VBox vBoxContent;
+    private VBox vBoxContent;
+    @FXML
+    private Button retourAccueil;
 
     private Map<Integer, Locataire> locataires;
 
@@ -30,6 +35,7 @@ public class CtrlViewLocataires {
     }
 
     private void afficheLocataires() {
+
         try {
             locataires = Locataire.findAll().stream().collect(Collectors.toMap(Locataire::getIdLocataire, Function.identity()));
         } catch (Locataire.LocataireException locataireException) {
@@ -37,6 +43,17 @@ public class CtrlViewLocataires {
             return;
         }
         vBoxContent.getChildren().clear();
+
+        Label titre = new Label("Liste des Locataires");
+        titre.setStyle("-fx-font-size: 24px; -fx-text-fill: white; -fx-font-weight: bold; -fx-alignment: center;");
+        titre.setAlignment(Pos.CENTER);
+        vBoxContent.getChildren().add(titre);
+
+        retourAccueil = new Button("Retour à l'accueil");
+        retourAccueil.setOnAction(event -> retourAccueil(event));
+        retourAccueil.getStyleClass().add("button-supprimer");
+        vBoxContent.getChildren().add(retourAccueil);
+
         for(Locataire l : locataires.values()) {
             GridPane gp = new GridPane();
             ColumnConstraints col1 = new ColumnConstraints();
@@ -113,5 +130,11 @@ public class CtrlViewLocataires {
             // TODO: handle exception with visual
         }
         afficheLocataires();
+    }
+
+    @FXML
+    private void retourAccueil(ActionEvent event) {
+        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+        stage.close();
     }
 }
