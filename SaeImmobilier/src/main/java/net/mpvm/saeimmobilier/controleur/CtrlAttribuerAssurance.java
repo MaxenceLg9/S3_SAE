@@ -15,6 +15,7 @@ import net.mpvm.saeimmobilier.util.JfxUtil;
 import net.mpvm.saeimmobilier.vue.VueImmeubles;
 import net.mpvm.saeimmobilier.vue.VueNewAssurance;
 
+
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
@@ -29,7 +30,23 @@ public class CtrlAttribuerAssurance {
     private int IdBien;
 
     public void initialize() {
-        afficheAssurances();
+        vBoxContent.sceneProperty().addListener((observable, oldScene, newScene) -> {
+            if (newScene != null) {
+                Stage stage = (Stage) newScene.getWindow();
+                if (stage != null) {
+                    setIdBien(stage);
+                    try {
+                        afficheAssurances();
+                    } catch (Assurance.AssuranceException e) {
+                        throw new RuntimeException(e);
+                    }
+                } else {
+                    System.out.println("Pas de stage");
+                }
+            } else {
+                System.out.println("Pas de scène");
+            }
+        });
     }
     public void setIdBien(Stage stage) {
         Object id = stage.getProperties().get("bien");
@@ -39,12 +56,14 @@ public class CtrlAttribuerAssurance {
             throw new IllegalStateException("Propriété 'bien' manquante ou incorrecte.");
         }
     }
-    private void afficheAssurances() {
+    private void afficheAssurances() throws Assurance.AssuranceException {
         try {
             assurances = Assurance.findAll().stream().collect(Collectors.toMap(Assurance::getIdAssurance, Function.identity()));
         } catch (Assurance.AssuranceException assuranceException) {
             JfxUtil.displayError("Erreur lors de la récupération des assurances", "Vérifiez votre connexion Internet");
+            return;
         }
+
         Label titre = new Label("Assurances à Attribuer");
         titre.setStyle("-fx-font-size: 24px; -fx-text-fill: white; -fx-font-weight: bold;");
         titre.setAlignment(Pos.CENTER);
@@ -60,6 +79,7 @@ public class CtrlAttribuerAssurance {
         creerAssurance.setOnAction(event -> creerAssurance(event));
         creerAssurance.getStyleClass().add("button-valider");
         vBoxContent.getChildren().add(creerAssurance);
+
         for (Assurance a : assurances.values()) {
             GridPane gp = new GridPane();
             ColumnConstraints col1 = new ColumnConstraints();
@@ -69,6 +89,7 @@ public class CtrlAttribuerAssurance {
 
             gp.getColumnConstraints().addAll(col1, col1, col1);
 
+
             // Ajout des labels requis
             Label nomAssurance = new Label("Nom Assurance " + a.getNomAssurance());
             Label protectionJuridique = new Label("Protection Juridique " + a.getProtectionJuridique());
@@ -76,31 +97,32 @@ public class CtrlAttribuerAssurance {
             Label typeContrat = new Label("Type de Contrat " + a.getTypeContrat());
             Label annee = new Label("Année " + a.getAnnee());
             Label totalPrime = new Label("Total Prime " + a.getTotalPrime());
+            Label idBienLabel = new Label("ID Bien associé : " + setIdBienAssurance(a));
             Button deleteButton = new Button("Supprimer l'assurance");
             Button chooseButton = new Button("  Choisir  ");
 
             deleteButton.setOnAction(event -> askForDelete(a.getIdAssurance()));
             chooseButton.setOnAction(event -> attribuerAssurance(IdBien, a));
 
-            // Styles CSS
             nomAssurance.getStyleClass().add("assurance-title");
             protectionJuridique.getStyleClass().add("assurance-label");
             prime.getStyleClass().add("assurance-label");
             typeContrat.getStyleClass().add("assurance-label");
             annee.getStyleClass().add("assurance-label");
             totalPrime.getStyleClass().add("assurance-label");
+            idBienLabel.getStyleClass().add("assurance-label");
             deleteButton.getStyleClass().add("button-supprimer");
             chooseButton.getStyleClass().add("button-valider");
 
-            // Ajout des labels et boutons au GridPane
             gp.add(nomAssurance, 0, 0);
             gp.add(annee, 0, 1);
             gp.add(prime, 1, 0);
             gp.add(typeContrat, 0, 2);
             gp.add(totalPrime, 1, 2);
             gp.add(protectionJuridique, 1, 1);
-            gp.add(deleteButton, 2, 2);
-            gp.add(chooseButton, 2, 0);
+            gp.add(idBienLabel, 2, 0);
+            gp.add(deleteButton, 2, 3);
+            gp.add(chooseButton, 2, 1);
 
             gp.setAlignment(Pos.TOP_CENTER);
             gp.setHgap(10);
@@ -113,6 +135,7 @@ public class CtrlAttribuerAssurance {
             vBoxContent.getChildren().add(gp);
         }
     }
+
 
     private void creerAssurance(ActionEvent event) {
         Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -128,57 +151,38 @@ public class CtrlAttribuerAssurance {
     }
 
 
-    public void attribuerAssurance(int idBien, Assurance nouvelleAssurance) {
+    public void attribuerAssurance(int idBien, Assurance assurance) {
+        if (assurance == null) {
+            JfxUtil.displayError("Erreur", "L'assurance sélectionnée est invalide.");
+            return;
+        }
+
         try {
-            Bien bien = Bien.findById(idBien);
-            if (bien == null) {
-                throw new Exception("Le bien avec l'ID spécifié n'existe pas.");
-            }
+            // Appel à la méthode d'attribution de l'assurance
+            assurance.attribuerUneAssurance(idBien, assurance.getIdAssurance());
 
-            Optional<Assurance> assuranceActuelleOpt = bien.getAssurance();
-            Assurance assuranceActuelle = assuranceActuelleOpt.orElse(null);
-
-            if (assuranceActuelle != null && nouvelleAssurance.getAnnee() != assuranceActuelle.getAnnee() + 1) {
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("Assurance non valide");
-                alert.setHeaderText("L'année de l'assurance choisie n'est pas valide.");
-                alert.setContentText("Vous ne pouvez choisir qu'une assurance datant de l'année suivante.");
-                alert.showAndWait();
-                return;
-            }
-
-            // Calculer l'augmentation annuelle si une assurance actuelle existe
-            double augmentationAnnuelle = 0;
-            if (assuranceActuelle != null) {
-                augmentationAnnuelle =
-                        (nouvelleAssurance.getProtectionJuridique() - assuranceActuelle.getProtectionJuridique()) / 100.0;
-            }
-
-            // Mettre à jour l'augmentation annuelle dans la nouvelle assurance
-            nouvelleAssurance.update(); // Sauvegarder la nouvelle assurance
-
-            // Associer la nouvelle assurance au bien
-            bien.setAssurance(nouvelleAssurance);
-            bien.update(); // Sauvegarder le bien
-
-            // Confirmation pour l'utilisateur
+            // Affichage d'une alerte de succès
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Assurance attribuée");
-            alert.setHeaderText("L'assurance a été attribuée au bien.");
-            alert.setContentText("Augmentation annuelle : " + augmentationAnnuelle + " %");
+            alert.setTitle("Succès");
+            alert.setHeaderText("Attribution réussie");
+            alert.setContentText("L'assurance a été attribuée avec succès au bien !");
             alert.showAndWait();
 
-            // Rafraîchir l'affichage
+            // Actualisation de la liste des assurances
             afficheAssurances();
 
-        } catch (Exception e) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Erreur");
-            alert.setHeaderText("Une erreur est survenue lors de l'attribution de l'assurance.");
-            alert.setContentText(e.getMessage());
-            alert.showAndWait();
+        } catch (Assurance.AssuranceException assuranceException) {
+            // Affichage de l'erreur avec des détails pertinents
+            JfxUtil.displayError(
+                    "Erreur lors de l'attribution de l'assurance",
+                    "ID Bien : " + idBien + "\nID Assurance : " + assurance.getIdAssurance() +
+                            "\nOn ne peut pas associer 2 assurances différentes \nsur un même bien la même année. "
+            );
+
         }
     }
+
+
 
     @FXML
     public void askForDelete(int id) {
@@ -188,15 +192,29 @@ public class CtrlAttribuerAssurance {
         alert.setContentText("Cette action est irréversible");
         alert.showAndWait()
                 .filter(r -> r.equals(ButtonType.OK))
-                .ifPresent(r -> deleteAssurance(id));
+                .ifPresent(r -> {
+                    try {
+                        deleteAssurance(id);
+                    } catch (Assurance.AssuranceException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
     }
 
-    private void deleteAssurance(int id) {
+    private void deleteAssurance(int id) throws Assurance.AssuranceException {
         try {
             assurances.get(id).delete();
         } catch (Assurance.AssuranceException e) {
             // TODO: handle exception with visual
         }
         afficheAssurances();
+    }
+    private String setIdBienAssurance(Assurance a) throws Assurance.AssuranceException {
+        try{
+            return a.selectIdBien();
+        } catch (Assurance.AssuranceException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 }

@@ -33,7 +33,7 @@
                         <Insets left="10.0" right="10.0" />
                     </VBox.margin>
                 </GridPane>
-                <Button fx:id="retourAccueil" text="Retour à l'accueil" onAction="#retourAccueil"/>
+                <Button text="Retour à l'accueil" onAction="#retourAccueil"/>
             </children>
         </VBox>
     </content>

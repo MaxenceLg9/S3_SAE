@@ -23,9 +23,6 @@ public class CtrlViewImmeubles {
     private VBox vBoxImmeubles;
 
     @FXML
-    private Button retourAccueil;
-
-    @FXML
     public void initialize() {
         afficheImmeubles();
     }

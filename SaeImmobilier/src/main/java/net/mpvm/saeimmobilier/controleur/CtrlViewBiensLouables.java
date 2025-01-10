@@ -92,7 +92,7 @@ public class CtrlViewBiensLouables {
                 gererLocatairesButton.setOnAction(event -> gererBails(bien.getIdBien(),event));
 
                 Button attribuerAssuranceButton = new Button("Attribuer Assurance");
-                attribuerAssuranceButton.setOnAction(event -> attribuerAssurance(bien.getIdBien()));
+                attribuerAssuranceButton.setOnAction(event -> attribuerAssurance(bien.getIdBien(),event));
 
                 Button supprimerButton = new Button("Supprimer");
                 supprimerButton.setOnAction(event -> supprimerBien(bien));
@@ -141,8 +141,12 @@ public class CtrlViewBiensLouables {
         new VueBails().startForBiensLouables(s, idBien);
     }
 
-    private void attribuerAssurance(int idBien) {
-
+    private void attribuerAssurance(int idBien,ActionEvent event) {
+        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+        stage.close();
+        Stage s = new Stage();
+        s.getProperties().put("bien",idBien);
+        new VueAttribuerAssurance(idBien).startForImmeuble(s);
     }
 
     @FXML

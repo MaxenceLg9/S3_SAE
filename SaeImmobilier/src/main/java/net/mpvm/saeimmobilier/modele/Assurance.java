@@ -182,32 +182,18 @@ public class Assurance extends Queryable{
         if (this.idAssurance <= 0) {
             throw new AssuranceException("L'ID de l'assurance est invalide pour une suppression.");
         }
-        if (this.annee <= 0) {
-            throw new AssuranceException("L'année est obligatoire pour la suppression.");
-        }
-        if (this.typeContrat == null) {
-            throw new AssuranceException("Le type de contrat est obligatoire pour la suppression.");
-        }
+
 
         // Requête de suppression
         String DELETE_QUERY = """
         DELETE FROM Assurance
         WHERE IdAssurance = ?
-        AND Annee = ?
-        AND TypeContrat = ?
-        AND Prime = ?
-        AND QuotiteJuridique = ?
-        AND ProtectionJuridique = ?
         """;
 
         try (UpdateQueryElement query = new UpdateQueryElement(DELETE_QUERY, true)) {
             // Préparation des paramètres de la requête
             query.setArgs(Map.of(
-                    1, this.idAssurance,
-                    2, this.annee,
-                    3, this.typeContrat.toString(),
-                    4, this.prime,
-                    6, this.protectionJuridique
+                    1, this.idAssurance
             ));
 
             // Exécution de la requête
@@ -225,6 +211,66 @@ public class Assurance extends Queryable{
     public void archiver() throws QbleException {
 
     }
+    public void attribuerUneAssurance(int idBien, int idAssurance) throws AssuranceException {
+        if (idBien <= 0 || idAssurance <= 0) {
+            throw new AssuranceException("L'ID du bien et de l'assurance doivent être valides.");
+        }
+
+        // Vérification si une assurance existe déjà pour le même bien et la même année
+        String CHECK_QUERY = """
+    SELECT COUNT(*) as count FROM Assurance
+    WHERE IdBien = ? AND Annee = ?
+    """;
+
+        try (SelectQueryElement checkQuery = new SelectQueryElement(CHECK_QUERY)) {
+            checkQuery.setArgs(Map.of(
+                    1, idBien,
+                    2, this.annee // Utilisation de l'année de l'assurance actuelle
+            ));
+            Result rs = checkQuery.execute();
+
+            if (!rs.isEmpty()) {
+                int count = ((Number) rs.get(0).get("count")).intValue();
+                if (count > 0) {
+                    throw new AssuranceException(
+                            "Une assurance pour le bien avec la même année existe déjà. Association refusée."
+                    );
+                }
+            }
+        } catch (QueryElement.QEltException e) {
+            throw new AssuranceException(
+                    "Erreur lors de la vérification des assurances existantes : " + e.getSqlException().getMessage(),
+                    e.getSqlException()
+            );
+        }
+
+        // Attribution de l'assurance si aucune autre pour la même année n'existe
+        String UPDATE_QUERY = """
+    UPDATE Assurance
+    SET IdBien = ?
+    WHERE IdAssurance = ?
+    """;
+
+        try (UpdateQueryElement query = new UpdateQueryElement(UPDATE_QUERY, true)) {
+            query.setArgs(Map.of(
+                    1, idBien,
+                    2, idAssurance
+            ));
+
+            int rowsAffected = query.execute();
+            if (rowsAffected == 0) {
+                throw new AssuranceException("Aucune assurance correspondante trouvée pour l'attribution.");
+            }
+
+            System.out.println("L'assurance avec ID = " + idAssurance + " a été attribuée au bien avec ID = " + idBien);
+        } catch (QueryElement.QEltException e) {
+            throw new AssuranceException(
+                    "Erreur lors de l'attribution de l'assurance avec ID " + idAssurance + " au bien avec ID " + idBien,
+                    e.getSqlException()
+            );
+        }
+    }
+
 
     public void setBien(Optional<Bien> bien) {
         this.bien = bien;
@@ -237,12 +283,36 @@ public class Assurance extends Queryable{
 
 
     protected void setId(int id) throws QbleException {
-
+        this.idAssurance = id;
     }
 
-    public int selectId() throws QbleException {
-        return 0;
+    public String selectIdBien() throws AssuranceException {
+        if (this.idAssurance <= 0) {
+            throw new AssuranceException("L'ID de l'assurance est invalide.");
+        }
+
+        String SELECT_QUERY = "SELECT IdBien FROM Assurance WHERE IdAssurance = ?";
+        try (SelectQueryElement query = new SelectQueryElement(SELECT_QUERY)) {
+            query.setArgs(Map.of(1, this.idAssurance));
+            Result rs = query.execute();
+
+            if (rs.isEmpty()) {
+                // Renvoie "aucun" si aucun résultat n'est trouvé
+                return "aucun";
+            }
+
+            // Récupère le premier résultat et retourne l'ID du bien sous forme de chaîne
+            Map<String, Object> row = rs.get(0);
+            return String.valueOf(row.get("IdBien"));
+        } catch (QueryElement.QEltException qEltException) {
+            throw new AssuranceException(
+                    "Erreur lors de la récupération de l'ID du bien associé à l'assurance avec ID " + this.idAssurance,
+                    qEltException.getSqlException()
+            );
+        }
     }
+
+
 
     public String toString(){
         return this.nomAssurance+" "+this.typeContrat + " " + this.annee + " " + this.prime + " " + this.numeroContrat;
