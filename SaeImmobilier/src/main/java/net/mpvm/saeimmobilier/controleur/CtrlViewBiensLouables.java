@@ -63,7 +63,7 @@ public class CtrlViewBiensLouables {
             vBoxBiensLouables.getChildren().clear();
             vBoxBiensLouables.getChildren().add(titre);
             Button retourImmeubles = new Button("Retour aux immeubles");
-            retourImmeubles.setOnAction(event -> retourImmeubles(event));
+            retourImmeubles.setOnAction(this::retourImmeubles);
             retourImmeubles.getStyleClass().add("button-supprimer");
             vBoxBiensLouables.getChildren().add(retourImmeubles);
             List<BienLouable> biens = BienLouable.findByImmeuble(idImmeuble);

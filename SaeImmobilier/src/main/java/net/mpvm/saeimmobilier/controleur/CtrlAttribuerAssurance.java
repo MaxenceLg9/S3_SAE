@@ -147,7 +147,6 @@ public class CtrlAttribuerAssurance {
     private void retourImmeubles(ActionEvent actionEvent) {
         Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
         stage.close();
-        new VueImmeubles().start(new Stage());
     }
 
 
