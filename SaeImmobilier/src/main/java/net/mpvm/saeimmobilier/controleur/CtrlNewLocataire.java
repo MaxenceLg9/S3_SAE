@@ -46,6 +46,9 @@ public class CtrlNewLocataire {
                 add(fieldTelephone);
             }
         };
+        fieldTelephone.setTextFormatter(new TextFormatter<>(change ->
+                change.getControlNewText().length() <= 10 && change.getControlNewText().matches("\\d*") ? change : null
+        ));
     }
 
     private void setFieldsPromptText() {
