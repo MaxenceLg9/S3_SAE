@@ -63,6 +63,7 @@ public class JfxUtil {
 
     public static void showWindow(Stage stage, Class<? extends Application> applicationClass) {
         try {
+            stage.close();
             ((Application) applicationClass.getConstructors()[0].newInstance()).start(stage);
         } catch (Exception e) {
             System.out.println("Erreur lors de l'affichage de l'application");
