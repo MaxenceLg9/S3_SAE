@@ -1,5 +1,6 @@
 package net.mpvm.saeimmobilier.controleur;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
@@ -61,7 +62,7 @@ public class CtrlViewBails {
             vBoxBails.getChildren().add(titre);
 
             retourBiens = new Button("Retour aux biens");
-            retourBiens.setOnAction(event -> retourBiens());
+            retourBiens.setOnAction(event -> retourBiens(event));
             retourBiens.getStyleClass().add("button-supprimer");
             vBoxBails.getChildren().add(retourBiens);
 
@@ -88,7 +89,7 @@ public class CtrlViewBails {
                 Label colocation = new Label("Colocation : " + bail.getColocation());
 
                 Button gererLocatairesButton = new Button("Gérer Locataires");
-                gererLocatairesButton.setOnAction(event -> gererLocataires(bail.getIdBail()));
+                gererLocatairesButton.setOnAction(event -> gererLocataires(bail.getIdBail(),event));
 
                 Button resilierBailButton = new Button("Résilier");
                 resilierBailButton.setOnAction(event -> resilierBail(bail));
@@ -116,9 +117,9 @@ public class CtrlViewBails {
         }
     }
 
-    private void gererLocataires(int idBail) {
-        System.out.println("Gérer les locataires pour le bail ID : " + idBail);
-        // Implémentez la logique pour ouvrir une vue dédiée à la gestion des locataires
+    private void gererLocataires(int idBail, ActionEvent event) {
+        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+        stage.close();
     }
 
     private void resilierBail(Bail bail) {
@@ -137,8 +138,9 @@ public class CtrlViewBails {
     }
 
     @FXML
-    private void retourBiens() {
-        Stage stage = (Stage) retourBiens.getScene().getWindow();
+    private void retourBiens(ActionEvent event) {
+        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         stage.close();
+
     }
 }

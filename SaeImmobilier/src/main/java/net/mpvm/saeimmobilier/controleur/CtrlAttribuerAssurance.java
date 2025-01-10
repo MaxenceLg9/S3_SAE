@@ -1,9 +1,8 @@
 package net.mpvm.saeimmobilier.controleur;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.geometry.HPos;
 import javafx.geometry.Pos;
-import javafx.geometry.VPos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -13,7 +12,8 @@ import javafx.stage.Stage;
 import net.mpvm.saeimmobilier.modele.Assurance;
 import net.mpvm.saeimmobilier.modele.Bien;
 import net.mpvm.saeimmobilier.util.JfxUtil;
-import net.mpvm.saeimmobilier.vue.VueAccueil;
+import net.mpvm.saeimmobilier.vue.VueImmeubles;
+import net.mpvm.saeimmobilier.vue.VueNewAssurance;
 
 import java.util.Map;
 import java.util.Optional;
@@ -51,10 +51,15 @@ public class CtrlAttribuerAssurance {
 
         vBoxContent.getChildren().clear();
         vBoxContent.getChildren().add(titre);
-        Button retourAccueil = new Button("Retour à l'accueil");
-        retourAccueil.setOnAction(event -> retourAccueil());
-        retourAccueil.getStyleClass().add("button-supprimer");
-        vBoxContent.getChildren().add(retourAccueil);
+        Button retourImmeubles = new Button("Retour aux immeubles");
+        retourImmeubles.setOnAction(event -> retourImmeubles(event));
+        retourImmeubles.getStyleClass().add("button-supprimer");
+        vBoxContent.getChildren().add(retourImmeubles);
+
+        Button creerAssurance = new Button("Créer Assurance");
+        creerAssurance.setOnAction(event -> creerAssurance(event));
+        creerAssurance.getStyleClass().add("button-valider");
+        vBoxContent.getChildren().add(creerAssurance);
         for (Assurance a : assurances.values()) {
             GridPane gp = new GridPane();
             ColumnConstraints col1 = new ColumnConstraints();
@@ -109,24 +114,30 @@ public class CtrlAttribuerAssurance {
         }
     }
 
-    private void retourAccueil() {
-        new VueAccueil().start(new Stage());
+    private void creerAssurance(ActionEvent event) {
+        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+        stage.close();
+        Stage s = new Stage();
+        JfxUtil.showWindow(s, VueNewAssurance.class);
+    }
+    @FXML
+    private void retourImmeubles(ActionEvent actionEvent) {
+        Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
+        stage.close();
+        new VueImmeubles().start(new Stage());
     }
 
 
     public void attribuerAssurance(int idBien, Assurance nouvelleAssurance) {
         try {
-            // Récupérer le bien concerné
             Bien bien = Bien.findById(idBien);
             if (bien == null) {
                 throw new Exception("Le bien avec l'ID spécifié n'existe pas.");
             }
 
-            // Récupérer l'assurance actuelle du bien (si elle existe via Optional)
             Optional<Assurance> assuranceActuelleOpt = bien.getAssurance();
             Assurance assuranceActuelle = assuranceActuelleOpt.orElse(null);
 
-            // Vérification des conditions pour associer la nouvelle assurance
             if (assuranceActuelle != null && nouvelleAssurance.getAnnee() != assuranceActuelle.getAnnee() + 1) {
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setTitle("Assurance non valide");

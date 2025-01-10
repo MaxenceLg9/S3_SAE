@@ -12,10 +12,7 @@ import javafx.stage.Stage;
 import net.mpvm.saeimmobilier.modele.Bien;
 import net.mpvm.saeimmobilier.modele.BienLouable;
 import net.mpvm.saeimmobilier.util.JfxUtil;
-import net.mpvm.saeimmobilier.vue.VueAccueil;
-import net.mpvm.saeimmobilier.vue.VueAttribuerAssurance;
-import net.mpvm.saeimmobilier.vue.VueBails;
-import net.mpvm.saeimmobilier.vue.VueBiensLouables;
+import net.mpvm.saeimmobilier.vue.*;
 
 import java.util.List;
 
@@ -65,10 +62,10 @@ public class CtrlViewBiensLouables {
 
             vBoxBiensLouables.getChildren().clear();
             vBoxBiensLouables.getChildren().add(titre);
-            retourAccueil = new Button("Retour à l'accueil");
-            retourAccueil.setOnAction(event -> retourAccueil());
-            retourAccueil.getStyleClass().add("button-supprimer");
-            vBoxBiensLouables.getChildren().add(retourAccueil);
+            Button retourImmeubles = new Button("Retour aux immeubles");
+            retourImmeubles.setOnAction(event -> retourImmeubles(event));
+            retourImmeubles.getStyleClass().add("button-supprimer");
+            vBoxBiensLouables.getChildren().add(retourImmeubles);
             List<BienLouable> biens = BienLouable.findByImmeuble(idImmeuble);
 
             if (biens.isEmpty()) {
@@ -92,7 +89,7 @@ public class CtrlViewBiensLouables {
                 Label nbPieces = new Label("Pièces: " + bien.getNbPieces());
 
                 Button gererLocatairesButton = new Button("Gérer Bails");
-                gererLocatairesButton.setOnAction(event -> gererBails(bien.getIdBien()));
+                gererLocatairesButton.setOnAction(event -> gererBails(bien.getIdBien(),event));
 
                 Button attribuerAssuranceButton = new Button("Attribuer Assurance");
                 attribuerAssuranceButton.setOnAction(event -> attribuerAssurance(bien.getIdBien()));
@@ -136,7 +133,9 @@ public class CtrlViewBiensLouables {
         }
     }
 
-    private void gererBails(int idBien) {
+    private void gererBails(int idBien,ActionEvent event) {
+        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+        stage.close();
         Stage s = new Stage();
         s.getProperties().put("bien", idBien);
         new VueBails().startForBiensLouables(s, idBien);
@@ -147,7 +146,9 @@ public class CtrlViewBiensLouables {
     }
 
     @FXML
-    private void retourAccueil() {
-        new VueAccueil().start(new Stage());
+    private void retourImmeubles(ActionEvent event) {
+        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+        stage.close();
+        new VueImmeubles().start(new Stage());
     }
 }

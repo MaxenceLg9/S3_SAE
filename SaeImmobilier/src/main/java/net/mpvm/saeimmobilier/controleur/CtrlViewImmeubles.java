@@ -1,5 +1,6 @@
 package net.mpvm.saeimmobilier.controleur;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
@@ -44,7 +45,7 @@ public class CtrlViewImmeubles {
 
             // Ajouter le bouton retour à l'accueil
             Button retourAccueil = new Button("Retour à l'accueil");
-            retourAccueil.setOnAction(event -> retourAccueil());
+            retourAccueil.setOnAction(event -> retourAccueil(event));
             retourAccueil.getStyleClass().add("button-supprimer");
             vBoxImmeubles.getChildren().add(retourAccueil);
 
@@ -71,10 +72,10 @@ public class CtrlViewImmeubles {
                 Label nbAppartements = new Label("Nombre d'appartements " + immeuble.getNbAppartements());
 
                 Button voirBiensButton = new Button("Voir les biens");
-                voirBiensButton.setOnAction(event -> afficheBiensPourImmeuble(immeuble.getIdBien()));
+                voirBiensButton.setOnAction(event -> afficheBiensPourImmeuble(immeuble.getIdBien(),event));
 
                 Button attribuerAssuranceButton = new Button("Attribuer Assurance");
-                attribuerAssuranceButton.setOnAction(event -> attribuerAssurance(immeuble.getIdBien()));
+                attribuerAssuranceButton.setOnAction(event -> attribuerAssurance(immeuble.getIdBien(),event));
 
                 Button supprimerButton = new Button("Supprimer");
                 supprimerButton.setOnAction(event -> supprimerImmeuble(immeuble));
@@ -126,20 +127,26 @@ public class CtrlViewImmeubles {
         }
     }
 
-    private void afficheBiensPourImmeuble(int idBien) {
+    private void afficheBiensPourImmeuble(int idBien,ActionEvent event) {
+        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+        stage.close();
         Stage s = new Stage();
         s.getProperties().put("bien",idBien);
         new VueBiensLouables(idBien).startForImmeuble(s);
     }
 
-    private void attribuerAssurance(int idBien) {
+    private void attribuerAssurance(int idBien,ActionEvent event) {
+        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+        stage.close();
         Stage s = new Stage();
         s.getProperties().put("bien",idBien);
         new VueAttribuerAssurance(idBien).startForImmeuble(s);
     }
 
     @FXML
-    private void retourAccueil() {
+    private void retourAccueil(ActionEvent event) {
+        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+        stage.close();
         new VueAccueil().start(new Stage());
     }
 }
