@@ -388,7 +388,8 @@ public class CtrlNewBien {
 
     @FXML
     public void RetourAccueil() {
-        new VueAccueil().start(new Stage());
+        Stage stage = (Stage) this.listImmeubles.getScene().getWindow();
+        JfxUtil.showWindow(stage, VueAccueil.class);
     }
 
     public void Accueil(ActionEvent event) {
