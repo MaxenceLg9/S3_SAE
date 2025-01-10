@@ -1,5 +1,6 @@
 package net.mpvm.saeimmobilier.controleur;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
@@ -44,7 +45,7 @@ public class CtrlViewImmeubles {
 
             // Ajouter le bouton retour à l'accueil
             Button retourAccueil = new Button("Retour à l'accueil");
-            retourAccueil.setOnAction(event -> retourAccueil());
+            retourAccueil.setOnAction(event -> retourAccueil(event));
             retourAccueil.getStyleClass().add("button-supprimer");
             vBoxImmeubles.getChildren().add(retourAccueil);
 
@@ -139,7 +140,9 @@ public class CtrlViewImmeubles {
     }
 
     @FXML
-    private void retourAccueil() {
+    private void retourAccueil(ActionEvent event) {
+        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+        stage.close();
         new VueAccueil().start(new Stage());
     }
 }

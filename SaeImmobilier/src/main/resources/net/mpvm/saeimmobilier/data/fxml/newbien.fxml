@@ -55,6 +55,32 @@
                         <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="33.20001220703125" vgrow="SOMETIMES" />
                     </rowConstraints>
                     <children>
+                        <Label prefHeight="17.0" text="Nom arbitraire du bien" textFill="WHITE">
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                        </Label>
+                        <TextField fx:id="fieldNumeroProprio" maxWidth="1.7976931348623157E308" minHeight="30.0" minWidth="100.0" prefWidth="300.0" promptText="Nom d'enregistrement" GridPane.columnIndex="1" />
+                        <Label prefHeight="17.0" text="Type du bien" textFill="WHITE" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                        </Label>
+                        <ChoiceBox fx:id="listTypeBien" maxWidth="1.7976931348623157E308" minWidth="140.0" prefWidth="300.0" style="-fx-background-radius: 5px;" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                            <GridPane.margin>
+                                <Insets right="10.0" />
+                            </GridPane.margin>
+                        </ChoiceBox>
+                        <Label prefHeight="17.0" text="Numéro fiscal du bien" textFill="WHITE" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                        </Label>
+                        <TextField fx:id="fieldNumeroFiscal" maxWidth="1.7976931348623157E308" minHeight="30.0" minWidth="100.0" prefWidth="300.0" promptText="Numéro fiscal" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                            <GridPane.margin>
+                                <Insets right="10.0" />
+                            </GridPane.margin>
+                        </TextField>
                         <Label prefHeight="17.0" text="Adresse du bien" textFill="WHITE" GridPane.rowIndex="3" GridPane.valignment="CENTER">
                             <GridPane.margin>
                                 <Insets />
@@ -64,29 +90,6 @@
                             </font>
                         </Label>
                         <TextField fx:id="fieldAdresse" maxWidth="1.7976931348623157E308" minHeight="30.0" prefWidth="300.0" promptText="Adresse" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.vgrow="ALWAYS">
-                            <GridPane.margin>
-                                <Insets right="10.0" />
-                            </GridPane.margin>
-                        </TextField>
-                        <Label prefHeight="17.0" text="Nombre de pièces du bien" textFill="WHITE" GridPane.rowIndex="10" GridPane.valignment="CENTER">
-                            <font>
-                                <Font size="14.0" />
-                            </font>
-                        </Label>
-                        <TextField fx:id="fieldNbPieces" maxWidth="1.7976931348623157E308" minHeight="30.0" minWidth="100.0" prefWidth="300.0" promptText="Nombre de pièces" GridPane.columnIndex="1" GridPane.rowIndex="10">
-                            <GridPane.margin>
-                                <Insets right="10.0" />
-                            </GridPane.margin>
-                        </TextField>
-                        <Label prefHeight="17.0" text="Surface du bien (m²)" textFill="WHITE" GridPane.rowIndex="9" GridPane.valignment="CENTER">
-                            <GridPane.margin>
-                                <Insets />
-                            </GridPane.margin>
-                            <font>
-                                <Font size="14.0" />
-                            </font>
-                        </Label>
-                        <TextField fx:id="fieldSurface" maxWidth="1.7976931348623157E308" minHeight="30.0" minWidth="100.0" prefWidth="300.0" promptText="Surface habitable" GridPane.columnIndex="1" GridPane.rowIndex="9" GridPane.valignment="CENTER">
                             <GridPane.margin>
                                 <Insets right="10.0" />
                             </GridPane.margin>
@@ -101,22 +104,6 @@
                                 <Insets right="10.0" />
                             </GridPane.margin>
                         </TextField>
-                        <Label prefHeight="17.0" text="Numéro fiscal du bien" textFill="WHITE" GridPane.rowIndex="2" GridPane.valignment="CENTER">
-                            <font>
-                                <Font size="14.0" />
-                            </font>
-                        </Label>
-                        <TextField fx:id="fieldNumeroFiscal" maxWidth="1.7976931348623157E308" minHeight="30.0" minWidth="100.0" prefWidth="300.0" promptText="Numéro fiscal" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                            <GridPane.margin>
-                                <Insets right="10.0" />
-                            </GridPane.margin>
-                        </TextField>
-                        <Label prefHeight="17.0" text="Date d'ajout du bien" textFill="WHITE" GridPane.rowIndex="6" GridPane.valignment="CENTER">
-                            <font>
-                                <Font size="14.0" />
-                            </font>
-                        </Label>
-                        <Label fx:id="LabelDate" minHeight="30.0" prefHeight="18.0" prefWidth="206.0" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                         <Label prefHeight="17.0" text="Ville du bien" textFill="WHITE" GridPane.rowIndex="5" GridPane.valignment="CENTER">
                             <GridPane.margin>
                                 <Insets />
@@ -130,22 +117,41 @@
                                 <Insets right="10.0" />
                             </GridPane.margin>
                         </TextField>
-                        <Label prefHeight="17.0" text="Type du bien" textFill="WHITE" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                        <Label prefHeight="17.0" text="Date d'ajout du bien" textFill="WHITE" GridPane.rowIndex="6" GridPane.valignment="CENTER">
                             <font>
                                 <Font size="14.0" />
                             </font>
                         </Label>
-                        <ChoiceBox fx:id="listTypeBien" maxWidth="1.7976931348623157E308" minWidth="140.0" prefWidth="300.0" style="-fx-background-radius: 5px;" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                            <GridPane.margin>
-                                <Insets right="10.0" />
-                            </GridPane.margin>
-                        </ChoiceBox>
+                        <Label fx:id="LabelDate" minHeight="30.0" prefHeight="18.0" prefWidth="206.0" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                         <Label fx:id="LieuImmeuble" prefHeight="17.0" text="Complément d'adresse" textFill="WHITE" GridPane.rowIndex="8" GridPane.valignment="CENTER">
                             <font>
                                 <Font size="14.0" />
                             </font>
                         </Label>
                         <TextField fx:id="fieldLieuImmeuble" maxWidth="1.7976931348623157E308" minHeight="30.0" prefWidth="300.0" promptText="Complément d'adresse" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                        <Label prefHeight="17.0" text="Surface du bien (m²)" textFill="WHITE" GridPane.rowIndex="9" GridPane.valignment="CENTER">
+                            <GridPane.margin>
+                                <Insets />
+                            </GridPane.margin>
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                        </Label>
+                        <TextField fx:id="fieldSurface" maxWidth="1.7976931348623157E308" minHeight="30.0" minWidth="100.0" prefWidth="300.0" promptText="Surface habitable" GridPane.columnIndex="1" GridPane.rowIndex="9" GridPane.valignment="CENTER">
+                            <GridPane.margin>
+                                <Insets right="10.0" />
+                            </GridPane.margin>
+                        </TextField>
+                        <Label prefHeight="17.0" text="Nombre de pièces du bien" textFill="WHITE" GridPane.rowIndex="10" GridPane.valignment="CENTER">
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                        </Label>
+                        <TextField fx:id="fieldNbPieces" maxWidth="1.7976931348623157E308" minHeight="30.0" minWidth="100.0" prefWidth="300.0" promptText="Nombre de pièces" GridPane.columnIndex="1" GridPane.rowIndex="10">
+                            <GridPane.margin>
+                                <Insets right="10.0" />
+                            </GridPane.margin>
+                        </TextField>
                         <Label prefHeight="20.0" text="Sélectionner l'Immeuble du bien" textFill="WHITE" GridPane.rowIndex="11" GridPane.valignment="CENTER">
                             <font>
                                 <Font size="14.0" />
@@ -156,12 +162,6 @@
                                 <Insets right="10.0" />
                             </GridPane.margin>
                         </ChoiceBox>
-                        <Label prefHeight="17.0" text="Nom arbitraire du bien" textFill="WHITE">
-                            <font>
-                                <Font size="14.0" />
-                            </font>
-                        </Label>
-                        <TextField fx:id="fieldNumeroProprio" maxWidth="1.7976931348623157E308" minHeight="30.0" minWidth="100.0" prefWidth="300.0" promptText="Nom d'enregistrement" GridPane.columnIndex="1" />
                     </children>
                     <opaqueInsets>
                         <Insets />

@@ -14,7 +14,6 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-
 <BorderPane prefHeight="720.0" prefWidth="1280.0" styleClass="backgroundColor" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.mpvm.saeimmobilier.controleur.CtrlNewLocataire">
    <top>
       <MenuBar BorderPane.alignment="CENTER">
@@ -75,24 +74,24 @@
                      </font>
                   </Label>
                               <TextField fx:id="fieldPrenom" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="500.0" GridPane.rowIndex="1" />
-                              <TextField fx:id="fieldNom" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="500.0" GridPane.rowIndex="3" />
                               <Label minHeight="-Infinity" minWidth="-Infinity" text="Nom du locataire" textFill="WHITE" GridPane.rowIndex="2">
                      <font>
                         <Font name="Calibri" size="16.0" />
                      </font>
                   </Label>
+                              <TextField fx:id="fieldNom" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="500.0" GridPane.rowIndex="3" />
                               <Label minHeight="-Infinity" minWidth="-Infinity" text="Téléphone" textFill="WHITE" GridPane.rowIndex="4">
                      <font>
                         <Font name="Calibri" size="16.0" />
                      </font>
                   </Label>
-                              <TextField fx:id="fieldTelephone" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="500.0" GridPane.rowIndex="5" />
-                              <TextField fx:id="fieldEmail" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="500.0" GridPane.rowIndex="7" />
+                              <TextField fx:id="fieldTelephone" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="500.0" GridPane.rowIndex="5" />
                               <Label minHeight="-Infinity" minWidth="-Infinity" text="Adresse email" textFill="WHITE" GridPane.rowIndex="6">
                      <font>
                         <Font name="Calibri" size="16.0" />
                      </font>
                   </Label>
+                              <TextField fx:id="fieldEmail" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="500.0" GridPane.rowIndex="7" />
                   <GridPane hgap="10.0" GridPane.rowIndex="8">
                     <columnConstraints>
                         <ColumnConstraints halignment="RIGHT" hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />

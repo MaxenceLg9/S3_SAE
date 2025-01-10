@@ -66,10 +66,11 @@ public class CtrlViewBiensLouables {
             vBoxBiensLouables.getChildren().clear();
             vBoxBiensLouables.getChildren().add(titre);
             retourAccueil = new Button("Retour à l'accueil");
-            retourAccueil.setOnAction(event -> retourAccueil());
+            retourAccueil.setOnAction(event -> retourAccueil(event));
             retourAccueil.getStyleClass().add("button-supprimer");
             vBoxBiensLouables.getChildren().add(retourAccueil);
             List<BienLouable> biens = BienLouable.findByImmeuble(idImmeuble);
+
 
             if (biens.isEmpty()) {
                 Label label = new Label("Aucun bien trouvé.");
@@ -147,7 +148,9 @@ public class CtrlViewBiensLouables {
     }
 
     @FXML
-    private void retourAccueil() {
+    private void retourAccueil(ActionEvent event) {
+        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+        stage.close();
         new VueAccueil().start(new Stage());
     }
 }
