@@ -152,10 +152,6 @@ public class CtrlNewAssurance {
                 if (!text.matches("^[a-zA-Z0-9]+$")) {
                     throw new NumberFormatException("Le champ 'Numéro de Contrat' doit contenir uniquement des lettres et/ou des chiffres.");
                 }
-            } else if (field == fieldNom) {
-                if (!text.matches("^[a-zA-Z ]+$")) {
-                    throw new NumberFormatException("Le champ 'Nom de l'Assurance' doit contenir uniquement des lettres.");
-                }
             }
         }
     }
