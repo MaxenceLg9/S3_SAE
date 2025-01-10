@@ -13,6 +13,7 @@ import net.mpvm.saeimmobilier.modele.Bail;
 import net.mpvm.saeimmobilier.sql.Query.Queryable;
 import net.mpvm.saeimmobilier.util.JfxUtil;
 import net.mpvm.saeimmobilier.vue.VueAccueil;
+import net.mpvm.saeimmobilier.vue.VueBiensLouables;
 
 import java.util.List;
 
@@ -82,11 +83,11 @@ public class CtrlViewBails {
                 gp.setAlignment(Pos.TOP_CENTER);
                 gp.getStyleClass().add("bail-gridpane");
 
-                Label dateDebut = new Label("Début : " + bail.getDateDebut());
-                Label dateFin = new Label("Fin : " + bail.getDateFin());
-                Label montantLoyer = new Label("Loyer : " + bail.getLoyer() + " €");
-                Label dateSignature = new Label("Signature : " + bail.getDateSignature());
-                Label colocation = new Label("Colocation : " + bail.getColocation());
+                Label dateDebut = new Label("Début " + bail.getDateDebut());
+                Label dateFin = new Label("Fin " + bail.getDateFin());
+                Label montantLoyer = new Label("Loyer " + bail.getLoyer() + " €");
+                Label dateSignature = new Label("Signature " + bail.getDateSignature());
+                Label colocation = new Label("Colocation " + bail.getColocation());
 
                 Button gererLocatairesButton = new Button("Gérer Locataires");
                 gererLocatairesButton.setOnAction(event -> gererLocataires(bail.getIdBail(),event));
@@ -120,6 +121,7 @@ public class CtrlViewBails {
     private void gererLocataires(int idBail, ActionEvent event) {
         Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         stage.close();
+
     }
 
     private void resilierBail(Bail bail) {
@@ -141,6 +143,8 @@ public class CtrlViewBails {
     private void retourBiens(ActionEvent event) {
         Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         stage.close();
-
+        Stage s = new Stage();
+        s.getProperties().put("bien",idBien);
+        new VueBiensLouables(idBien).startForImmeuble(s);
     }
 }
