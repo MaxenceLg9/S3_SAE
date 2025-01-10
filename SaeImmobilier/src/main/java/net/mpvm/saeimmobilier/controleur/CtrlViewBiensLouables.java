@@ -153,6 +153,5 @@ public class CtrlViewBiensLouables {
     private void retourImmeubles(ActionEvent event) {
         Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         stage.close();
-        new VueImmeubles().start(new Stage());
     }
 }
