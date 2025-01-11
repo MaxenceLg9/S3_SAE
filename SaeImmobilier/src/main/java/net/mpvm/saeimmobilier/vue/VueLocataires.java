@@ -4,17 +4,11 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import net.mpvm.saeimmobilier.util.JfxUtil;
 
-public class VueLocataires  {
-    private final int idBail;
-
-    public VueLocataires(int idBail) {
-        this.idBail = idBail;
-    }
+public class VueLocataires  extends Application {
 
 
-    public void startForBail(Stage stage) {
-        stage.getProperties().put("bail", this.idBail);
+    @Override
+    public void start(Stage primaryStage) throws Exception {
 
-        JfxUtil.updateStage(stage, "viewlocataires.fxml","Vision des locataires",750, 800);
     }
 }

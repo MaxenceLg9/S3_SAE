@@ -69,7 +69,7 @@ public class CtrlViewBails {
             retourBiens.getStyleClass().add("button-supprimer");
             vBoxBails.getChildren().add(retourBiens);
             Button ajouterBail = new Button("Ajouter Bail");
-            ajouterBail.setOnAction(event -> ajouterBail(event,idBien));
+            ajouterBail.setOnAction(event -> ajouterBail(event, idBien));
             ajouterBail.getStyleClass().add("button-valider");
             vBoxBails.getChildren().add(ajouterBail);
             List<Bail> baux = Bail.findByBien(idBien);
@@ -95,7 +95,7 @@ public class CtrlViewBails {
                 Label colocation = new Label("Colocation " + bail.getColocation());
 
                 Button gererLocatairesButton = new Button("Gérer Locataires");
-                gererLocatairesButton.setOnAction(event -> gererLocataires(bail.getIdBail(),event));
+                gererLocatairesButton.setOnAction(event -> gererLocataires(bail.getIdBail(), event));
 
                 Button resilierBailButton = new Button("Résilier");
                 resilierBailButton.setOnAction(event -> resilierBail(bail));
@@ -127,15 +127,16 @@ public class CtrlViewBails {
         Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         stage.close();
         Stage s = new Stage();
-        s.getProperties().put("bail",idBail);
-        JfxUtil.showWindow(s, VueLocataires.class);    }
-
+        s.getProperties().put("bail", idBail);
+        JfxUtil.showWindow(s, VueLocataires.class);
     }
+
     private void ajouterBail(ActionEvent event, int idBien) {
         Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         stage.close();
-
     }
+
+
     private void resilierBail(Bail bail) {
         try {
             bail.delete();
@@ -154,10 +155,7 @@ public class CtrlViewBails {
         Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         stage.close();
         Stage s = new Stage();
-        s.getProperties().put("bien",idBien);
+        s.getProperties().put("bien", idBien);
         JfxUtil.showWindow(s, VueBiensLouables.class);
     }
-
 }
-
-
