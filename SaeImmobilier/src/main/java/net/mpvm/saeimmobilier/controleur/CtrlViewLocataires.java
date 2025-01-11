@@ -13,6 +13,7 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import net.mpvm.saeimmobilier.modele.Locataire;
 import net.mpvm.saeimmobilier.util.JfxUtil;
+import net.mpvm.saeimmobilier.vue.VueNewBien;
 import net.mpvm.saeimmobilier.vue.VueNewLocataire;
 
 import java.util.Map;
@@ -28,6 +29,7 @@ public class CtrlViewLocataires {
 
     private Map<Integer, Locataire> locataires;
     private int idBail;
+    @FXML
     public void initialize(){
         vBoxContent.sceneProperty().addListener((observable, oldScene, newScene) -> {
             if (newScene != null) {
@@ -52,7 +54,7 @@ public class CtrlViewLocataires {
             throw new IllegalStateException("Propriété 'bail' manquante ou incorrecte.");
         }
     }
-    private void afficheLocataires() {
+    public void afficheLocataires() {
 
         try {
             locataires = Locataire.findAll().stream().collect(Collectors.toMap(Locataire::getIdLocataire, Function.identity()));
@@ -150,18 +152,19 @@ public class CtrlViewLocataires {
         stage.close();
 
         Stage s = new Stage();
-        s.getProperties().put("bien",idBail);
-        new VueNewLocataire(idBail).startForLocataires(s);
+        s.getProperties().put("bail",idBail);
+        JfxUtil.showWindow(s, VueNewLocataire.class);    }
 
     }
 
     private void deleteLocataire(int id){
         try {
             locataires.get(id).delete();
+            afficheLocataires();
         } catch (Locataire.LocataireException e) {
             // TODO: handle exception with visual
         }
-        afficheLocataires();
+
     }
 
     @FXML
@@ -169,4 +172,5 @@ public class CtrlViewLocataires {
         Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         stage.close();
     }
+
 }
