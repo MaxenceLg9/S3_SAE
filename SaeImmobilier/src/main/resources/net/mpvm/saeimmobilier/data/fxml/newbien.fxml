@@ -185,7 +185,7 @@
                 <RowConstraints minHeight="10.0" valignment="CENTER" vgrow="ALWAYS" />
             </rowConstraints>
             <children>
-                <Button fx:id="BtwAddBien" minHeight="35.0" minWidth="180.0" mnemonicParsing="false" onAction="#ajouterBien" style="-fx-background-color: #5DADEC;" text="Ajouter le bien" textFill="WHITE" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.hgrow="NEVER" GridPane.valignment="CENTER" GridPane.vgrow="NEVER">
+                <Button fx:id="BtwAddBien" minHeight="35.0" minWidth="180.0" mnemonicParsing="false" onAction="#ajouterBien" style="-fx-background-color: #659B5E;" text="Ajouter le bien" textFill="WHITE" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.hgrow="NEVER" GridPane.valignment="CENTER" GridPane.vgrow="NEVER">
                     <font>
                         <Font name="System Bold" size="14.0" />
                     </font>
@@ -196,15 +196,8 @@
                         <Cursor fx:constant="DEFAULT" />
                     </cursor>
                 </Button>
-                <Button fx:id="btnAnnuler" contentDisplay="BOTTOM" minHeight="35.0" minWidth="200.0" mnemonicParsing="false" onAction="#RetourAccueil" style="-fx-background-color: #e12816;" text="Retour à l'accueil" textFill="WHITE" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.hgrow="NEVER" GridPane.valignment="CENTER" GridPane.vgrow="NEVER">
-                    <font>
-                        <Font name="System Bold" size="14.0" />
-                    </font>
-                    <GridPane.margin>
-                        <Insets />
-                    </GridPane.margin>
-                </Button>
-                <Button fx:id="btnClear" alignment="CENTER" minHeight="35.0" minWidth="180.0" mnemonicParsing="false" onAction="#Clear" text="Effacer la saisie" GridPane.halignment="LEFT" GridPane.hgrow="NEVER" GridPane.valignment="CENTER" GridPane.vgrow="NEVER">
+
+                <Button fx:id="btnClear" alignment="CENTER" minHeight="35.0" minWidth="180.0" mnemonicParsing="false" onAction="#Clear" text="Effacer la saisie" textFill="WHITE" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.hgrow="NEVER" GridPane.valignment="CENTER" GridPane.vgrow="NEVER">
                     <GridPane.margin>
                         <Insets />
                     </GridPane.margin>
@@ -214,6 +207,14 @@
                     <padding>
                         <Insets left="5.0" />
                     </padding>
+                </Button>
+                <Button fx:id="btnAnnuler" contentDisplay="BOTTOM" minHeight="35.0" minWidth="200.0" mnemonicParsing="false" onAction="#RetourAccueil" style="-fx-background-color: #e12816;" text="Retour à l'accueil" textFill="WHITE" GridPane.halignment="LEFT" GridPane.hgrow="NEVER" GridPane.valignment="CENTER" GridPane.vgrow="NEVER">
+                    <font>
+                        <Font name="System Bold" size="14.0" />
+                    </font>
+                    <GridPane.margin>
+                        <Insets />
+                    </GridPane.margin>
                 </Button>
             </children>
             <padding>
