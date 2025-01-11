@@ -157,10 +157,8 @@ public class CtrlAttribuerAssurance {
         }
 
         try {
-            // Appel à la méthode d'attribution de l'assurance
             assurance.attribuerUneAssurance(idBien, assurance.getIdAssurance());
 
-            // Affichage d'une alerte de succès
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Succès");
             alert.setHeaderText("Attribution réussie");
