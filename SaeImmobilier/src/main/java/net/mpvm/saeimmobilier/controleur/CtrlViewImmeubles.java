@@ -14,6 +14,7 @@ import net.mpvm.saeimmobilier.vue.VueAttribuerAssurance;
 import net.mpvm.saeimmobilier.vue.VueBiensLouables;
 import net.mpvm.saeimmobilier.vue.VueAccueil;
 import net.mpvm.saeimmobilier.util.JfxUtil;
+import net.mpvm.saeimmobilier.vue.VueNewBien;
 
 import java.util.List;
 
@@ -45,7 +46,16 @@ public class CtrlViewImmeubles {
             retourAccueil.setOnAction(event -> retourAccueil(event));
             retourAccueil.getStyleClass().add("button-supprimer");
             vBoxImmeubles.getChildren().add(retourAccueil);
-
+            Button ajouterBien = new Button("Ajouter Bien");
+            ajouterBien.setOnAction(event -> {
+                try {
+                    ajouterBien(event);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            });
+            ajouterBien.getStyleClass().add("button-valider");
+            vBoxImmeubles.getChildren().add(ajouterBien);
             List<Immeuble> immeubles = Immeuble.findAll();
 
             if (immeubles.isEmpty()) {
@@ -87,13 +97,13 @@ public class CtrlViewImmeubles {
                 attribuerAssuranceButton.getStyleClass().add("button-valider");
                 supprimerButton.getStyleClass().add("button-supprimer");
                 gp.add(nom, 0, 0);
-                gp.add(adresse, 1, 0);
-                gp.add(codepostal, 2, 0);
-                gp.add(ville, 3, 0);
-                gp.add(nbAppartements, 4, 0);
-                gp.add(voirBiensButton, 5, 0);
-                gp.add(attribuerAssuranceButton, 6, 0);
-                gp.add(supprimerButton, 7, 0);
+                gp.add(adresse, 0, 1);
+                gp.add(codepostal, 1, 1);
+                gp.add(ville, 2, 1);
+                gp.add(nbAppartements, 1, 0);
+                gp.add(voirBiensButton, 3, 0);
+                gp.add(attribuerAssuranceButton, 4, 0);
+                gp.add(supprimerButton, 3, 1);
 
                 vBoxImmeubles.getChildren().add(gp);
             }
@@ -125,7 +135,8 @@ public class CtrlViewImmeubles {
     }
 
     private void afficheBiensPourImmeuble(int idBien,ActionEvent event) {
-
+        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+        stage.close();
         Stage s = new Stage();
         s.getProperties().put("bien",idBien);
         new VueBiensLouables(idBien).startForImmeuble(s);
@@ -143,5 +154,11 @@ public class CtrlViewImmeubles {
     private void retourAccueil(ActionEvent event) {
         Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         stage.close();
+    }
+    private void ajouterBien(ActionEvent event) throws Exception {
+        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+        stage.close();
+        Stage s = new Stage();
+        new VueNewBien().start(s);
     }
 }

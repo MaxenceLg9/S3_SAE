@@ -67,7 +67,16 @@ public class CtrlViewBiensLouables {
             retourImmeubles.getStyleClass().add("button-supprimer");
             vBoxBiensLouables.getChildren().add(retourImmeubles);
             List<BienLouable> biens = BienLouable.findByImmeuble(idImmeuble);
-
+            Button ajouterBien = new Button("Ajouter Bien");
+            ajouterBien.setOnAction(event -> {
+                try {
+                    ajouterBien(event);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            });
+            ajouterBien.getStyleClass().add("button-valider");
+            vBoxBiensLouables.getChildren().add(ajouterBien);
             if (biens.isEmpty()) {
                 Label label = new Label("Aucun bien trouvé.");
                 label.getStyleClass().add("assurance-title");
@@ -82,14 +91,14 @@ public class CtrlViewBiensLouables {
                 gp.setVgap(5);
                 gp.setAlignment(Pos.TOP_CENTER);
                 gp.getStyleClass().add("locataire-gridpane");
+                Label Nom = new Label("Nom " + bien.getIdProprio());
+                Label typeBien = new Label("Type " + bien.getTypeBien());
+                Label CAdresse = new Label("Complément d'Adresse " + bien.getComplementAdresse());
+                Label surface = new Label("Surface " + bien.getSurface() + " m²");
+                Label nbPieces = new Label("Pièces " + bien.getNbPieces());
 
-                Label typeBien = new Label("Type: " + bien.getTypeBien());
-                Label adresse = new Label("Adresse: " + bien.getAdresse());
-                Label surface = new Label("Surface: " + bien.getSurface() + " m²");
-                Label nbPieces = new Label("Pièces: " + bien.getNbPieces());
-
-                Button gererLocatairesButton = new Button("Gérer Bails");
-                gererLocatairesButton.setOnAction(event -> gererBails(bien.getIdBien(),event));
+                Button gererBailsButton = new Button("Gérer Bails");
+                gererBailsButton.setOnAction(event -> gererBails(bien.getIdBien(),event));
 
                 Button attribuerAssuranceButton = new Button("Attribuer Assurance");
                 attribuerAssuranceButton.setOnAction(event -> attribuerAssurance(bien.getIdBien(),event));
@@ -97,20 +106,21 @@ public class CtrlViewBiensLouables {
                 Button supprimerButton = new Button("Supprimer");
                 supprimerButton.setOnAction(event -> supprimerBien(bien));
 
-                List<Label> labels = List.of(typeBien, adresse, surface, nbPieces);
+                List<Label> labels = List.of(Nom,typeBien, CAdresse, surface, nbPieces);
+                Nom.getStyleClass().add("assurance-title");
                 labels.forEach(label -> label.getStyleClass().add("assurance-label"));
 
-                gererLocatairesButton.getStyleClass().add("button-valider");
+                gererBailsButton.getStyleClass().add("button-valider");
                 attribuerAssuranceButton.getStyleClass().add("button-valider");
                 supprimerButton.getStyleClass().add("button-supprimer");
-
-                gp.add(typeBien, 0, 0);
-                gp.add(adresse, 1, 0);
-                gp.add(surface, 2, 0);
-                gp.add(nbPieces, 3, 0);
-                gp.add(gererLocatairesButton, 4, 0);
-                gp.add(attribuerAssuranceButton, 5, 0);
-                gp.add(supprimerButton, 6, 0);
+                gp.add(Nom,0,0);
+                gp.add(typeBien, 0, 1);
+                gp.add(CAdresse, 1, 0);
+                gp.add(surface, 1, 1);
+                gp.add(nbPieces, 2, 1);
+                gp.add(gererBailsButton, 3, 0);
+                gp.add(attribuerAssuranceButton, 4, 0);
+                gp.add(supprimerButton, 3, 1);
 
                 vBoxBiensLouables.getChildren().add(gp);
             }
@@ -148,10 +158,16 @@ public class CtrlViewBiensLouables {
         s.getProperties().put("bien",idBien);
         new VueAttribuerAssurance(idBien).startForImmeuble(s);
     }
-
+    private void ajouterBien(ActionEvent event) throws Exception {
+        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+        stage.close();
+        Stage s = new Stage();
+        new VueNewBien().start(s);
+    }
     @FXML
     private void retourImmeubles(ActionEvent event) {
         Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         stage.close();
+        new VueImmeubles().start(new Stage());
     }
 }
