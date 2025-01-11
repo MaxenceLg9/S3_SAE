@@ -20,7 +20,6 @@ public class JfxUtil {
         try {
             setScene(primaryStage,fxmlFile);
             primaryStage.setTitle(nomPage);
-            // Get the scene's actual layout dimensions
             resize(primaryStage);
 
         } catch (IOException e) {

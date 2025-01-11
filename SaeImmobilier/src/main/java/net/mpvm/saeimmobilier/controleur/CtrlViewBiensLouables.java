@@ -52,8 +52,6 @@ public class CtrlViewBiensLouables {
         }
     }
 
-
-
     private void afficheBiens() {
         try {
             Label titre = new Label("Liste des Biens Louables");
@@ -98,7 +96,13 @@ public class CtrlViewBiensLouables {
                 Label nbPieces = new Label("Pièces " + bien.getNbPieces());
 
                 Button gererBailsButton = new Button("Gérer Bails");
-                gererBailsButton.setOnAction(event -> gererBails(bien.getIdBien(),event));
+                gererBailsButton.setOnAction(event -> {
+                    try {
+                        gererBails(bien.getIdBien(),event);
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                });
 
                 Button attribuerAssuranceButton = new Button("Attribuer Assurance");
                 attribuerAssuranceButton.setOnAction(event -> attribuerAssurance(bien.getIdBien(),event));
@@ -137,18 +141,18 @@ public class CtrlViewBiensLouables {
 
     private void supprimerBien(BienLouable bien) {
         try {
-            bien.delete(); // Suppression de l'objet Bien
-            afficheBiens(); // Mise à jour de l'affichage des biens
+            bien.delete();
+            afficheBiens();
             JfxUtil.setAlert(Alert.AlertType.INFORMATION,
                     "Suppression réussie",
                     null,
-                    "Le bien a été supprimé avec succès."); // Affichage d'une alerte d'information
+                    "Le bien a été supprimé avec succès.");
         } catch (Bien.BienException e) {
-            JfxUtil.displayError("Erreur lors de la suppression", e.getMessage()); // Gestion des erreurs avec l'alerte
+            JfxUtil.displayError("Erreur lors de la suppression", e.getMessage());
         }
     }
 
-    private void gererBails(int idBien,ActionEvent event) {
+    private void gererBails(int idBien,ActionEvent event) throws Exception {
         Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         stage.close();
         Stage s = new Stage();
@@ -160,19 +164,20 @@ public class CtrlViewBiensLouables {
         Stage s = new Stage();
         //TODO : check ces getProperties car unsafe
         s.getProperties().put("bien",idBien);
-        JfxUtil.showWindow(s,VueAttribuerAssurance.class);
+        JfxUtil.showWindow(s, VueAttribuerAssurance.class);
     }
     private void ajouterBien(ActionEvent event) throws Exception {
         Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         stage.close();
         Stage s = new Stage();
-        new VueNewBien().start(s);
+        JfxUtil.showWindow(s, VueNewBien.class);
     }
     @FXML
     private void retourImmeubles(ActionEvent event) {
         Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         stage.close();
-        new VueImmeubles().start(new Stage());
+        Stage s = new Stage();
+        JfxUtil.showWindow(s, VueImmeubles.class);
     }
 
     @FXML
