@@ -1,8 +1,6 @@
 package net.mpvm.saeimmobilier.vue;
 
-import javafx.application.Application;
 import javafx.stage.Stage;
-import net.mpvm.saeimmobilier.controleur.CtrlViewBiensLouables;
 import net.mpvm.saeimmobilier.util.JfxUtil;
 
 public class VueAttribuerAssurance {
@@ -13,7 +11,7 @@ public class VueAttribuerAssurance {
         this.idBien = idBien;
     }
 
-    public void startForImmeuble(Stage stage) {
+    public void start(Stage stage) {
         stage.getProperties().put("bien", this.idBien);
         JfxUtil.updateStage(stage, "attribuerAssurance.fxml", "Attribuer une Assurance", 750, 1200);
     }

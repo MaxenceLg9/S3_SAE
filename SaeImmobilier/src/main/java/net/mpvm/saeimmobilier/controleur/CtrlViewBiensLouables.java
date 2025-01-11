@@ -154,7 +154,7 @@ public class CtrlViewBiensLouables {
     private void attribuerAssurance(int idBien,ActionEvent event) {
         Stage s = new Stage();
         s.getProperties().put("bien",idBien);
-        new VueAttribuerAssurance(idBien).startForImmeuble(s);
+        new VueAttribuerAssurance(idBien).start(s);
     }
     private void ajouterBien(ActionEvent event) throws Exception {
         Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();

@@ -12,7 +12,6 @@ import javafx.stage.Stage;
 import net.mpvm.saeimmobilier.modele.Immeuble;
 import net.mpvm.saeimmobilier.vue.VueAttribuerAssurance;
 import net.mpvm.saeimmobilier.vue.VueBiensLouables;
-import net.mpvm.saeimmobilier.vue.VueAccueil;
 import net.mpvm.saeimmobilier.util.JfxUtil;
 import net.mpvm.saeimmobilier.vue.VueNewBien;
 
@@ -145,7 +144,7 @@ public class CtrlViewImmeubles {
     private void attribuerAssurance(int idBien,ActionEvent event) {
         Stage s = new Stage();
         s.getProperties().put("bien",idBien);
-        new VueAttribuerAssurance(idBien).startForImmeuble(s);
+        new VueAttribuerAssurance(idBien).start(s);
     }
 
     @FXML
