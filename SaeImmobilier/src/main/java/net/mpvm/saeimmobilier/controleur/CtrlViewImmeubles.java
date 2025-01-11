@@ -64,7 +64,6 @@ public class CtrlViewImmeubles {
                 return;
             }
 
-            // Ajouter les immeubles à la VBox
             for (Immeuble immeuble : immeubles) {
                 GridPane gp = new GridPane();
                 gp.setHgap(10);
@@ -115,13 +114,9 @@ public class CtrlViewImmeubles {
 
     private void supprimerImmeuble(Immeuble immeuble) {
         try {
-            // Suppression de l'immeuble
             immeuble.delete();
-
-            // Rafraîchir l'affichage
             afficheImmeubles();
 
-            // Afficher une alerte de confirmation
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Suppression réussie");
             alert.setHeaderText(null);
@@ -140,6 +135,8 @@ public class CtrlViewImmeubles {
     }
 
     private void attribuerAssurance(int idBien,ActionEvent event) {
+        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+        stage.close();
         Stage s = new Stage();
         s.getProperties().put("bien",idBien);
         JfxUtil.showWindow(s, VueAttribuerAssurance.class);
@@ -150,10 +147,10 @@ public class CtrlViewImmeubles {
         Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         stage.close();
     }
-    private void ajouterBien(ActionEvent event) throws Exception {
+    private void ajouterBien(ActionEvent event){
         Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         stage.close();
         Stage s = new Stage();
-        new VueNewBien().start(s);
+        JfxUtil.showWindow(s, VueNewBien.class);
     }
 }
