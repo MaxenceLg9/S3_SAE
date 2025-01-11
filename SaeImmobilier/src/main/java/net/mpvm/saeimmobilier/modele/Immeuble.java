@@ -24,11 +24,9 @@ public final class Immeuble extends Bien{
 	private String adresse;
 	private String ville;
 	private String codePostal;
-	private List<Travaux> travauxAssocies;
 
 	private Immeuble(String ville, String codePostal, String adresse, String numeroFiscal, Date dateAjout, String idProprio, int idBien) {
 		super(idBien, numeroFiscal, dateAjout, idProprio); // Initialisation des attributs hérités de Bien
-		this.travauxAssocies = new ArrayList<>();
 		this.codePostal = codePostal;
 		this.adresse = adresse;
 		this.ville = ville;
@@ -92,13 +90,9 @@ public final class Immeuble extends Bien{
 		return TypeBien.IMMEUBLE;
 	}
 
-
 	public List<Travaux> getTravauxAssocies() {
-		return travauxAssocies;
-	}
-
-	public void setTravauxAssocies(List<Travaux> travauxAssocies) {
-		this.travauxAssocies = travauxAssocies;
+		//TODO : use a query
+		return null;
 	}
 
 	public List<BienLouable> getBiensAssocies() throws ImmeubleException {
