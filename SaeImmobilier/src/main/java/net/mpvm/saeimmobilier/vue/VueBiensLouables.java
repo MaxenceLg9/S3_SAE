@@ -5,16 +5,10 @@ import javafx.stage.Stage;
 import net.mpvm.saeimmobilier.controleur.CtrlViewBiensLouables;
 import net.mpvm.saeimmobilier.util.JfxUtil;
 
-public class VueBiensLouables {
+public class VueBiensLouables extends Application{
 
-    private final int idImmeuble;
-
-    public VueBiensLouables(int idImmeuble) {
-        this.idImmeuble = idImmeuble;
-    }
-
-    public void startForImmeuble(Stage stage) {
-        stage.getProperties().put("bien", this.idImmeuble);
-        JfxUtil.updateStage(stage, "viewbienslouables.fxml", "Biens Louables de l'Immeuble", 750, 1200);
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        JfxUtil.updateStage(primaryStage, "viewbienslouables.fxml", "Biens Louables de l'Immeuble", 750, 1200);
     }
 }

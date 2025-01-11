@@ -1,15 +1,14 @@
 package net.mpvm.saeimmobilier.vue;
 
+import javafx.application.Application;
 import javafx.stage.Stage;
 import net.mpvm.saeimmobilier.util.JfxUtil;
 
 import static javafx.application.Application.launch;
 
-public class VueBails {
-    private int IdBien;
-
-    public void startForBiensLouables(Stage stage, int IdBien) {
-        this.IdBien = IdBien;
-        JfxUtil.updateStage(stage, "viewBails.fxml", "Locations du Bien " + IdBien,700,800);
+public class VueBails extends Application {
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        JfxUtil.updateStage(primaryStage, "viewBails.fxml", "Locations du Bien ",700,800);
     }
 }

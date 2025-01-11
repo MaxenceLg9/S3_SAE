@@ -15,4 +15,3 @@ public class VueNewBien extends Application {
         JfxUtil.updateStage(stage, "newbien.fxml", "Ajouter un Bien", 750, 850);
     }
 }
-
