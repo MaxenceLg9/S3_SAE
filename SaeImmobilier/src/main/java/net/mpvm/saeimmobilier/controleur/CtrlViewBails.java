@@ -15,6 +15,7 @@ import net.mpvm.saeimmobilier.util.JfxUtil;
 import net.mpvm.saeimmobilier.vue.VueAccueil;
 import net.mpvm.saeimmobilier.vue.VueBiensLouables;
 import net.mpvm.saeimmobilier.vue.VueLocataires;
+import net.mpvm.saeimmobilier.vue.VueNewLocataire;
 
 import java.util.List;
 
@@ -127,7 +128,7 @@ public class CtrlViewBails {
         stage.close();
         Stage s = new Stage();
         s.getProperties().put("bail",idBail);
-        new VueLocataires(idBail).startForBail(s);
+        JfxUtil.showWindow(s, VueLocataires.class);    }
 
     }
     private void ajouterBail(ActionEvent event, int idBien) {
@@ -156,4 +157,7 @@ public class CtrlViewBails {
         s.getProperties().put("bien",idBien);
         JfxUtil.showWindow(s, VueBiensLouables.class);
     }
+
 }
+
+
