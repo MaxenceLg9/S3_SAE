@@ -203,8 +203,14 @@ public class CtrlAttribuerAssurance {
     private void deleteAssurance(int id) throws Assurance.AssuranceException {
         try {
             assurances.get(id).delete();
+            afficheAssurances();
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Suppression réussie");
+            alert.setHeaderText(null);
+            alert.setContentText("L'assurance a été supprimée avec succès.");
+            alert.showAndWait();
         } catch (Assurance.AssuranceException e) {
-            // TODO: handle exception with visual
+            JfxUtil.displayError("Erreur lors de la suppression de l'assurance", e.getMessage());
         }
         afficheAssurances();
     }
