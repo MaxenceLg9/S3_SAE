@@ -201,7 +201,6 @@ public class Assurance extends Queryable{
             if (rowsAffected == 0) {
                 throw new AssuranceException("Aucune assurance correspondante trouvée pour la suppression.");
             }
-            System.out.println("Assurance supprimée avec succès : ID = " + this.idAssurance);
         } catch (QueryElement.QEltException e) {
             throw new AssuranceException("Erreur lors de la suppression de l'assurance avec ID " + this.idAssurance, e.getSqlException());
         }
