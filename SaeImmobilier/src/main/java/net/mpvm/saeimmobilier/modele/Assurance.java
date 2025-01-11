@@ -18,7 +18,6 @@ public class Assurance extends Queryable{
     private float protectionJuridique;
     private float prime;
     private TypeContrat typeContrat; // Type Propriétaire ou aide juridique
-    private Optional<Bien> bien; // Bien lié à l'assurance
     private String numeroContrat;
     private String nomAssurance;
     private Assurance(int idAssurance, TypeContrat typeContrat, int annee, float protectionJuridique, float prime, String numeroContrat, String nomAssurance) {
@@ -28,7 +27,6 @@ public class Assurance extends Queryable{
         }
         this.idAssurance = idAssurance;
         this.typeContrat = typeContrat;
-        this.bien = Optional.empty(); // Initialisé à une valeur vide
         this.annee = annee;
         this.protectionJuridique = protectionJuridique;
         this.prime = prime;
@@ -58,17 +56,9 @@ public class Assurance extends Queryable{
     }
 
 
-    // annotation to tell that the method isn't finished
-
     public float getTotalPrime() {
         return this.prime + this.protectionJuridique;
     }
-
-    // Méthode pour valider la cohérence des montants calculés
-
-    // Méthode pour sauvegarder une assurance
-
-    // Getters et Setters
 
     public int getIdAssurance() {
         return idAssurance;
@@ -96,14 +86,6 @@ public class Assurance extends Queryable{
 
     public void setTypeContrat(TypeContrat typeContrat) {
         this.typeContrat = typeContrat;
-    }
-
-    public Optional<Bien> getBien() {
-        return bien;
-    }
-
-    public void setBien(Bien bien) {
-        this.bien = Optional.of(bien);
     }
 
     public float getAugmentationAnnuelle() {
@@ -137,7 +119,6 @@ public class Assurance extends Queryable{
         """;
 
         try (UpdateQueryElement query = new UpdateQueryElement(INSERT_QUERY, true)) {
-            // Préparation des arguments de la requête
             query.setArgs(Map.of(
                     1, this.getProtectionJuridique(),
                     2, this.getPrime(),
@@ -178,25 +159,20 @@ public class Assurance extends Queryable{
         this.nomAssurance = nomAssurance;
     }
     public void delete() throws AssuranceException {
-        // Validation des données avant suppression
         if (this.idAssurance <= 0) {
             throw new AssuranceException("L'ID de l'assurance est invalide pour une suppression.");
         }
 
-
-        // Requête de suppression
         String DELETE_QUERY = """
         DELETE FROM Assurance
         WHERE IdAssurance = ?
         """;
 
         try (UpdateQueryElement query = new UpdateQueryElement(DELETE_QUERY, true)) {
-            // Préparation des paramètres de la requête
             query.setArgs(Map.of(
                     1, this.idAssurance
             ));
 
-            // Exécution de la requête
             int rowsAffected = query.execute();
             if (rowsAffected == 0) {
                 throw new AssuranceException("Aucune assurance correspondante trouvée pour la suppression.");
@@ -215,7 +191,6 @@ public class Assurance extends Queryable{
             throw new AssuranceException("L'ID du bien et de l'assurance doivent être valides.");
         }
 
-        // Vérification si une assurance existe déjà pour le même bien et la même année
         String CHECK_QUERY = """
     SELECT COUNT(*) as count FROM Assurance
     WHERE IdBien = ? AND Annee = ?
@@ -224,7 +199,7 @@ public class Assurance extends Queryable{
         try (SelectQueryElement checkQuery = new SelectQueryElement(CHECK_QUERY)) {
             checkQuery.setArgs(Map.of(
                     1, idBien,
-                    2, this.annee // Utilisation de l'année de l'assurance actuelle
+                    2, this.annee
             ));
             Result rs = checkQuery.execute();
 
@@ -243,12 +218,11 @@ public class Assurance extends Queryable{
             );
         }
 
-        // Attribution de l'assurance si aucune autre pour la même année n'existe
         String UPDATE_QUERY = """
-    UPDATE Assurance
-    SET IdBien = ?
-    WHERE IdAssurance = ?
-    """;
+                              UPDATE Assurance
+                              SET IdBien = ?
+                              WHERE IdAssurance = ?
+                              """;
 
         try (UpdateQueryElement query = new UpdateQueryElement(UPDATE_QUERY, true)) {
             query.setArgs(Map.of(
@@ -261,7 +235,6 @@ public class Assurance extends Queryable{
                 throw new AssuranceException("Aucune assurance correspondante trouvée pour l'attribution.");
             }
 
-            System.out.println("L'assurance avec ID = " + idAssurance + " a été attribuée au bien avec ID = " + idBien);
         } catch (QueryElement.QEltException e) {
             throw new AssuranceException(
                     "Erreur lors de l'attribution de l'assurance avec ID " + idAssurance + " au bien avec ID " + idBien,
@@ -271,9 +244,7 @@ public class Assurance extends Queryable{
     }
 
 
-    public void setBien(Optional<Bien> bien) {
-        this.bien = bien;
-    }
+
 
     @Unfinished
     public float getPrimePrecedente() {

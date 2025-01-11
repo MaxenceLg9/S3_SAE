@@ -44,7 +44,6 @@ public class Bail extends Queryable {
 		this.repartitionEntretien = new HashMap<>();
 		this.colocation = false;
 	}
-	// Constructeur
 	public Bail(Date dateDebut) {
 		this.dateDebut = dateDebut;
 		this.biens = new ArrayList<>();
@@ -88,11 +87,6 @@ public class Bail extends Queryable {
 		}
 	}
 
-
-
-
-
-	// Méthode pour savoir si le bail est en colocation
 	public boolean estEnColocation() {
 		if (this.locataires.size() > 1) {
 			this.colocation = true;
@@ -100,7 +94,6 @@ public class Bail extends Queryable {
 		return this.colocation;
 	}
 
-	// Méthode pour diviser le loyer entre colocataires
 	public Map<Locataire, Float> diviserLoyer() {
 		if (this.locataires.isEmpty()) {
 			throw new IllegalStateException("Aucun locataire n'est associé au bail.");
@@ -110,8 +103,6 @@ public class Bail extends Queryable {
 		if (estEnColocation()) {
 			float totalPourcentage = 0;
 			boolean utilisationRepartition = false;
-
-			// Vérifier si des répartitions sont définies
 			for (Locataire locataire : locataires) {
 				if (repartitionElectricite.containsKey(locataire) ||
 						repartitionEntretien.containsKey(locataire) ||
@@ -122,7 +113,6 @@ public class Bail extends Queryable {
 			}
 
 			if (utilisationRepartition && totalPourcentage > 0) {
-				// Répartition en fonction des pourcentages définis
 				for (Locataire locataire : locataires) {
 					float pourcentage = repartitionElectricite.getOrDefault(locataire, 0f);
 					partsLoyer.put(locataire, this.loyer * pourcentage);
@@ -135,18 +125,13 @@ public class Bail extends Queryable {
 				}
 			}
 		} else {
-			// Bail sans colocation : un seul locataire paie l'intégralité
 			partsLoyer.put(locataires.get(0), this.loyer);
 		}
 		return partsLoyer;
 	}
 
-	// Méthode pour ajouter un logement
-	public void ajouterBien(BienLouable bien) {
-		this.biens.add(bien);
-	}
 
-	// Méthode pour ajouter un locataire
+
 	public void ajouterLocataire(Locataire locataire) {
 		this.locataires.add(locataire);
 	}
