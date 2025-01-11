@@ -14,6 +14,7 @@ import net.mpvm.saeimmobilier.sql.Query.Queryable;
 import net.mpvm.saeimmobilier.util.JfxUtil;
 import net.mpvm.saeimmobilier.vue.VueAccueil;
 import net.mpvm.saeimmobilier.vue.VueBiensLouables;
+import net.mpvm.saeimmobilier.vue.VueLocataires;
 
 import java.util.List;
 
@@ -55,7 +56,7 @@ public class CtrlViewBails {
 
     private void afficheBails() {
         try {
-            Label titre = new Label("Liste des Baux");
+            Label titre = new Label("Liste des Bails");
             titre.setStyle("-fx-font-size: 24px; -fx-text-fill: white; -fx-font-weight: bold;");
             titre.setAlignment(Pos.CENTER);
 
@@ -66,7 +67,10 @@ public class CtrlViewBails {
             retourBiens.setOnAction(event -> retourBiens(event));
             retourBiens.getStyleClass().add("button-supprimer");
             vBoxBails.getChildren().add(retourBiens);
-
+            Button ajouterBail = new Button("Ajouter Bail");
+            ajouterBail.setOnAction(event -> ajouterBail(event,idBien));
+            ajouterBail.getStyleClass().add("button-valider");
+            vBoxBails.getChildren().add(ajouterBail);
             List<Bail> baux = Bail.findByBien(idBien);
 
             if (baux.isEmpty()) {
@@ -121,9 +125,16 @@ public class CtrlViewBails {
     private void gererLocataires(int idBail, ActionEvent event) {
         Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         stage.close();
+        Stage s = new Stage();
+        s.getProperties().put("bail",idBail);
+        new VueLocataires(idBail).startForBail(s);
 
     }
+    private void ajouterBail(ActionEvent event, int idBien) {
+        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+        stage.close();
 
+    }
     private void resilierBail(Bail bail) {
         try {
             bail.delete();
@@ -134,8 +145,6 @@ public class CtrlViewBails {
                     "Le bail a été résilié avec succès.");
         } catch (Bail.BailException e) {
             JfxUtil.displayError("Erreur lors de la résiliation", e.getMessage());
-        } catch (Queryable.QbleException e) {
-            throw new RuntimeException(e);
         }
     }
 
