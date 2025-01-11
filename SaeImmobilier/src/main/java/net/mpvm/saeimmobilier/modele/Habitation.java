@@ -13,8 +13,6 @@ public final class Habitation extends BienLouable {
 
     public static final String SELECT_QUERY = "SELECT * FROM Bien WHERE TypeBien = 'Habitation'";
 
-    private static final Map<Integer,Habitation> habitations = new HashMap<>();
-
     @Override
     public TypeBien getTypeBien() {
         return TypeBien.HABITATION;
@@ -22,9 +20,6 @@ public final class Habitation extends BienLouable {
 
     private Habitation(String complementAdresse, int nbPieces, String NumeroFiscal, Immeuble immeuble, float surface, Date dateAjout, String idProprio, int idBien) throws BienException {
         super(complementAdresse, nbPieces,NumeroFiscal,immeuble,surface,dateAjout, idProprio, idBien);
-        if((!habitations.containsKey(this.getIdBien()) || habitations.get(this.getIdBien()) == null) && idBien != -1){
-            habitations.put(this.getIdBien(),this);
-        }
     }
 
     private Habitation(HBuilder hBuilder) throws BienException {
@@ -48,7 +43,8 @@ public final class Habitation extends BienLouable {
 
     public void save() throws BienException {
         super.save();
-        habitations.put(this.getIdBien(), this);
+        System.out.println(this.getIdBien());
+        BBuilder.add(this);
     }
 
     public static class HBuilder extends BLBuilder {
@@ -73,9 +69,13 @@ public final class Habitation extends BienLouable {
 
         @Override
         public Habitation build() throws BienException {
-            if(habitations.containsKey(this.getIdBien()) && habitations.get(this.getIdBien()) != null)
-                return habitations.get(this.getIdBien());
-            return new Habitation(this);
+            if(this.getIdBien() == -1)
+                return new Habitation(this);
+            if(checkNotPresentIn(Habitation.class))
+                return (Habitation) get(this.getIdBien());
+            Habitation h = new Habitation(this);
+            add(h);
+            return h;
         }
     }
 

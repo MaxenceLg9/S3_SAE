@@ -5,10 +5,7 @@ import net.mpvm.saeimmobilier.sql.Query.Queryable;
 import net.mpvm.saeimmobilier.sql.Query.SelectQueryElement;
 import java.sql.Date;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 
 public abstract class Bien extends Queryable {
@@ -23,6 +20,8 @@ public abstract class Bien extends Queryable {
     private String numeroFiscal;
     private final Date dateAjout;
     private String idProprio;
+
+    private static final Map<Integer,Bien> biens = new HashMap<>();
 
 
     public Bien(int idBien, String numeroFiscal, Date dateAjout, String idProprio) {
@@ -195,6 +194,23 @@ public abstract class Bien extends Queryable {
         String getIdProprio(){
             return idProprio;
         }
+
+        boolean checkNotPresentIn(Class<? extends Bien> bienClass){
+            return checkNotPresentIn(bienClass, IdBien);
+        }
+
+        static boolean checkNotPresentIn(Class<? extends Bien> bienClass, int idBien){
+            return (biens.containsKey(idBien) && biens.get(idBien) != null && bienClass.isInstance(biens.get(idBien)));
+        }
+
+        public static void add(Bien bien) {
+            biens.put(bien.getIdBien(), bien);
+        }
+
+        public static Bien get(int idBien) {
+            return biens.get(idBien);
+        }
+
     }
 
 

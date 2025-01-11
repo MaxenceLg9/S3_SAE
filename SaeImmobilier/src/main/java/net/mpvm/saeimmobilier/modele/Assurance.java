@@ -18,7 +18,6 @@ public class Assurance extends Queryable{
     private float protectionJuridique;
     private float prime;
     private TypeContrat typeContrat; // Type Propriétaire ou aide juridique
-    private Optional<Bien> bien; // Bien lié à l'assurance
     private String numeroContrat;
     private String nomAssurance;
     private Assurance(int idAssurance, TypeContrat typeContrat, int annee, float protectionJuridique, float prime, String numeroContrat, String nomAssurance) {
@@ -28,7 +27,6 @@ public class Assurance extends Queryable{
         }
         this.idAssurance = idAssurance;
         this.typeContrat = typeContrat;
-        this.bien = Optional.empty(); // Initialisé à une valeur vide
         this.annee = annee;
         this.protectionJuridique = protectionJuridique;
         this.prime = prime;
@@ -98,12 +96,9 @@ public class Assurance extends Queryable{
         this.typeContrat = typeContrat;
     }
 
-    public Optional<Bien> getBien() {
-        return bien;
-    }
-
-    public void setBien(Bien bien) {
-        this.bien = Optional.of(bien);
+    public Bien getBien() {
+        //TODO : Use a query
+        return null;
     }
 
     public float getAugmentationAnnuelle() {
@@ -268,11 +263,6 @@ public class Assurance extends Queryable{
                     e.getSqlException()
             );
         }
-    }
-
-
-    public void setBien(Optional<Bien> bien) {
-        this.bien = bien;
     }
 
     @Unfinished

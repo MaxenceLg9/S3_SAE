@@ -16,13 +16,9 @@ public final class Garage extends BienLouable {
 
 	public static final String SELECT_QUERY = "SELECT * FROM bien WHERE TypeBien = 'GARAGE'";
 
-	private static final Map<Integer,Garage> garages = new HashMap<>();
 
 	Garage(String complementAdresse, int nbPieces, String NumeroFiscal, Immeuble immeuble, float surface, Date dateAjout, String idProprio, int idBien) throws BienException {
 		super(complementAdresse, nbPieces, NumeroFiscal, immeuble, surface, dateAjout, idProprio, idBien);
-		if((!garages.containsKey(this.getIdBien()) || garages.get(this.getIdBien()) == null) && idBien != -1){
-			garages.put(this.getIdBien(),this);
-		}
 	}
 
 	private Garage(GBuilder gBuilder) throws BienException {
@@ -31,7 +27,7 @@ public final class Garage extends BienLouable {
 
 	public void save() throws BienException {
 		super.save();
-		garages.put(this.getIdBien(), this);
+		BBuilder.add(this);
 	}
 
 	@NotNull
@@ -78,9 +74,13 @@ public final class Garage extends BienLouable {
 
 		@Override
 		public Garage build() throws BienException {
-			if(garages.containsKey(this.getIdBien()) && garages.get(this.getIdBien()) != null)
-				return garages.get(this.getIdBien());
-			return new Garage(this);
+			if(this.getIdBien() == -1)
+				return new Garage(this);
+			if(checkNotPresentIn(Garage.class))
+				return (Garage) get(this.getIdBien());
+			Garage garage = new Garage(this);
+			add(garage);
+			return garage;
 		}
 	}
 

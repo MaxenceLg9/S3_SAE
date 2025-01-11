@@ -4,6 +4,7 @@ package net.mpvm.saeimmobilier.modele;
 import net.mpvm.saeimmobilier.sql.Query.QueryElement;
 import net.mpvm.saeimmobilier.sql.Query.SelectQueryElement;
 import net.mpvm.saeimmobilier.sql.Query.UpdateQueryElement;
+import net.mpvm.saeimmobilier.util.Unfinished;
 
 import java.sql.Date;
 import java.sql.SQLException;
@@ -21,8 +22,6 @@ public abstract class BienLouable extends Bien {
     public static final String SELECT_QUERY_ID = "SELECT IdImmeuble FROM bien WHERE IdBien = ?";
 
     private String complementAdresse;
-    private ArrayList<Travaux> travaux;
-    private ArrayList<Bail> baux;
     private int ancienIndex;
     private boolean changementCompteur;
     private float surface;
@@ -33,13 +32,9 @@ public abstract class BienLouable extends Bien {
     public BienLouable(String complementAdresse,int nbPieces, String numeroFiscal, Immeuble immeuble, float surface, Date dateAjout, String idProprio, int idBien) throws BienException {// Initialisation des attributs hérités de Bien
         super(idBien, numeroFiscal, dateAjout, idProprio);
         this.complementAdresse = complementAdresse;
-        if(immeuble == null)
-            throw new BienLouableException("L'immeuble doit être renseigné", null);
-        this.immeuble = immeuble;
+        setImmeuble(immeuble);
         this.surface = surface;
         this.nbPieces = nbPieces;
-        this.travaux = new ArrayList<>();
-        this.baux = new ArrayList<>();
     }
 
     // Getters et Setters pour tous les champs
@@ -52,16 +47,16 @@ public abstract class BienLouable extends Bien {
         this.complementAdresse = complementAdresse;
     }
 
+    @Unfinished
     public ArrayList<Travaux> getTravaux() {
-        return travaux;
+        //TODO : make a query
+        return null;
     }
 
-    public void ajouterTravaux(Travaux travail) {
-        this.travaux.add(travail);
-    }
-
+    @Unfinished
     public ArrayList<Bail> getBaux() {
-        return baux;
+        //TODO : make a query
+        return null;
     }
 
     @Override
@@ -94,10 +89,6 @@ public abstract class BienLouable extends Bien {
         this.immeuble.setVille(ville);
     }
 
-    public void ajouterBail(Bail bail) {
-        this.baux.add(bail);
-    }
-
     public int getAncienIndex() {
         return ancienIndex;
     }
@@ -126,17 +117,13 @@ public abstract class BienLouable extends Bien {
         return immeuble;
     }
 
-    public void setImmeuble(Immeuble immeuble) {
+    public void setImmeuble(Immeuble immeuble) throws BienLouableException {
+        if(this.immeuble == null)
+            throw new BienLouableException("L'immeuble doit être renseigné", null);
         this.immeuble = immeuble;
     }
 
-    public void setTravaux(ArrayList<Travaux> travaux) {
-        this.travaux = travaux;
-    }
 
-    public void setBaux(ArrayList<Bail> baux) {
-        this.baux = baux;
-    }
     public int getNbPieces() {
         return nbPieces;
     }
@@ -150,22 +137,18 @@ public abstract class BienLouable extends Bien {
         if(this.getIdBien() != -1)
             throw new BienException("Le bien existe déjà !",null);
         try(UpdateQueryElement updateQueryElement = new UpdateQueryElement(INSERT_QUERY, true)){
-            int length = String.valueOf(this.getCodePostal()).length();
-            int lengthnF=this.getNumeroFiscal().length();
+            updateQueryElement.setArgs(
+                    Map.of(1, this.getComplementAdresse(),
+                            2, this.getTypeBienString(),
+                            3, this.getSurface(),
+                            4, this.getNbPieces(),
+                            5, this.getNumeroFiscal(),
+                            6, this.getDateAjout(),
+                            7, this.getImmeuble().getIdBien(),
+                            8, this.getIdProprio()
+                    )).execute();
+            super.save();
 
-            if (length == 5 && lengthnF == 13 ) {
-                updateQueryElement.setArgs(
-                        Map.of(1, this.getComplementAdresse(),
-                                2, this.getTypeBienString(),
-                                3, this.getSurface(),
-                                4, this.getNbPieces(),
-                                5, this.getNumeroFiscal(),
-                                6, this.getDateAjout(),
-                                7, this.getImmeuble().getIdBien(),
-                                8, this.getIdProprio()
-                        )).execute();
-                super.save();
-            }
         }
         catch (QueryElement.QEltException QEltException){
             throw new BienException("Erreur lors de l'ajout du bien : " + QEltException.getSqlException().getMessage(), QEltException.getSqlException());
@@ -209,7 +192,7 @@ public abstract class BienLouable extends Bien {
             selectQueryElement.execute();
             List<Map<String, Object>> result = selectQueryElement.getResult();
             if (!result.isEmpty()) {
-                return Integer.parseInt(result.get(0).get("IdImmeuble").toString());
+                return Integer.parseInt(result.getFirst().get("IdImmeuble").toString());
             } else {
                 throw new BienException("Aucun immeuble trouvé pour le bien avec ID " + idBien, null);
             }

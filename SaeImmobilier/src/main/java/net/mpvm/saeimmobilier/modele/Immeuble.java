@@ -21,8 +21,6 @@ public final class Immeuble extends Bien{
 	public static final String SELECT_COUNT_BL = "SELECT Count(*) FROM Bien WHERE IdImmeuble = ? AND (TypeBien = 'GARAGE' OR TypeBien = 'HABITATION')";
 	public static final String SELECT_LOCALISATION = "SELECT IdImmeuble FROM Bien WHERE Adresse = ? AND Ville = ? AND CodePostal = ? AND TypeBien = 'IMMEUBLE'";
 
-	private static final Map<Integer, Immeuble> immeubles = new HashMap<>();
-
 	private String adresse;
 	private String ville;
 	private String codePostal;
@@ -34,9 +32,6 @@ public final class Immeuble extends Bien{
 		this.codePostal = codePostal;
 		this.adresse = adresse;
 		this.ville = ville;
-		if((!immeubles.containsKey(this.getIdBien()) || immeubles.get(this.getIdBien()) == null) && idBien != -1){
-			immeubles.put(this.getIdBien(),this);
-		}
 	}
 
 	private Immeuble(IBuilder iBuilder) {
@@ -171,7 +166,7 @@ public final class Immeuble extends Bien{
 											7, this.getDateAjout()))
 					.execute();
 			super.save();
-			immeubles.put(this.getIdBien(),this);
+			BBuilder.add(this);
 		}
 		catch (QueryElement.QEltException qEltException){
 			throw new ImmeubleException("Erreur lors de l'ajout du bien : " + qEltException.getSqlException().getMessage(), qEltException.getSqlException());
@@ -253,8 +248,8 @@ public final class Immeuble extends Bien{
 		}
 
 		private static Map<String,Object> getFromId(int idBien) throws ImmeubleException {
-			if(immeubles.containsKey(idBien))
-				return immeubles.get(idBien).getArgs();
+			if(checkNotPresentIn(Immeuble.class,idBien))
+				return ((Immeuble) get(idBien)).getArgs();
 			try(SelectQueryElement selectQueryElement = new SelectQueryElement(SELECT_FROM_ID)){
 				selectQueryElement.setArgs(Map.of(1, idBien));
 				selectQueryElement.execute();
@@ -269,9 +264,13 @@ public final class Immeuble extends Bien{
 
 		@Override
 		public Immeuble build() {
-			if(immeubles.containsKey(this.getIdBien()) && immeubles.get(this.getIdBien()) != null)
-				return immeubles.get(this.getIdBien());
-			return new Immeuble(this);
+			if(this.getIdBien() == -1)
+				return new Immeuble(this);
+			if(checkNotPresentIn(Immeuble.class))
+				return (Immeuble) get(this.getIdBien());
+			Immeuble immeuble = new Immeuble(this);
+			add(immeuble);
+			return immeuble;
 		}
 	}
 
