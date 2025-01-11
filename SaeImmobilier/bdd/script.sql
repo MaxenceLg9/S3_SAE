@@ -147,6 +147,7 @@ CREATE TABLE Charges(
                         Montant DOUBLE,
                         DateCharge DATE,
                         TypeCharges VARCHAR(50),
+                        ProvisionSurCharge DOUBLE,
                         IdBail INT NOT NULL,
                         PRIMARY KEY(IdCharges),
                         FOREIGN KEY(IdBail) REFERENCES Bail(IdBail)
