@@ -123,7 +123,6 @@ DELIMITER ;
 
 CREATE TABLE Bail(
                      IdBail INT auto_increment,
-                     NbMoisLoues INT,
                      DateDebut DATE,
                      DateFin DATE,
                      TotalCharges DOUBLE,
@@ -133,10 +132,10 @@ CREATE TABLE Bail(
                      Renouvelable BOOLEAN,
                      CheminDocument VARCHAR(50),
                      DateSignature DATE,
-                     RepartitionEntretien DOUBLE,
-                     RepartitionElectricite VARCHAR(50),
-                     RepartitionOrdures_Menageres VARCHAR(50),
-                     Colocation BOOLEAN,
+#                      RepartitionEntretien DOUBLE,
+#                      RepartitionElectricite VARCHAR(50),
+#                      RepartitionOrdures_Menageres VARCHAR(50),
+#                      Colocation BOOLEAN,
                      IdBien INT NOT NULL,
                      PRIMARY KEY(IdBail),
                      FOREIGN KEY(IdBien) REFERENCES Bien(IdBien)
@@ -246,6 +245,7 @@ CREATE TABLE AssocieBailLocataire(
                                      IdBail INT,
                                      DateEntree DATE,
                                      DateSortie DATE,
+
                                      PRIMARY KEY(IdLocataire, IdBail),
                                      FOREIGN KEY(IdLocataire) REFERENCES Locataire(IdLocataire),
                                      FOREIGN KEY(IdBail) REFERENCES Bail(IdBail)

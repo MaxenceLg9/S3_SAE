@@ -52,7 +52,7 @@ public class TestImmeuble {
         Immeuble immeuble1 = new Immeuble.IBuilder(id).build();
         assertEquals(id, immeuble1.getIdBien());
         assertEquals("LAVILLE",immeuble1.getVille());
-        assertEquals(41025,immeuble1.getCodePostal());
+        assertEquals("41025",immeuble1.getCodePostal());
         assertEquals("521425315",immeuble1.getNumeroFiscal());
         immeuble1.delete();
     }
