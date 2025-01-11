@@ -92,24 +92,17 @@ public class CtrlAccueil {
         stage.getProperties().put("parent", this);
     }
 
-    public void ajouterLocataire(ActionEvent event) {
-        Stage stage = new Stage();
-        JfxUtil.showWindow(stage, VueNewLocataire.class);
-        stage.getProperties().put("parent", this);
-    }
+
 
     public void vueImmeubles(ActionEvent event) {
         Stage stage = new Stage();
         JfxUtil.showWindow(stage,VueImmeubles.class);
     }
 
-    public void vueLocataires(ActionEvent event) {
-        Stage stage = new Stage();
-        JfxUtil.showWindow(stage,VueLocataires.class);
-    }
+
 
     public void gererLocation(ActionEvent actionEvent) {
-
+        //JfxUtil.showWindow(stage,VueEnsembleBails.class);
     }
 
     public void deconnexion(ActionEvent event) {
