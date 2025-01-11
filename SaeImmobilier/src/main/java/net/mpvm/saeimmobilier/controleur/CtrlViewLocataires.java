@@ -13,10 +13,8 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import net.mpvm.saeimmobilier.modele.Locataire;
 import net.mpvm.saeimmobilier.util.JfxUtil;
-import net.mpvm.saeimmobilier.vue.VueAccueil;
+import net.mpvm.saeimmobilier.vue.VueNewLocataire;
 
-import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -29,11 +27,31 @@ public class CtrlViewLocataires {
     private Button retourAccueil;
 
     private Map<Integer, Locataire> locataires;
-
+    private int idBail;
     public void initialize(){
-        afficheLocataires();
+        vBoxContent.sceneProperty().addListener((observable, oldScene, newScene) -> {
+            if (newScene != null) {
+                Stage stage = (Stage) newScene.getWindow();
+                if (stage != null) {
+                    setIdBail(stage);
+                    afficheLocataires();
+                } else {
+                    System.out.println("pas de stage");
+                }
+            } else {
+                System.out.println("pas de scène");
+            }
+        });
     }
 
+    public void setIdBail(Stage stage) {
+        Object id = stage.getProperties().get("bail");
+        if (id instanceof Integer) {
+            this.idBail = (int) id;
+        } else {
+            throw new IllegalStateException("Propriété 'bail' manquante ou incorrecte.");
+        }
+    }
     private void afficheLocataires() {
 
         try {
@@ -53,7 +71,10 @@ public class CtrlViewLocataires {
         retourAccueil.setOnAction(event -> retourAccueil(event));
         retourAccueil.getStyleClass().add("button-supprimer");
         vBoxContent.getChildren().add(retourAccueil);
-
+        Button ajouterLocataire = new Button("Ajouter Locataire");
+        ajouterLocataire.setOnAction(event -> ajouterLocataire(event,idBail));
+        ajouterLocataire.getStyleClass().add("button-valider");
+        vBoxContent.getChildren().add(ajouterLocataire);
         for(Locataire l : locataires.values()) {
             GridPane gp = new GridPane();
             ColumnConstraints col1 = new ColumnConstraints();
@@ -63,11 +84,11 @@ public class CtrlViewLocataires {
 
             gp.getColumnConstraints().addAll(col1, col1);
 
-            Label nom = new Label("Nom : " + l.getNom());
-            Label prenom = new Label("Prenom : " + l.getPrenom());
-            Label email = new Label("Email : " + l.getEmail());
-            Label telephone = new Label("N° tel. : " + l.getTelephone());
-            Label sexe = new Label("Sexe : " + l.getSexe());
+            Label nom = new Label("Nom " + l.getNom());
+            Label prenom = new Label("Prenom " + l.getPrenom());
+            Label email = new Label("Email " + l.getEmail());
+            Label telephone = new Label("N° tel. " + l.getTelephone());
+            Label sexe = new Label("Sexe " + l.getSexe());
             Button button = new Button("Supprimer le locataire");
             button.setOnAction(event -> askForDelete(l.getIdLocataire()));
 
@@ -112,6 +133,8 @@ public class CtrlViewLocataires {
         }
     }
 
+
+
     @FXML
     public void askForDelete(int id){
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -121,6 +144,15 @@ public class CtrlViewLocataires {
         alert.showAndWait()
                 .filter(r -> r.equals(ButtonType.OK))
                 .ifPresent(r -> deleteLocataire(id));
+    }
+    public void ajouterLocataire(ActionEvent event, int idBail) {
+        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+        stage.close();
+
+        Stage s = new Stage();
+        s.getProperties().put("bien",idBail);
+        new VueNewLocataire(idBail).startForLocataires(s);
+
     }
 
     private void deleteLocataire(int id){
