@@ -101,7 +101,6 @@ public class CtrlNewAssurance {
                     alertError("Année invalide", "L'année doit être comprise entre 1950 et 2050.");
                     return;
                 }
-                // Enregistrement de l'assurance dans la base de données
                 new Assurance.ABuilder(typeContrat, annee, protectionJuridique, prime, numeroContrat, nomAssurance)
                         .build()
                         .save();
