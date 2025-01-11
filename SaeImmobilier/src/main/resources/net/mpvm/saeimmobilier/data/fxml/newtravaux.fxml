@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" spacing="10" styleClass="backgroundColor" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.mpvm.saeimmobilier.controleur.CtrlNewTravaux">
+    <children>
+        <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" VBox.vgrow="ALWAYS">
+            <top>
+                <Label alignment="BOTTOM_CENTER" cacheShape="false" contentDisplay="TOP" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" scaleShape="false" style="-fx-font-size: 32; -fx-font-weight: bold;" text="Ajouter des Travaux" textAlignment="CENTER" textFill="WHITE" wrapText="true" BorderPane.alignment="CENTER">
+                    <BorderPane.margin>
+                        <Insets bottom="50.0" top="30.0" />
+                    </BorderPane.margin>
+                    <font>
+                        <Font size="48.0" />
+                    </font>
+                </Label>
+            </top>
+            <center>
+                <GridPane alignment="CENTER" hgap="15.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="470.0" prefWidth="770.0" vgap="25.0">
+                    <children>
+                        <!-- NumeroFacture -->
+                        <Label text="Numéro Facture" textFill="WHITE" GridPane.rowIndex="0">
+                            <font>
+                                <Font name="Calibri" size="16.0" />
+                            </font>
+                        </Label>
+                        <TextField fx:id="fieldNumeroFacture" promptText="Numéro de la facture" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+                        <!-- Entreprise -->
+                        <Label text="Entreprise" textFill="WHITE" GridPane.rowIndex="1">
+                            <font>
+                                <Font name="Calibri" size="16.0" />
+                            </font>
+                        </Label>
+                        <TextField fx:id="fieldEntreprise" promptText="Nom de l'entreprise" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+                        <!-- Montant -->
+                        <Label text="Montant" textFill="WHITE" GridPane.rowIndex="2">
+                            <font>
+                                <Font name="Calibri" size="16.0" />
+                            </font>
+                        </Label>
+                        <TextField fx:id="fieldMontant" promptText="Montant total" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+                        <!-- MontantNonDeductible -->
+                        <Label text="Montant Non Déductible" textFill="WHITE" GridPane.rowIndex="3">
+                            <font>
+                                <Font name="Calibri" size="16.0" />
+                            </font>
+                        </Label>
+                        <TextField fx:id="fieldMontantNonDeductible" promptText="Montant non déductible" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+
+                        <!-- Reduction -->
+                        <Label text="Réduction" textFill="WHITE" GridPane.rowIndex="4">
+                            <font>
+                                <Font name="Calibri" size="16.0" />
+                            </font>
+                        </Label>
+                        <TextField fx:id="fieldReduction" promptText="Réduction appliquée" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+
+                        <!-- Nature -->
+                        <Label text="Nature" textFill="WHITE" GridPane.rowIndex="5">
+                            <font>
+                                <Font name="Calibri" size="16.0" />
+                            </font>
+                        </Label>
+                        <TextField fx:id="fieldNature" promptText="Nature des travaux" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+
+                        <!-- NumeroDevis -->
+                        <Label text="Numéro Devis" textFill="WHITE" GridPane.rowIndex="6">
+                            <font>
+                                <Font name="Calibri" size="16.0" />
+                            </font>
+                        </Label>
+                        <TextField fx:id="fieldNumeroDevis" promptText="Numéro du devis" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+
+                        <!-- DateTravaux -->
+                        <Label text="Date Travaux" textFill="WHITE" GridPane.rowIndex="7">
+                            <font>
+                                <Font name="Calibri" size="16.0" />
+                            </font>
+                        </Label>
+                        <DatePicker fx:id="pickerDateTravaux" promptText="Date des travaux" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                    </children>
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="ALWAYS" percentWidth="30.0" />
+                        <ColumnConstraints hgrow="ALWAYS" percentWidth="70.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                    </rowConstraints>
+                </GridPane>
+            </center>
+            <VBox.margin>
+                <Insets left="100.0" right="100.0" />
+            </VBox.margin>
+            <bottom>
+                <GridPane fx:id="bottomGridPane" alignment="CENTER" hgap="50.0" BorderPane.alignment="CENTER">
+                    <children>
+                        <!-- Button Ajouter -->
+                        <Button fx:id="btnAjouter" text="Ajouter" prefWidth="150" />
+                        <!-- Button Annuler -->
+                        <Button fx:id="btnAnnuler" text="Annuler" prefWidth="150" />
+                    </children>
+                    <columnConstraints>
+                        <ColumnConstraints halignment="RIGHT" hgrow="ALWAYS" />
+                        <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" />
+                    </columnConstraints>
+                </GridPane>
+            </bottom>
+            <padding>
+                <Insets bottom="30.0" />
+            </padding>
+        </BorderPane>
+    </children>
+    <cursor>
+        <Cursor fx:constant="DEFAULT" />
+    </cursor>
+</VBox>

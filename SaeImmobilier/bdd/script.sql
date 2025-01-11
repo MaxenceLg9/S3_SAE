@@ -30,7 +30,6 @@ CREATE TABLE Locataire(
 CREATE TABLE Travaux(
                         IdTravaux INT auto_increment,
                         NumeroFacture VARCHAR(50),
-                        Cote VARCHAR(50),
                         Entreprise VARCHAR(50),
                         Montant DOUBLE,
                         MontantNonDeductible DOUBLE,
