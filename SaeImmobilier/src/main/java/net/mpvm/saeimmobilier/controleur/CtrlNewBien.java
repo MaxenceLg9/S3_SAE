@@ -248,7 +248,7 @@ public class CtrlNewBien {
             }
         } catch (Queryable.QbleException e) {
             // Gérer les exceptions SQL
-            JfxUtil.setAlert(Alert.AlertType.ERROR, "Erreur", "Erreur SQL", "Une erreur est survenue lors de l'ajout du bien : " + e.getMessage());
+            JfxUtil.setAlert(Alert.AlertType.ERROR, "Erreur", "Impossible d'ajouter le bien", e.getMessage());
             e.getSqlException().printStackTrace();
         } catch (NumberFormatException e) {
             // Gérer les erreurs de conversion de chaîne en nombre

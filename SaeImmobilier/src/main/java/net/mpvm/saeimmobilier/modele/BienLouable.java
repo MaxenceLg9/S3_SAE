@@ -118,7 +118,7 @@ public abstract class BienLouable extends Bien {
     }
 
     public void setImmeuble(Immeuble immeuble) throws BienLouableException {
-        if(this.immeuble == null)
+        if(immeuble == null)
             throw new BienLouableException("L'immeuble doit être renseigné", null);
         this.immeuble = immeuble;
     }
