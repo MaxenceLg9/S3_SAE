@@ -170,7 +170,7 @@ public abstract class BienLouable extends Bien {
         }
         catch(QueryElement.QEltException QEltException){
             System.out.println(QEltException.getMessage());
-            throw new BienLouableException("Erreur lors de la récupération des biens : " + QEltException.getSqlException().getMessage(), QEltException.getSqlException());
+            throw new BienLouableException(STR."Erreur lors de la récupération des biens : \{QEltException.getSqlException().getMessage()}", QEltException.getSqlException());
         }
         return biens;
     }
@@ -181,7 +181,7 @@ public abstract class BienLouable extends Bien {
             selectQueryElement.setArgs(Map.of(1, idImmeuble));
             sortResult(biens, selectQueryElement);
         } catch (QueryElement.QEltException e) {
-            throw new BienException("Erreur lors de la récupération des biens pour l'immeuble ID " + idImmeuble, e.getSqlException());
+            throw new BienException(STR."Erreur lors de la récupération des biens pour l'immeuble ID \{idImmeuble}", e.getSqlException());
         }
 
         return biens;
