@@ -28,13 +28,33 @@ public class CtrlNewLocataire {
 
     @FXML
     private List<TextField> fieldsLocataires;
+    private int idBail;
 
     @FXML
     public void initialize(){
         fieldSetup();
         groupButton();
+        fieldNom.sceneProperty().addListener((observable, oldScene, newScene) -> {
+            if (newScene != null) {
+                Stage stage = (Stage) newScene.getWindow();
+                if (stage != null) {
+                    setIdBail(stage);
+                } else {
+                    System.out.println("pas de stage");
+                }
+            } else {
+                System.out.println("pas de scène");
+            }
+        });
     }
-
+    public void setIdBail(Stage stage) {
+        Object id = stage.getProperties().get("bail");
+        if (id instanceof Integer) {
+            this.idBail = (int) id;
+        } else {
+            throw new IllegalStateException("Propriété 'bail' manquante ou incorrecte.");
+        }
+    }
     private void fieldSetup() {
         setFieldsPromptText();
 
