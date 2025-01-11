@@ -148,13 +148,14 @@ public class CtrlViewBiensLouables {
         stage.close();
         Stage s = new Stage();
         s.getProperties().put("bien", idBien);
-        new VueBails().startForBiensLouables(s, idBien);
+        JfxUtil.showWindow(s, VueBails.class);
     }
 
     private void attribuerAssurance(int idBien,ActionEvent event) {
         Stage s = new Stage();
+        //TODO : check ces getProperties car unsafe
         s.getProperties().put("bien",idBien);
-        new VueAttribuerAssurance(idBien).start(s);
+        JfxUtil.showWindow(s,VueAttribuerAssurance.class);
     }
     private void ajouterBien(ActionEvent event) throws Exception {
         Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();

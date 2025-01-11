@@ -154,6 +154,6 @@ public class CtrlViewBails {
         stage.close();
         Stage s = new Stage();
         s.getProperties().put("bien",idBien);
-        new VueBiensLouables(idBien).startForImmeuble(s);
+        JfxUtil.showWindow(s, VueBiensLouables.class);
     }
 }

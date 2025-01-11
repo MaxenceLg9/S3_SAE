@@ -138,13 +138,13 @@ public class CtrlViewImmeubles {
         stage.close();
         Stage s = new Stage();
         s.getProperties().put("bien",idBien);
-        new VueBiensLouables(idBien).startForImmeuble(s);
+        JfxUtil.showWindow(s, VueBiensLouables.class);
     }
 
     private void attribuerAssurance(int idBien,ActionEvent event) {
         Stage s = new Stage();
         s.getProperties().put("bien",idBien);
-        new VueAttribuerAssurance(idBien).start(s);
+        JfxUtil.showWindow(s, VueAttribuerAssurance.class);
     }
 
     @FXML
