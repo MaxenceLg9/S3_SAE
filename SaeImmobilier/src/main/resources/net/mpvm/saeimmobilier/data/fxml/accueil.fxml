@@ -54,7 +54,7 @@
                                         <Font name="System Bold" size="14.0" />
                                     </font>
                                 </Button>
-                                <Button fx:id="btnAjoutLocataire" mnemonicParsing="false" onAction="#ajouterLocataire" prefWidth="190.0" text="Ajout d'un locataire" textFill="WHITE">
+                                <Button fx:id="btnAjoutAssurance" mnemonicParsing="false" onAction="#ajouterAssurance" prefWidth="190.0" text="Ajout d'une assurance" textFill="WHITE">
                                     <font>
                                         <Font name="System Bold" size="14.0" />
                                     </font>
@@ -64,11 +64,7 @@
                                         <Font name="System Bold" size="14.0" />
                                     </font>
                                 </Button>
-                                <Button fx:id="btnViewLocataire" mnemonicParsing="false" onAction="#vueLocataires" prefWidth="190.0" text="Vue des locataires" textFill="WHITE">
-                                    <font>
-                                        <Font name="System Bold" size="14.0" />
-                                    </font>
-                                </Button>
+
                                 <Button fx:id="btnLocations" mnemonicParsing="false" onAction="#gererLocation" prefWidth="190.0" text="Gérer les locations" textFill="WHITE">
                                     <font>
                                         <Font name="System Bold" size="14.0" />
