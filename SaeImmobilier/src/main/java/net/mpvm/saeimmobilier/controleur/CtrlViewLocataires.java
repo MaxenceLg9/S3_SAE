@@ -153,7 +153,7 @@ public class CtrlViewLocataires {
 
         Stage s = new Stage();
         s.getProperties().put("bail",idBail);
-        JfxUtil.showWindow(s, VueNewLocataire.class);    }
+        JfxUtil.showWindow(s, VueNewLocataire.class);
 
     }
 
