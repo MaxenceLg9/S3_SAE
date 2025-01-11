@@ -4,11 +4,9 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import net.mpvm.saeimmobilier.util.JfxUtil;
 
-public class VueLocataires  extends Application {
-
-
+public class VueLocataires  extends Application{
     @Override
     public void start(Stage primaryStage) throws Exception {
-
+        JfxUtil.updateStage(primaryStage, "viewlocataires.fxml", "Vue des Locataires", 750, 1200);
     }
 }
