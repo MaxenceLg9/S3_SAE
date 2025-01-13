@@ -8,6 +8,7 @@ import javafx.stage.Stage;
 import net.mpvm.saeimmobilier.modele.*;
 import net.mpvm.saeimmobilier.util.JfxUtil;
 import net.mpvm.saeimmobilier.vue.VueAccueil;
+import net.mpvm.saeimmobilier.vue.VueBiensLouables;
 
 
 import java.sql.Date;
@@ -138,6 +139,9 @@ public class CtrlModifierBien {
                         }
 
                         JfxUtil.setAlert(Alert.AlertType.INFORMATION, "Succès", "Modification du bien", "Le bien de type Habitation a été modifié avec succès !");
+                        Stage stage = (Stage) this.listImmeubles.getScene().getWindow();
+                        stage.getProperties().put("bien",this.bien.getImmeuble().getIdBien());
+                        JfxUtil.showWindow(stage, VueBiensLouables.class);
                     } else {
                         // Ajout d'un Garage
                         try {
@@ -150,11 +154,15 @@ public class CtrlModifierBien {
                                     this.bien.getIdProprio(),
                                     this.datesql
                             ).build().modify(this.bien.getIdBien());
+
                         } catch (Bien.BienException e) {
                             e.printStackTrace();
                         }
 
                         JfxUtil.setAlert(Alert.AlertType.INFORMATION, "Succès", "Modification du bien", "Le bien de type Garage a été modifié avec succès !");
+                        Stage stage = (Stage) this.listImmeubles.getScene().getWindow();
+                        stage.getProperties().put("bien",this.bien.getImmeuble().getIdBien());
+                        JfxUtil.showWindow(stage, VueBiensLouables.class);
                     }
                 } else {
                     // Champs invalides
@@ -162,6 +170,7 @@ public class CtrlModifierBien {
                 }
                 break;
         }
+
     }
 
     public void Accueil(ActionEvent actionEvent) {
@@ -169,9 +178,10 @@ public class CtrlModifierBien {
         JfxUtil.showWindow(stage, VueAccueil.class);
     }
 
-    public void RetourAccueil(ActionEvent actionEvent) {
+    public void Annuler(ActionEvent actionEvent) {
         Stage stage = (Stage) this.listImmeubles.getScene().getWindow();
-        JfxUtil.showWindow(stage, VueAccueil.class);
+        stage.getProperties().put("bien",this.bien.getImmeuble().getIdBien());
+        JfxUtil.showWindow(stage, VueBiensLouables.class);
     }
 
 

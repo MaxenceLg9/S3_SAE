@@ -197,7 +197,7 @@
                     </cursor>
                 </Button>
 
-                <Button fx:id="btnAnnuler" contentDisplay="BOTTOM" minHeight="35.0" minWidth="200.0" mnemonicParsing="false" onAction="#RetourAccueil" style="-fx-background-color: #e12816;" text="Retour à l'accueil" textFill="WHITE" GridPane.halignment="LEFT" GridPane.hgrow="NEVER" GridPane.valignment="CENTER" GridPane.vgrow="NEVER">
+                <Button fx:id="btnAnnuler" contentDisplay="BOTTOM" minHeight="35.0" minWidth="200.0" mnemonicParsing="false" onAction="#Annuler" style="-fx-background-color: #e12816;" text="Annuler" textFill="WHITE" GridPane.halignment="LEFT" GridPane.hgrow="NEVER" GridPane.valignment="CENTER" GridPane.vgrow="NEVER">
                     <font>
                         <Font name="System Bold" size="14.0" />
                     </font>
