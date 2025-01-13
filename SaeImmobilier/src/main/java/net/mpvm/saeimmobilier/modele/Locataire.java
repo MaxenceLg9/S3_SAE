@@ -6,10 +6,7 @@ import net.mpvm.saeimmobilier.sql.Query.UpdateQueryElement;
 import net.mpvm.saeimmobilier.sql.Query.Queryable;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public final class Locataire extends Queryable {
 
@@ -25,8 +22,6 @@ public final class Locataire extends Queryable {
 	private String email;
 	private String nom;
 	private String prenom;
-	private final ArrayList<Bail> baux;
-	private final ArrayList<Float> charges;
 	private float totalCharge;
 
 
@@ -37,13 +32,20 @@ public final class Locataire extends Queryable {
 		this.sexe = sexe;
 		this.telephone = telephone;
 		this.idLocataire = idLocataire;
-		this.baux = new ArrayList<>();
-		this.charges = new ArrayList<>();
 		this.totalCharge = 0f;
 	}
 
 	public Locataire(String nom, String prenom, String email, char sexe, String telephone) {
 		this(nom, prenom, email, sexe, telephone, -1);
+	}
+
+	private Locataire(Map<String, Object> row){
+		this(row.get("Nom").toString(),
+				row.get("Prenom").toString(),
+				row.get("Email").toString(),
+				row.get("Sexe").toString().charAt(0),
+				row.get("Telephone").toString(),
+				(int) row.get("IdLocataire"));
 	}
 
 	public int getIdLocataire() {
@@ -90,17 +92,30 @@ public final class Locataire extends Queryable {
 		this.prenom = prenom;
 	}
 
-	public ArrayList<Bail> getBaux(){
-		return this.baux;
-	}
-	
 	public void ajouterBail(Bail bail) {
-		this.baux.add(bail);
+
 	}
 
-	public ArrayList<Float> getCharges(){return this.charges;}
+	public List<Charges> getCharges() throws LocataireException {
+		try {
+			return Charges.getChargesFromLocataire(this);
+		} catch (Charges.ChargesException e) {
+			throw new LocataireException("Erreur lors de la récupération des charges",e.getSqlException());
+		}
+	}
 
-	public void setCharges(float charges) {this.charges.add(charges);}
+
+	public List<Bail> getBaux() throws LocataireException {
+		try{
+			return Bail.getBauxFromLocataire(this);
+		} catch (Bail.BailException e) {
+			throw new LocataireException("Erreur",e.getSqlException());
+		}
+	}
+
+
+	public void addCharges(float charges) {
+	}
 
 	public float getTotalCharge(){return this.totalCharge;}
 
@@ -180,6 +195,86 @@ public final class Locataire extends Queryable {
 		}
 		return l;
 	}
+
+	public  static List<Locataire> getLocatairesFromBail(int idBail) throws LocataireException {
+		List<Locataire> locataires = new LinkedList<>();
+		final String SELECT_QUERY = "SELECT L.* FROM Locataire L JOIN AssocieBailLocataire ABL ON L.IdLocataire = ABL.IdLocataire WHERE ABL.IdBail = ?";
+
+		try (SelectQueryElement selectQueryElement = new SelectQueryElement(SELECT_QUERY)) {
+			selectQueryElement.setArgs(Map.of(1, idBail));
+			selectQueryElement.execute();
+			List<Map<String, Object>> result = selectQueryElement.getResult();
+			for (Map<String, Object> row : result) {
+				locataires.add(new Locataire(row));
+			}
+		} catch (QueryElement.QEltException qEltException) {
+			qEltException.getSqlException().printStackTrace();
+			throw new LocataireException("Erreur lors de la récupération des locataires", qEltException.getSqlException());
+		}
+		return locataires;
+	}
+
+	public static Map<Locataire, Float> getRepartitionElectricite(int idBail) throws LocataireException {
+		Map<Locataire, Float> repartitionElectricite = new HashMap<>();
+		final String SELECT_QUERY = "SELECT L.*, ABL.RepartitionElectricite FROM Locataire L JOIN AssocieBailLocataire ABL ON L.IdLocataire = ABL.IdLocataire WHERE ABL.IdBail = ?";
+
+		try (SelectQueryElement selectQueryElement = new SelectQueryElement(SELECT_QUERY)) {
+			selectQueryElement.setArgs(Map.of(1, idBail));
+			selectQueryElement.execute();
+			List<Map<String, Object>> result = selectQueryElement.getResult();
+			for (Map<String, Object> row : result) {
+				Locataire locataire = new Locataire(row);
+				Float repartition = Float.parseFloat(row.get("RepartitionElectricite").toString());
+				repartitionElectricite.put(locataire, repartition);
+			}
+		} catch (QueryElement.QEltException qEltException) {
+			qEltException.getSqlException().printStackTrace();
+			throw new LocataireException("Erreur lors de la récupération de la répartition de l'électricité", qEltException.getSqlException());
+		}
+		return repartitionElectricite;
+	}
+
+	public static Map<Locataire, Float> getRepartitionOrduresMenageres(int idBail) throws LocataireException {
+		Map<Locataire, Float> repartitionOrdures = new HashMap<>();
+		final String SELECT_QUERY = "SELECT L.*, ABL.RepartitionOrdures_Menageres FROM Locataire L JOIN AssocieBailLocataire ABL ON L.IdLocataire = ABL.IdLocataire WHERE ABL.IdBail = ?";
+
+		try (SelectQueryElement selectQueryElement = new SelectQueryElement(SELECT_QUERY)) {
+			selectQueryElement.setArgs(Map.of(1, idBail));
+			selectQueryElement.execute();
+			List<Map<String, Object>> result = selectQueryElement.getResult();
+			for (Map<String, Object> row : result) {
+				Locataire locataire = new Locataire(row);
+				Float repartition = Float.parseFloat(row.get("RepartitionOrdures_Menageres").toString());
+				repartitionOrdures.put(locataire, repartition);
+			}
+		} catch (QueryElement.QEltException qEltException) {
+			qEltException.getSqlException().printStackTrace();
+			throw new LocataireException("Erreur lors de la récupération de la répartition des ordures ménagères", qEltException.getSqlException());
+		}
+		return repartitionOrdures;
+	}
+
+	public static Map<Locataire, Float> getRepartitionEntretien(int idBail) throws LocataireException {
+		Map<Locataire, Float> repartitionEntretien = new HashMap<>();
+		final String SELECT_QUERY = "SELECT L.*, ABL.RepartitionEntretien FROM Locataire L JOIN AssocieBailLocataire ABL ON L.IdLocataire = ABL.IdLocataire WHERE ABL.IdBail = ?";
+
+		try (SelectQueryElement selectQueryElement = new SelectQueryElement(SELECT_QUERY)) {
+			selectQueryElement.setArgs(Map.of(1, idBail));
+			selectQueryElement.execute();
+			List<Map<String, Object>> result = selectQueryElement.getResult();
+			for (Map<String, Object> row : result) {
+				Locataire locataire = new Locataire(row);
+				Float repartition = Float.parseFloat(row.get("RepartitionEntretien").toString());
+				repartitionEntretien.put(locataire, repartition);
+			}
+		} catch (QueryElement.QEltException qEltException) {
+			qEltException.getSqlException().printStackTrace();
+			throw new LocataireException("Erreur lors de la récupération de la répartition de l'entretien", qEltException.getSqlException());
+		}
+		return repartitionEntretien;
+	}
+
+
 
 	public static class LocataireException extends QbleException {
 
