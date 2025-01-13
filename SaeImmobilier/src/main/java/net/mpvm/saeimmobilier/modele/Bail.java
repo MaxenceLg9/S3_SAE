@@ -2,15 +2,14 @@ package net.mpvm.saeimmobilier.modele;
 
 
 import net.mpvm.saeimmobilier.sql.Query.*;
+import net.mpvm.saeimmobilier.util.Unfinished;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.*;
 import java.sql.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class Bail extends Queryable {
+
 	private int idBail;
 	private float provisionSurCharge;
 	private float factureEau;
@@ -19,42 +18,41 @@ public class Bail extends Queryable {
 	private float regularisationCharge;
 	private Date dateDebut;
 	private Date dateFin;
-	private ArrayList<BienLouable> biens;
-	private ArrayList<Locataire> locataires;
-	private ArrayList<Charges> charges;
-	private ArrayList<Paiement> paiements;
-	private Map<Locataire, Float> repartitionElectricite;
-	private Map<Locataire, Float> repartitionOrduresMenageres;
-	private Map<Locataire, Float> repartitionEntretien;
+	private float depotGarantie;
+	private boolean renouvelable;
+	private int idBien;
 
-	private boolean colocation;
 	private Date dateSignature;
 
 	public static final String DELETE_QUERY = "DELETE FROM Bail WHERE IdBail = ?";
 
 
-	private Bail(int idBail, Date dateDebut){
+	private Bail(int idBail, Date dateDebut, float loyer, boolean renouvelable, float totalCharge, float depotGarantie, Date dateSignature, Date dateFin, int idBien){
 		this.idBail = idBail;
 		this.dateDebut = dateDebut;
-		this.biens = new ArrayList<>();
-		this.locataires = new ArrayList<>();
-		this.charges = new ArrayList<>();
-		this.paiements = new ArrayList<>();
-		this.repartitionElectricite = new HashMap<>();
-		this.repartitionEntretien = new HashMap<>();
-		this.colocation = false;
+		this.loyer = loyer;
+		this.totalCharge = totalCharge;
+		this.dateFin = dateFin;
+		this.dateSignature = dateSignature;
+		this.depotGarantie = depotGarantie;
+		this.renouvelable = renouvelable;
+		this.idBien = idBien;
 	}
 	// Constructeur
-	public Bail(Date dateDebut) {
-		this.dateDebut = dateDebut;
-		this.biens = new ArrayList<>();
-		this.repartitionOrduresMenageres = new HashMap<>();
-		this.charges = new ArrayList<>();
-		this.locataires = new ArrayList<>();
-		this.paiements = new ArrayList<>();
-		this.repartitionElectricite = new HashMap<>();
-		this.repartitionEntretien = new HashMap<>();
-		this.colocation = false;
+	public Bail(Date dateDebut, float loyer, boolean renouvelable, float totalCharge, float depotGarantie, Date dateSignature, Date dateFin, int idBien){
+		this(-1, dateDebut, loyer, renouvelable, totalCharge, depotGarantie, dateSignature, dateFin, idBien);
+	}
+
+	private Bail(Map<String, Object> row) {
+		this((int) row.get("IdBail"),
+				(Date) row.get("DateDebut"),
+				(int) (float) row.get("MontantLoyer"),
+				(boolean) row.get("Renouvelable"),
+				(float) row.get("DepotGarantie"),
+				(float) row.get("TotalCharges"),
+				(Date) row.get("DateSignature"),
+				(Date) row.get("DateFin"),
+				(int) row.get("IdBien"));
 	}
 
 	public static List<Bail> findByBien(int idBien) throws BailException {
@@ -74,35 +72,43 @@ public class Bail extends Queryable {
 
 	private static void sortResult(List<Bail> baux, Result result) throws QueryElement.QEltException {
 		for (Map<String, Object> row : result) {
-			Bail bail = new Bail(
-					(int) row.get("IdBail"),
-					(Date) row.get("DateDebut")
-			);
-
-			bail.setDateFin((Date) row.get("DateFin"));
-			bail.setLoyer((float) row.get("MontantLoyer"));
-			bail.setColocation((boolean) row.get("Colocation"));
-			bail.setDateSignature((Date) row.get("DateSignature"));
-
+			Bail bail = new Bail(row);
 			baux.add(bail);
 		}
 	}
 
+	public static List<Bail> getBauxFromLocataire(Locataire locataire) throws BailException {
+		ArrayList<Bail> bauxList = new ArrayList<>();
+		final String SELECT_QUERY = """
+        SELECT B.*
+        FROM Bail B
+        JOIN AssocieBailLocataire ABL ON B.IdBail = ABL.IdBail
+        WHERE ABL.IdLocataire = ?
+    """;
+		try (SelectQueryElement selectQueryElement = new SelectQueryElement(SELECT_QUERY)) {
+			selectQueryElement.setArgs(Map.of(-1, locataire.getIdLocataire())); // Assuming getId() retrieves the current Locataire's ID.
+			selectQueryElement.execute();
+			List<Map<String, Object>> result = selectQueryElement.getResult();
+			for (Map<String, Object> row : result) {
+				bauxList.add(new Bail(row)); // Assuming Bail has a constructor that accepts a map of database row values.
+			}
+		} catch (QueryElement.QEltException qEltException) {
+			qEltException.getSqlException().printStackTrace();
+			throw new BailException("Erreur lors de la récupération des baux du locataire", qEltException.getSqlException());
+		}
+		return bauxList;
 
-
+	}
 
 
 	// Méthode pour savoir si le bail est en colocation
-	public boolean estEnColocation() {
-		if (this.locataires.size() > 1) {
-			this.colocation = true;
-		}
-		return this.colocation;
+	public boolean estEnColocation() throws BailException {
+		return this.getLocataires().size() > 1;
 	}
 
 	// Méthode pour diviser le loyer entre colocataires
-	public Map<Locataire, Float> diviserLoyer() {
-		if (this.locataires.isEmpty()) {
+	public Map<Locataire, Float> diviserLoyer() throws BailException {
+		if (this.getLocataires().isEmpty()) {
 			throw new IllegalStateException("Aucun locataire n'est associé au bail.");
 		}
 
@@ -112,44 +118,36 @@ public class Bail extends Queryable {
 			boolean utilisationRepartition = false;
 
 			// Vérifier si des répartitions sont définies
-			for (Locataire locataire : locataires) {
-				if (repartitionElectricite.containsKey(locataire) ||
-						repartitionEntretien.containsKey(locataire) ||
-						repartitionOrduresMenageres.containsKey(locataire)) {
+			for (Locataire locataire : getLocataires()) {
+				if (getRepartitionElectricite().containsKey(locataire) ||
+						getRepartitionEntretien().containsKey(locataire) ||
+						getRepartitionOrduresMenageres().containsKey(locataire)) {
 					utilisationRepartition = true;
-					totalPourcentage += repartitionElectricite.getOrDefault(locataire, 0f);
+					totalPourcentage += getRepartitionElectricite().getOrDefault(locataire, 0f);
 				}
 			}
 
 			if (utilisationRepartition && totalPourcentage > 0) {
 				// Répartition en fonction des pourcentages définis
-				for (Locataire locataire : locataires) {
-					float pourcentage = repartitionElectricite.getOrDefault(locataire, 0f);
+				for (Locataire locataire : getLocataires()) {
+					float pourcentage = getRepartitionElectricite().getOrDefault(locataire, 0f);
 					partsLoyer.put(locataire, this.loyer * pourcentage);
 				}
 			} else {
 				// Répartition équitable
-				float partEquitable = this.loyer / this.locataires.size();
-				for (Locataire locataire : locataires) {
+				float partEquitable = this.loyer / this.getLocataires().size();
+				for (Locataire locataire : getLocataires()) {
 					partsLoyer.put(locataire, partEquitable);
 				}
 			}
 		} else {
 			// Bail sans colocation : un seul locataire paie l'intégralité
-			partsLoyer.put(locataires.get(0), this.loyer);
+			partsLoyer.put(getLocataires().getFirst(), this.loyer);
 		}
 		return partsLoyer;
 	}
 
-	// Méthode pour ajouter un logement
-	public void ajouterBien(BienLouable bien) {
-		this.biens.add(bien);
-	}
 
-	// Méthode pour ajouter un locataire
-	public void ajouterLocataire(Locataire locataire) {
-		this.locataires.add(locataire);
-	}
 
 
 	public int getIdBail() {
@@ -219,90 +217,129 @@ public class Bail extends Queryable {
 		this.dateFin = dateFin;
 	}
 
-	public ArrayList<BienLouable> getBiens() {
-		return biens;
-	}
 
-	public ArrayList<Locataire> getLocataires() {
-		return locataires;
-	}
-
-	public ArrayList<Charges> getCharges() {
-		return charges;
-	}
-
-	public Map<Locataire, Float> getRepartitionElectricite() {
-		return repartitionElectricite;
-	}
-
-	public void setRepartitionElectricite(Locataire locataire, float pourcentage) {
-		if (pourcentage < 0 || pourcentage > 1) {
-			throw new IllegalArgumentException("Pourcentage pas compris entre 0 et 1");
+	public List<Locataire> getLocataires() throws BailException {
+		try {
+			return Locataire.getLocatairesFromBail(this.getIdBail());
 		}
-		this.repartitionElectricite.put(locataire, pourcentage);
+		catch (Locataire.LocataireException e) {
+			throw new BailException("Erreur lors de la récupération des locataires du bail", e.getSqlException());
+		}
 	}
 
+
+	@Unfinished
+	public ArrayList<Charges> getCharges() {
+		return null;
+		//TODO : query pour get dans la bd
+	}
+
+	@Unfinished
+	public Map<Locataire, Float> getRepartitionElectricite() {
+		return null;
+		//TODO : query pour get dans la bd
+	}
+
+	@Unfinished
 	public Map<Locataire, Float> getRepartitionOrduresMenageres() {
-		return repartitionOrduresMenageres;
+		return null;
+		//TODO : query
 	}
 
+	@Unfinished
+	public Map<Locataire, Float> getRepartitionEntretien() {
+		//TODO : query
+		return null;
+	}
+
+	@Unfinished
+	public ArrayList<Paiement> getPaiements() {
+		return null;
+	}
+
+
+	@Unfinished
 	public void setRepartitionOrduresMenageres(Locataire locataire, float pourcentage) {
 		if (pourcentage < 0 || pourcentage > 1) {
 			throw new IllegalArgumentException("Pourcentage pas compris entre 0 et 1");
 		}
-		this.repartitionOrduresMenageres.put(locataire, pourcentage);
+		//TODO : query to put
 	}
 
-	public Map<Locataire, Float> getRepartitionEntretien() {
-		return repartitionEntretien;
+	@Unfinished
+	public void setRepartitionElectricite(Locataire locataire, float pourcentage) {
+		if (pourcentage < 0 || pourcentage > 1) {
+			throw new IllegalArgumentException("Pourcentage pas compris entre 0 et 1");
+		}
+		//TODO : query pour mettre dans la bd
 	}
 
+	@Unfinished
 	public void setRepartitionEntretien(Locataire locataire, float pourcentage) {
 		if (pourcentage < 0 || pourcentage > 1) {
 			throw new IllegalArgumentException("Pourcentage pas compris entre 0 et 1");
 		}
-		this.repartitionEntretien.put(locataire, pourcentage);
+		//TODO : query to put
 	}
 
-	public ArrayList<Paiement> getPaiements() {
-		return paiements;
-	}
+	@Unfinished
 	public void setPaiements(ArrayList<Paiement> paiements) {
-		this.paiements = paiements;
+		//TODO : query
 	}
 
-	public void setRepartitionElectricite(Map<Locataire, Float> repartitionElectricite) {
-		this.repartitionElectricite = repartitionElectricite;
+
+	@Unfinished
+	public void setLocataires(List<Locataire> locataires, Map<Locataire, Float> repartitionElectricite, Map<Locataire, Float> repartitionEntretien, Map<Locataire, Float> repartitionOrduresMenageres) throws BailException {
+		if (locataires == null || locataires.isEmpty()) {
+			throw new IllegalArgumentException("Locataires list cannot be null or empty.");
+		}
+
+		try (UpdateQueryElement query = new UpdateQueryElement(
+				"INSERT INTO AssocieBailLocataire (IdLocataire, IdBail, RepartitionElectricite, RepartitionEntretien, RepartitionOrdures_Menageres) " +
+						"VALUES (?, ?, ?, ?, ?) " +
+						"ON DUPLICATE KEY UPDATE " +
+						"RepartitionElectricite = VALUES(RepartitionElectricite), " +
+						"RepartitionEntretien = VALUES(RepartitionEntretien), " +
+						"RepartitionOrdures_Menageres = VALUES(RepartitionOrdures_Menageres)",true)) {
+
+			for (Locataire locataire : locataires) {
+				if (!repartitionElectricite.containsKey(locataire) ||
+						!repartitionEntretien.containsKey(locataire) ||
+						!repartitionOrduresMenageres.containsKey(locataire)) {
+					throw new IllegalArgumentException("Missing repartition data for locataire: " + locataire.getNom());
+				}
+
+				query.setArgs(Map.of(
+						1, locataire.getIdLocataire(),
+						2, this.getIdBail(), // Assuming Bail class has a getId() method for IdBail
+						3, repartitionElectricite.get(locataire),
+						4, repartitionEntretien.get(locataire),
+						5, repartitionOrduresMenageres.get(locataire)
+				));
+			}
+
+			query.execute();
+		} catch (QueryElement.QEltException e) {
+			e.printStackTrace();
+			throw new BailException("Failed to set locataires for bail.", e.getSqlException());
+		}
 	}
 
-	public void setBiens(ArrayList<BienLouable> biens) {
-		this.biens = biens;
-	}
-	public void setLocataires(ArrayList<Locataire> locataires) {
-		this.locataires = locataires;
-	}
-	public void setCharges(ArrayList<Charges> charges) {
-		this.charges = charges;
-	}
-
-	public boolean isColocation() {
-		return colocation;
-	}
-	public void setColocation(boolean colocation) {
-		this.colocation = colocation;
-	}
-
-	public void setRepartitionEntretien(Map<Locataire, Float> repartitionEntretien) {
-		this.repartitionEntretien = repartitionEntretien;
-	}
-
-	public void setRepartitionOrduresMenageres(Map<Locataire, Float> repartitionOrduresMenageres) {
-		this.repartitionOrduresMenageres = repartitionOrduresMenageres;
+	@Unfinished
+	public void setCharges(List<Charges> charges) {
+		//TODO : ???
 	}
 
 	@Override
-	public void save() throws QbleException {
+	public void save() throws BailException {
+		if(this.getIdBail() != -1)
+			throw new BailException("Le bail existe déjà dans la table", null);
+		try (UpdateQueryElement query = new UpdateQueryElement("INSERT INTO Bail (DateDebut, MontantLoyer, Renouvelable, TotalCharges, DepotGarantie, DateSignature, DateFin) VALUES (?, ?, ?, ?, ?, ?, ?)", true)){
+			query.setArgs(Map.of(1, this.getDateDebut(), 2, this.getLoyer(), 3, false, 4, this.getTotalCharge(), 5, this.getProvisionSurCharge(), 6, this.getDateSignature(), 7, this.getDateFin())).execute();
 
+		}catch (QueryElement.QEltException e) {
+			throw new BailException("Erreur lors de l'insertion du bail", e.getSqlException());
+		}
 	}
 
 	@Override
@@ -343,12 +380,6 @@ public class Bail extends Queryable {
 		this.dateSignature = dateSignature;
 	}
 
-	public Boolean getColocation() {
-		return this.colocation;
-	}
-	public void setColocation(Boolean colocation) {
-		this.colocation = colocation;
-	}
 
 	public static class BailException extends QbleException {
 		public BailException(String message, SQLException sqlException) {

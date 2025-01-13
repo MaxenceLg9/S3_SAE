@@ -1,13 +1,16 @@
 package net.mpvm.saeimmobilier.modele;
 
+import java.sql.Date;
+
 public class ChargeEntretien extends Charges {
     private int idChargeEntretien;
-    private ChargeEntretien(ModeleDate dateReleve, int idChargeEntretien) {
+
+    private ChargeEntretien(Date dateReleve, int idChargeEntretien) {
         super(dateReleve);
         this.idChargeEntretien = idChargeEntretien;
     }
     // Constructeur
-    public ChargeEntretien(ModeleDate dateReleve) {
+    public ChargeEntretien(Date dateReleve) {
         super(dateReleve);
     }
 

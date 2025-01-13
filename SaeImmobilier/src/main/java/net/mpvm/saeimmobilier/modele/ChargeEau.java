@@ -1,17 +1,20 @@
 package net.mpvm.saeimmobilier.modele;
 
 
+import java.sql.Date;
+
 public class ChargeEau extends Charges{
     private int IdChargeEau;
     private int NouvelIndice;
     private float PartieFixe;
     private float PartieVariable;
     private int AncienIndice;
-    private ChargeEau(ModeleDate DateReleve, int IdChargeEau){
+
+    private ChargeEau(Date DateReleve, int IdChargeEau){
         super(DateReleve);
         this.IdChargeEau = IdChargeEau;
     }
-    public ChargeEau(ModeleDate DateReleve) {
+    public ChargeEau(Date DateReleve) {
 
         super(DateReleve);
     }
