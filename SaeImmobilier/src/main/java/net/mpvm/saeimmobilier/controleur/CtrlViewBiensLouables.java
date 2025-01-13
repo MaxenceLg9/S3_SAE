@@ -106,6 +106,9 @@ public class CtrlViewBiensLouables {
                 Button supprimerButton = new Button("Supprimer");
                 supprimerButton.setOnAction(event -> supprimerBien(bien));
 
+                Button modifierButton = new Button("Modifier");
+                modifierButton.setOnAction(event-> modifierBien(bien.getIdBien(),event));
+
                 List<Label> labels = List.of(Nom,typeBien, CAdresse, surface, nbPieces);
                 Nom.getStyleClass().add("assurance-title");
                 labels.forEach(label -> label.getStyleClass().add("assurance-label"));
@@ -113,6 +116,7 @@ public class CtrlViewBiensLouables {
                 gererBailsButton.getStyleClass().add("button-valider");
                 attribuerAssuranceButton.getStyleClass().add("button-valider");
                 supprimerButton.getStyleClass().add("button-supprimer");
+                modifierButton.getStyleClass().add("button-valider");
                 gp.add(Nom,0,0);
                 gp.add(typeBien, 0, 1);
                 gp.add(CAdresse, 1, 0);
@@ -121,6 +125,7 @@ public class CtrlViewBiensLouables {
                 gp.add(gererBailsButton, 3, 0);
                 gp.add(attribuerAssuranceButton, 4, 0);
                 gp.add(supprimerButton, 3, 1);
+                gp.add(modifierButton, 5, 0);
 
                 vBoxBiensLouables.getChildren().add(gp);
             }
@@ -168,5 +173,12 @@ public class CtrlViewBiensLouables {
         Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         stage.close();
         new VueImmeubles().start(new Stage());
+    }
+
+    @FXML
+    private void modifierBien(int idBien,ActionEvent event) {
+        Stage s = new Stage();
+        s.getProperties().put("bien",idBien);
+        JfxUtil.showWindow(s, VueModifierBien.class);
     }
 }

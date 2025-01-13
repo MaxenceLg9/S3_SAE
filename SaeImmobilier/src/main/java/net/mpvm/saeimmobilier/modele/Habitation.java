@@ -2,6 +2,8 @@ package net.mpvm.saeimmobilier.modele;
 
 import net.mpvm.saeimmobilier.sql.Query.QueryElement;
 import net.mpvm.saeimmobilier.sql.Query.SelectQueryElement;
+import org.jetbrains.annotations.NotNull;
+
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -47,14 +49,22 @@ public final class Habitation extends BienLouable {
         BBuilder.add(this);
     }
 
+    public void modify(int idbien) throws BienLouableException {
+        super.modify(idbien);
+        System.out.println(this.getIdBien());
+    }
+
     public static class HBuilder extends BLBuilder {
-        public HBuilder(String complementAdresse, int nbPieces, String NumeroFiscal, Immeuble immeuble, float surface,  String idProprio, Date dateAjout) {
+        public HBuilder(String complementAdresse, int nbPieces, String NumeroFiscal, Immeuble immeuble, float surface,  String idProprio, @NotNull Date dateAjout) {
             this(complementAdresse, nbPieces,NumeroFiscal,immeuble,surface,dateAjout, idProprio, -1);
         }
 
         HBuilder(String complementAdresse, int nbPieces, String NumeroFiscal, Immeuble immeuble, float surface, Date dateAjout, String idProprio, int idBien) {
             super(complementAdresse, nbPieces,NumeroFiscal,immeuble,surface,dateAjout, idProprio, idBien);
         }
+
+
+
 
         HBuilder(Map<String, Object> args) throws BienException {
             this(args.get("ComplementAdresse").toString(),

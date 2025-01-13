@@ -40,7 +40,7 @@ public class CtrlNewBien {
     private TextField fieldSurface;
     @FXML
     private ChoiceBox<TypeBien> listTypeBien;
-    @FXML
+
     private List<TextField> fieldsLogement;
     @FXML
     private TextField fieldNumeroProprio;
@@ -76,6 +76,10 @@ public class CtrlNewBien {
             }
         });
 
+
+    }
+
+    private void refreshImmeubles() {
         this.listImmeubles.setOnAction(actionEvent -> {
             if (listImmeubles.getValue() != null) {
                 this.fieldAdresse.setText(listImmeubles.getValue().getAdresse());
@@ -95,9 +99,6 @@ public class CtrlNewBien {
                 this.listTypeBien.getItems().add(TypeBien.IMMEUBLE);
             }
         });
-    }
-
-    private void refreshImmeubles() {
         try {
             listImmeubles.getItems().clear();
             listImmeubles.getItems().addAll(Immeuble.findAll());

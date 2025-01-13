@@ -12,9 +12,7 @@ import javafx.stage.Stage;
 import net.mpvm.saeimmobilier.modele.Bail;
 import net.mpvm.saeimmobilier.sql.Query.Queryable;
 import net.mpvm.saeimmobilier.util.JfxUtil;
-import net.mpvm.saeimmobilier.vue.VueAccueil;
-import net.mpvm.saeimmobilier.vue.VueBiensLouables;
-import net.mpvm.saeimmobilier.vue.VueLocataires;
+import net.mpvm.saeimmobilier.vue.*;
 
 import java.util.List;
 
@@ -133,7 +131,6 @@ public class CtrlViewBails {
     private void ajouterBail(ActionEvent event, int idBien) {
         Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         stage.close();
-
     }
     private void resilierBail(Bail bail) {
         try {

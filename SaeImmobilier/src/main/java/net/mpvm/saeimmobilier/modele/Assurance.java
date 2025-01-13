@@ -154,7 +154,7 @@ public class Assurance extends Queryable{
 
 
     @Override
-    public void modify() throws QbleException {
+    public void modify(int idbien) throws QbleException {
         update();
     }
 

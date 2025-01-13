@@ -3,6 +3,8 @@ package net.mpvm.saeimmobilier.modele;
 import net.mpvm.saeimmobilier.sql.Query.QueryElement;
 import net.mpvm.saeimmobilier.sql.Query.Queryable;
 import net.mpvm.saeimmobilier.sql.Query.SelectQueryElement;
+import net.mpvm.saeimmobilier.sql.Query.UpdateQueryElement;
+
 import java.sql.Date;
 import java.sql.*;
 import java.util.*;
@@ -94,6 +96,7 @@ public abstract class Bien extends Queryable {
             throw new BienException("Erreur lors de la récupération de l'ID du bien", e.getSqlException());
         }
     }
+
 
     public static List<? extends Bien> findAll() throws BienException {
         List<Bien> biens = new ArrayList<>();

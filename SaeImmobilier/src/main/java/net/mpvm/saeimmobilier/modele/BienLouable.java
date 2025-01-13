@@ -2,6 +2,7 @@ package net.mpvm.saeimmobilier.modele;
 
 
 import net.mpvm.saeimmobilier.sql.Query.QueryElement;
+import net.mpvm.saeimmobilier.sql.Query.Result;
 import net.mpvm.saeimmobilier.sql.Query.SelectQueryElement;
 import net.mpvm.saeimmobilier.sql.Query.UpdateQueryElement;
 import net.mpvm.saeimmobilier.util.Unfinished;
@@ -133,7 +134,7 @@ public abstract class BienLouable extends Bien {
     }
 
     @Override
-    public void save() throws Bien.BienException {
+    public void save() throws BienException {
         if(this.getIdBien() != -1)
             throw new BienException("Le bien existe déjà !",null);
         try(UpdateQueryElement updateQueryElement = new UpdateQueryElement(INSERT_QUERY, true)){
@@ -173,7 +174,7 @@ public abstract class BienLouable extends Bien {
         }
         return biens;
     }
-    public static List<BienLouable> findByImmeuble(int idImmeuble) throws Bien.BienException {
+    public static List<BienLouable> findByImmeuble(int idImmeuble) throws BienException {
         List<BienLouable> biens = new ArrayList<>();
         String query = "SELECT * FROM Bien WHERE IdImmeuble = ? AND (TypeBien = 'HABITATION' OR TypeBien = 'GARAGE')";
         try (SelectQueryElement selectQueryElement = new SelectQueryElement(query)) {
@@ -186,7 +187,48 @@ public abstract class BienLouable extends Bien {
         return biens;
     }
 
-    public static int findIdImmeuble(int idBien) throws Bien.BienException {
+    public static BienLouable findBienLouable(int idbien) throws BienException {
+        String query = "SELECT * FROM Bien WHERE IdBien = ? AND (TypeBien = 'HABITATION' OR TypeBien = 'GARAGE')";
+        BienLouable bien;
+        try (SelectQueryElement selectQueryElement = new SelectQueryElement(query)) {
+            selectQueryElement.setArgs(Map.of(1, idbien));
+            selectQueryElement.execute();
+            Result result = selectQueryElement.getResult();
+            Map<String, Object> row = result.getFirst();// Hypothèse : getFirst() retourne une Map
+            bien = switch (row.get("TypeBien").toString()) {
+                case "HABITATION" -> new Habitation.HBuilder(
+                        (String) row.get("ComplementAdresse"),    // Complément d'adresse
+                        (int) row.get("NombrePieces"),                // Nombre de pièces
+                        (String) row.get("NumeroFiscal"),         // Numéro fiscal
+                        (Immeuble) Immeuble.IBuilder.get((int) row.get("IdImmeuble")), // Création simplifiée d'un immeuble
+                        ((Double) row.get("Surface")).floatValue(),             // Surface
+                        (Date) row.get("DateAjout"),              // Date d'ajout
+                        (String) row.get("IdProprio"),            // ID du propriétaire
+                        (int) row.get("IdBien")                   // ID du bien
+                ).build();
+                case "GARAGE" -> new Garage.GBuilder(
+                        (String) row.get("ComplementAdresse"),    // Complément d'adresse
+                        (int) row.get("NombrePieces"),                // Nombre de pièces
+                        (String) row.get("NumeroFiscal"),         // Numéro fiscal
+                        (Immeuble) Immeuble.IBuilder.get((int) row.get("IdImmeuble")), // Création simplifiée d'un immeuble
+                        ((Double) row.get("Surface")).floatValue(),               // Surface
+                        (Date) row.get("DateAjout"),              // Date d'ajout
+                        (String) row.get("IdProprio"),            // ID du propriétaire
+                        (int) row.get("IdBien")                   // ID du bien
+                ).build();
+                default ->
+                        throw new IllegalStateException("Seul les Habitations et les Garages sont modifiables: " + row.get("TypeBien"));
+            };
+        } catch (QueryElement.QEltException e) {
+            throw new BienException("Erreur lors de la récupération du bien ID " + idbien, e.getSqlException());
+        }
+
+        return bien;
+    }
+
+
+
+    public static int findIdImmeuble(int idBien) throws BienException {
         try (SelectQueryElement selectQueryElement = new SelectQueryElement(SELECT_QUERY_ID)) {
             selectQueryElement.setArgs(Map.of(1, idBien));
             selectQueryElement.execute();
@@ -218,9 +260,7 @@ public abstract class BienLouable extends Bien {
         }
     }
     @Override
-    public void modify() throws BienLouableException {
-        if(getIdBien() == -1)
-            throw new BienLouableException("Il faut sauvegarder le bien avant de vouloir le modifier",null);
+    public void modify(int idbien) throws BienLouableException {
         try(UpdateQueryElement updateQueryElement = new UpdateQueryElement(UPDATE_QUERY, true)){
             updateQueryElement.setArgs(
                     Map.of(1, this.getComplementAdresse(),
@@ -228,7 +268,7 @@ public abstract class BienLouable extends Bien {
                             3, this.getNbPieces(),
                             4, this.getNumeroFiscal(),
                             5, this.getIdProprio(),
-                            6, this.getIdBien()
+                            6, idbien
                     )).execute();
         }catch(QueryElement.QEltException QEltException){
             throw new BienLouableException("Erreur lors de la modification du bien : " + QEltException.getMessage(), QEltException.getSqlException());

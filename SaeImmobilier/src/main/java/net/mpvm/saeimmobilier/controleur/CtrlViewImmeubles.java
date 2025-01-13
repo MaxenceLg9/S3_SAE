@@ -139,6 +139,7 @@ public class CtrlViewImmeubles {
         JfxUtil.showWindow(s, VueBiensLouables.class);
     }
 
+
     private void attribuerAssurance(int idBien,ActionEvent event) {
         Stage s = new Stage();
         s.getProperties().put("bien",idBien);
