@@ -121,6 +121,7 @@ END;
 DELIMITER ;
 
 
+
 CREATE TABLE Bail(
                      IdBail INT auto_increment,
                      DateDebut DATE,
@@ -132,10 +133,6 @@ CREATE TABLE Bail(
                      Renouvelable BOOLEAN,
                      CheminDocument VARCHAR(50),
                      DateSignature DATE,
-#                      RepartitionEntretien DOUBLE,
-#                      RepartitionElectricite VARCHAR(50),
-#                      RepartitionOrdures_Menageres VARCHAR(50),
-#                      Colocation BOOLEAN,
                      IdBien INT NOT NULL,
                      PRIMARY KEY(IdBail),
                      FOREIGN KEY(IdBien) REFERENCES Bien(IdBien)
@@ -173,6 +170,19 @@ CREATE TABLE Paiement(
                          IdBail INT NOT NULL,
                          PRIMARY KEY(IdPaiement),
                          FOREIGN KEY(IdBail) REFERENCES Bail(IdBail)
+);
+
+CREATE TABLE AssocieBailLocataire(
+                                     IdLocataire INT,
+                                     IdBail INT,
+                                     DateEntree DATE,
+                                     DateSortie DATE,
+                                     RepartitionEntretien DOUBLE,
+                                     RepartitionElectricite VARCHAR(50),
+                                     RepartitionOrdures_Menageres VARCHAR(50),
+                                     PRIMARY KEY(IdLocataire, IdBail),
+                                     FOREIGN KEY(IdLocataire) REFERENCES Locataire(IdLocataire),
+                                     FOREIGN KEY(IdBail) REFERENCES Bail(IdBail)
 );
 
 CREATE TABLE Document(
@@ -238,17 +248,6 @@ CREATE TABLE TaxesFoncieres(
                                PRIMARY KEY(IdTaxesFoncieres),
                                UNIQUE(IdDocument),
                                FOREIGN KEY(IdDocument) REFERENCES Document(IdDocument)
-);
-
-CREATE TABLE AssocieBailLocataire(
-                                     IdLocataire INT,
-                                     IdBail INT,
-                                     DateEntree DATE,
-                                     DateSortie DATE,
-
-                                     PRIMARY KEY(IdLocataire, IdBail),
-                                     FOREIGN KEY(IdLocataire) REFERENCES Locataire(IdLocataire),
-                                     FOREIGN KEY(IdBail) REFERENCES Bail(IdBail)
 );
 
 CREATE TABLE Realiser(
