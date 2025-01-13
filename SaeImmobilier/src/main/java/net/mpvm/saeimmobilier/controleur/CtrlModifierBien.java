@@ -78,23 +78,17 @@ public class CtrlModifierBien {
     }
 
     private void afficheBien() {
-        try {
-            this.bien = BienLouable.findBienLouable(this.idBien);
-            this.fieldAdresse.setText(bien.getAdresse());
-            this.fieldCodePostal.setText(bien.getCodePostal());
-            this.fieldVille.setText(bien.getVille());
-            this.fieldLieuImmeuble.setText(bien.getComplementAdresse());
-            this.fieldNbPieces.setText(String.valueOf(bien.getNbPieces()));
-            this.fieldNumeroFiscal.setText(bien.getNumeroFiscal());
-            this.fieldSurface.setText(String.valueOf(bien.getSurface()));
-            this.LabelDate.setText(bien.getDateAjout().toString());
-            this.listTypeBien.setValue(this.bien.getTypeBien());
-            this.datesql = this.bien.getDateAjout();
-        } catch (Bien.BienException e) {
-            e.printStackTrace();
-        }
-
-
+        this.bien = (BienLouable) Bien.BBuilder.get(this.idBien);
+        this.fieldAdresse.setText(bien.getAdresse());
+        this.fieldCodePostal.setText(bien.getCodePostal());
+        this.fieldVille.setText(bien.getVille());
+        this.fieldLieuImmeuble.setText(bien.getComplementAdresse());
+        this.fieldNbPieces.setText(String.valueOf(bien.getNbPieces()));
+        this.fieldNumeroFiscal.setText(bien.getNumeroFiscal());
+        this.fieldSurface.setText(String.valueOf(bien.getSurface()));
+        this.LabelDate.setText(bien.getDateAjout().toString());
+        this.listTypeBien.setValue(this.bien.getTypeBien());
+        this.datesql = this.bien.getDateAjout();
     }
 
 
