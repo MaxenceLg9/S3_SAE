@@ -259,8 +259,9 @@ public abstract class BienLouable extends Bien {
             }
         }
     }
+
     @Override
-    public void modify(int idbien) throws BienLouableException {
+    public void modify() throws BienLouableException {
         try(UpdateQueryElement updateQueryElement = new UpdateQueryElement(UPDATE_QUERY, true)){
             updateQueryElement.setArgs(
                     Map.of(1, this.getComplementAdresse(),
@@ -268,7 +269,7 @@ public abstract class BienLouable extends Bien {
                             3, this.getNbPieces(),
                             4, this.getNumeroFiscal(),
                             5, this.getIdProprio(),
-                            6, idbien
+                            6, this.getIdBien()
                     )).execute();
         }catch(QueryElement.QEltException QEltException){
             throw new BienLouableException("Erreur lors de la modification du bien : " + QEltException.getMessage(), QEltException.getSqlException());

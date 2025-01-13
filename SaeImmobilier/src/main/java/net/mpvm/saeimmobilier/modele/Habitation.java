@@ -49,11 +49,6 @@ public final class Habitation extends BienLouable {
         BBuilder.add(this);
     }
 
-    public void modify(int idbien) throws BienLouableException {
-        super.modify(idbien);
-        System.out.println(this.getIdBien());
-    }
-
     public static class HBuilder extends BLBuilder {
         public HBuilder(String complementAdresse, int nbPieces, String NumeroFiscal, Immeuble immeuble, float surface,  String idProprio, @NotNull Date dateAjout) {
             this(complementAdresse, nbPieces,NumeroFiscal,immeuble,surface,dateAjout, idProprio, -1);

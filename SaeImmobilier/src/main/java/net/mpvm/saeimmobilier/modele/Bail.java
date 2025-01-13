@@ -338,12 +338,13 @@ public class Bail extends Queryable {
 			query.setArgs(Map.of(1, this.getDateDebut(), 2, this.getLoyer(), 3, false, 4, this.getTotalCharge(), 5, this.getProvisionSurCharge(), 6, this.getDateSignature(), 7, this.getDateFin())).execute();
 
 		}catch (QueryElement.QEltException e) {
+			e.getSqlException().printStackTrace();
 			throw new BailException("Erreur lors de l'insertion du bail", e.getSqlException());
 		}
 	}
 
 	@Override
-	public void modify(int idbien) throws QbleException {
+	public void modify() throws QbleException {
 
 	}
 

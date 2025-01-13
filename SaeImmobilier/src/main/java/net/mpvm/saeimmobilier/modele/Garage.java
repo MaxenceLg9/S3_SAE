@@ -30,11 +30,6 @@ public final class Garage extends BienLouable {
 		BBuilder.add(this);
 	}
 
-	public void modify(int idbien) throws BienLouableException {
-		super.modify(idbien);
-		System.out.println(this.getIdBien());
-	}
-
 	@NotNull
 	public static List<Garage> findAll() throws GarageException {
 		List<Garage> garages = new LinkedList<>();

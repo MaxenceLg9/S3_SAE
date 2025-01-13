@@ -168,7 +168,7 @@ public final class Immeuble extends Bien{
 	}
 
 	@Override
-	public void modify(int idbien) throws ImmeubleException {
+	public void modify() throws ImmeubleException {
 		if(this.getIdBien() == -1)
 			throw new ImmeubleException("Le bien n'existe pas dans la table", null);
 		try(UpdateQueryElement query = new UpdateQueryElement(UPDATE_QUERY, true)){

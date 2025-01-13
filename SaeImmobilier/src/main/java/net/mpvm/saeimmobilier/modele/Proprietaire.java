@@ -111,7 +111,7 @@ public class Proprietaire extends Queryable{
 	}
 
 	@Override
-	public void modify(int idbien) throws QbleException {
+	public void modify() throws QbleException {
 
 	}
 
