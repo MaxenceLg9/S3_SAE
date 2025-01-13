@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Button?>
+
+<ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="550.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/22.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.mpvm.saeimmobilier.controleur.CtrlAttribuerTravaux">
+    <content>
+        <VBox fx:id="vBoxContent" alignment="TOP_CENTER" spacing="10.0" style="-fx-background-color: #2b3b50;" stylesheets="@../css/style.css">
+            <children>
+                <Label text="Attribuer Travaux" styleClass="header-label" textFill="WHITE" />
+            </children>
+        </VBox>
+    </content>
+</ScrollPane>
