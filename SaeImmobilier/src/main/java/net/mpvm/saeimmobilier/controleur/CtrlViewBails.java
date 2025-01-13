@@ -66,7 +66,7 @@ public class CtrlViewBails {
             retourBiens.getStyleClass().add("button-supprimer");
             vBoxBails.getChildren().add(retourBiens);
             Button ajouterBail = new Button("Ajouter Bail");
-            ajouterBail.setOnAction(event -> ajouterBail(event,idBien));
+            ajouterBail.setOnAction(event -> ajouterBail(event, idBien));
             ajouterBail.getStyleClass().add("button-valider");
             vBoxBails.getChildren().add(ajouterBail);
             List<Bail> baux = Bail.findByBien(idBien);
@@ -92,7 +92,7 @@ public class CtrlViewBails {
                 Label colocation = new Label("Colocation " + bail.estEnColocation());
 
                 Button gererLocatairesButton = new Button("Gérer Locataires");
-                gererLocatairesButton.setOnAction(event -> gererLocataires(bail.getIdBail(),event));
+                gererLocatairesButton.setOnAction(event -> gererLocataires(bail.getIdBail(), event));
 
                 Button resilierBailButton = new Button("Résilier");
                 resilierBailButton.setOnAction(event -> resilierBail(bail));
