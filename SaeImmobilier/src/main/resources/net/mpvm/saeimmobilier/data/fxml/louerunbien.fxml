@@ -11,10 +11,10 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<GridPane fx:id="root" prefHeight="720.0" prefWidth="1280.0" styleClass="backgroundColor" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.mpvm.saeimmobilier.controleur.CtrlLouerUnBien">
+<GridPane fx:id="root" maxWidth="1280.0" minHeight="720.0" minWidth="1280.0" prefWidth="1280.0" styleClass="backgroundColor" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.mpvm.saeimmobilier.controleur.CtrlLouerUnBien">
     <!-- Column Constraints -->
     <columnConstraints>
-        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" /> <!-- New column for Bien info -->
+        <ColumnConstraints halignment="CENTER" hgrow="NEVER" percentWidth="100.0" /> <!-- New column for Bien info -->
         <ColumnConstraints />
         <ColumnConstraints />
     </columnConstraints>
@@ -22,11 +22,11 @@
     <!-- Row Constraints -->
     <rowConstraints>
         <!-- Header Row -->
-        <RowConstraints minHeight="50.0" prefHeight="60.0" vgrow="NEVER" />
+        <RowConstraints minHeight="50.0" percentHeight="10.0" prefHeight="60.0" vgrow="NEVER" />
         <!-- Form Section -->
-        <RowConstraints minHeight="200.0" valignment="CENTER" vgrow="ALWAYS" />
+        <RowConstraints minHeight="200.0" percentHeight="80.0" valignment="CENTER" vgrow="ALWAYS" />
         <!-- Button Section -->
-        <RowConstraints valignment="CENTER" vgrow="NEVER" />
+        <RowConstraints percentHeight="10.0" valignment="CENTER" vgrow="NEVER" />
     </rowConstraints>
 
     <!-- Header -->
@@ -40,10 +40,12 @@
     </Label>
 
     <!-- Form Section -->
-    <GridPane alignment="CENTER" hgap="20.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" style="-fx-background-color: #00002255; -fx-background-radius: 15px; -fx-background-insets: 0; -fx-border-color: #FFFFFF; -fx-border-radius: 15px;" vgap="10.0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+    <GridPane fx:id="gridPaneContent" alignment="CENTER" hgap="20.0" style="-fx-background-color: #00002255; -fx-background-radius: 15px; -fx-background-insets: 0; -fx-border-color: #FFFFFF; -fx-border-radius: 15px;" vgap="10.0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
         <rowConstraints>
             <RowConstraints maxHeight="-Infinity" minHeight="10.0" valignment="BOTTOM" vgrow="NEVER" />
             <RowConstraints maxHeight="-Infinity" minHeight="10.0" valignment="TOP" vgrow="NEVER" />
+         <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" valignment="TOP" vgrow="NEVER" />
+         <RowConstraints maxHeight="-Infinity" minHeight="10.0" valignment="TOP" vgrow="NEVER" />
             <RowConstraints maxHeight="-Infinity" valignment="BOTTOM" vgrow="NEVER" />
             <RowConstraints maxHeight="-Infinity" minHeight="10.0" valignment="TOP" vgrow="NEVER" />
             <RowConstraints valignment="BOTTOM" vgrow="NEVER" />
@@ -59,12 +61,12 @@
                 <Font name="Arial" size="16.0" />
             </font>
         </Label>
-        <Label fx:id="labelBienType" text="" GridPane.columnIndex="2" GridPane.rowIndex="2">
+        <Label fx:id="labelBienType" text="" GridPane.columnIndex="2" GridPane.rowIndex="4">
             <font>
                 <Font name="Arial" size="16.0" />
             </font>
         </Label>
-        <Label fx:id="labelBienSurface" text="" GridPane.columnIndex="2" GridPane.rowIndex="3">
+        <Label fx:id="labelBienSurface" text="" GridPane.columnIndex="2" GridPane.rowIndex="5">
             <font>
                 <Font name="Arial" size="16.0" />
             </font>
@@ -78,15 +80,15 @@
         </Label>
         <DatePicker fx:id="dateDebut" maxWidth="1.7976931348623157E308" prefHeight="35.0" prefWidth="235.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
-        <Label text="Date de fin" textFill="WHITE" GridPane.columnIndex="2" GridPane.halignment="RIGHT">
+        <Label text="Date de fin" textFill="WHITE" GridPane.columnIndex="2" GridPane.halignment="LEFT">
             <font>
                 <Font name="Arial Black" size="18.0" />
             </font>
         </Label>
-        <DatePicker fx:id="dateFin" maxWidth="1.7976931348623157E308" prefHeight="35.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+        <DatePicker fx:id="dateFin" maxWidth="235.0" minHeight="35.0" prefHeight="35.0" prefWidth="235.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
 
         <!-- Rent Amount -->
-        <Label text="Montant du loyer" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="2">
+        <Label text="Montant du loyer" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="4">
             <font>
                 <Font name="Arial Black" size="18.0" />
             </font>
@@ -94,10 +96,10 @@
             <Insets top="10.0" />
          </GridPane.margin>
         </Label>
-        <TextField fx:id="fieldMontantLoyer" prefHeight="35.0" prefWidth="500.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3" />
+        <TextField fx:id="fieldMontantLoyer" maxWidth="400.0" prefHeight="35.0" prefWidth="400.0" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.rowIndex="5" />
 
         <!-- Total Charges -->
-        <Label text="Total charges" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="4">
+        <Label text="Total charges" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="6">
             <font>
                 <Font name="Arial Black" size="18.0" />
             </font>
@@ -105,10 +107,10 @@
             <Insets top="10.0" />
          </GridPane.margin>
         </Label>
-        <TextField fx:id="fieldTotalCharges" prefHeight="35.0" prefWidth="500.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="5" />
+        <TextField fx:id="fieldTotalCharges" maxWidth="400.0" prefHeight="35.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="7" />
 
         <!-- Security Deposit -->
-        <Label text="Dépôt de garantie" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="6">
+        <Label text="Dépôt de garantie" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="8">
             <font>
                 <Font name="Arial Black" size="18.0" />
             </font>
@@ -116,63 +118,66 @@
             <Insets top="10.0" />
          </GridPane.margin>
         </Label>
-        <TextField fx:id="fieldDepotGarantie" prefHeight="35.0" prefWidth="500.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="7" />
+        <TextField fx:id="fieldDepotGarantie" maxWidth="400.0" prefHeight="35.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="9" />
 
         <!-- Archive and Renewability Checkboxes on Same Row -->
-        <Label text="Archive" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="8">
+        <Label text="Archive" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="10">
             <font>
                 <Font name="Arial Black" size="18.0" />
             </font>
         </Label>
-        <CheckBox fx:id="checkBoxArchive" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="8" />
+        <CheckBox fx:id="checkBoxArchive" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="10" />
 
-        <Label text="Renouvelable" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="9">
+        <Label text="Renouvelable" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="11">
             <font>
                 <Font name="Arial Black" size="18.0" />
             </font>
         </Label>
-        <CheckBox fx:id="checkBoxRenouvelable" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="9" />
+        <CheckBox fx:id="checkBoxRenouvelable" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="11" />
       <Label fx:id="labelNumeroFiscal" text="Numero fiscal" textFill="WHITE" GridPane.rowIndex="1" />
       <Label fx:id="labelNomBienL" text="Nom" textFill="WHITE" />
-      <Label fx:id="labelAdresse" text="Adresse" textFill="WHITE" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
-      <Label fx:id="labelType" text="Type" textFill="WHITE" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
-      <Label fx:id="labelSurface" text="Surface" textFill="WHITE" GridPane.rowIndex="6" GridPane.valignment="CENTER" />
-      <Label fx:id="labelNbPieces" text="NombrePieces" textFill="WHITE" GridPane.rowIndex="7" GridPane.valignment="CENTER" />
-      <Label fx:id="labelDateAjout" text="DateAjout" textFill="WHITE" GridPane.rowIndex="8" />
+      <Label fx:id="labelAdresse" text="Adresse" textFill="WHITE" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
+      <Label fx:id="labelType" text="Type" textFill="WHITE" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
+      <Label fx:id="labelSurface" text="Surface" textFill="WHITE" GridPane.rowIndex="8" GridPane.valignment="CENTER" />
+      <Label fx:id="labelNbPieces" text="NombrePieces" textFill="WHITE" GridPane.rowIndex="9" GridPane.valignment="CENTER" />
+      <Label fx:id="labelDateAjout" text="DateAjout" textFill="WHITE" GridPane.rowIndex="10" />
+      <Label text="Date de signature du bail" textFill="WHITE" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.halignment="LEFT" GridPane.rowIndex="2">
+         <font>
+            <Font name="Arial Black" size="18.0" />
+         </font>
+      </Label>
+      <DatePicker fx:id="dateSignature" maxWidth="1.7976931348623157E308" prefHeight="35.0" prefWidth="235.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
       <columnConstraints>
-         <ColumnConstraints hgrow="SOMETIMES" minWidth="200.0" />
-         <ColumnConstraints halignment="CENTER" />
-         <ColumnConstraints halignment="CENTER" />
+         <ColumnConstraints hgrow="SOMETIMES" percentWidth="20.0" />
+         <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" percentWidth="30.0" />
+         <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" percentWidth="50.0" />
       </columnConstraints>
       <padding>
-         <Insets bottom="40.0" left="200.0" right="200.0" top="40.0" />
+         <Insets bottom="40.0" left="20.0" right="20.0" top="40.0" />
       </padding>
+      <GridPane.margin>
+         <Insets left="50.0" right="50.0" />
+      </GridPane.margin>
     </GridPane>
 
     <!-- Button Section -->
-    <GridPane hgap="20.0" vgap="20.0" GridPane.rowIndex="2">
+    <GridPane hgap="20.0" vgap="20.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="2" GridPane.rowSpan="2147483647">
         <columnConstraints>
-            <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" />
-            <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" />
-            <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" />
-            <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" />
+            <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" />
+         <ColumnConstraints halignment="RIGHT" hgrow="NEVER" />
+            <ColumnConstraints halignment="RIGHT" hgrow="NEVER" />
         </columnConstraints>
 
         <children>
             <!-- Valider Button -->
-            <Button alignment="CENTER" prefHeight="35.0" prefWidth="150.0" style="-fx-background-color: #4444FF; -fx-text-fill: white;" text="Valider" GridPane.columnIndex="3">
+            <Button alignment="CENTER" onAction="#valider" prefHeight="35.0" prefWidth="150.0" style="-fx-background-color: #4444FF; -fx-text-fill: white;" text="Valider" GridPane.columnIndex="2">
                 <GridPane.margin>
                     <Insets />
                 </GridPane.margin></Button>
 
             <!-- Annuler Button -->
-            <Button prefHeight="35.0" prefWidth="150.0" style="-fx-background-color: #FF3333; -fx-text-fill: white;" text="Annuler" />
-
-            <!-- Consult Bail Button -->
-            <Button mnemonicParsing="false" style="-fx-background-color: #FF8822; -fx-text-fill: white;" text="Consulter le bail actuel/Commencer un bail" GridPane.columnIndex="2" />
-
-            <!-- View All Leases Button -->
-            <Button mnemonicParsing="false" style="-fx-background-color: #22FF55; -fx-text-fill: white;" text="Voir tous les baux" GridPane.columnIndex="1" />
+            <Button onAction="#annuler" prefHeight="35.0" prefWidth="150.0" style="-fx-background-color: #FF3333; -fx-text-fill: white;" text="Annuler" />
+         <Button mnemonicParsing="false" onAction="#addLocataireToBail" text="Ajouter un locataire" GridPane.columnIndex="1" GridPane.halignment="LEFT" />
         </children>
 
         <rowConstraints>

@@ -18,6 +18,7 @@ module net.mpvm.saeimmobilier {
     requires java.sql;
     requires com.fasterxml.jackson.annotation;
     requires io;
+    requires forms;
 
     //opens net.mpvm.saeimmobilier.data.fxml to javafx.fxml;
     //opens net.mpvm.saeimmobilier.data.images to javafx.fxml;

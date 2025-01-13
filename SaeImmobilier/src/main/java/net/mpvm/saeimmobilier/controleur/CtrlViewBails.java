@@ -89,7 +89,7 @@ public class CtrlViewBails {
                 Label dateFin = new Label("Fin " + bail.getDateFin());
                 Label montantLoyer = new Label("Loyer " + bail.getLoyer() + " €");
                 Label dateSignature = new Label("Signature " + bail.getDateSignature());
-                Label colocation = new Label("Colocation " + bail.getColocation());
+                Label colocation = new Label("Colocation " + bail.estEnColocation());
 
                 Button gererLocatairesButton = new Button("Gérer Locataires");
                 gererLocatairesButton.setOnAction(event -> gererLocataires(bail.getIdBail(),event));
