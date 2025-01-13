@@ -212,7 +212,7 @@ public class CtrlAttribuerAssurance {
         }
         afficheAssurances();
     }
-    private String setIdBienAssurance(Assurance a) throws Assurance.AssuranceException {
+    private String setIdBienAssurance(Assurance a)  {
         try{
             return a.selectIdBien();
         } catch (Assurance.AssuranceException e) {
