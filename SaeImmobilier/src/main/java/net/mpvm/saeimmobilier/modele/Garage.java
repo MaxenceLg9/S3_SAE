@@ -7,7 +7,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.sql.Date;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -23,11 +22,6 @@ public final class Garage extends BienLouable {
 
 	private Garage(GBuilder gBuilder) throws BienException {
 		this(gBuilder.getComplementAdresse(),gBuilder.getNbPieces(),gBuilder.getNumeroFiscal(),gBuilder.getImmeuble(),gBuilder.getSurface(),gBuilder.getDateAjout(), gBuilder.getIdProprio(), gBuilder.getIdBien());
-	}
-
-	public void save() throws BienException {
-		super.save();
-		BBuilder.add(this);
 	}
 
 	@NotNull
@@ -76,7 +70,7 @@ public final class Garage extends BienLouable {
 		public Garage build() throws BienException {
 			if(this.getIdBien() == -1)
 				return new Garage(this);
-			if(checkNotPresentIn(Garage.class))
+			if(checkPresentIn(Garage.class))
 				return (Garage) get(this.getIdBien());
 			Garage garage = new Garage(this);
 			add(garage);

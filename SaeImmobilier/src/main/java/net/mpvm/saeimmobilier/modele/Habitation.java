@@ -6,7 +6,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.sql.Date;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -14,11 +13,6 @@ import java.util.Map;
 public final class Habitation extends BienLouable {
 
     public static final String SELECT_QUERY = "SELECT * FROM Bien WHERE TypeBien = 'Habitation'";
-
-    @Override
-    public TypeBien getTypeBien() {
-        return TypeBien.HABITATION;
-    }
 
     private Habitation(String complementAdresse, int nbPieces, String NumeroFiscal, Immeuble immeuble, float surface, Date dateAjout, String idProprio, int idBien) throws BienException {
         super(complementAdresse, nbPieces,NumeroFiscal,immeuble,surface,dateAjout, idProprio, idBien);
@@ -43,10 +37,9 @@ public final class Habitation extends BienLouable {
         }
     }
 
-    public void save() throws BienException {
-        super.save();
-        System.out.println(this.getIdBien());
-        BBuilder.add(this);
+    @Override
+    public TypeBien getTypeBien() {
+        return TypeBien.HABITATION;
     }
 
     public static class HBuilder extends BLBuilder {
@@ -57,9 +50,6 @@ public final class Habitation extends BienLouable {
         HBuilder(String complementAdresse, int nbPieces, String NumeroFiscal, Immeuble immeuble, float surface, Date dateAjout, String idProprio, int idBien) {
             super(complementAdresse, nbPieces,NumeroFiscal,immeuble,surface,dateAjout, idProprio, idBien);
         }
-
-
-
 
         HBuilder(Map<String, Object> args) throws BienException {
             this(args.get("ComplementAdresse").toString(),
@@ -76,7 +66,7 @@ public final class Habitation extends BienLouable {
         public Habitation build() throws BienException {
             if(this.getIdBien() == -1)
                 return new Habitation(this);
-            if(checkNotPresentIn(Habitation.class))
+            if(checkPresentIn(Habitation.class))
                 return (Habitation) get(this.getIdBien());
             Habitation h = new Habitation(this);
             add(h);
