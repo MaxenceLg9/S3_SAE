@@ -29,7 +29,7 @@ CREATE TABLE Locataire(
 
 CREATE TABLE Travaux(
                         IdTravaux INT auto_increment,
-                        NumeroFacture VARCHAR(50),
+                        NumeroFacture VARCHAR(10),
                         Entreprise VARCHAR(50),
                         Montant DOUBLE,
                         MontantNonDeductible DOUBLE,
@@ -37,7 +37,10 @@ CREATE TABLE Travaux(
                         Reduction DOUBLE,
                         DateTravaux DATE,
                         Nature VARCHAR(50),
-                        PRIMARY KEY(IdTravaux)
+                        NumeroDevis VARCHAR(10),
+                        IdBien INT,
+                        PRIMARY KEY(IdTravaux),
+                        FOREIGN KEY(IdBien) REFERENCES Bien(IdBien)
 );
 CREATE TABLE Assurance(
                           IdAssurance INT auto_increment,
@@ -274,17 +277,8 @@ END;
 //
 DELIMITER ;
 
-DELIMITER //
-CREATE TRIGGER CalculMontantADeclarer
-    AFTER INSERT ON Travaux
-    FOR EACH ROW
-BEGIN
-    UPDATE Travaux
-    SET MontantADeclarer = (NEW.Montant - NEW.MontantNonDeductible) * (1 - NEW.Reduction)
-    WHERE Travaux.IdTravaux = NEW.IdTravaux;
-END;
-//
-DELIMITER ;
+
+
 
 
 

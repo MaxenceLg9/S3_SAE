@@ -30,61 +30,60 @@
             <center>
                 <GridPane alignment="CENTER" hgap="15.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="470.0" prefWidth="770.0" vgap="25.0">
                     <children>
-                        <!-- NumeroFacture -->
-                        <Label text="Numéro Facture" textFill="WHITE" GridPane.rowIndex="0">
+                        <Label text="Numéro Devis" textFill="WHITE" GridPane.rowIndex="0">
                             <font>
                                 <Font name="Calibri" size="16.0" />
                             </font>
                         </Label>
-                        <TextField fx:id="fieldNumeroFacture" promptText="Numéro de la facture" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-
-                        <!-- Entreprise -->
-                        <Label text="Entreprise" textFill="WHITE" GridPane.rowIndex="1">
-                            <font>
-                                <Font name="Calibri" size="16.0" />
-                            </font>
-                        </Label>
-                        <TextField fx:id="fieldEntreprise" promptText="Nom de l'entreprise" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-
-                        <!-- Montant -->
-                        <Label text="Montant" textFill="WHITE" GridPane.rowIndex="2">
-                            <font>
-                                <Font name="Calibri" size="16.0" />
-                            </font>
-                        </Label>
-                        <TextField fx:id="fieldMontant" promptText="Montant total" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-
-                        <!-- MontantNonDeductible -->
-                        <Label text="Montant Non Déductible" textFill="WHITE" GridPane.rowIndex="3">
-                            <font>
-                                <Font name="Calibri" size="16.0" />
-                            </font>
-                        </Label>
-                        <TextField fx:id="fieldMontantNonDeductible" promptText="Montant non déductible" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-
-                        <!-- Reduction -->
-                        <Label text="Réduction" textFill="WHITE" GridPane.rowIndex="4">
-                            <font>
-                                <Font name="Calibri" size="16.0" />
-                            </font>
-                        </Label>
-                        <TextField fx:id="fieldReduction" promptText="Réduction appliquée" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                        <TextField fx:id="fieldNumeroDevis" promptText="Numéro du devis" GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
                         <!-- Nature -->
-                        <Label text="Nature" textFill="WHITE" GridPane.rowIndex="5">
+                        <Label text="Nature" textFill="WHITE" GridPane.rowIndex="1">
                             <font>
                                 <Font name="Calibri" size="16.0" />
                             </font>
                         </Label>
-                        <TextField fx:id="fieldNature" promptText="Nature des travaux" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                        <TextField fx:id="fieldNature" promptText="Nature des travaux" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
-                        <!-- NumeroDevis -->
-                        <Label text="Numéro Devis" textFill="WHITE" GridPane.rowIndex="6">
+                        <!-- Entreprise -->
+                        <Label text="Entreprise" textFill="WHITE" GridPane.rowIndex="2">
                             <font>
                                 <Font name="Calibri" size="16.0" />
                             </font>
                         </Label>
-                        <TextField fx:id="fieldNumeroDevis" promptText="Numéro du devis" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                        <TextField fx:id="fieldEntreprise" promptText="Nom de l'entreprise" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+                        <!-- NumeroFacture -->
+                        <Label text="Numéro Facture" textFill="WHITE" GridPane.rowIndex="3">
+                            <font>
+                                <Font name="Calibri" size="16.0" />
+                            </font>
+                        </Label>
+                        <TextField fx:id="fieldNumeroFacture" promptText="Numéro de la facture" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+
+                        <!-- MontantNonDeductible -->
+                        <Label text="Montant Non Déductible (€)" textFill="WHITE" GridPane.rowIndex="4">
+                            <font>
+                                <Font name="Calibri" size="16.0" />
+                            </font>
+                        </Label>
+                        <TextField fx:id="fieldMontantNonDeductible" promptText="Montant non déductible (€)" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+
+                        <!-- Reduction -->
+                        <Label text="Réduction (entre 0 et 1)" textFill="WHITE" GridPane.rowIndex="5">
+                            <font>
+                                <Font name="Calibri" size="16.0" />
+                            </font>
+                        </Label>
+                        <TextField fx:id="fieldReduction" promptText="Réduction appliquée (entre 0 et 1)" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+
+                        <!-- Montant -->
+                        <Label text="Montant (€)" textFill="WHITE" GridPane.rowIndex="6">
+                            <font>
+                                <Font name="Calibri" size="16.0" />
+                            </font>
+                        </Label>
+                        <TextField fx:id="fieldMontant" promptText="Montant total (€)" GridPane.columnIndex="1" GridPane.rowIndex="6" />
 
                         <!-- DateTravaux -->
                         <Label text="Date Travaux" textFill="WHITE" GridPane.rowIndex="7">
@@ -92,7 +91,7 @@
                                 <Font name="Calibri" size="16.0" />
                             </font>
                         </Label>
-                        <DatePicker fx:id="pickerDateTravaux" promptText="Date des travaux" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                        <DatePicker fx:id="dateTravauxPicker" promptText="Date des travaux" GridPane.columnIndex="1" GridPane.rowIndex="7" />
                     </children>
                     <columnConstraints>
                         <ColumnConstraints hgrow="ALWAYS" percentWidth="30.0" />
@@ -115,18 +114,23 @@
             </VBox.margin>
             <bottom>
                 <GridPane fx:id="bottomGridPane" alignment="CENTER" hgap="50.0" BorderPane.alignment="CENTER">
-                    <children>
-                        <!-- Button Ajouter -->
-                        <Button fx:id="btnAjouter" text="Ajouter" prefWidth="150" />
-                        <!-- Button Annuler -->
-                        <Button fx:id="btnAnnuler" text="Annuler" prefWidth="150" />
-                    </children>
                     <columnConstraints>
-                        <ColumnConstraints halignment="RIGHT" hgrow="ALWAYS" />
-                        <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" />
+                        <ColumnConstraints halignment="RIGHT" hgrow="ALWAYS"/>
+                        <ColumnConstraints halignment="RIGHT" hgrow="ALWAYS"/>
+                        <ColumnConstraints halignment="LEFT" hgrow="ALWAYS"/>
                     </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints vgrow="SOMETIMES"/>
+                    </rowConstraints>
+                    <children>
+                        <Button fx:id="btnAjouter" text="Ajouter" prefWidth="150" GridPane.columnIndex="2" onAction="#ajouterTravaux" styleClass="button-valider"/>
+                        <Button fx:id="btnAnnuler" text="Annuler" prefWidth="150" GridPane.columnIndex="1" onAction="#effacer" styleClass="button-supprimer"/>
+                        <Button fx:id="btnRetour" text="Retour à l'accueil" prefWidth="150" GridPane.columnIndex="0" onAction="#retourAccueil" styleClass="button-supprimer"/>
+
+                    </children>
                 </GridPane>
             </bottom>
+
             <padding>
                 <Insets bottom="30.0" />
             </padding>
