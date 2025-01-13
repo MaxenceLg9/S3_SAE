@@ -13,6 +13,7 @@ import net.mpvm.saeimmobilier.modele.Bail;
 import net.mpvm.saeimmobilier.modele.BienLouable;
 import net.mpvm.saeimmobilier.modele.Locataire;
 import net.mpvm.saeimmobilier.util.JfxUtil;
+import net.mpvm.saeimmobilier.vue.VueNewLocataire;
 import org.jetbrains.annotations.NotNull;
 
 import java.sql.Date;
@@ -54,7 +55,7 @@ public class CtrlLouerUnBien {
         choiceBoxesLocataires = new LinkedList<>();
         fieldsRepartitionsElec = new LinkedList<>();
         fieldsRepartitionsEau = new LinkedList<>();
-        fieldsOrduresMenageres = new LinkedList();
+        fieldsOrduresMenageres = new LinkedList<>();
         Platform.runLater(() -> {
             Stage stage = (Stage) labelAdresse.getScene().getWindow();
 
@@ -85,7 +86,7 @@ public class CtrlLouerUnBien {
             b.save();
             b.setLocataires(locataires, repartitionsElec, repartitionsEau, orduresMenageres);
         } catch (Bail.BailException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
     }
 
@@ -101,7 +102,7 @@ public class CtrlLouerUnBien {
                                 return Float.parseFloat(fieldsRepartitionsElec.get(x).getText()); // Parse the TextField value to Float
                             } catch (NumberFormatException e) {
                                 throw new IllegalArgumentException(
-                                        x + fieldsRepartitionsElec.get(x).getText());
+                                        string + fieldsRepartitionsElec.get(x).getText());
                             }
                         }
                 ));
@@ -181,7 +182,7 @@ public class CtrlLouerUnBien {
 
             gridPaneContent.add(gridPaneLine, 0, rows);
             GridPane.setColumnSpan(gridPaneLine, 3);
-            GridPane.setHalignment(gridPaneLine, HPos.CENTER);
+            GridPane.setHalignment(gridPaneLine, HPos.RIGHT);
 
 
             //get stage and resize it
@@ -192,5 +193,22 @@ public class CtrlLouerUnBien {
         catch (Locataire.LocataireException e) {
             JfxUtil.displayError("Impossible de récupérer les locataires", "Vérifier votre connexion");
         }
+    }
+
+    public void refreshChoiceboixLocataires(){
+        choiceBoxesLocataires.forEach(cb -> {
+            try {
+                cb.getItems().clear();
+                cb.getItems().addAll(Locataire.findAll());
+            } catch (Locataire.LocataireException e) {
+                JfxUtil.displayError("Impossible de récupérer les locataires", "Vérifier votre connexion");
+            }
+        });
+    }
+
+    public void newLocataire(ActionEvent event) {
+        Stage s = new Stage();
+        s.getProperties().put("controlleur",this);
+        JfxUtil.showWindow(s, VueNewLocataire.class);
     }
 }

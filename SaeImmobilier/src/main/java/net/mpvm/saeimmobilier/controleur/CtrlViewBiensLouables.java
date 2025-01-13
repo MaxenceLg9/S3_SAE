@@ -104,7 +104,10 @@ public class CtrlViewBiensLouables {
                 attribuerAssuranceButton.setOnAction(event -> attribuerAssurance(bien.getIdBien(),event));
 
                 Button supprimerButton = new Button("Supprimer");
-                supprimerButton.setOnAction(event -> supprimerBien(bien));
+                supprimerButton.setOnAction(event -> {
+                    if (JfxUtil.askForDelete("Voulez vous supprimer le bien?") == 1)
+                        supprimerBien(bien);
+                });
 
                 Button modifierButton = new Button("Modifier");
                 modifierButton.setOnAction(event-> modifierBien(bien.getIdBien(),event));
@@ -163,16 +166,13 @@ public class CtrlViewBiensLouables {
         JfxUtil.showWindow(s,VueAttribuerAssurance.class);
     }
     private void ajouterBien(ActionEvent event) throws Exception {
-        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-        stage.close();
         Stage s = new Stage();
-        new VueNewBien().start(s);
+        JfxUtil.showWindow(s, VueNewBien.class);
     }
     @FXML
     private void retourImmeubles(ActionEvent event) {
         Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         stage.close();
-        new VueImmeubles().start(new Stage());
     }
 
     @FXML

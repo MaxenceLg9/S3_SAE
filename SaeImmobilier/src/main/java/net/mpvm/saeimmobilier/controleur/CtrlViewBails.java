@@ -129,8 +129,9 @@ public class CtrlViewBails {
 
     }
     private void ajouterBail(ActionEvent event, int idBien) {
-        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-        stage.close();
+        Stage s = new Stage();
+        s.getProperties().put("idBien",idBien);
+        JfxUtil.showWindow(s, VueLouerUnBien.class);
     }
     private void resilierBail(Bail bail) {
         try {

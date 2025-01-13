@@ -71,10 +71,6 @@ public class CtrlViewLocataires {
         retourAccueil.setOnAction(event -> retourAccueil(event));
         retourAccueil.getStyleClass().add("button-supprimer");
         vBoxContent.getChildren().add(retourAccueil);
-        Button ajouterLocataire = new Button("Ajouter Locataire");
-        ajouterLocataire.setOnAction(event -> ajouterLocataire(event,idBail));
-        ajouterLocataire.getStyleClass().add("button-valider");
-        vBoxContent.getChildren().add(ajouterLocataire);
         for(Locataire l : locataires.values()) {
             GridPane gp = new GridPane();
             ColumnConstraints col1 = new ColumnConstraints();
@@ -144,15 +140,6 @@ public class CtrlViewLocataires {
         alert.showAndWait()
                 .filter(r -> r.equals(ButtonType.OK))
                 .ifPresent(r -> deleteLocataire(id));
-    }
-    public void ajouterLocataire(ActionEvent event, int idBail) {
-        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-        stage.close();
-
-        Stage s = new Stage();
-        s.getProperties().put("bien",idBail);
-        new VueNewLocataire(idBail).startForLocataires(s);
-
     }
 
     private void deleteLocataire(int id){

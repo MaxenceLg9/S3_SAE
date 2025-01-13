@@ -5,10 +5,14 @@ import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import net.mpvm.saeimmobilier.modele.Assurance;
 
 import java.io.IOException;
+import java.util.Optional;
 
 public class JfxUtil {
 
@@ -67,6 +71,15 @@ public class JfxUtil {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    public static int askForDelete(String message) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation de la suppression");
+        alert.setHeaderText(message);
+        alert.setContentText("Cette action est irréversible");
+        Optional<ButtonType> result = alert.showAndWait();
+        return result.isPresent() && result.get().equals(ButtonType.OK) ? 1 : 0;
     }
 
 

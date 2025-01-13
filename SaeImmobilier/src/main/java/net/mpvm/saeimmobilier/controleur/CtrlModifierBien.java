@@ -124,6 +124,7 @@ public class CtrlModifierBien {
                 // Validation des champs pour Habitation et Garage
                 if (fieldsNotEmptyBienLouable() && isCodePostalValid() && isNumeroFiscalValid() && isSurfaceValid() && isNbPiecesValid()) {
                     if (this.listTypeBien.getValue() == TypeBien.HABITATION) {
+                        //TODO : ???????????????
                         try {
                             new Habitation.HBuilder(
                                     this.fieldLieuImmeuble.getText(),
@@ -133,7 +134,7 @@ public class CtrlModifierBien {
                                     Float.parseFloat(this.fieldSurface.getText()),
                                     this.bien.getIdProprio(),
                                     this.datesql
-                            ).build().modify(this.bien.getIdBien());
+                            ).build().modify();
                         } catch (Bien.BienException e) {
                             e.printStackTrace();
                         }
@@ -145,6 +146,7 @@ public class CtrlModifierBien {
                     } else {
                         // Ajout d'un Garage
                         try {
+                            //TODO : ???????????????????????
                             new Garage.GBuilder(
                                     this.fieldLieuImmeuble.getText(),
                                     Integer.parseInt(this.fieldNbPieces.getText()),
@@ -153,7 +155,7 @@ public class CtrlModifierBien {
                                     Float.parseFloat(this.fieldSurface.getText()),
                                     this.bien.getIdProprio(),
                                     this.datesql
-                            ).build().modify(this.bien.getIdBien());
+                            ).build().modify();
 
                         } catch (Bien.BienException e) {
                             e.printStackTrace();
