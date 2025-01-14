@@ -23,16 +23,25 @@ public class TestHabitation {
     public static final Date DATE = Date.valueOf(LocalDate.now());
     private static Immeuble immeuble;
 
+    public static final Habitation HABITATION;
+
+    static {
+        try {
+            HABITATION = new Habitation.HBuilder(COMPLEMENT_ADRESSE, NBPIECES, NUMERO_FISCAL, TestImmeuble.IMMEUBLE, SURFACE,IDPROPRIO, DATE).build();
+        } catch (Bien.BienException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
     @BeforeAll
     public static void setUp() throws Bien.BienException {
-        immeuble = new Immeuble.IBuilder(VILLE, CODE_POSTAL, ADRESSE, NUMERO_FISCAL_IMMEUBLE,DATE,IDPROPRIO).build();
-        immeuble.save();
+        TestImmeuble.IMMEUBLE.save();
     }
 
     @AfterAll
     public static void setDown() throws Bien.BienException {
-        immeuble.delete();
+        TestImmeuble.IMMEUBLE.delete();
     }
 
     @Test
