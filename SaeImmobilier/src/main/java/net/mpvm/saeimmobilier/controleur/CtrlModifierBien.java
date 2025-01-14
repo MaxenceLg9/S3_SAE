@@ -26,7 +26,7 @@ public class CtrlModifierBien {
     @FXML
     public TextField fieldNumeroProprio;
     @FXML
-    public ChoiceBox<TypeBien> listTypeBien;
+    private ChoiceBox<TypeBien> listTypeBien;
     @FXML
     public TextField fieldNumeroFiscal;
     @FXML
@@ -46,27 +46,24 @@ public class CtrlModifierBien {
     @FXML
     public TextField fieldNbPieces;
     @FXML
-    public ChoiceBox<Immeuble> listImmeubles;
+    private ChoiceBox<Immeuble> listImmeubles;
 
     private List<TextField> fieldsLogement;
-    private BienLouable bien;
-
-
-    private int idBien;
+    private Bien bien;
     private Date datesql;
 
     public void initialize() {
         Platform.runLater(() -> {
             Stage stage = (Stage) btnAnnuler.getScene().getWindow();
-            if (stage != null) {
-                setIdBien(stage);
-                afficheBien();
-                fieldsetup();
-                refreshImmeubles();
-                typeBiens();
-            } else {
-                System.out.println("Pas de stage.");
+            if(setBien(stage) == -1){
+                JfxUtil.displayError("Erreur lors de la récupération du bien", "Impossible de récupérer le bien à modifier !");
+                stage.close();
+                return;
             }
+            afficheBien();
+            fieldsetup();
+            refreshImmeubles();
+            typeBiens();
         });
     }
 
@@ -78,27 +75,27 @@ public class CtrlModifierBien {
     }
 
     private void afficheBien() {
-        this.bien = (BienLouable) Bien.BBuilder.get(this.idBien);
         this.fieldAdresse.setText(bien.getAdresse());
         this.fieldCodePostal.setText(bien.getCodePostal());
         this.fieldVille.setText(bien.getVille());
-        this.fieldLieuImmeuble.setText(bien.getComplementAdresse());
-        this.fieldNbPieces.setText(String.valueOf(bien.getNbPieces()));
         this.fieldNumeroFiscal.setText(bien.getNumeroFiscal());
-        this.fieldSurface.setText(String.valueOf(bien.getSurface()));
         this.LabelDate.setText(bien.getDateAjout().toString());
         this.listTypeBien.setValue(this.bien.getTypeBien());
         this.datesql = this.bien.getDateAjout();
+        if(bien instanceof BienLouable bienLouable) {
+            this.fieldLieuImmeuble.setText(bienLouable.getComplementAdresse());
+            this.fieldNbPieces.setText(String.valueOf(bienLouable.getNbPieces()));
+            this.fieldSurface.setText(String.valueOf(bienLouable.getSurface()));
+        }
     }
 
 
-    public void setIdBien(Stage stage) {
-        Object id = stage.getProperties().get("bien");
-        if (id instanceof Integer) {
-            this.idBien = (int) id;
-        } else {
-            throw new IllegalStateException("Propriété 'bien' manquante ou incorrecte.");
+    public int setBien(Stage stage) {
+        if(stage.getProperties().containsKey("bien") && stage.getProperties().get("bien") instanceof Bien) {
+            this.bien = (Bien) stage.getProperties().get("bien");
+            return 0;
         }
+        return -1;
     }
 
     public void modifierBien(ActionEvent actionEvent) {
@@ -134,9 +131,6 @@ public class CtrlModifierBien {
                         }
 
                         JfxUtil.setAlert(Alert.AlertType.INFORMATION, "Succès", "Modification du bien", "Le bien de type Habitation a été modifié avec succès !");
-                        Stage stage = (Stage) this.listImmeubles.getScene().getWindow();
-                        stage.getProperties().put("bien",this.bien.getImmeuble().getIdBien());
-                        JfxUtil.showWindow(stage, VueBiensLouables.class);
                     } else {
                         // Ajout d'un Garage
                         try {
@@ -156,9 +150,6 @@ public class CtrlModifierBien {
                         }
 
                         JfxUtil.setAlert(Alert.AlertType.INFORMATION, "Succès", "Modification du bien", "Le bien de type Garage a été modifié avec succès !");
-                        Stage stage = (Stage) this.listImmeubles.getScene().getWindow();
-                        stage.getProperties().put("bien",this.bien.getImmeuble().getIdBien());
-                        JfxUtil.showWindow(stage, VueBiensLouables.class);
                     }
                 } else {
                     // Champs invalides
@@ -170,14 +161,11 @@ public class CtrlModifierBien {
     }
 
     public void Accueil(ActionEvent actionEvent) {
-        Stage stage = (Stage) this.listImmeubles.getScene().getWindow();
-        JfxUtil.showWindow(stage, VueAccueil.class);
     }
 
     public void Annuler(ActionEvent actionEvent) {
         Stage stage = (Stage) this.listImmeubles.getScene().getWindow();
-        stage.getProperties().put("bien",this.bien.getImmeuble().getIdBien());
-        JfxUtil.showWindow(stage, VueBiensLouables.class);
+        stage.close();
     }
 
 
@@ -226,7 +214,7 @@ public class CtrlModifierBien {
         try {
             listImmeubles.getItems().clear();
             listImmeubles.getItems().addAll(Immeuble.findAll());
-            this.listImmeubles.setValue(this.bien.getImmeuble());
+//            this.listImmeubles.setValue(this.bien);
         } catch (Immeuble.ImmeubleException e) {
             JfxUtil.setAlert(Alert.AlertType.ERROR, "Erreur", "Erreur lors de la récupération des immeubles", "");
         }
