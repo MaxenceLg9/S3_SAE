@@ -17,7 +17,6 @@ public abstract class Bien extends Queryable {
     public static final String SELECT_FROM_ID = "SELECT * FROM Bien WHERE IdBien = ?";
 
     private int idBien;
-    private float iR; // Taux d'intérêt ou autre valeur
     private String numeroFiscal;
     private final Date dateAjout;
     private String idProprio;
@@ -25,7 +24,7 @@ public abstract class Bien extends Queryable {
     private static final Map<Integer,Bien> biens = new HashMap<>();
 
 
-    public Bien(int idBien, String numeroFiscal, Date dateAjout, String idProprio) {
+    Bien(int idBien, String numeroFiscal, Date dateAjout, String idProprio) {
         this.idBien = idBien;
         this.numeroFiscal = numeroFiscal;
         this.dateAjout = dateAjout;
@@ -59,11 +58,10 @@ public abstract class Bien extends Queryable {
 
     public abstract String getVille();
 
-    public abstract void setVille(String ville);
-
     public abstract String getCodePostal();
 
-    public abstract void setCodePostal(String codePostal);
+    public abstract String getAdresse();
+
 
     public Optional<Assurance> getAssurance() {
         //TODO : query
@@ -72,17 +70,6 @@ public abstract class Bien extends Queryable {
 
     public void setAssurance(Assurance assurance) {
         //TODO : query
-    }
-
-    public abstract String getAdresse();
-
-    public abstract void setAdresse(String adresse);
-    public float getiR() {
-        return iR;
-    }
-
-    public void setiR(float iR) {
-        this.iR = iR;
     }
 
     public void save() throws BienException {

@@ -62,7 +62,6 @@ public final class Immeuble extends Bien{
 		return this.ville;
 	}
 
-	@Override
 	public void setVille(String ville) {
 		this.ville = ville;
 	}
@@ -72,7 +71,6 @@ public final class Immeuble extends Bien{
 		return this.codePostal;
 	}
 
-	@Override
 	public void setCodePostal(String codePostal) {
 		this.codePostal = codePostal;
 	}
@@ -82,7 +80,6 @@ public final class Immeuble extends Bien{
 		return this.adresse;
 	}
 
-	@Override
 	public void setAdresse(String adresse) {
 		this.adresse = adresse;
 	}

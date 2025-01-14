@@ -66,28 +66,14 @@ public abstract class BienLouable extends Bien {
     }
 
     @Override
-    public void setCodePostal(String codePostal) {
-        this.immeuble.setCodePostal(codePostal);
-    }
-
-    @Override
     public String getAdresse() {
         return this.immeuble.getAdresse();
     }
 
-    @Override
-    public void setAdresse(String adresse){
-        this.immeuble.setAdresse(adresse);
-    }
 
     @Override
     public String getVille() {
         return this.immeuble.getVille();
-    }
-
-    @Override
-    public void setVille(String ville) {
-        this.immeuble.setVille(ville);
     }
 
     public int getAncienIndex() {
@@ -236,6 +222,8 @@ public abstract class BienLouable extends Bien {
 
     @Override
     public void modify() throws BienLouableException {
+        if(this.getIdBien() == -1)
+            throw new BienLouableException("Le bien n'existe pas", null);
         try(UpdateQueryElement updateQueryElement = new UpdateQueryElement(UPDATE_QUERY, true)){
             updateQueryElement.setArgs(
                     Map.of(1, this.getComplementAdresse(),
