@@ -62,7 +62,10 @@ public class Bail extends Queryable {
 		try (SelectQueryElement selectQueryElement = new SelectQueryElement(query)) {
 			selectQueryElement.setArgs(Map.of(1, idBien));
 			Result result = selectQueryElement.execute();
-			sortResult(baux, result);
+			for (Map<String, Object> row : result) {
+				Bail bail = new Bail(row);
+				baux.add(bail);
+			}
 		} catch (QueryElement.QEltException e) {
 			throw new BailException("Erreur lors de la récupération des baux pour le bien ID " + idBien, e.getSqlException());
 		}
@@ -70,11 +73,9 @@ public class Bail extends Queryable {
 		return baux;
 	}
 
-	private static void sortResult(List<Bail> baux, Result result) throws QueryElement.QEltException {
-		for (Map<String, Object> row : result) {
-			Bail bail = new Bail(row);
-			baux.add(bail);
-		}
+
+	public void mettreAJourLoyer(int icc){
+		//TODO : implement
 	}
 
 	public static List<Bail> getBauxFromLocataire(Locataire locataire) throws BailException {
