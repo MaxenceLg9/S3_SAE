@@ -7,14 +7,24 @@ import org.jetbrains.annotations.NotNull;
 
 import java.sql.Date;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 public final class Garage extends BienLouable {
 
-	public static final String SELECT_QUERY = "SELECT * FROM bien WHERE TypeBien = 'GARAGE'";
+	public static final Garage GARAGE;
 
+    static {
+        try {
+            GARAGE = new GBuilder("RATATA", 1, "1", Immeuble.IMMEUBLE, 1, "Appartement du Batiment", Date.valueOf(LocalDate.now())).build();
+        } catch (BienException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static final String SELECT_QUERY = "SELECT * FROM bien WHERE TypeBien = 'GARAGE'";
 
 	Garage(String complementAdresse, int nbPieces, String NumeroFiscal, Immeuble immeuble, float surface, Date dateAjout, String idProprio, int idBien) throws BienException {
 		super(complementAdresse, nbPieces, NumeroFiscal, immeuble, surface, dateAjout, idProprio, idBien);

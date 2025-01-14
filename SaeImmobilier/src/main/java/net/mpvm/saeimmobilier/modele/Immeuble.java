@@ -6,10 +6,13 @@ import net.mpvm.saeimmobilier.sql.Query.SelectQueryElement;
 import net.mpvm.saeimmobilier.sql.Query.UpdateQueryElement;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.*;
 import java.sql.Date;
 
 public final class Immeuble extends Bien{
+
+	public static final Immeuble IMMEUBLE = new Immeuble.IBuilder("Toulouse", "31000", "1 rue de la paix", "6789012345",Date.valueOf(LocalDate.now()),"IMMEUBLE COMME JAIME").build();
 
 	public static final String INSERT_QUERY = "INSERT INTO Bien (Adresse, Ville, CodePostal, TypeBien, NumeroFiscal, IdProprio, DateAjout) VALUES (?, ?, ?, ?, ?, ?, ?)";
 	public static final String SELECT_QUERY = "SELECT * FROM Bien WHERE TypeBien = 'IMMEUBLE'";

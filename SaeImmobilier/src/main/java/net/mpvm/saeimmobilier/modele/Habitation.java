@@ -6,11 +6,22 @@ import org.jetbrains.annotations.NotNull;
 
 import java.sql.Date;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 public final class Habitation extends BienLouable {
+
+    public static final Habitation HABITATION;
+
+    static {
+        try {
+            HABITATION = new HBuilder("RATATA", 1, "1", Immeuble.IMMEUBLE, 1, "Appartement du Batiment", Date.valueOf(LocalDate.now())).build();
+        } catch (BienException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public static final String SELECT_QUERY = "SELECT * FROM Bien WHERE TypeBien = 'Habitation'";
 
