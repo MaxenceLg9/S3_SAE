@@ -18,7 +18,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" styleClass="backgroundColor" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.mpvm.saeimmobilier.controleur.CtrlNewBien">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" styleClass="backgroundColor" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.mpvm.saeimmobilier.controleur.CtrlGererBien">
     <center>
         <BorderPane styleClass="backgroundColor" BorderPane.alignment="CENTER">
             <top>
@@ -60,7 +60,7 @@
                                 <Font size="14.0" />
                             </font>
                         </Label>
-                        <TextField fx:id="fieldNumeroProprio" maxWidth="1.7976931348623157E308" minHeight="30.0" minWidth="100.0" prefWidth="300.0" promptText="Nom d'enregistrement" GridPane.columnIndex="1" />
+                        <TextField fx:id="fieldIdProprio" maxWidth="1.7976931348623157E308" minHeight="30.0" minWidth="100.0" prefWidth="300.0" promptText="Nom d'enregistrement" GridPane.columnIndex="1" />
                         <Label prefHeight="17.0" text="Type du bien" textFill="WHITE" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                             <font>
                                 <Font size="14.0" />
@@ -128,7 +128,7 @@
                                 <Font size="14.0" />
                             </font>
                         </Label>
-                        <TextField fx:id="fieldLieuImmeuble" maxWidth="1.7976931348623157E308" minHeight="30.0" prefWidth="300.0" promptText="Complément d'adresse" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                        <TextField fx:id="fieldComplementAdresse" maxWidth="1.7976931348623157E308" minHeight="30.0" prefWidth="300.0" promptText="Complément d'adresse" GridPane.columnIndex="1" GridPane.rowIndex="8" />
                         <Label prefHeight="17.0" text="Surface du bien (m²)" textFill="WHITE" GridPane.rowIndex="9" GridPane.valignment="CENTER">
                             <GridPane.margin>
                                 <Insets />
