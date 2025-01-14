@@ -17,6 +17,7 @@ public class VueModifierBien extends Application {
     public void start(Stage stage) throws Exception {
         if(!stage.getProperties().containsKey("bien") || !(stage.getProperties().get("bien") instanceof Bien)) {
             stage.getProperties().put("bien", Garage.GARAGE);
+//            stage.getProperties().put("bien", Immeuble.IMMEUBLE);
         }
         JfxUtil.updateStage(stage, "modifierBien.fxml", "Modifier un Bien", 750, 850);
     }
