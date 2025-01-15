@@ -125,7 +125,7 @@ public class CtrlViewBails {
         stage.close();
         Stage s = new Stage();
         s.getProperties().put("bail",idBail);
-        new VueLocataires(idBail).startForBail(s);
+        JfxUtil.showWindow(s,VueLocataires.class);
 
     }
     private void ajouterBail(ActionEvent event, int idBien) {
