@@ -2,7 +2,10 @@ package net.mpvm.saeimmobilier.tests;
 
 import net.mpvm.saeimmobilier.modele.Bien;
 import net.mpvm.saeimmobilier.modele.Immeuble;
+import net.mpvm.saeimmobilier.sql.Query.QueryElement;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.sql.Date;
@@ -20,14 +23,33 @@ public class TestImmeuble {
     public static final String IDPROPRIO = "IMMEUBLE COMME JAIME";
     public static final Date DATE = Date.valueOf(LocalDate.now());
 
-    public static final Immeuble IMMEUBLE = new Immeuble.IBuilder(VILLE, CODE_POSTAL, ADRESSE, NUMERO_FISCAL_IMMEUBLE,DATE,IDPROPRIO).build();
+    public static final Immeuble IMMEUBLE;
+
+    static {
+        try {
+            IMMEUBLE = new Immeuble.IBuilder(VILLE, CODE_POSTAL, ADRESSE, NUMERO_FISCAL_IMMEUBLE,DATE,IDPROPRIO).build();
+        } catch (Bien.BienException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @BeforeAll
+    public static void setUp(){
+        QueryElement.newStaticConnection();
+    }
+
+    @AfterAll
+    public static void setDown(){
+        QueryElement.rollBackStaticConnection();
+        QueryElement.removeStaticConnection();
+    }
 
 
     @Test
     public void testFactoryPatternInstance() throws Bien.BienException {
         Immeuble immeuble = new Immeuble.IBuilder(VILLE, CODE_POSTAL, ADRESSE, NUMERO_FISCAL_IMMEUBLE,DATE,IDPROPRIO).build();
         immeuble.save();
-        Immeuble immeuble1 = new Immeuble.IBuilder(immeuble.getIdBien()).build();
+        Immeuble immeuble1 = Immeuble.IBuilder.getImmeuble(immeuble.getIdBien());
         assertEquals(immeuble, immeuble1);
         immeuble.delete();
     }
@@ -47,7 +69,7 @@ public class TestImmeuble {
 
         immeuble = null;
 
-        Immeuble immeuble1 = new Immeuble.IBuilder(id).build();
+        Immeuble immeuble1 = Immeuble.IBuilder.getImmeuble(id);
         assertEquals(id, immeuble1.getIdBien());
         assertEquals("LAVILLE",immeuble1.getVille());
         assertEquals("41025",immeuble1.getCodePostal());
