@@ -69,7 +69,7 @@ public final class Garage extends BienLouable {
 			this(args.get("ComplementAdresse").toString(),
 					(int) args.get("NombrePieces"),
 					args.get("NumeroFiscal").toString(),
-					new Immeuble.IBuilder((int) args.get("IdImmeuble")).build(),
+					Immeuble.IBuilder.getImmeuble((int) args.get("IdImmeuble")),
 					((Double) args.get("Surface")).floatValue(),
 					(Date) args.get("DateAjout"),
 					args.get("IdProprio").toString(),
@@ -80,8 +80,12 @@ public final class Garage extends BienLouable {
 		public Garage build() throws BienException {
 			if(this.getIdBien() == -1)
 				return new Garage(this);
-			if(checkPresentIn(Garage.class))
-				return (Garage) get(this.getIdBien());
+			if(checkPresentIn()){
+				if(get(this.getIdBien()) instanceof Garage)
+					return (Garage) get(this.getIdBien());
+				else
+					throw new Bien.BienException("Le bien n'est pas du bon type", null);
+			}
 			Garage garage = new Garage(this);
 			add(garage);
 			return garage;

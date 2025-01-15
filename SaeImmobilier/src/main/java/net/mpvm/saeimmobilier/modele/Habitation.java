@@ -66,7 +66,7 @@ public final class Habitation extends BienLouable {
             this(args.get("ComplementAdresse").toString(),
                     (int) args.get("NombrePieces"),
                     args.get("NumeroFiscal").toString(),
-                    new Immeuble.IBuilder((int) args.get("IdImmeuble")).build(),
+                    Immeuble.IBuilder.getImmeuble((int) args.get("IdImmeuble")),
                     ((Double) args.get("Surface")).floatValue(),
                     (Date) args.get("DateAjout"),
                     args.get("IdProprio").toString(),
@@ -77,8 +77,12 @@ public final class Habitation extends BienLouable {
         public Habitation build() throws BienException {
             if(this.getIdBien() == -1)
                 return new Habitation(this);
-            if(checkPresentIn(Habitation.class))
-                return (Habitation) get(this.getIdBien());
+            if(checkPresentIn()){
+                if(get(this.getIdBien()) instanceof Habitation)
+                    return (Habitation) get(this.getIdBien());
+                else
+                    throw new Bien.BienException("Le bien n'est pas du bon type", null);
+            }
             Habitation h = new Habitation(this);
             add(h);
             return h;
