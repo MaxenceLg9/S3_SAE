@@ -4,10 +4,8 @@ import net.mpvm.saeimmobilier.sql.Connection.BD;
 
 import java.io.Closeable;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Savepoint;
+import java.sql.*;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public abstract class QueryElement<T> implements Closeable {
@@ -17,17 +15,49 @@ public abstract class QueryElement<T> implements Closeable {
     private final Connection connection;
     private final long nArgs;
 
+    private static Connection StaticConnection;
+
     public QueryElement(String query, boolean commit) throws QEltException {
         this.query = query;
         nArgs = query.chars().filter(ch -> ch == '?').count();
         try {
-            this.connection = BD.getConnection(commit);
+            if(StaticConnection != null)
+                this.connection = StaticConnection;
+            else
+                this.connection = BD.getConnection(commit);
             this.preparedStatement = this.prepareStatement();
         } catch (SQLException sqlException) {
             throw new QEltException("Cannot create the query : Statement or Connection problem", sqlException);
         }
     }
 
+
+
+    public static void newStaticConnection(){
+        try {
+            StaticConnection = BD.getConnection(false);
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        }
+    }
+
+    public static void rollBackStaticConnection() {
+        try {
+            StaticConnection.rollback();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void removeStaticConnection(){
+        try {
+            StaticConnection.close();
+            StaticConnection = null;
+            System.out.println("Closed static connection");
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        }
+    }
     public long getNArgs(){
         return this.nArgs;
     }
@@ -76,26 +106,10 @@ public abstract class QueryElement<T> implements Closeable {
         try {
             if(preparedStatement != null)
                 preparedStatement.close();
-            if(connection != null)
+            if(connection != null && StaticConnection == null)
                 connection.close();
         } catch (SQLException sqlException) {
             throw new QEltException("Error closing connection or Statement", sqlException);
-        }
-    }
-
-    public void rollback() throws QEltException {
-        try {
-            this.connection.rollback();
-        } catch (SQLException sqlException) {
-            throw new QEltException("Error rolling back", sqlException);
-        }
-    }
-
-    public void rollback(Savepoint savepoint) throws QEltException {
-        try {
-            this.connection.rollback(savepoint);
-        } catch (SQLException sqlException) {
-            throw new QEltException("Error rolling back to the savepoint", sqlException);
         }
     }
 
@@ -114,6 +128,33 @@ public abstract class QueryElement<T> implements Closeable {
         catch (SQLException e) {
             throw new QEltException("Error committing", e);
         }
+    }
+
+    void resultSetIntoResult(ResultSet rs, Result rows) throws QEltException {
+        try {
+            ResultSetMetaData metaData = rs.getMetaData();
+            int columnCount = metaData.getColumnCount();
+            while (rs.next()) {
+                Map<String, Object> row = new LinkedHashMap<>();
+                for (int i = 1; i <= columnCount; i++) {
+                    row.put(metaData.getColumnName(i), rs.getObject(i));
+                }
+                rows.add(row);
+            }
+            rs.close();
+        }catch(SQLException sqlException){
+            throw new QEltException("Error getting the result", sqlException);
+        }
+    }
+
+    public Result getGeneratedKeys() throws QEltException {
+        Result result = new Result();
+        try {
+            resultSetIntoResult(this.preparedStatement.getGeneratedKeys(),result);
+        }catch (SQLException sqlException){
+            sqlException.printStackTrace();
+        }
+        return result;
     }
 
     public abstract T execute() throws QEltException;
