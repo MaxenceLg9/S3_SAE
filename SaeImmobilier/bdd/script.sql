@@ -27,20 +27,21 @@ CREATE TABLE Locataire(
                           PRIMARY KEY(IdLocataire)
 );
 
-CREATE TABLE Travaux(
-                        IdTravaux INT auto_increment,
-                        NumeroFacture VARCHAR(10),
-                        Entreprise VARCHAR(50),
-                        Montant DOUBLE,
-                        MontantNonDeductible DOUBLE,
-                        MontantADeclarer DOUBLE,
-                        Reduction DOUBLE,
-                        DateTravaux DATE,
-                        Nature VARCHAR(50),
-                        NumeroDevis VARCHAR(10),
-                        IdBien INT,
-                        PRIMARY KEY(IdTravaux),
-                        FOREIGN KEY(IdBien) REFERENCES Bien(IdBien)
+CREATE TABLE Travaux
+(
+    IdTravaux            INT auto_increment,
+    NumeroFacture        VARCHAR(10),
+    Entreprise           VARCHAR(50),
+    Montant              DOUBLE,
+    MontantNonDeductible DOUBLE,
+    MontantADeclarer     DOUBLE,
+    Reduction            DOUBLE,
+    DateTravaux          DATE,
+    Nature               VARCHAR(50),
+    NumeroDevis          VARCHAR(10),
+    IdBien               INT,
+    PRIMARY KEY (IdTravaux),
+    FOREIGN KEY (IdBien) REFERENCES Bien (IdBien)
 );
 CREATE TABLE Assurance(
                           IdAssurance INT auto_increment,
@@ -53,6 +54,7 @@ CREATE TABLE Assurance(
                           NomAssurance VARCHAR(50),
                           PRIMARY KEY(IdAssurance)
 );
+
 
 
 
