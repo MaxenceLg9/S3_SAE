@@ -18,8 +18,7 @@ public class VueLouerUnBien extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         if(!primaryStage.getProperties().containsKey("bienLouable")){
-            Immeuble i = new Immeuble.IBuilder("Quimpermeable", "2", "Rue de la goutte", "2", Date.valueOf(LocalDate.now()), "BatimentJSP").build();
-            primaryStage.getProperties().put("bienLouable", new Garage.GBuilder("RATATA", 1, "1", i, 1, "Appartement du Batiment", Date.valueOf(LocalDate.now())).build());
+            primaryStage.getProperties().put("bienLouable", Garage.GARAGE);
         }
         JfxUtil.updateStage(primaryStage, "louerunbien.fxml", "Louer un bien");
     }

@@ -82,7 +82,9 @@ public class CtrlViewImmeubles {
                 Button faireTravaux = new Button("Attribuer Travaux");
                 faireTravaux.setOnAction(event -> attribuerTravaux(immeuble.getIdBien(),event));
                 Button supprimerButton = new Button("Supprimer");
-                supprimerButton.setOnAction(event -> supprimerImmeuble(immeuble));
+                supprimerButton.setOnAction(event -> {if(JfxUtil.askForDelete("Voulez vous supprimer l'immeuble") == 1)
+                    supprimerImmeuble(immeuble);
+                });
                 nom.getStyleClass().add("assurance-label");
                 nom.getStyleClass().add("assurance-title");
                 adresse.getStyleClass().add("assurance-label");
@@ -157,7 +159,6 @@ public class CtrlViewImmeubles {
     }
     private void ajouterBien(ActionEvent event){
         Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-        stage.close();
         Stage s = new Stage();
         JfxUtil.showWindow(s, VueNewBien.class);
     }

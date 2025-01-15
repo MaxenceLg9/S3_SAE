@@ -7,15 +7,24 @@ import org.jetbrains.annotations.NotNull;
 
 import java.sql.Date;
 import java.sql.SQLException;
-import java.util.HashMap;
+import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 public final class Garage extends BienLouable {
 
-	public static final String SELECT_QUERY = "SELECT * FROM bien WHERE TypeBien = 'GARAGE'";
+	public static final Garage GARAGE;
 
+    static {
+        try {
+            GARAGE = new GBuilder("RATATA", 1, "1", Immeuble.IMMEUBLE, 1, "Appartement du Batiment", Date.valueOf(LocalDate.now())).build();
+        } catch (BienException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static final String SELECT_QUERY = "SELECT * FROM bien WHERE TypeBien = 'GARAGE'";
 
 	Garage(String complementAdresse, int nbPieces, String NumeroFiscal, Immeuble immeuble, float surface, Date dateAjout, String idProprio, int idBien) throws BienException {
 		super(complementAdresse, nbPieces, NumeroFiscal, immeuble, surface, dateAjout, idProprio, idBien);
@@ -23,16 +32,6 @@ public final class Garage extends BienLouable {
 
 	private Garage(GBuilder gBuilder) throws BienException {
 		this(gBuilder.getComplementAdresse(),gBuilder.getNbPieces(),gBuilder.getNumeroFiscal(),gBuilder.getImmeuble(),gBuilder.getSurface(),gBuilder.getDateAjout(), gBuilder.getIdProprio(), gBuilder.getIdBien());
-	}
-
-	public void save() throws BienException {
-		super.save();
-		BBuilder.add(this);
-	}
-
-	public void modify(int idbien) throws BienLouableException {
-		super.modify(idbien);
-		System.out.println(this.getIdBien());
 	}
 
 	@NotNull
@@ -81,7 +80,7 @@ public final class Garage extends BienLouable {
 		public Garage build() throws BienException {
 			if(this.getIdBien() == -1)
 				return new Garage(this);
-			if(checkNotPresentIn(Garage.class))
+			if(checkPresentIn(Garage.class))
 				return (Garage) get(this.getIdBien());
 			Garage garage = new Garage(this);
 			add(garage);

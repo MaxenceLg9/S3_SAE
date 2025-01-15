@@ -3,7 +3,6 @@ package net.mpvm.saeimmobilier.modele;
 import net.mpvm.saeimmobilier.sql.Query.QueryElement;
 import net.mpvm.saeimmobilier.sql.Query.Queryable;
 import net.mpvm.saeimmobilier.sql.Query.SelectQueryElement;
-import net.mpvm.saeimmobilier.sql.Query.UpdateQueryElement;
 
 import java.sql.Date;
 import java.sql.*;
@@ -15,10 +14,9 @@ public abstract class Bien extends Queryable {
     private static final String SELECT_QUERY = "SELECT * FROM bien";
     private static final String SELECT_ID_QUERY = "SELECT IdBien FROM bien WHERE NumeroFiscal = ?";
     private static final String SELECT_QUERY_BY_ID = "SELECT * FROM bien WHERE IdBien = ?";
+    public static final String SELECT_FROM_ID = "SELECT * FROM Bien WHERE IdBien = ?";
 
     private int idBien;
-    private Optional<Assurance> assurance;
-    private float iR; // Taux d'intérêt ou autre valeur
     private String numeroFiscal;
     private final Date dateAjout;
     private String idProprio;
@@ -26,11 +24,10 @@ public abstract class Bien extends Queryable {
     private static final Map<Integer,Bien> biens = new HashMap<>();
 
 
-    public Bien(int idBien, String numeroFiscal, Date dateAjout, String idProprio) {
+    Bien(int idBien, String numeroFiscal, Date dateAjout, String idProprio) {
         this.idBien = idBien;
         this.numeroFiscal = numeroFiscal;
         this.dateAjout = dateAjout;
-        this.assurance = Optional.empty();
         this.idProprio = idProprio;
     }
 
@@ -61,29 +58,18 @@ public abstract class Bien extends Queryable {
 
     public abstract String getVille();
 
-    public abstract void setVille(String ville);
-
     public abstract String getCodePostal();
-
-    public abstract void setCodePostal(String codePostal);
-
-    public Optional<Assurance> getAssurance() {
-        return this.assurance;
-    }
-
-    public void setAssurance(Assurance assurance) {
-        this.assurance = Optional.of(assurance);
-    }
 
     public abstract String getAdresse();
 
-    public abstract void setAdresse(String adresse);
-    public float getiR() {
-        return iR;
+
+    public Optional<Assurance> getAssurance() {
+        //TODO : query
+        return Optional.empty();
     }
 
-    public void setiR(float iR) {
-        this.iR = iR;
+    public void setAssurance(Assurance assurance) {
+        //TODO : query
     }
 
     public void save() throws BienException {
@@ -95,6 +81,10 @@ public abstract class Bien extends Queryable {
         } catch (QueryElement.QEltException e) {
             throw new BienException("Erreur lors de la récupération de l'ID du bien", e.getSqlException());
         }
+    }
+
+    public void delete() throws BienException {
+        this.idBien = -1;
     }
 
 
@@ -134,14 +124,15 @@ public abstract class Bien extends Queryable {
         return getTypeBien().name();
     }
 
-
+    abstract Map<String, Object> getArgs();
 
     public void setIdProprio(String idProprio) {
         this.idProprio = idProprio;
     }
 
     public Optional<Assurance> getAssuranceActuelle() {
-        return this.assurance;
+        //TODO JE SAIS PAS
+        return Optional.empty();
     }
 
     public String getNumeroFiscal() {
@@ -198,12 +189,42 @@ public abstract class Bien extends Queryable {
             return idProprio;
         }
 
-        boolean checkNotPresentIn(Class<? extends Bien> bienClass){
-            return checkNotPresentIn(bienClass, IdBien);
+        boolean checkPresentIn(Class<? extends Bien> bienClass){
+            return checkPresentIn(bienClass, IdBien);
         }
 
-        static boolean checkNotPresentIn(Class<? extends Bien> bienClass, int idBien){
+        public static boolean checkPresentIn(Class<? extends Bien> bienClass, int idBien){
             return (biens.containsKey(idBien) && biens.get(idBien) != null && bienClass.isInstance(biens.get(idBien)));
+        }
+
+        public static Map<String,Object> getFromId(int idBien, Class<? extends Bien> bienClass) throws Bien.BienException {
+            if(checkPresentIn(bienClass,idBien))
+                return get(idBien).getArgs();
+            TypeBien typeBien;
+            if (bienClass.equals(Habitation.class)) {
+                typeBien = TypeBien.HABITATION;
+            } else if (bienClass.equals(Garage.class)) {
+                typeBien = TypeBien.GARAGE;
+            } else if (bienClass.equals(Immeuble.class)) {
+                typeBien = TypeBien.IMMEUBLE;
+            } else {
+                throw new Bien.BienException("Classe de bien inconnue", null);
+            }
+            return getFromQuery(idBien, typeBien);
+
+        }
+
+        private static Map<String,Object> getFromQuery(int idBien, TypeBien type) throws BienException {
+            try(SelectQueryElement selectQueryElement = new SelectQueryElement(SELECT_FROM_ID)){
+                selectQueryElement.setArgs(Map.of(1, idBien));
+                selectQueryElement.execute();
+                List<Map<String,Object>> result = selectQueryElement.getResult();
+                if(result.isEmpty() && !result.getFirst().get("TypeBien").equals(type.name()))
+                    throw new Bien.BienException("Le bien n'existe pas dans la base de données", null);
+                return selectQueryElement.getResult().getFirst();
+            }catch (QueryElement.QEltException qEltException){
+                throw new Bien.BienException("Erreur lors de la récupération de l'immeuble, il n'existe peut-être pas dans la base de données", qEltException.getSqlException());
+            }
         }
 
         public static void add(Bien bien) {
@@ -213,9 +234,7 @@ public abstract class Bien extends Queryable {
         public static Bien get(int idBien) {
             return biens.get(idBien);
         }
-
     }
-
 
     // Classe d'exception personnalisée
     public static class BienException extends QbleException {

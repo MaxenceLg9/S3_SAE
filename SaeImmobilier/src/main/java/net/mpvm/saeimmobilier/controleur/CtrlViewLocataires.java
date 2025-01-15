@@ -13,7 +13,6 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import net.mpvm.saeimmobilier.modele.Locataire;
 import net.mpvm.saeimmobilier.util.JfxUtil;
-import net.mpvm.saeimmobilier.vue.VueNewBien;
 import net.mpvm.saeimmobilier.vue.VueNewLocataire;
 
 import java.util.Map;
@@ -29,7 +28,6 @@ public class CtrlViewLocataires {
 
     private Map<Integer, Locataire> locataires;
     private int idBail;
-    @FXML
     public void initialize(){
         vBoxContent.sceneProperty().addListener((observable, oldScene, newScene) -> {
             if (newScene != null) {
@@ -54,7 +52,7 @@ public class CtrlViewLocataires {
             throw new IllegalStateException("Propriété 'bail' manquante ou incorrecte.");
         }
     }
-    public void afficheLocataires() {
+    private void afficheLocataires() {
 
         try {
             locataires = Locataire.findAll().stream().collect(Collectors.toMap(Locataire::getIdLocataire, Function.identity()));
@@ -73,10 +71,6 @@ public class CtrlViewLocataires {
         retourAccueil.setOnAction(event -> retourAccueil(event));
         retourAccueil.getStyleClass().add("button-supprimer");
         vBoxContent.getChildren().add(retourAccueil);
-        Button ajouterLocataire = new Button("Ajouter Locataire");
-        ajouterLocataire.setOnAction(event -> ajouterLocataire(event,idBail));
-        ajouterLocataire.getStyleClass().add("button-valider");
-        vBoxContent.getChildren().add(ajouterLocataire);
         for(Locataire l : locataires.values()) {
             GridPane gp = new GridPane();
             ColumnConstraints col1 = new ColumnConstraints();
@@ -147,24 +141,14 @@ public class CtrlViewLocataires {
                 .filter(r -> r.equals(ButtonType.OK))
                 .ifPresent(r -> deleteLocataire(id));
     }
-    public void ajouterLocataire(ActionEvent event, int idBail) {
-        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-        stage.close();
-
-        Stage s = new Stage();
-        s.getProperties().put("bail",idBail);
-        JfxUtil.showWindow(s, VueNewLocataire.class);
-
-    }
 
     private void deleteLocataire(int id){
         try {
             locataires.get(id).delete();
-            afficheLocataires();
         } catch (Locataire.LocataireException e) {
             // TODO: handle exception with visual
         }
-
+        afficheLocataires();
     }
 
     @FXML
@@ -172,5 +156,4 @@ public class CtrlViewLocataires {
         Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         stage.close();
     }
-
 }

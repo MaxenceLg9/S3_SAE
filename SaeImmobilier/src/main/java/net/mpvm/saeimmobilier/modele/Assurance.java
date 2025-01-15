@@ -145,8 +145,37 @@ public class Assurance extends Queryable{
 
 
     @Override
-    public void modify(int idbien) throws QbleException {
-        update();
+    public void modify() throws QbleException {
+        if (this.idAssurance <= 0) {
+            throw new AssuranceException("L'ID de l'assurance est invalide pour une mise à jour.");
+        }
+
+        String UPDATE_QUERY = """
+        UPDATE Assurance SET
+        ProtectionJuridique = ?,
+        QuotitéJuridique = ?,
+        Prime = ?,
+        TypeContrat = ?,
+        TotalPrime = ?
+        WHERE IdAssurance = ?
+        """;
+
+        try (UpdateQueryElement query = new UpdateQueryElement(UPDATE_QUERY, true)) {
+            query.setArgs(Map.of(
+                    1, this.protectionJuridique,
+                    3, this.prime,
+                    4, this.typeContrat.toString(),
+                    6, this.idAssurance
+            ));
+
+            int rowsAffected = query.execute();
+            if (rowsAffected == 0) {
+                throw new AssuranceException("Aucune assurance correspondante trouvée pour la mise à jour.");
+            }
+            System.out.println("Mise à jour réussie pour l'assurance ID = " + this.idAssurance);
+        } catch (QueryElement.QEltException e) {
+            throw new AssuranceException("Erreur lors de la mise à jour de l'assurance avec ID " + this.idAssurance, e.getSqlException());
+        }
     }
 
     public int getAnnee() {
@@ -291,39 +320,6 @@ public class Assurance extends Queryable{
 
     public String toString(){
         return this.nomAssurance+" "+this.typeContrat + " " + this.annee + " " + this.prime + " " + this.numeroContrat;
-    }
-
-    public void update() throws AssuranceException {
-        if (this.idAssurance <= 0) {
-            throw new AssuranceException("L'ID de l'assurance est invalide pour une mise à jour.");
-        }
-
-        String UPDATE_QUERY = """
-        UPDATE Assurance SET
-        ProtectionJuridique = ?,
-        QuotitéJuridique = ?,
-        Prime = ?,
-        TypeContrat = ?,
-        TotalPrime = ?
-        WHERE IdAssurance = ?
-        """;
-
-        try (UpdateQueryElement query = new UpdateQueryElement(UPDATE_QUERY, true)) {
-            query.setArgs(Map.of(
-                    1, this.protectionJuridique,
-                    3, this.prime,
-                    4, this.typeContrat.toString(),
-                    6, this.idAssurance
-            ));
-
-            int rowsAffected = query.execute();
-            if (rowsAffected == 0) {
-                throw new AssuranceException("Aucune assurance correspondante trouvée pour la mise à jour.");
-            }
-            System.out.println("Mise à jour réussie pour l'assurance ID = " + this.idAssurance);
-        } catch (QueryElement.QEltException e) {
-            throw new AssuranceException("Erreur lors de la mise à jour de l'assurance avec ID " + this.idAssurance, e.getSqlException());
-        }
     }
 
     public void setIdAssurance(int idAssurance) {

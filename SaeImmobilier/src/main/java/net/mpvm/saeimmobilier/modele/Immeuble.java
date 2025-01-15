@@ -6,17 +6,19 @@ import net.mpvm.saeimmobilier.sql.Query.SelectQueryElement;
 import net.mpvm.saeimmobilier.sql.Query.UpdateQueryElement;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.*;
 import java.sql.Date;
 
 public final class Immeuble extends Bien{
+
+	public static final Immeuble IMMEUBLE = new Immeuble.IBuilder("Toulouse", "31000", "1 rue de la paix", "6789012345",Date.valueOf(LocalDate.now()),"IMMEUBLE COMME JAIME").build();
 
 	public static final String INSERT_QUERY = "INSERT INTO Bien (Adresse, Ville, CodePostal, TypeBien, NumeroFiscal, IdProprio, DateAjout) VALUES (?, ?, ?, ?, ?, ?, ?)";
 	public static final String SELECT_QUERY = "SELECT * FROM Bien WHERE TypeBien = 'IMMEUBLE'";
 	public static final String SELECT_WHERE_QUERY = "SELECT * FROM Bien WHERE Adresse = ? AND Ville = ? AND CodePostal = ?";
 	public static final String DELETE_QUERY = "DELETE FROM Bien WHERE IdBien = ? AND TypeBien = 'IMMEUBLE'";
 	public static final String UPDATE_QUERY = "UPDATE Bien SET Adresse = ?, Ville = ?, CodePostal = ?, IdProprio = ? WHERE IdBien = ?";
-	public static final String SELECT_FROM_ID = "SELECT * FROM Bien WHERE IdBien = ? AND TypeBien = 'IMMEUBLE'";
 	public static final String SELECT_BIENS_IMMEUBLES = "SELECT * FROM Bien WHERE IdImmeuble = ? AND TypeBien = 'GARAGE' OR TypeBien = 'HABITATION'";
 	public static final String SELECT_COUNT_BL = "SELECT Count(*) FROM Bien WHERE IdImmeuble = ? AND (TypeBien = 'GARAGE' OR TypeBien = 'HABITATION')";
 	public static final String SELECT_LOCALISATION = "SELECT IdImmeuble FROM Bien WHERE Adresse = ? AND Ville = ? AND CodePostal = ? AND TypeBien = 'IMMEUBLE'";
@@ -60,7 +62,6 @@ public final class Immeuble extends Bien{
 		return this.ville;
 	}
 
-	@Override
 	public void setVille(String ville) {
 		this.ville = ville;
 	}
@@ -70,7 +71,6 @@ public final class Immeuble extends Bien{
 		return this.codePostal;
 	}
 
-	@Override
 	public void setCodePostal(String codePostal) {
 		this.codePostal = codePostal;
 	}
@@ -80,7 +80,6 @@ public final class Immeuble extends Bien{
 		return this.adresse;
 	}
 
-	@Override
 	public void setAdresse(String adresse) {
 		this.adresse = adresse;
 	}
@@ -134,7 +133,7 @@ public final class Immeuble extends Bien{
 		return immeubles;
 	}
 
-	private Map<String, Object> getArgs() {
+	Map<String, Object> getArgs() {
 		return Map.of(
 				"Ville", this.ville,
 				"CodePostal", this.codePostal,
@@ -168,7 +167,7 @@ public final class Immeuble extends Bien{
 	}
 
 	@Override
-	public void modify(int idbien) throws ImmeubleException {
+	public void modify() throws ImmeubleException {
 		if(this.getIdBien() == -1)
 			throw new ImmeubleException("Le bien n'existe pas dans la table", null);
 		try(UpdateQueryElement query = new UpdateQueryElement(UPDATE_QUERY, true)){
@@ -190,6 +189,7 @@ public final class Immeuble extends Bien{
 			throw new ImmeubleException("Le bien n'existe pas dans la table", null);
 		try(UpdateQueryElement query = new UpdateQueryElement(DELETE_QUERY, true)){
 			query.setArgs(Map.of(1,this.getIdBien())).execute();
+			super.delete();
 		}
 		catch (QueryElement.QEltException e) {
 			throw new ImmeubleException("Erreur lors de la suppression du bien", e.getSqlException());
@@ -222,7 +222,7 @@ public final class Immeuble extends Bien{
 		private final String ville;
 		private final String codePostal;
 
-		IBuilder(String ville, String codePostal, String adresse, String numeroFiscal, java.sql.Date dateAjout, String idProprio, int idBien) {
+		IBuilder(String ville, String codePostal, String adresse, String numeroFiscal, Date dateAjout, String idProprio, int idBien) {
 			super(idBien, numeroFiscal, dateAjout, idProprio);
 			this.ville = ville;
 			this.codePostal = codePostal;
@@ -233,34 +233,19 @@ public final class Immeuble extends Bien{
 			this(args.get("Ville").toString(), args.get("CodePostal").toString(), args.get("Adresse").toString(), args.get("NumeroFiscal").toString(), (Date) args.get("DateAjout"), args.get("IdProprio").toString(), (int) args.get("IdBien"));
 		}
 
-		public IBuilder(String ville, String codePostal, String adresse, String numeroFiscal, Date dateAjout,String idProprio) throws BienException {
+		public IBuilder(String ville, String codePostal, String adresse, String numeroFiscal, Date dateAjout,String idProprio) {
 			this(ville, codePostal, adresse, numeroFiscal,dateAjout, idProprio, -1);
 		}
 
-		public IBuilder(int idBien) throws ImmeubleException {
-			this(getFromId(idBien));
-		}
-
-		private static Map<String,Object> getFromId(int idBien) throws ImmeubleException {
-			if(checkNotPresentIn(Immeuble.class,idBien))
-				return ((Immeuble) get(idBien)).getArgs();
-			try(SelectQueryElement selectQueryElement = new SelectQueryElement(SELECT_FROM_ID)){
-				selectQueryElement.setArgs(Map.of(1, idBien));
-				selectQueryElement.execute();
-				List<Map<String,Object>> result = selectQueryElement.getResult();
-				if(result.isEmpty())
-					throw new ImmeubleException("L'immeuble n'existe pas dans la base de données", null);
-				return selectQueryElement.getResult().getFirst();
-			}catch (QueryElement.QEltException qEltException){
-				throw new ImmeubleException("Erreur lors de la récupération de l'immeuble, il n'existe peut-être pas dans la base de données", qEltException.getSqlException());
-			}
+		public IBuilder(int idBien) throws BienException {
+			this(getFromId(idBien, Immeuble.class));
 		}
 
 		@Override
 		public Immeuble build() {
 			if(this.getIdBien() == -1)
 				return new Immeuble(this);
-			if(checkNotPresentIn(Immeuble.class))
+			if(checkPresentIn(Immeuble.class))
 				return (Immeuble) get(this.getIdBien());
 			Immeuble immeuble = new Immeuble(this);
 			add(immeuble);

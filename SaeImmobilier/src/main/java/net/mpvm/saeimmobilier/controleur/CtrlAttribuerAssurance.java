@@ -101,7 +101,15 @@ public class CtrlAttribuerAssurance {
             Button deleteButton = new Button("Supprimer l'assurance");
             Button chooseButton = new Button("  Choisir  ");
 
-            deleteButton.setOnAction(event -> askForDelete(a.getIdAssurance()));
+            deleteButton.setOnAction(event -> {
+                if(JfxUtil.askForDelete("Voulez-vous vraiment supprimer cette assurance ?") == 1) {
+                    try {
+                        deleteAssurance(a.getIdAssurance());
+                    } catch (Assurance.AssuranceException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            });
             chooseButton.setOnAction(event -> attribuerAssurance(IdBien, a));
 
             nomAssurance.getStyleClass().add("assurance-title");
@@ -177,25 +185,6 @@ public class CtrlAttribuerAssurance {
             );
 
         }
-    }
-
-
-
-    @FXML
-    public void askForDelete(int id) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirmation de la suppression");
-        alert.setHeaderText("Souhaitez-vous réellement supprimer cette assurance?");
-        alert.setContentText("Cette action est irréversible");
-        alert.showAndWait()
-                .filter(r -> r.equals(ButtonType.OK))
-                .ifPresent(r -> {
-                    try {
-                        deleteAssurance(id);
-                    } catch (Assurance.AssuranceException e) {
-                        throw new RuntimeException(e);
-                    }
-                });
     }
 
     private void deleteAssurance(int id) throws Assurance.AssuranceException {

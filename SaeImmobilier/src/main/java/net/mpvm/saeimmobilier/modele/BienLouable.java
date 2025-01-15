@@ -30,7 +30,7 @@ public abstract class BienLouable extends Bien {
     private int nbPieces;
 
 
-    public BienLouable(String complementAdresse,int nbPieces, String numeroFiscal, Immeuble immeuble, float surface, Date dateAjout, String idProprio, int idBien) throws BienException {// Initialisation des attributs hérités de Bien
+    BienLouable(String complementAdresse,int nbPieces, String numeroFiscal, Immeuble immeuble, float surface, Date dateAjout, String idProprio, int idBien) throws BienException {// Initialisation des attributs hérités de Bien
         super(idBien, numeroFiscal, dateAjout, idProprio);
         this.complementAdresse = complementAdresse;
         setImmeuble(immeuble);
@@ -66,28 +66,14 @@ public abstract class BienLouable extends Bien {
     }
 
     @Override
-    public void setCodePostal(String codePostal) {
-        this.immeuble.setCodePostal(codePostal);
-    }
-
-    @Override
     public String getAdresse() {
         return this.immeuble.getAdresse();
     }
 
-    @Override
-    public void setAdresse(String adresse){
-        this.immeuble.setAdresse(adresse);
-    }
 
     @Override
     public String getVille() {
         return this.immeuble.getVille();
-    }
-
-    @Override
-    public void setVille(String ville) {
-        this.immeuble.setVille(ville);
     }
 
     public int getAncienIndex() {
@@ -124,6 +110,19 @@ public abstract class BienLouable extends Bien {
         this.immeuble = immeuble;
     }
 
+    Map<String,Object> getArgs(){
+        return Map.of(
+                "ComplementAdresse", this.getComplementAdresse(),
+                "TypeBien", this.getTypeBienString(),
+                "Surface", this.getSurface(),
+                "NombrePieces", this.getNbPieces(),
+                "NumeroFiscal", this.getNumeroFiscal(),
+                "DateAjout", this.getDateAjout(),
+                "IdImmeuble", this.getImmeuble().getIdBien(),
+                "IdProprio", this.getIdProprio()
+        );
+    }
+
 
     public int getNbPieces() {
         return nbPieces;
@@ -149,7 +148,7 @@ public abstract class BienLouable extends Bien {
                             8, this.getIdProprio()
                     )).execute();
             super.save();
-
+            BBuilder.add(this);
         }
         catch (QueryElement.QEltException QEltException){
             throw new BienException("Erreur lors de l'ajout du bien : " + QEltException.getSqlException().getMessage(), QEltException.getSqlException());
@@ -187,45 +186,6 @@ public abstract class BienLouable extends Bien {
         return biens;
     }
 
-    public static BienLouable findBienLouable(int idbien) throws BienException {
-        String query = "SELECT * FROM Bien WHERE IdBien = ? AND (TypeBien = 'HABITATION' OR TypeBien = 'GARAGE')";
-        BienLouable bien;
-        try (SelectQueryElement selectQueryElement = new SelectQueryElement(query)) {
-            selectQueryElement.setArgs(Map.of(1, idbien));
-            selectQueryElement.execute();
-            Result result = selectQueryElement.getResult();
-            Map<String, Object> row = result.getFirst();// Hypothèse : getFirst() retourne une Map
-            bien = switch (row.get("TypeBien").toString()) {
-                case "HABITATION" -> new Habitation.HBuilder(
-                        (String) row.get("ComplementAdresse"),    // Complément d'adresse
-                        (int) row.get("NombrePieces"),                // Nombre de pièces
-                        (String) row.get("NumeroFiscal"),         // Numéro fiscal
-                        (Immeuble) Immeuble.IBuilder.get((int) row.get("IdImmeuble")), // Création simplifiée d'un immeuble
-                        ((Double) row.get("Surface")).floatValue(),             // Surface
-                        (Date) row.get("DateAjout"),              // Date d'ajout
-                        (String) row.get("IdProprio"),            // ID du propriétaire
-                        (int) row.get("IdBien")                   // ID du bien
-                ).build();
-                case "GARAGE" -> new Garage.GBuilder(
-                        (String) row.get("ComplementAdresse"),    // Complément d'adresse
-                        (int) row.get("NombrePieces"),                // Nombre de pièces
-                        (String) row.get("NumeroFiscal"),         // Numéro fiscal
-                        (Immeuble) Immeuble.IBuilder.get((int) row.get("IdImmeuble")), // Création simplifiée d'un immeuble
-                        ((Double) row.get("Surface")).floatValue(),               // Surface
-                        (Date) row.get("DateAjout"),              // Date d'ajout
-                        (String) row.get("IdProprio"),            // ID du propriétaire
-                        (int) row.get("IdBien")                   // ID du bien
-                ).build();
-                default ->
-                        throw new IllegalStateException("Seul les Habitations et les Garages sont modifiables: " + row.get("TypeBien"));
-            };
-        } catch (QueryElement.QEltException e) {
-            throw new BienException("Erreur lors de la récupération du bien ID " + idbien, e.getSqlException());
-        }
-
-        return bien;
-    }
-
 
 
     public static int findIdImmeuble(int idBien) throws BienException {
@@ -259,8 +219,11 @@ public abstract class BienLouable extends Bien {
             }
         }
     }
+
     @Override
-    public void modify(int idbien) throws BienLouableException {
+    public void modify() throws BienLouableException {
+        if(this.getIdBien() == -1)
+            throw new BienLouableException("Le bien n'existe pas", null);
         try(UpdateQueryElement updateQueryElement = new UpdateQueryElement(UPDATE_QUERY, true)){
             updateQueryElement.setArgs(
                     Map.of(1, this.getComplementAdresse(),
@@ -268,7 +231,7 @@ public abstract class BienLouable extends Bien {
                             3, this.getNbPieces(),
                             4, this.getNumeroFiscal(),
                             5, this.getIdProprio(),
-                            6, idbien
+                            6, this.getIdBien()
                     )).execute();
         }catch(QueryElement.QEltException QEltException){
             throw new BienLouableException("Erreur lors de la modification du bien : " + QEltException.getMessage(), QEltException.getSqlException());
@@ -299,6 +262,8 @@ public abstract class BienLouable extends Bien {
             this.surface = surface;
             this.immeuble = immeuble;
         }
+
+
 
         public float getSurface() {
             return surface;

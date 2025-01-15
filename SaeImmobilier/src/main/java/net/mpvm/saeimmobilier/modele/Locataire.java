@@ -154,7 +154,7 @@ public final class Locataire extends Queryable {
 
 	}
 
-	public void modify(int idbien) throws LocataireException{
+	public void modify() throws LocataireException{
 		if(this.getIdLocataire() == -1)
 			throw new LocataireException("Vous ne pouvez pas modifier un locataire qui n'existe pas");
 		try(UpdateQueryElement query = new UpdateQueryElement(UPDATE_QUERY, true)){

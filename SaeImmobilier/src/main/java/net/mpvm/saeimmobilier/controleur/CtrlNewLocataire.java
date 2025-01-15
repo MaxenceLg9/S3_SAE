@@ -1,5 +1,6 @@
 package net.mpvm.saeimmobilier.controleur;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -28,33 +29,22 @@ public class CtrlNewLocataire {
 
     @FXML
     private List<TextField> fieldsLocataires;
-    private int idBail;
+    private CtrlLouerUnBien parentCtrl;
 
     @FXML
     public void initialize(){
-        fieldSetup();
-        groupButton();
-        fieldNom.sceneProperty().addListener((observable, oldScene, newScene) -> {
-            if (newScene != null) {
-                Stage stage = (Stage) newScene.getWindow();
-                if (stage != null) {
-                    setIdBail(stage);
-                } else {
-                    System.out.println("pas de stage");
-                }
-            } else {
-                System.out.println("pas de scène");
+        Platform.runLater(() -> {
+            Stage stage = (Stage) fieldNom.getScene().getWindow();
+            if(!stage.getProperties().containsKey("controlleur") || stage.getProperties().get("controlleur") == null || !(stage.getProperties().get("controlleur") instanceof CtrlLouerUnBien)){
+                JfxUtil.displayError("Erreur", "Erreur lors du chargement de la page");
+                stage.close();
             }
+            this.parentCtrl = (CtrlLouerUnBien) stage.getProperties().get("controlleur");
+            fieldSetup();
+            groupButton();
         });
     }
-    public void setIdBail(Stage stage) {
-        Object id = stage.getProperties().get("bail");
-        if (id instanceof Integer) {
-            this.idBail = (int) id;
-        } else {
-            throw new IllegalStateException("Propriété 'bail' manquante ou incorrecte.");
-        }
-    }
+
     private void fieldSetup() {
         setFieldsPromptText();
 
@@ -91,6 +81,8 @@ public class CtrlNewLocataire {
             char sexe = radioButtonF.isSelected() ? 'F' : 'M';
             try {
                 new Locataire(fieldNom.getText(), fieldPrenom.getText(), fieldEmail.getText(), sexe, this.fieldTelephone.getText()).save();
+                parentCtrl.refreshChoiceboixLocataires();
+                JfxUtil.setAlert(Alert.AlertType.INFORMATION, "Locataire ajouté", "Locataire ajouté avec succès", "Vous pouvez désormais quitter la page");
             } catch (Locataire.LocataireException e) {
                 e.getSqlException().printStackTrace();
             }
@@ -119,7 +111,7 @@ public class CtrlNewLocataire {
 
     public void annuler(ActionEvent event) {
         Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-        JfxUtil.showWindow(stage, VueAccueil.class);
+        stage.close();
     }
 
     public void Accueil(ActionEvent event ) {

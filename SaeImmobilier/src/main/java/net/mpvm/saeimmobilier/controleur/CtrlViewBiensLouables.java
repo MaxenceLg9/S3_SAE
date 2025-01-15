@@ -52,6 +52,8 @@ public class CtrlViewBiensLouables {
         }
     }
 
+
+
     private void afficheBiens() {
         try {
             Label titre = new Label("Liste des Biens Louables");
@@ -96,19 +98,16 @@ public class CtrlViewBiensLouables {
                 Label nbPieces = new Label("Pièces " + bien.getNbPieces());
 
                 Button gererBailsButton = new Button("Gérer Bails");
-                gererBailsButton.setOnAction(event -> {
-                    try {
-                        gererBails(bien.getIdBien(),event);
-                    } catch (Exception e) {
-                        throw new RuntimeException(e);
-                    }
-                });
+                gererBailsButton.setOnAction(event -> gererBails(bien.getIdBien(),event));
 
                 Button attribuerAssuranceButton = new Button("Attribuer Assurance");
                 attribuerAssuranceButton.setOnAction(event -> attribuerAssurance(bien.getIdBien(),event));
 
                 Button supprimerButton = new Button("Supprimer");
-                supprimerButton.setOnAction(event -> supprimerBien(bien));
+                supprimerButton.setOnAction(event -> {
+                    if (JfxUtil.askForDelete("Voulez vous supprimer le bien?") == 1)
+                        supprimerBien(bien);
+                });
 
                 Button modifierButton = new Button("Modifier");
                 modifierButton.setOnAction(event-> modifierBien(bien.getIdBien(),event));
@@ -141,18 +140,18 @@ public class CtrlViewBiensLouables {
 
     private void supprimerBien(BienLouable bien) {
         try {
-            bien.delete();
-            afficheBiens();
+            bien.delete(); // Suppression de l'objet Bien
+            afficheBiens(); // Mise à jour de l'affichage des biens
             JfxUtil.setAlert(Alert.AlertType.INFORMATION,
                     "Suppression réussie",
                     null,
-                    "Le bien a été supprimé avec succès.");
+                    "Le bien a été supprimé avec succès."); // Affichage d'une alerte d'information
         } catch (Bien.BienException e) {
-            JfxUtil.displayError("Erreur lors de la suppression", e.getMessage());
+            JfxUtil.displayError("Erreur lors de la suppression", e.getMessage()); // Gestion des erreurs avec l'alerte
         }
     }
 
-    private void gererBails(int idBien,ActionEvent event) throws Exception {
+    private void gererBails(int idBien,ActionEvent event) {
         Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         stage.close();
         Stage s = new Stage();
@@ -164,11 +163,9 @@ public class CtrlViewBiensLouables {
         Stage s = new Stage();
         //TODO : check ces getProperties car unsafe
         s.getProperties().put("bien",idBien);
-        JfxUtil.showWindow(s, VueAttribuerAssurance.class);
+        JfxUtil.showWindow(s,VueAttribuerAssurance.class);
     }
     private void ajouterBien(ActionEvent event) throws Exception {
-        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-        stage.close();
         Stage s = new Stage();
         JfxUtil.showWindow(s, VueNewBien.class);
     }
@@ -176,8 +173,6 @@ public class CtrlViewBiensLouables {
     private void retourImmeubles(ActionEvent event) {
         Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         stage.close();
-        Stage s = new Stage();
-        JfxUtil.showWindow(s, VueImmeubles.class);
     }
 
     @FXML
