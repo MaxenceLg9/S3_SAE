@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="net.mpvm.saeimmobilier.controleur.CtrlCalculsChargesEtImpots"
+            prefHeight="720.0" prefWidth="1280.0"
+            styleClass="backgroundColor" stylesheets="@../css/style.css">
+
+    <VBox spacing="20" alignment="TOP_CENTER" layoutX="50" layoutY="20" prefWidth="1200">
+        <!-- Titre de la scène -->
+        <Label text="Calcul des Charges et Impôts" style="-fx-font-size: 32px; -fx-font-weight: bold; -fx-text-fill: white;" />
+
+        <!-- Boutons de calcul -->
+        <HBox spacing="50" alignment="CENTER" style="-fx-padding: 20;">
+            <Button fx:id="btnCalculerImpots" text="Calculer Impôts" onAction="#calculerImpots" prefWidth="200" styleClass="button-valider" />
+            <Button fx:id="btnCalculerLoyers" text="Calculer Loyers" onAction="#calculerLoyers" prefWidth="200" styleClass="button-valider" />
+            <Button fx:id="btnCalculerCharges" text="Calculer Charges" onAction="#calculerCharges" prefWidth="200" styleClass="button-valider" />
+        </HBox>
+
+        <!-- Zone des résultats -->
+        <VBox spacing="10" alignment="TOP_CENTER" style="-fx-padding: 20;">
+            <Label text="Résultats :" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: white;" />
+            <TextArea fx:id="txtResultats" prefHeight="400" prefWidth="1000" editable="false" styleClass="text-area" />
+        </VBox>
+    </VBox>
+</AnchorPane>
