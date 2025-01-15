@@ -35,11 +35,11 @@ public class CtrlNewLocataire {
     public void initialize(){
         Platform.runLater(() -> {
             Stage stage = (Stage) fieldNom.getScene().getWindow();
-            if(!stage.getProperties().containsKey("controlleur") || stage.getProperties().get("controlleur") == null || !(stage.getProperties().get("controlleur") instanceof CtrlLouerUnBien)){
+            if(!stage.getProperties().containsKey("controleur") || stage.getProperties().get("controleur") == null || !(stage.getProperties().get("controleur") instanceof CtrlLouerUnBien)){
                 JfxUtil.displayError("Erreur", "Erreur lors du chargement de la page");
                 stage.close();
             }
-            this.parentCtrl = (CtrlLouerUnBien) stage.getProperties().get("controlleur");
+            this.parentCtrl = (CtrlLouerUnBien) stage.getProperties().get("controleur");
             fieldSetup();
             groupButton();
         });
