@@ -5,13 +5,12 @@ import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import net.mpvm.saeimmobilier.modele.Assurance;
 
 import java.io.IOException;
+import java.util.Objects;
 import java.util.Optional;
 
 public class JfxUtil {
@@ -95,9 +94,9 @@ public class JfxUtil {
 
     private static void instantiateStage(Stage primaryStage, FXMLLoader fxmlLoader) throws IOException {
         Scene scene = new Scene(fxmlLoader.load());
-        scene.getStylesheets().add(JfxUtil.class.getResource("/net/mpvm/saeimmobilier/data/css/style.css").toExternalForm());
+        scene.getStylesheets().add(Objects.requireNonNull(JfxUtil.class.getResource("/net/mpvm/saeimmobilier/data/css/style.css")).toExternalForm());
         primaryStage.setScene(scene);
-        primaryStage.getIcons().add(new Image(JfxUtil.class.getResource("/net/mpvm/saeimmobilier/data/images/icon_immobilier.png").toString()));
+        primaryStage.getIcons().add(new Image(Objects.requireNonNull(JfxUtil.class.getResource("/net/mpvm/saeimmobilier/data/images/icon_immobilier.png")).toString()));
         primaryStage.setResizable(true);
         primaryStage.show();
     }
