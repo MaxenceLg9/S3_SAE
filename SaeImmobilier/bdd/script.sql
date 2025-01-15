@@ -26,9 +26,24 @@ CREATE TABLE Locataire(
                           TotalRevenus DOUBLE,
                           PRIMARY KEY(IdLocataire)
 );
+CREATE TABLE Bien(
+                     IdBien INT auto_increment,
+                     IdProprio VARCHAR(50),
+                     ComplementAdresse VARCHAR(50),
+                     Adresse VARCHAR(50),
+                     Ville VARCHAR(50),
+                     CodePostal CHAR(5),
+                     TypeBien VARCHAR(20),
+                     Surface DOUBLE,
+                     NombrePieces INT,
+                     NumeroFiscal VARCHAR(50) UNIQUE,
+                     DateAjout DATE,
+                     IdAssurance INT default 0,
+                     IdImmeuble INT default 0,
+                     PRIMARY KEY(IdBien)
+);
 
-CREATE TABLE Travaux
-(
+CREATE TABLE Travaux(
     IdTravaux            INT auto_increment,
     NumeroFacture        VARCHAR(10),
     Entreprise           VARCHAR(50),
@@ -63,23 +78,6 @@ CREATE TABLE Proprietaire(
                              Email VARCHAR(50),
                              MotDePasse VARCHAR(50),
                              PRIMARY KEY(IdProprietaire)
-);
-
-CREATE TABLE Bien(
-                     IdBien INT auto_increment,
-                     IdProprio VARCHAR(50),
-                     ComplementAdresse VARCHAR(50),
-                     Adresse VARCHAR(50),
-                     Ville VARCHAR(50),
-                     CodePostal CHAR(5),
-                     TypeBien VARCHAR(20),
-                     Surface DOUBLE,
-                     NombrePieces INT,
-                     NumeroFiscal VARCHAR(50) UNIQUE,
-                     DateAjout DATE,
-                     IdAssurance INT default 0,
-                     IdImmeuble INT default 0,
-                     PRIMARY KEY(IdBien)
 );
 
 Alter table Bien
