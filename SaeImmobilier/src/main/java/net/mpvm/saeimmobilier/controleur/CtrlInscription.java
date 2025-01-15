@@ -93,7 +93,30 @@ public class CtrlInscription {
 
     @FXML
     public void Valider(ActionEvent event) {
+        fieldPassword.setText(fieldPasswordVisible.getText());
+        fieldConfirmPassword.setText(fieldConfirmPasswordVisible.getText());
         if (fieldsNotEmpty()) {
+            if (!isValidEmail(fieldMail.getText())) {
+                JfxUtil.setAlert(Alert.AlertType.ERROR,
+                        "Erreur",
+                        "Adresse e-mail invalide",
+                        "Veuillez entrer une adresse e-mail valide (exemple : utilisateur@domaine.com).");
+                return;
+            }
+
+            if (!isValidPassword(fieldPassword.getText())) {
+                JfxUtil.setAlert(Alert.AlertType.ERROR,
+                        "Erreur",
+                        "Mot de passe invalide",
+                        "Votre mot de passe doit contenir au moins :\n"
+                                + "- Une majuscule\n"
+                                + "- Une minuscule\n"
+                                + "- Un chiffre\n"
+                                + "- Un caractère spécial (!@#$%^&*)\n"
+                                + "- Et avoir une longueur minimale de 8 caractères.");
+                return;
+            }
+
             if (MDPIdentique()) {
                 try {
                     new Proprietaire(fieldMail.getText(), fieldPassword.getText()).save();
@@ -112,15 +135,16 @@ public class CtrlInscription {
                 JfxUtil.setAlert(Alert.AlertType.ERROR,
                         "Erreur",
                         "Mots de passe non identiques",
-                        "Les mots de passe ne correspondent pas !");
+                        "Les mots de passe ne correspondent pas ! Veuillez les vérifier.");
             }
         } else {
             JfxUtil.setAlert(Alert.AlertType.ERROR,
                     "Erreur",
-                    "Les champs sont vides",
-                    "Vous devez remplir tout les champs si vous souhaitez vous inscrire");
+                    "Champs vides",
+                    "Vous devez remplir tous les champs pour vous inscrire.");
         }
     }
+
 
     @FXML
     public void Annuler(ActionEvent event) {
