@@ -100,7 +100,29 @@ public class Bail extends Queryable {
 		return bauxList;
 
 	}
+	public static double calculerLoyersProprietaire() throws Exception {
+		final String SELECT_QUERY = """
+            SELECT SUM(Bail.MontantLoyer) AS TotalLoyers
+            FROM Bail
+            JOIN Bien B ON Bail.IdBien = B.IdBien
+            AND Bail.Archive = FALSE
+            """;
+		double totalLoyers = 0.0;
 
+		try (SelectQueryElement selectQueryElement = new SelectQueryElement(SELECT_QUERY)) {
+			selectQueryElement.execute();
+			List<Map<String, Object>> result = selectQueryElement.getResult();
+
+			if (!result.isEmpty() && result.get(0).get("TotalLoyers") != null) {
+				totalLoyers = (double) result.get(0).get("TotalLoyers");
+			}
+		} catch (QueryElement.QEltException qEltException) {
+			qEltException.getSqlException().printStackTrace();
+			throw new Exception("Erreur lors du calcul des loyers pour le propriétaire.", qEltException.getSqlException());
+		}
+
+		return totalLoyers;
+	}
 
 	// Méthode pour savoir si le bail est en colocation
 	public boolean estEnColocation() throws BailException {

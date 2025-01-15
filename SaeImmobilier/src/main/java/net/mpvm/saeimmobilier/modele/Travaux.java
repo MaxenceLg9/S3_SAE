@@ -129,8 +129,48 @@ public class Travaux extends Queryable {
 			);
 		}
 	}
+	public static double calculerImpotsProprietaire() throws TravauxException {
+		final String SELECT_QUERY = """
+            SELECT SUM(T.MontantADeclarer) AS TotalImpots
+            FROM Travaux T
+            JOIN Bien B ON T.IdBien = B.IdBien
+            """;
+		double totalImpots = 0.0;
 
+		try (SelectQueryElement selectQueryElement = new SelectQueryElement(SELECT_QUERY)) {
+			selectQueryElement.execute();
+			List<Map<String, Object>> result = selectQueryElement.getResult();
 
+			if (!result.isEmpty() && result.get(0).get("TotalImpots") != null) {
+				totalImpots = (double) result.get(0).get("TotalImpots");
+			}
+		} catch (QueryElement.QEltException qEltException) {
+			qEltException.getSqlException().printStackTrace();
+			throw new TravauxException("Erreur lors du calcul des impôts pour le propriétaire.", qEltException.getSqlException());
+		}
+
+		return totalImpots;
+	}
+	public static List<Travaux> findAllCalculImpots() throws TravauxException {
+		List<Travaux> travauxList = new ArrayList<>();
+		String SELECT_QUERY = """
+        SELECT IdTravaux,NumeroFacture, Entreprise, Montant, MontantNonDeductible, Reduction, Nature, NumeroDevis, DateTravaux
+        FROM Travaux T
+        JOIN Bien B ON T.IdBien = B.IdBien
+    	""";
+
+		try (SelectQueryElement query = new SelectQueryElement(SELECT_QUERY)) {
+			Result rs = query.execute();
+			for (Map<String, Object> row : rs) {
+				Travaux travaux = new Travaux.TBuilder(row).build();
+				travauxList.add(travaux);
+			}
+		} catch (QueryElement.QEltException qEltException) {
+			throw new TravauxException("Erreur lors de la récupération des travaux", qEltException.getSqlException());
+		}
+
+		return travauxList;
+	}
 	public void setIdTravaux(int idTravaux) {
 		this.idTravaux = idTravaux;
 	}
@@ -152,7 +192,7 @@ public class Travaux extends Queryable {
 		String SELECT_QUERY = """
         SELECT IdTravaux,NumeroFacture, Entreprise, Montant, MontantNonDeductible, Reduction, Nature, NumeroDevis, DateTravaux
         FROM Travaux
-    """;
+    	""";
 
 		try (SelectQueryElement query = new SelectQueryElement(SELECT_QUERY)) {
 			Result rs = query.execute();

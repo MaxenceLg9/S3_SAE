@@ -55,7 +55,37 @@ public class Charges {
         }
         this.montant = montant;
     }
+    public static double calculerChargesProprietaire() throws Exception {
+        final String SELECT_QUERY = """
+        SELECT
+            SUM(C.Montant) +
+            SUM(IFNULL(CEau.PartieFixe + CEau.PartieVariable, 0)) +
+            SUM(IFNULL(CEnt.Pourcentage * C.Montant / 100, 0)) +
+            SUM(IFNULL(COM.Pourcentage * C.Montant / 100, 0)) AS TotalCharges
+            FROM Charges C
+            LEFT JOIN ChargesEau CEau ON C.IdCharges = CEau.IdCharges
+            LEFT JOIN ChargesEntretien CEnt ON C.IdCharges = CEnt.IdCharges
+            LEFT JOIN ChargesOrduresMenageres COM ON C.IdCharges = COM.IdCharges
+            JOIN Bail B ON C.IdBail = B.IdBail
+            WHERE B.Archive = FALSE
+            """;
 
+        double totalCharges = 0.0;
+
+        try (SelectQueryElement selectQueryElement = new SelectQueryElement(SELECT_QUERY)) {
+            selectQueryElement.execute();
+            List<Map<String, Object>> result = selectQueryElement.getResult();
+
+            if (!result.isEmpty() && result.get(0).get("TotalCharges") != null) {
+                totalCharges = (double) result.get(0).get("TotalCharges");
+            }
+        } catch (QueryElement.QEltException qEltException) {
+            qEltException.getSqlException().printStackTrace();
+            throw new Exception("Erreur lors du calcul des charges pour le propriétaire.", qEltException.getSqlException());
+        }
+
+        return totalCharges;
+    }
     public static List<Charges> getChargesFromLocataire(Locataire locataire) throws ChargesException {
         List<Charges> chargesList = new LinkedList<>();
         final String SELECT_QUERY = """
