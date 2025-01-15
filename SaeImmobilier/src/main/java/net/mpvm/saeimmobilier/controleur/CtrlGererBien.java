@@ -59,18 +59,17 @@ public class CtrlGererBien {
         fieldsetup();
         refreshImmeubles();
 
-
         Platform.runLater(() -> {
             Stage stage = (Stage) this.fieldAdresse.getScene().getWindow();
-            if(stage.getProperties().containsKey("bien")){
-                if(setBien(stage) == -1) {
+            if (stage.getProperties().containsKey("bien")) {
+                if (setBien(stage) == -1) {
                     JfxUtil.displayError("Erreur lors de la récupération du bien", "Impossible de récupérer le bien à modifier !");
                     stage.close();
                     return;
                 }
                 afficheBien();
                 this.listTypeBien.getItems().add(this.bien.getTypeBien());
-            }else {
+            } else {
                 this.datesql = Date.valueOf(LocalDate.now());
                 String formattedDate = LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
                 this.LabelDate.setText(formattedDate);
@@ -82,8 +81,56 @@ public class CtrlGererBien {
     private void listTypeBienSetup() {
         this.listTypeBien.getItems().addAll(TypeBien.values());
         this.listTypeBien.setOnAction(actionEvent -> {
-            resetFields(this.listTypeBien.getValue() == TypeBien.IMMEUBLE); // Vider les champs à chaque changement de type de bien
+            TypeBien selectedType = this.listTypeBien.getValue();
+            if (selectedType == TypeBien.IMMEUBLE) {
+                // Activer uniquement les champs pour IMMEUBLE
+                enableFieldsForImmeuble();
+            } else if (selectedType == TypeBien.GARAGE || selectedType == TypeBien.HABITATION) {
+                // Activer uniquement les champs pour GARAGE ou HABITATION
+                enableFieldsForGarageOrHabitation();
+            }
         });
+    }
+
+    private void enableFieldsForImmeuble() {
+        resetFields(true);
+        resetFields(false);
+
+        // Activer les champs spécifiques à IMMEUBLE
+        for (TextField textField : fieldsImmeubles) {
+            textField.setDisable(false);
+        }
+
+        fieldIdProprio.setDisable(false);
+        fieldNumeroFiscal.setDisable(false);
+
+        // Désactiver les champs pour GARAGE ou HABITATION
+        for (TextField textField : fieldsBienLouables) {
+            textField.setDisable(true);
+            textField.setText("");
+        }
+        this.listImmeubles.setValue(null);
+        this.listImmeubles.setDisable(true);
+    }
+
+    private void enableFieldsForGarageOrHabitation() {
+        resetFields(true);
+        resetFields(false);
+
+        // Activer les champs spécifiques à GARAGE ou HABITATION
+        for (TextField textField : fieldsBienLouables) {
+            textField.setDisable(false);
+        }
+
+        fieldIdProprio.setDisable(false);
+        fieldNumeroFiscal.setDisable(false);
+
+        // Désactiver et effacer les champs pour IMMEUBLE
+        for (TextField textField : fieldsImmeubles) {
+            textField.setDisable(true);
+            textField.setText("");
+        }
+        this.listImmeubles.setDisable(false);
     }
 
     private void refreshImmeubles() {
@@ -128,7 +175,7 @@ public class CtrlGererBien {
                 add(fieldComplementAdresse);
             }
         };
-        fieldsImmeubles = new ArrayList<>(){
+        fieldsImmeubles = new ArrayList<>() {
             {
                 add(fieldAdresse);
                 add(fieldVille);
@@ -145,17 +192,37 @@ public class CtrlGererBien {
     }
 
     private void resetFields(boolean isImmeuble) {
-        if(isImmeuble) {
+        if (isImmeuble) {
             for (TextField textField : fieldsImmeubles) {
                 textField.setText("");
                 textField.setDisable(false);
             }
+            this.listImmeubles.setValue(null);
         } else {
             for (TextField textField : fieldsBienLouables) {
                 textField.setText("");
             }
         }
     }
+
+    @FXML
+    public void Clear(ActionEvent actionEvent) {
+        for (TextField textField : fieldsBien) {
+            textField.setText("");
+        }
+        for (TextField textField : fieldsBienLouables) {
+            textField.setText("");
+        }
+        for (TextField textField : fieldsImmeubles) {
+            textField.setText("");
+        }
+        this.listTypeBien.setValue(null);
+        this.listImmeubles.setValue(null);
+    }
+
+    // Other methods remain unchanged...
+
+
 
     @FXML
     public void ajouterBien(ActionEvent actionEvent) {
@@ -385,9 +452,5 @@ public class CtrlGererBien {
         stage.close();
     }
 
-    public void Clear(ActionEvent actionEvent) {
-        resetFields(true);
-        resetFields(false);
-        this.listTypeBien.setValue(null);
-    }
+
 }
