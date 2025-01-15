@@ -189,39 +189,37 @@ public abstract class Bien extends Queryable {
             return idProprio;
         }
 
-        boolean checkPresentIn(Class<? extends Bien> bienClass){
-            return checkPresentIn(bienClass, IdBien);
+        boolean checkPresentIn(){
+            return checkPresentIn(IdBien);
         }
 
-        public static boolean checkPresentIn(Class<? extends Bien> bienClass, int idBien){
-            return (biens.containsKey(idBien) && biens.get(idBien) != null && bienClass.isInstance(biens.get(idBien)));
+        public static boolean checkPresentIn(int idBien){
+            return (biens.containsKey(idBien) && biens.get(idBien) != null);
         }
 
-        public static Map<String,Object> getFromId(int idBien, Class<? extends Bien> bienClass) throws Bien.BienException {
-            if(checkPresentIn(bienClass,idBien))
-                return get(idBien).getArgs();
-            TypeBien typeBien;
-            if (bienClass.equals(Habitation.class)) {
-                typeBien = TypeBien.HABITATION;
-            } else if (bienClass.equals(Garage.class)) {
-                typeBien = TypeBien.GARAGE;
-            } else if (bienClass.equals(Immeuble.class)) {
-                typeBien = TypeBien.IMMEUBLE;
-            } else {
-                throw new Bien.BienException("Classe de bien inconnue", null);
+        public static Bien getFromId(int idBien, TypeBien typeBien) throws Bien.BienException {
+            if(checkPresentIn(idBien)){
+                if(typeBien.getTClass().isInstance(biens.get(idBien)))
+                    return get(idBien);
+                else
+                    throw new Bien.BienException("Le bien n'est pas du bon type", null);
             }
             return getFromQuery(idBien, typeBien);
 
         }
 
-        private static Map<String,Object> getFromQuery(int idBien, TypeBien type) throws BienException {
+        private static Bien getFromQuery(int idBien, TypeBien type) throws BienException {
             try(SelectQueryElement selectQueryElement = new SelectQueryElement(SELECT_FROM_ID)){
                 selectQueryElement.setArgs(Map.of(1, idBien));
                 selectQueryElement.execute();
                 List<Map<String,Object>> result = selectQueryElement.getResult();
                 if(result.isEmpty() && !result.getFirst().get("TypeBien").equals(type.name()))
                     throw new Bien.BienException("Le bien n'existe pas dans la base de données", null);
-                return selectQueryElement.getResult().getFirst();
+                return switch (type) {
+                    case HABITATION -> new Habitation.HBuilder(result.getFirst()).build();
+                    case GARAGE -> new Garage.GBuilder(result.getFirst()).build();
+                    case IMMEUBLE -> new Immeuble.IBuilder(result.getFirst()).build();
+                };
             }catch (QueryElement.QEltException qEltException){
                 throw new Bien.BienException("Erreur lors de la récupération de l'immeuble, il n'existe peut-être pas dans la base de données", qEltException.getSqlException());
             }
