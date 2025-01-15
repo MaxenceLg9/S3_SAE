@@ -205,7 +205,14 @@ CREATE TABLE ChargesEntretien(
                                  UNIQUE(IdCharges),
                                  FOREIGN KEY(IdCharges) REFERENCES Charges(IdCharges)
 );
-
+CREATE TABLE ChargesOrduresMenageres(
+                                 IdChargesOrduresMenageres INT auto_increment,
+                                 Pourcentage DOUBLE,
+                                 IdCharges INT NOT NULL,
+                                 PRIMARY KEY(IdChargesOrduresMenageres),
+                                 UNIQUE(IdCharges),
+                                 FOREIGN KEY(IdCharges) REFERENCES Charges(IdCharges)
+);
 CREATE TABLE DeclarationFiscale(
                                    IdDeclarationFiscale INT auto_increment,
                                    Annee INT,

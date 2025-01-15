@@ -42,36 +42,14 @@ public class CtrlNewTravaux {
     @FXML
 
     private List<TextField> fieldsTravaux;
-    private int idBien;
 
 
     @FXML
     public void initialize() {
-        btnAjouter.sceneProperty().addListener((observable, oldScene, newScene) -> {
-            if (newScene != null) {
-                Stage stage = (Stage) newScene.getWindow();
-                btnAjouter.setUserData(stage);
-                if (stage != null) {
-                    setIdBien(stage);
-                    fieldSetup();
-                    setupButtons();
-                } else {
-                    System.out.println("pas de stage");
-                }
-            } else {
-                System.out.println("pas de scène");
-            }
-        });
+        fieldSetup();
+        setupButtons();
+    }
 
-    }
-    public void setIdBien(Stage stage) {
-        Object id = stage.getProperties().get("bien");
-        if (id instanceof Integer) {
-            this.idBien = (int) id;
-        } else {
-            throw new IllegalStateException("Propriété 'bien' manquante ou incorrecte.");
-        }
-    }
     private void fieldSetup() {
         this.fieldsTravaux = new ArrayList<>() {
             {
@@ -116,7 +94,7 @@ public class CtrlNewTravaux {
             try {
                 validateFields();
 
-                // Validation des formats spécifiques
+                // Validation des formats des champs
                 validateFormat(fieldNumeroFacture, "^F\\d{4}-\\d{4}$", "Numéro Facture", "F1111-1111");
                 validateFormat(fieldNumeroDevis, "^D\\d{4}-\\d{4}$", "Numéro Devis", "D1111-1111");
 
@@ -129,6 +107,20 @@ public class CtrlNewTravaux {
                 String numeroDevis = fieldNumeroDevis.getText();
                 Date dateTravaux = Date.valueOf(dateTravauxPicker.getValue());
 
+                // Vérification de l'existence des numéros dans la base de données
+                if (Travaux.numeroFactureExiste(numeroFacture)) {
+                    alertError("Numéro de Facture existant",
+                            "Un travail avec ce numéro de facture existe déjà. Veuillez en saisir un autre.");
+                    return;
+                }
+
+                if (Travaux.numeroDevisExiste(numeroDevis)) {
+                    alertError("Numéro de Devis existant",
+                            "Un travail avec ce numéro de devis existe déjà. Veuillez en saisir un autre.");
+                    return;
+                }
+
+                // Création et sauvegarde des travaux
                 Travaux travaux = new Travaux.TBuilder(numeroFacture, entreprise, dateTravaux, numeroDevis, montant, montantNonDeductible, nature, reduction)
                         .build();
 
@@ -145,6 +137,8 @@ public class CtrlNewTravaux {
             alertFieldsEmpty();
         }
     }
+
+
     private void handleTravauxException(Travaux.TravauxException e) {
         if (e.getMessage().contains("Le numéro de facture est obligatoire")) {
             alertError("Erreur de validation", "Le numéro de facture est obligatoire.");

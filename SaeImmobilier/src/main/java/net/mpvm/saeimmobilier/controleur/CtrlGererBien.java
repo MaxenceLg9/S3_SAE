@@ -83,7 +83,8 @@ public class CtrlGererBien {
         this.listTypeBien.setOnAction(actionEvent -> {
             TypeBien selectedType = this.listTypeBien.getValue();
             if (selectedType == TypeBien.IMMEUBLE) {
-                // Activer uniquement les champs pour IMMEUBLE
+                this.fieldIdProprio.setText("");
+                this.fieldNumeroFiscal.setText("");
                 enableFieldsForImmeuble();
             } else if (selectedType == TypeBien.GARAGE || selectedType == TypeBien.HABITATION) {
                 // Activer uniquement les champs pour GARAGE ou HABITATION
@@ -422,8 +423,8 @@ public class CtrlGererBien {
     }
 
     private boolean fieldsNotEmptyImmeuble() {
-        for (int i = 0; i < 3; i++) {
-            if (this.fieldsBien.get(i).getText().isEmpty()) {
+        for (TextField textField : fieldsImmeubles) {
+            if (textField.getText().isEmpty()) {
                 return false;
             }
         }

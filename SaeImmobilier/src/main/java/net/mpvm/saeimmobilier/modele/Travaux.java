@@ -50,6 +50,38 @@ public class Travaux extends Queryable {
 
 
 	}
+	public static boolean numeroFactureExiste(String numeroFacture) {
+		String query = "SELECT COUNT(*) as count FROM Travaux WHERE NumeroFacture = ?";
+		try (SelectQueryElement sqlQuery = new SelectQueryElement(query)) {
+			sqlQuery.setArgs(Map.of(1, numeroFacture));
+			Result rs = sqlQuery.execute();
+			if (!rs.isEmpty()) {
+				Map<String, Object> row = rs.get(0); // Récupère la première ligne des résultats
+				return ((Number) row.get("count")).intValue() > 0; // Vérifie si le compte est > 0
+			}
+			return false;
+		} catch (QueryElement.QEltException e) {
+			e.printStackTrace();
+			return false; // Gère l'erreur en retournant `false`
+		}
+	}
+
+	public static boolean numeroDevisExiste(String numeroDevis) {
+		String query = "SELECT COUNT(*) as count FROM Travaux WHERE NumeroDevis = ?";
+		try (SelectQueryElement sqlQuery = new SelectQueryElement(query)) {
+			sqlQuery.setArgs(Map.of(1, numeroDevis));
+			Result rs = sqlQuery.execute();
+			if (!rs.isEmpty()) {
+				Map<String, Object> row = rs.get(0); // Récupère la première ligne des résultats
+				return ((Number) row.get("count")).intValue() > 0; // Vérifie si le compte est > 0
+			}
+			return false;
+		} catch (QueryElement.QEltException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
 	@Override
 	public void save() throws TravauxException {
 		// Vérification des champs obligatoires
@@ -69,10 +101,13 @@ public class Travaux extends Queryable {
 			throw new TravauxException("La réduction doit être comprise entre 0 et 1.");
 		}
 
+		// Calcul du montant à déclarer
+		this.montantADeclarer = (this.montant - this.montantNonDeductible) * (1 - this.reduction);
+
 		String INSERT_QUERY = """
-        INSERT INTO Travaux (NumeroFacture, Entreprise, Montant, MontantNonDeductible, Reduction, Nature, NumeroDevis, DateTravaux)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-        """;
+        INSERT INTO Travaux (NumeroFacture, Entreprise, Montant, MontantNonDeductible, MontantADeclarer, Reduction, Nature, NumeroDevis, DateTravaux)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    """;
 
 		try (UpdateQueryElement query = new UpdateQueryElement(INSERT_QUERY, true)) {
 			query.setArgs(Map.of(
@@ -80,10 +115,11 @@ public class Travaux extends Queryable {
 					2, this.entreprise,
 					3, this.montant,
 					4, this.montantNonDeductible,
-					5, this.reduction,
-					6, this.nature,
-					7, this.numeroDevis,
-					8, this.dateTravaux
+					5, this.montantADeclarer, // Insertion du montant à déclarer
+					6, this.reduction,
+					7, this.nature,
+					8, this.numeroDevis,
+					9, this.dateTravaux
 			)).execute();
 
 		} catch (QueryElement.QEltException qEltException) {
@@ -93,6 +129,7 @@ public class Travaux extends Queryable {
 			);
 		}
 	}
+
 
 	public void setIdTravaux(int idTravaux) {
 		this.idTravaux = idTravaux;
