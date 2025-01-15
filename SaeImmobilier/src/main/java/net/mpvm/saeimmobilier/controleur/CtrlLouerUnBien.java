@@ -12,6 +12,7 @@ import javafx.stage.Stage;
 import net.mpvm.saeimmobilier.modele.Bail;
 import net.mpvm.saeimmobilier.modele.BienLouable;
 import net.mpvm.saeimmobilier.modele.Locataire;
+import net.mpvm.saeimmobilier.sql.Query.Queryable;
 import net.mpvm.saeimmobilier.util.JfxUtil;
 import net.mpvm.saeimmobilier.vue.VueNewLocataire;
 import org.jetbrains.annotations.NotNull;
@@ -76,16 +77,21 @@ public class CtrlLouerUnBien {
     }
 
     public void valider(ActionEvent event) {
-        Bail b = new Bail(Date.valueOf(dateDebut.getValue()),Float.parseFloat(fieldMontantLoyer.getText()), checkBoxRenouvelable.isSelected(), Float.parseFloat(fieldTotalCharges.getText()), Float.parseFloat(fieldDepotGarantie.getText()) ,Date.valueOf(dateFin.getValue()), Date.valueOf(dateSignature.getValue()),idBien);
-
-        List<Locataire> locataires = choiceBoxesLocataires.stream().map(ChoiceBox::getValue).toList();
-        Map<Locataire,Float> repartitionsElec = collectToMap(fieldsRepartitionsElec, "Invalid number format for electricity repartition: ");
-        Map<Locataire,Float> repartitionsEau = collectToMap(fieldsRepartitionsEau, "Invalid number format for water repartition: ");
-        Map<Locataire,Float> orduresMenageres = collectToMap(fieldsOrduresMenageres, "Invalid number format for garbage repartition: ");
+        if(choiceBoxesLocataires.isEmpty()) {
+            JfxUtil.displayError("Pas de locataire", "Veuillez ajouter un locataire");
+            return;
+        }
         try {
+            Bail b = new Bail(Date.valueOf(dateDebut.getValue()),Float.parseFloat(fieldMontantLoyer.getText()), checkBoxRenouvelable.isSelected(), Float.parseFloat(fieldTotalCharges.getText()), Float.parseFloat(fieldDepotGarantie.getText()) ,Date.valueOf(dateFin.getValue()), Date.valueOf(dateSignature.getValue()),BienLouable.BLBuilder.getBienLouable(idBien));
+
+            List<Locataire> locataires = choiceBoxesLocataires.stream().map(ChoiceBox::getValue).toList();
+            Map<Locataire,Float> repartitionsElec = collectToMap(fieldsRepartitionsElec, "Invalid number format for electricity repartition: ");
+            Map<Locataire,Float> repartitionsEau = collectToMap(fieldsRepartitionsEau, "Invalid number format for water repartition: ");
+            Map<Locataire,Float> orduresMenageres = collectToMap(fieldsOrduresMenageres, "Invalid number format for garbage repartition: ");
+
             b.save();
             b.setLocataires(locataires, repartitionsElec, repartitionsEau, orduresMenageres);
-        } catch (Bail.BailException e) {
+        } catch (Queryable.QbleException e) {
             e.printStackTrace();
         }
     }
@@ -208,7 +214,7 @@ public class CtrlLouerUnBien {
 
     public void newLocataire(ActionEvent event) {
         Stage s = new Stage();
-        s.getProperties().put("controlleur",this);
+        s.getProperties().put("controleur",this);
         JfxUtil.showWindow(s, VueNewLocataire.class);
     }
 }
