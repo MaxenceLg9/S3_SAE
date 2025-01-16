@@ -47,6 +47,19 @@ public class Bail extends Queryable {
 		setCheminFichier(cheminFichier);
 	}
 
+	public static Bail getBailFromCharges(Charges charges) {
+		try(SelectQueryElement selectQueryElement = new SelectQueryElement("SELECT * FROM Bail B JOIN Charges C ON C.IdBail = B.Bail WHERE C.IdCharges = ?")){
+			selectQueryElement.setArgs(Map.of(1, charges.getIdCharges()));
+			Result result = selectQueryElement.execute();
+			Map<String, Object> row = result.getFirst();
+			return new Bail(row);
+		}
+		catch (QueryElement.QEltException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
 	private void setCheminFichier(String cheminFichier) {
 		this.cheminFichier = "./baux/" + cheminFichier;
 	}
@@ -168,9 +181,6 @@ public class Bail extends Queryable {
 		return idBail;
 	}
 
-	public void setIdBail(int idBail) {
-		this.idBail = idBail;
-	}
 
 	public float getProvisionSurCharge() {
 		return provisionSurCharge;
@@ -244,8 +254,7 @@ public class Bail extends Queryable {
 
 	@Unfinished
 	public List<Charges> getCharges() {
-		return null;
-		//TODO : query pour get dans la bd
+		return Charges.getChargesFromBail(this);
 	}
 
 	@Unfinished

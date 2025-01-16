@@ -25,12 +25,38 @@ public abstract class Charges {
         this.dateReleve = dateReleve;
     }
 
+    public static List<Charges> getChargesFromBail(Bail bail) {
+        List<Charges> chargesList = new ArrayList<>();
+        try(SelectQueryElement selectQueryElement = new SelectQueryElement("SELECT * FROM Charges C JOIN Bail B ON C.IdBail = B.IdBail WHERE B.IdBail = ?")){
+            selectQueryElement.setArgs(Map.of(1, bail.getIdBail()));
+            selectQueryElement.execute();
+            List<Map<String, Object>> result = selectQueryElement.getResult();
+
+            for(Map<String, Object> row : result){
+                chargesList.add(switchTypeCharges(row));
+            }
+        }catch (QueryElement.QEltException qEltException) {
+            qEltException.getSqlException().printStackTrace();
+        }
+        return chargesList;
+    }
+
+    public static Charges switchTypeCharges(Map<String, Object> row) throws ChargesException{
+        switch (TypeCharges.valueOf(row.get("TypeCharge").toString())){
+            case EAU -> new ChargeEau((int) row.get("IdCharges"),(Date) row.get("DateReleve"));
+            case ENTRETIEN -> new ChargeEntretien((int) row.get("IdCharges"),(Date) row.get("DateReleve"));
+            case ORDURES -> new ChargeOrdures((int) row.get("IdCharges"),(Date) row.get("DateReleve"));
+            case ELECTRICITE -> new ChargeElectricite((int) row.get("IdCharges"),(Date) row.get("DateReleve"));
+            case null, default -> throw new ChargesException("Erreur lors de la récupération des charges", new SQLException("Type de charge inconnu"));
+        }
+        throw new ChargesException("Erreur lors de la récupération des charges", new SQLException("Type de charge inconnu"));
+    }
+
     // Getters et Setters
 
     @Unfinished
     public Bail getBail() {
-        //TODO : query
-        return null;
+        return Bail.getBailFromCharges(this);
     }
 
 
@@ -64,8 +90,7 @@ public abstract class Charges {
             LEFT JOIN ChargesEntretien CEnt ON C.IdCharges = CEnt.IdCharges
             LEFT JOIN ChargesOrduresMenageres COM ON C.IdCharges = COM.IdCharges
             JOIN Bail B ON C.IdBail = B.IdBail
-            WHERE B.Archive = FALSE
-            """;
+            WHERE B.Archive = FALSE""";
 
         double totalCharges = 0.0;
 
@@ -73,8 +98,8 @@ public abstract class Charges {
             selectQueryElement.execute();
             List<Map<String, Object>> result = selectQueryElement.getResult();
 
-            if (!result.isEmpty() && result.get(0).get("TotalCharges") != null) {
-                totalCharges = (double) result.get(0).get("TotalCharges");
+            if (!result.isEmpty() && result.getFirst().get("TotalCharges") != null) {
+                totalCharges = (double) result.getFirst().get("TotalCharges");
             }
         } catch (QueryElement.QEltException qEltException) {
             qEltException.getSqlException().printStackTrace();
@@ -100,7 +125,7 @@ public abstract class Charges {
             List<Map<String, Object>> result = selectQueryElement.getResult();
             for (Map<String, Object> row : result) {
                 //TODO : unfinished constructor de merde
-//                chargesList.add(new Charges((int) row.get("IdCharges"),(Date) row.get("DateCharge")));
+                chargesList.add(switchTypeCharges(row));
             }
         } catch (QueryElement.QEltException qEltException) {
             qEltException.getSqlException().printStackTrace();
@@ -122,7 +147,8 @@ public abstract class Charges {
         return Math.abs(montantVerse - montantDu) <= 0.01; // Tolérance d'arrondi
     }
 
-    public class ChargeOrduresMenageres extends Charges {
+
+    public static class ChargeOrduresMenageres extends Charges {
         private int idChargesOrduresMenageres;
 
         private ChargeOrduresMenageres(int idCharges,Date dateReleve) {
@@ -143,8 +169,8 @@ public abstract class Charges {
         }
     }
 
-    public class ChargeEntretien extends Charges {
-        private int idChargeEntretien;
+
+    public static class ChargeEntretien extends Charges {
 
         private ChargeEntretien(int idCharges,Date dateReleve) {
             super(idCharges,dateReleve);
@@ -154,18 +180,10 @@ public abstract class Charges {
             this(-1,dateReleve);
         }
 
-        // Getters et Setters
-
-        public int getIdChargeEntretien() {
-            return idChargeEntretien;
-        }
-
-        public void setIdChargeEntretien(int idChargeEntretien) {
-            this.idChargeEntretien = idChargeEntretien;
-        }
     }
 
-    public class ChargeElectricite extends Charges {
+
+    public static class ChargeElectricite extends Charges {
 
         private ChargeElectricite(int idCharges,Date dateReleve) {
             super(idCharges,dateReleve);
@@ -177,8 +195,7 @@ public abstract class Charges {
 
     }
 
-    public class ChargeEau extends Charges{
-        private int IdChargeEau;
+    public static class ChargeEau extends Charges{
         private int NouvelIndice;
         private float PartieFixe;
         private float PartieVariable;
@@ -225,12 +242,6 @@ public abstract class Charges {
             this.AncienIndice = this.NouvelIndice;
             this.NouvelIndice = NouvelIndice;
         }
-        public int getIdChargeEau() {
-            return IdChargeEau;
-        }
-        public void setIdChargeEau(int IdChargeEau)  {
-            this.IdChargeEau = IdChargeEau;
-        }
 
         public float getPartieVariable() {
             return PartieVariable;
@@ -238,6 +249,18 @@ public abstract class Charges {
         public void setPartieVariable(float PartieVariable) {
             this.PartieVariable = PartieVariable;
         }
+    }
+
+    public static class ChargeOrdures extends Charges{
+
+        private ChargeOrdures(int idCharges, Date dateReleve) {
+            super(idCharges, dateReleve);
+        }
+    }
+
+    private enum TypeCharges {
+        EAU,ENTRETIEN,ORDURES, ELECTRICITE;
+
     }
 
     public static class ChargesException extends Queryable.QbleException {
