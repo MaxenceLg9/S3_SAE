@@ -91,12 +91,12 @@ public class Paiement {
         return bail;
     }
 
-    public static List<Paiement> getPaiements(int idBail) throws PaiementException {
+    public static List<Paiement> getPaiements(Bail bail) throws PaiementException {
         List<Paiement> paiements = new LinkedList<>();
         final String SELECT_QUERY = "SELECT * FROM Paiement WHERE IdBail = ?";
 
         try (SelectQueryElement selectQueryElement = new SelectQueryElement(SELECT_QUERY)) {
-            selectQueryElement.setArgs(Map.of(1, idBail));
+            selectQueryElement.setArgs(Map.of(1, bail.getIdBail()));
             selectQueryElement.execute();
             List<Map<String, Object>> result = selectQueryElement.getResult();
             for (Map<String, Object> row : result) {
