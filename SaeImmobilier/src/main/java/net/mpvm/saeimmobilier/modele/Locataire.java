@@ -4,6 +4,7 @@ import net.mpvm.saeimmobilier.sql.Query.QueryElement;
 import net.mpvm.saeimmobilier.sql.Query.SelectQueryElement;
 import net.mpvm.saeimmobilier.sql.Query.UpdateQueryElement;
 import net.mpvm.saeimmobilier.sql.Query.Queryable;
+import net.mpvm.saeimmobilier.util.JfxUtil;
 
 import java.sql.SQLException;
 import java.util.*;
@@ -15,6 +16,7 @@ public final class Locataire extends Queryable {
 	public static final String SELECT_QUERY = "SELECT * FROM Locataire";
 	public static final String DELETE_QUERY = "DELETE FROM Locataire WHERE IdLocataire = ?";
 	public static final String UPDATE_QUERY = "UPDATE Locataire SET nom = ?, prenom = ?, email = ?, sexe = ?, telephone = ? WHERE IdLocataire = ?";
+	private static final String SELECT_LOCATAIRES_REPARTITIONS_BAIL = "SELECT L.*, ABL.RepartitionElectricite, ABL.RepartitionEntretien, ABL.RepartitionOrdures_Menageres FROM Locataire L JOIN AssocieBailLocataire ABL ON L.IdLocataire = ABL.IdLocataire WHERE ABL.IdBail = ?";
 
 	private final int idLocataire;
 	private char sexe;
@@ -46,6 +48,57 @@ public final class Locataire extends Queryable {
 				row.get("Sexe").toString().charAt(0),
 				row.get("Telephone").toString(),
 				(int) row.get("IdLocataire"));
+	}
+
+	public static void setLocatairesAssociation(Map<Locataire,AssociationBailLocataires> locatairesAssociation) throws Bail.BailException {
+		if (locatairesAssociation == null || locatairesAssociation.isEmpty()) {
+			throw new IllegalArgumentException("Locataires list cannot be null or empty.");
+		}
+
+		try (UpdateQueryElement query = new UpdateQueryElement(
+				"INSERT INTO AssocieBailLocataire (IdLocataire, IdBail, RepartitionElectricite, RepartitionEntretien, RepartitionOrdures_Menageres) " +
+						"VALUES (?, ?, ?, ?, ?) " +
+						"ON DUPLICATE KEY UPDATE " +
+						"RepartitionElectricite = VALUES(RepartitionElectricite), " +
+						"RepartitionEntretien = VALUES(RepartitionEntretien), " +
+						"RepartitionOrdures_Menageres = VALUES(RepartitionOrdures_Menageres)",true)) {
+			for(AssociationBailLocataires association : locatairesAssociation.values()){
+				query.setArgs(Map.of(
+						1, association.getLocataire().getIdLocataire(),
+						2, association.getBail().getIdBail(),
+						3, association.getRepartitionElectricite(),
+						4, association.getRepartitionEntretien(),
+						5, association.getRepartitionOrduresMenageres()
+				));
+
+
+				query.execute();
+			}
+		} catch (QueryElement.QEltException e) {
+			e.getSqlException().printStackTrace();
+			throw new Bail.BailException("Failed to set locataires for bail.", e.getSqlException());
+		}
+	}
+
+	public static Map<Locataire,AssociationBailLocataires> getLocatairesAssociation(Bail bail) throws Bail.BailException {
+		Map<Locataire,AssociationBailLocataires> locataires = new HashMap<>();
+		try (SelectQueryElement selectQueryElement = new SelectQueryElement(SELECT_LOCATAIRES_REPARTITIONS_BAIL)) {
+			selectQueryElement.setArgs(Map.of(1, bail.getIdBail()));
+			selectQueryElement.execute();
+			List<Map<String, Object>> result = selectQueryElement.getResult();
+			for (Map<String, Object> row : result) {
+				Locataire locataire = new Locataire(row);
+				locataires.put(locataire,new AssociationBailLocataires(locataire,bail,
+						JfxUtil.doubleToFloat(row.get("RepartitionElectricite")),
+						JfxUtil.doubleToFloat(row.get("RepartitionEntretien")),
+						JfxUtil.doubleToFloat(row.get("RepartitionOrdures_Menageres"))
+				));
+			}
+		} catch (QueryElement.QEltException qEltException) {
+			qEltException.getSqlException().printStackTrace();
+			throw new Bail.BailException("Erreur lors de la récupération des locataires associés au bail", qEltException.getSqlException());
+		}
+		return locataires;
 	}
 
 	public int getIdLocataire() {
@@ -115,6 +168,26 @@ public final class Locataire extends Queryable {
 
 
 	public void addCharges(float charges) {
+	}
+
+	public static List<Locataire> getLocatairesFromBail(Bail bail) throws LocataireException {
+		try(SelectQueryElement query = new SelectQueryElement("""
+				SELECT L.* FROM Locataire L
+				JOIN AssocieBailLocataire ABL ON L.IdLocataire = ABL.IdLocataire
+				WHERE ABL.IdBail = ?
+				"""))
+		{
+			query.setArgs(Map.of(1,bail.getIdBail()));
+			query.execute();
+			List<Map<String,Object>> result = query.getResult();
+			List<Locataire> locataires = new ArrayList<>();
+			for(Map<String,Object> row : result){
+				locataires.add(new Locataire(row));
+			}
+			return locataires;
+		}catch (QueryElement.QEltException e){
+			throw new LocataireException("Erreur lors de la récupération des locataires",e.getSqlException());
+		}
 	}
 
 	public float getTotalCharge(){return this.totalCharge;}
