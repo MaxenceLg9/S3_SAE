@@ -1,8 +1,6 @@
 package net.mpvm.saeimmobilier.tests;
 
-import net.mpvm.saeimmobilier.modele.Bail;
-import net.mpvm.saeimmobilier.modele.Bien;
-import net.mpvm.saeimmobilier.modele.BienLouable;
+import net.mpvm.saeimmobilier.modele.*;
 import net.mpvm.saeimmobilier.sql.Query.QueryElement;
 import net.mpvm.saeimmobilier.sql.Query.Queryable;
 import org.junit.jupiter.api.AfterAll;
@@ -10,6 +8,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.sql.Date;
+import java.util.Map;
 
 import static net.mpvm.saeimmobilier.modele.Garage.GARAGE;
 import static net.mpvm.saeimmobilier.tests.TestImmeuble.IMMEUBLE;
@@ -26,6 +25,7 @@ public class TestBail {
     public static final float TOTAL_CHARGES = 100;
 
 
+    public static final Bail BAIL = new Bail(DATE_DEBUT, LOYER, RENOUVELABLE, DEPOT_GARANTIE, TOTAL_CHARGES, DATE_SIGNATURE, DATE_FIN, GARAGE,"");
 
     @BeforeAll
     public static void setUp() throws Bien.BienException {
@@ -35,21 +35,30 @@ public class TestBail {
     }
 
     @AfterAll
-    public static void setDown() throws Bien.BienException {
-        IMMEUBLE.delete();
-        GARAGE.delete();
+    public static void setDown() {
         QueryElement.rollBackStaticConnection();
         QueryElement.removeStaticConnection();
     }
 
     @Test
     public void testInstance() throws Queryable.QbleException {
-        Bail bail = new Bail(DATE_DEBUT, LOYER, RENOUVELABLE, DEPOT_GARANTIE, TOTAL_CHARGES, DATE_SIGNATURE, DATE_FIN, BienLouable.BLBuilder.getBienLouable(GARAGE.getIdBien()));
+        Bail bail = new Bail(DATE_DEBUT, LOYER, RENOUVELABLE, DEPOT_GARANTIE, TOTAL_CHARGES, DATE_SIGNATURE, DATE_FIN, BienLouable.BLBuilder.getBienLouable(GARAGE.getIdBien()),"");
         bail.save();
+        bail.delete();
     }
 
     @Test
     public void testAssertThrowsInstance() {
-        assertThrows(Bien.BienException.class, () -> new Bail(DATE_DEBUT, LOYER, RENOUVELABLE, DEPOT_GARANTIE, TOTAL_CHARGES, DATE_SIGNATURE, DATE_FIN, BienLouable.BLBuilder.getBienLouable(IMMEUBLE.getIdBien())));
+        assertThrows(Bien.BienException.class, () -> new Bail(DATE_DEBUT, LOYER, RENOUVELABLE, DEPOT_GARANTIE, TOTAL_CHARGES, DATE_SIGNATURE, DATE_FIN, BienLouable.BLBuilder.getBienLouable(IMMEUBLE.getIdBien()),""));
+    }
+
+    @Test
+    public void setLocatairesIntoBail() throws Queryable.QbleException {
+        Bail bail = new Bail(DATE_DEBUT, LOYER, RENOUVELABLE, DEPOT_GARANTIE, TOTAL_CHARGES, DATE_SIGNATURE, DATE_FIN, BienLouable.BLBuilder.getBienLouable(GARAGE.getIdBien()),"");
+        bail.save();
+        assertThrows(Bail.BailException.class,() -> bail.setLocatairesAssociation(Map.of()));
+        Map<Locataire, AssociationBailLocataires> locatairesAssociation = Map.of(TestLocataire.LOCATAIRE1,
+                new AssociationBailLocataires(TestLocataire.LOCATAIRE1, bail, 100, 100, 100, 100, 100));
+        assertThrows(Bail.BailException.class, () -> bail.setLocatairesAssociation(locatairesAssociation));
     }
 }
