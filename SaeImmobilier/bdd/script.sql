@@ -1,6 +1,9 @@
 DROP DATABASE IF EXISTS bdImmo;
 
+
+
 CREATE DATABASE IF NOT EXISTS bdImmo;
+
 
 Use bdImmo;
 
@@ -144,9 +147,7 @@ CREATE TABLE Charges(
                         IdCharges INT auto_increment,
                         Montant DOUBLE,
                         DateCharge DATE,
-                        Pourcentage DOUBLE,
-                        TypeCharge VARCHAR(50),
-                        ProvisionSurCharge DOUBLE,
+                        TypeCharges VARCHAR(50),
                         NouvelIndice INT,
                         AncienIndice INT,
                         PartieFixe DOUBLE,
@@ -177,7 +178,6 @@ CREATE TABLE AssocieBailLocataire(
                                      RepartitionOrdures_Menageres float,
                                      RepartitionEau float,
                                      RepartitionLoyer float,
-                                     TypeCharge VARCHAR(50),
                                      PRIMARY KEY(IdLocataire, IdBail),
                                      FOREIGN KEY(IdLocataire) REFERENCES Locataire(IdLocataire),
                                      FOREIGN KEY(IdBail) REFERENCES Bail(IdBail)
@@ -248,21 +248,7 @@ CREATE TABLE Realiser(
 );
 
 -- Trigger pour calculer TotalCharges dans la table Bail
-DELIMITER //
-CREATE TRIGGER CalculTotalCharges
-    AFTER INSERT ON Bail
-    FOR EACH ROW
-BEGIN
-    UPDATE Bail
-    SET TotalCharges = (
-        SELECT IFNULL(SUM(Montant), 0)
-        FROM Charges
-        WHERE Charges.IdBail = NEW.IdBail
-    )
-    WHERE Bail.IdBail = NEW.IdBail;
-END;
-//
-DELIMITER ;
+
 
 
 

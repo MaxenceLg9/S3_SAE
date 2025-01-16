@@ -46,7 +46,12 @@ public class Bail extends Queryable {
 		this.bienLouable = bienLouable;
 		setCheminFichier(cheminFichier);
 	}
-
+	private Bail(int idBail, Date dateDebut, float loyer,Date dateFin){
+		this.idBail=idBail;
+		this.dateDebut = dateDebut;
+		this.loyer = loyer;
+		this.dateFin = dateFin;
+	}
 	public static Bail getBailFromCharges(Charges charges) {
 		try(SelectQueryElement selectQueryElement = new SelectQueryElement("SELECT * FROM Bail B JOIN Charges C ON C.IdBail = B.Bail WHERE C.IdCharges = ?")){
 			selectQueryElement.setArgs(Map.of(1, charges.getIdCharges()));
@@ -151,6 +156,26 @@ public class Bail extends Queryable {
 		}
 
 		return totalLoyers;
+	}
+	public static List<Bail> findAllCalculLoyers() throws Travaux.TravauxException {
+		List<Bail> bailslist = new ArrayList<>();
+		String SELECT_QUERY = """
+        SELECT IdBail, DateDebut, MontantLoyer,DateFin
+        FROM Bail B
+        WHERE B.ARCHIVE=FALSE
+    	""";
+
+		try (SelectQueryElement query = new SelectQueryElement(SELECT_QUERY)) {
+			Result rs = query.execute();
+			for (Map<String, Object> row : rs) {
+				Bail bail = new Bail(row);
+				bailslist.add(bail);
+			}
+		} catch (QueryElement.QEltException qEltException) {
+			throw new Travaux.TravauxException("Erreur lors de la récupération des travaux", qEltException.getSqlException());
+		}
+
+		return bailslist;
 	}
 
 	// Méthode pour savoir si le bail est en colocation

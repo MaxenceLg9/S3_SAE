@@ -20,9 +20,11 @@ import net.mpvm.saeimmobilier.modele.Charges;
 import net.mpvm.saeimmobilier.modele.Travaux;
 
 import java.util.List;
+import java.text.SimpleDateFormat;
 
 
 public class CtrlCalculsChargesEtImpots {
+    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy");
 
     @FXML
     private TextArea txtResultats;
@@ -30,25 +32,30 @@ public class CtrlCalculsChargesEtImpots {
     private Bail bail;
     private Charges charges;
     private List<Travaux> travauxList;
+    private List<Bail> bailsList;
+    private List<Charges> chargesList;
     private GridPane gridPaneContent;
 
     @FXML
     private void calculerImpots() {
         try {
-            double totalImpots = travaux.calculerImpotsProprietaire();
-            travauxList = travaux.findAllCalculImpots();
+            txtResultats.setFont(Font.font("Calibri", FontWeight.BOLD, 16));
+
+            double totalImpots = Travaux.calculerImpotsProprietaire();
+            travauxList = Travaux.findAllCalculImpots();
             txtResultats.setText("");
-            // Définir la police Calibri, taille 14px pour les travaux
-            txtResultats.setFont(Font.font("Calibri", FontWeight.NORMAL, 14));
 
             // Afficher les travaux dans le TextArea
             for (Travaux t : travauxList) {
                 txtResultats.appendText(String.format("Devis Travaux : %s,  Montant à déclarer : %.2f €\n", t.getNumeroDevis(), t.getMontantADeclarer()));
             }
+            if (totalImpots==0){
+                txtResultats.appendText(String.format("Total des impôts pour le propriétaire : %.2f €\n", totalImpots));
 
-            // Appliquer une police plus grande et en gras pour le total des impôts
-            txtResultats.setFont(Font.font("Calibri", FontWeight.BOLD, 16));
-            txtResultats.appendText(String.format("\nTotal des impôts pour le propriétaire : %.2f €\n", totalImpots));
+            } else{
+                txtResultats.appendText(String.format("\nTotal des impôts pour le propriétaire : %.2f €\n", totalImpots));
+
+            }
 
         } catch (Exception e) {
             txtResultats.setText("Erreur : " + e.getMessage());
@@ -62,8 +69,24 @@ public class CtrlCalculsChargesEtImpots {
     @FXML
     private void calculerLoyers() {
         try {
-            double totalLoyers = bail.calculerLoyersProprietaire();
-            txtResultats.setText(String.format("Total des loyers : %.2f €", totalLoyers));
+            txtResultats.setFont(Font.font("Calibri", FontWeight.BOLD, 16));
+
+            double totalLoyers = Bail.calculerLoyersProprietaire();
+            bailsList=Bail.findAllCalculLoyers();
+            txtResultats.setText("");
+            for (Bail b : bailsList) {
+                txtResultats.appendText(String.format("Bail | Date Début : %s, Date Fin : %s, Loyer : %.2f €\n",
+                        DATE_FORMAT.format(b.getDateDebut()), DATE_FORMAT.format(b.getDateFin()), b.getLoyer()));
+
+
+            }
+            if (totalLoyers==0){
+                txtResultats.appendText(String.format("Total des loyers : %.2f €", totalLoyers));
+
+            } else{
+                txtResultats.appendText(String.format("\nTotal des loyers : %.2f €", totalLoyers));
+
+            }
         } catch (Exception e) {
             txtResultats.setText("Erreur : " + e.getMessage());
         }
@@ -72,8 +95,22 @@ public class CtrlCalculsChargesEtImpots {
     @FXML
     private void calculerCharges() {
         try {
-            double totalCharges = charges.calculerChargesProprietaire();
-            txtResultats.setText(String.format("Total des charges pour le propriétaire : %.2f €", totalCharges));
+            txtResultats.setFont(Font.font("Calibri", FontWeight.BOLD, 16));
+            txtResultats.setText("");
+
+            double totalCharges = Charges.calculerChargesProprietaire();
+            chargesList=Charges.getChargesDetails();
+            for (Charges c : chargesList) {
+                txtResultats.appendText(String.format("Date Charge : %s, Montant : %.2f €\n",
+                        DATE_FORMAT.format(c.getDateReleve()), c.getMontant()));
+
+            }
+            if (totalCharges==0){
+                txtResultats.appendText(String.format("Total des charges pour le propriétaire : %.2f €", totalCharges));
+
+            } else{
+                txtResultats.appendText(String.format("\nTotal des charges pour le propriétaire : %.2f €", totalCharges));
+            }
         } catch (Exception e) {
             txtResultats.setText("Erreur : " + e.getMessage());
         }
