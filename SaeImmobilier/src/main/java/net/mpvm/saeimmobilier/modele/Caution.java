@@ -1,10 +1,11 @@
 package net.mpvm.saeimmobilier.modele;
 
 
+import java.sql.Date;
 
 public class Caution {
     private int idCaution;
-    private ModeleDate dateNaissance;
+    private Date dateNaissance;
     private String lieuNaissance;
     private String situationFamiliale;
     private String profession;
@@ -30,7 +31,7 @@ public class Caution {
     }
 
     // Getters
-    public ModeleDate getDateNaissance() {
+    public Date getDateNaissance() {
         return dateNaissance;
     }
 
@@ -67,7 +68,7 @@ public class Caution {
     }
 
     // Setters
-    public void setDateNaissance(ModeleDate dateNaissance) {
+    public void setDateNaissance(Date dateNaissance) {
         this.dateNaissance = dateNaissance;
     }
 
