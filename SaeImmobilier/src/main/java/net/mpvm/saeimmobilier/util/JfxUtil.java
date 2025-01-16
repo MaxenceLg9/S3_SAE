@@ -101,7 +101,7 @@ public class JfxUtil {
         primaryStage.show();
     }
 
-    public static Float doubleToFloat(double d){
+    public static Float doubleToFloat(Object d){
 
         return ((Double) d).floatValue();
     }

@@ -19,7 +19,7 @@ public class VueLouerUnBien extends Application {
             primaryStage.getProperties().put("bienLouable", Garage.GARAGE);
             Garage.GARAGE.save();
             Garage.GARAGE.getImmeuble().save();
-            primaryStage.setOnCloseRequest(e -> {
+            primaryStage.setOnCloseRequest(_ -> {
                 QueryElement.rollBackStaticConnection();
                 QueryElement.removeStaticConnection();
             });

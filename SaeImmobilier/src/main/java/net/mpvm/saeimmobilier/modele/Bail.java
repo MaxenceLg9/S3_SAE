@@ -4,11 +4,13 @@ package net.mpvm.saeimmobilier.modele;
 import net.mpvm.saeimmobilier.sql.Query.*;
 import net.mpvm.saeimmobilier.util.Unfinished;
 
+import java.math.BigInteger;
 import java.sql.SQLException;
 import java.util.*;
 import java.sql.Date;
 
 public class Bail extends Queryable {
+
 
 	private int idBail;
 	private float provisionSurCharge;
@@ -24,6 +26,8 @@ public class Bail extends Queryable {
 
 	private Date dateSignature;
 
+	private static final String SELECT_BAUX_FROM_LOCATAIRE = "SELECT B.* FROM Bail B JOIN AssocieBailLocataire ABL ON B.IdBail = ABL.IdBail WHERE ABL.IdLocataire = ?";
+	private static final String SELECT_TOTAL_LOYER = "SELECT SUM(Bail.MontantLoyer) AS TotalLoyers FROM Bail JOIN Bien B ON Bail.IdBien = B.IdBien AND Bail.Archive = FALSE";
 	public static final String DELETE_QUERY = "DELETE FROM Bail WHERE IdBail = ?";
 	public static final String DELETE_QUERY_BIEN = "DELETE FROM Bail WHERE IdBien = ?";
 
@@ -85,13 +89,7 @@ public class Bail extends Queryable {
 
 	public static List<Bail> getBauxFromLocataire(Locataire locataire) throws BailException {
 		ArrayList<Bail> bauxList = new ArrayList<>();
-		final String SELECT_QUERY = """
-        SELECT B.*
-        FROM Bail B
-        JOIN AssocieBailLocataire ABL ON B.IdBail = ABL.IdBail
-        WHERE ABL.IdLocataire = ?
-    """;
-		try (SelectQueryElement selectQueryElement = new SelectQueryElement(SELECT_QUERY)) {
+		try (SelectQueryElement selectQueryElement = new SelectQueryElement(SELECT_BAUX_FROM_LOCATAIRE)) {
 			selectQueryElement.setArgs(Map.of(-1, locataire.getIdLocataire())); // Assuming getId() retrieves the current Locataire's ID.
 			selectQueryElement.execute();
 			List<Map<String, Object>> result = selectQueryElement.getResult();
@@ -106,20 +104,14 @@ public class Bail extends Queryable {
 
 	}
 	public static double calculerLoyersProprietaire() throws Exception {
-		final String SELECT_QUERY = """
-            SELECT SUM(Bail.MontantLoyer) AS TotalLoyers
-            FROM Bail
-            JOIN Bien B ON Bail.IdBien = B.IdBien
-            AND Bail.Archive = FALSE
-            """;
 		double totalLoyers = 0.0;
 
-		try (SelectQueryElement selectQueryElement = new SelectQueryElement(SELECT_QUERY)) {
+		try (SelectQueryElement selectQueryElement = new SelectQueryElement(SELECT_TOTAL_LOYER)) {
 			selectQueryElement.execute();
 			List<Map<String, Object>> result = selectQueryElement.getResult();
 
-			if (!result.isEmpty() && result.get(0).get("TotalLoyers") != null) {
-				totalLoyers = (double) result.get(0).get("TotalLoyers");
+			if (!result.isEmpty() && result.getFirst().get("TotalLoyers") != null) {
+				totalLoyers = (double) result.getFirst().get("TotalLoyers");
 			}
 		} catch (QueryElement.QEltException qEltException) {
 			qEltException.getSqlException().printStackTrace();
@@ -286,77 +278,14 @@ public class Bail extends Queryable {
 	}
 
 
-	@Unfinished
-	public void setRepartitionOrduresMenageres(Locataire locataire, float pourcentage) {
-		if (pourcentage < 0 || pourcentage > 1) {
-			throw new IllegalArgumentException("Pourcentage pas compris entre 0 et 1");
-		}
-		//TODO : query to put
+	public void setLocatairesAssociation(Map<Locataire,AssociationBailLocataires> locatairesAssociation) throws BailException {
+		Locataire.setLocatairesAssociation(locatairesAssociation);
 	}
 
-	@Unfinished
-	public void setRepartitionElectricite(Locataire locataire, float pourcentage) {
-		if (pourcentage < 0 || pourcentage > 1) {
-			throw new IllegalArgumentException("Pourcentage pas compris entre 0 et 1");
-		}
-		//TODO : query pour mettre dans la bd
+	public Map<Locataire, AssociationBailLocataires> getLocatairesAssociation() throws BailException {
+		return Locataire.getLocatairesAssociation(this);
 	}
 
-	@Unfinished
-	public void setRepartitionEntretien(Locataire locataire, float pourcentage) {
-		if (pourcentage < 0 || pourcentage > 1) {
-			throw new IllegalArgumentException("Pourcentage pas compris entre 0 et 1");
-		}
-		//TODO : query to put
-	}
-
-	@Unfinished
-	public void setPaiements(ArrayList<Paiement> paiements) {
-		//TODO : query
-	}
-
-
-	@Unfinished
-	public void setLocataires(List<Locataire> locataires, Map<Locataire, Float> repartitionElectricite, Map<Locataire, Float> repartitionEntretien, Map<Locataire, Float> repartitionOrduresMenageres) throws BailException {
-		if (locataires == null || locataires.isEmpty()) {
-			throw new IllegalArgumentException("Locataires list cannot be null or empty.");
-		}
-
-		try (UpdateQueryElement query = new UpdateQueryElement(
-				"INSERT INTO AssocieBailLocataire (IdLocataire, IdBail, RepartitionElectricite, RepartitionEntretien, RepartitionOrdures_Menageres) " +
-						"VALUES (?, ?, ?, ?, ?) " +
-						"ON DUPLICATE KEY UPDATE " +
-						"RepartitionElectricite = VALUES(RepartitionElectricite), " +
-						"RepartitionEntretien = VALUES(RepartitionEntretien), " +
-						"RepartitionOrdures_Menageres = VALUES(RepartitionOrdures_Menageres)",true)) {
-
-			for (Locataire locataire : locataires) {
-				if (!repartitionElectricite.containsKey(locataire) ||
-						!repartitionEntretien.containsKey(locataire) ||
-						!repartitionOrduresMenageres.containsKey(locataire)) {
-					throw new IllegalArgumentException("Missing repartition data for locataire: " + locataire.getNom());
-				}
-
-				query.setArgs(Map.of(
-						1, locataire.getIdLocataire(),
-						2, this.getIdBail(),
-						3, repartitionElectricite.get(locataire),
-						4, repartitionEntretien.get(locataire),
-						5, repartitionOrduresMenageres.get(locataire)
-				));
-			}
-
-			query.execute();
-		} catch (QueryElement.QEltException e) {
-			e.getSqlException().printStackTrace();
-			throw new BailException("Failed to set locataires for bail.", e.getSqlException());
-		}
-	}
-
-	@Unfinished
-	public void setCharges(List<Charges> charges) {
-		//TODO : ???
-	}
 
 	@Override
 	public void save() throws BailException {
@@ -364,7 +293,8 @@ public class Bail extends Queryable {
 			throw new BailException("Le bail existe déjà dans la table", null);
 		try (UpdateQueryElement query = new UpdateQueryElement("INSERT INTO Bail (DateDebut, MontantLoyer, Renouvelable, TotalCharges, DepotGarantie, DateSignature, DateFin, IdBien) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", true)){
 			query.setArgs(Map.of(1, this.getDateDebut(), 2, this.getLoyer(), 3, false, 4, this.getTotalCharge(), 5, this.getProvisionSurCharge(), 6, this.getDateSignature(), 7, this.getDateFin(), 8, this.getBienLouable().getIdBien())).execute();
-
+			Result rs = query.getGeneratedKeys();
+			this.idBail = ((BigInteger) rs.getFirst().get("GENERATED_KEY")).intValue();
 		}catch (QueryElement.QEltException e) {
 			e.getSqlException().printStackTrace();
 			throw new BailException("Erreur lors de l'insertion du bail", e.getSqlException());
@@ -388,9 +318,9 @@ public class Bail extends Queryable {
 		}
 	}
 
-	public static void delete(int idBien) throws BailException {
+	public static void delete(BienLouable bienLouable) throws BailException {
 		try(UpdateQueryElement query = new UpdateQueryElement(DELETE_QUERY_BIEN, true)){
-			query.setArgs(Map.of(1,idBien)).execute();
+			query.setArgs(Map.of(1,bienLouable.getIdBien())).execute();
 		}
 		catch (QueryElement.QEltException e) {
 			throw new Bail.BailException("Erreur lors de la suppression du bien", e.getSqlException());
