@@ -67,7 +67,7 @@ public abstract class QueryElement<T> implements Closeable {
     }
 
     protected PreparedStatement prepareStatement() throws SQLException{
-        return connection.prepareStatement(query);
+        return connection.prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
     }
 
     public String getQuery(){
