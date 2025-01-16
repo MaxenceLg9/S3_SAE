@@ -170,8 +170,8 @@ CREATE TABLE Paiement(
 CREATE TABLE AssocieBailLocataire(
                                      IdLocataire INT,
                                      IdBail INT,
-                                     DateEntree DATE,
-                                     DateSortie DATE,
+                                     DateDebut DATE,
+                                     DateFin DATE,
                                      RepartitionEntretien float,
                                      RepartitionElectricite float,
                                      RepartitionOrdures_Menageres float,
@@ -248,7 +248,7 @@ CREATE TABLE Realiser(
 );
 
 -- Trigger pour calculer TotalCharges dans la table Bail
-DELIMITER //
+/*DELIMITER //
 CREATE TRIGGER CalculTotalCharges
     AFTER INSERT ON Bail
     FOR EACH ROW
@@ -262,7 +262,7 @@ BEGIN
     WHERE Bail.IdBail = NEW.IdBail;
 END;
 //
-DELIMITER ;
+DELIMITER ;*/
 
 
 

@@ -14,13 +14,22 @@ public class AssociationBailLocataires {
     private final float partEau;
     private final float partLoyer;
 
-    private float partElectricite;
-    private float partEntretien;
-    private float partOrduresMenageres;
-    private Date dateEntree;
+    private final float partElectricite;
+    private final float partEntretien;
+    private final float partOrduresMenageres;
+    private final Date dateEntree;
     private Date dateSortie;
 
     public AssociationBailLocataires(Locataire locataire, Bail bail, float partElectricite, float partEntretien, float partOrduresMenageres, float partEau, float partLoyer) {
+        this(locataire, bail, partElectricite, partEntretien, partOrduresMenageres, partEau, partLoyer, bail.getDateDebut());
+    }
+
+    public AssociationBailLocataires(Locataire locataire, Bail bail, float partElectricite, float partEntretien, float partOrduresMenageres, float partEau, float partLoyer, Date dateEntree) {
+        this(locataire, bail, partElectricite, partEntretien, partOrduresMenageres, partEau, partLoyer, dateEntree, bail.getDateFin());
+    }
+
+    public AssociationBailLocataires(Locataire locataire, Bail bail, float partElectricite, float partEntretien, float partOrduresMenageres, float partEau, float partLoyer, Date dateEntree, Date dateSortie) {
+
         this.locataire = locataire;
         this.bail = bail;
         this.partElectricite = partElectricite;
@@ -28,15 +37,7 @@ public class AssociationBailLocataires {
         this.partOrduresMenageres = partOrduresMenageres;
         this.partEau = partEau;
         this.partLoyer = partLoyer;
-    }
-
-    public AssociationBailLocataires(Locataire locataire, Bail bail, float partElectricite, float partEntretien, float partOrduresMenageres, float partEau, float partLoyer, Date dateEntree) {
-        this(locataire, bail, partElectricite, partEntretien, partOrduresMenageres, partEau, partLoyer);
         this.dateEntree = dateEntree;
-    }
-
-    public AssociationBailLocataires(Locataire locataire, Bail bail, float partElectricite, float partEntretien, float partOrduresMenageres, float partEau, float partLoyer, Date dateEntree, Date dateSortie) {
-        this(locataire, bail, partElectricite, partEntretien, partOrduresMenageres, partEau, partLoyer, dateEntree);
         this.dateSortie = dateSortie;
     }
 

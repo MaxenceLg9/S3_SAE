@@ -6,6 +6,7 @@ import net.mpvm.saeimmobilier.sql.Query.UpdateQueryElement;
 import net.mpvm.saeimmobilier.sql.Query.Queryable;
 import net.mpvm.saeimmobilier.util.JfxUtil;
 
+import java.math.BigInteger;
 import java.sql.SQLException;
 import java.util.*;
 
@@ -18,7 +19,7 @@ public final class Locataire extends Queryable {
 	public static final String UPDATE_QUERY = "UPDATE Locataire SET nom = ?, prenom = ?, email = ?, sexe = ?, telephone = ? WHERE IdLocataire = ?";
 	private static final String SELECT_LOCATAIRES_REPARTITIONS_BAIL = "SELECT L.*, ABL.RepartitionElectricite, ABL.RepartitionEntretien, ABL.RepartitionOrdures_Menageres FROM Locataire L JOIN AssocieBailLocataire ABL ON L.IdLocataire = ABL.IdLocataire WHERE ABL.IdBail = ?";
 
-	private final int idLocataire;
+	private int idLocataire;
 	private char sexe;
 	private String telephone;
 	private String email;
@@ -58,17 +59,12 @@ public final class Locataire extends Queryable {
 				locatairesAssociation.values().stream().mapToDouble(AssociationBailLocataires::getPartEau).sum() != 100 ||
 				locatairesAssociation.values().stream().mapToDouble(AssociationBailLocataires::getPartLoyer).sum() != 100)
 			throw new Bail.BailException("La somme des répartitions doit être égal à 100",null);
-
+		if(locatairesAssociation.keySet().stream().anyMatch(x -> x.getIdLocataire() == -1))
+			throw new Bail.BailException("Un locataire n'existe pas dans la base de données",null);
 		try (UpdateQueryElement query = new UpdateQueryElement(
 				"INSERT INTO AssocieBailLocataire" +
-						"(IdLocataire, IdBail, RepartitionElectricite, RepartitionEntretien, RepartitionOrdures_Menageres, RepartitionEau, RepartitionLoyer) " +
-						"VALUES (?, ?, ?, ?, ?, ?, ?) " +
-						"ON DUPLICATE KEY UPDATE " +
-						"RepartitionElectricite = VALUES(RepartitionElectricite), " +
-						"RepartitionEntretien = VALUES(RepartitionEntretien), " +
-						"RepartitionOrdures_Menageres = VALUES(RepartitionOrdures_Menageres),"+
-						"RepartitionEau = VALUES(RepartitionEau)," +
-						"RepartitionLoyer = VALUES(RepartitionLoyer)",
+						"(IdLocataire, IdBail, RepartitionElectricite, RepartitionEntretien, RepartitionOrdures_Menageres, RepartitionEau, RepartitionLoyer, DateDebut, DateFin) " +
+						"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) ",
 				true)) {
 			AssociationBailLocataires.delete(locatairesAssociation.values().iterator().next().getBail());
 			for(AssociationBailLocataires association : locatairesAssociation.values()){
@@ -79,7 +75,9 @@ public final class Locataire extends Queryable {
 						4, association.getPartEntretien(),
 						5, association.getPartOrduresMenageres(),
 						6, association.getPartEau(),
-						7, association.getPartLoyer()
+						7, association.getPartLoyer(),
+						8, association.getDateEntree(),
+						9, association.getDateSortie()
 				));
 
 
@@ -207,6 +205,7 @@ public final class Locataire extends Queryable {
 									4, Character.toString(this.getSexe()),
 									5, this.getTelephone()))
 					.execute();
+			this.idLocataire = ((BigInteger) query.getGeneratedKeys().getFirst().get("GENERATED_KEY")).intValue();
 		}
 		catch (QueryElement.QEltException QEltException) {
 			throw new LocataireException("Erreur lors de l'ajout du locataire", QEltException.getSqlException());
