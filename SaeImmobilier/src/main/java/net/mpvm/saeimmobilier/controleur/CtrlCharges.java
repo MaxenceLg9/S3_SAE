@@ -9,8 +9,9 @@ import net.mpvm.saeimmobilier.modele.*;
 import net.mpvm.saeimmobilier.util.JfxUtil;
 import net.mpvm.saeimmobilier.vue.VueAccueil;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.Date;
+import java.time.LocalDate;
+import java.util.Optional;
 
 public class CtrlCharges {
 
@@ -20,6 +21,8 @@ public class CtrlCharges {
     private TextField fieldProvision;
     @FXML
     private TextField fieldNouvelIndice;
+    @FXML
+    private TextField fieldAncienIndice;
     @FXML
     private TextField fieldPartieFixe;
     @FXML
@@ -38,22 +41,27 @@ public class CtrlCharges {
     @FXML
     public void initialize() {
         setupComboBox();
-
-        // Listener pour activer/désactiver les champs selon le type de charges
+        resetFields();
         comboTypeCharges.valueProperty().addListener((observable, oldValue, newValue) -> {
             resetFields();
             switch (newValue) {
+                case "Provision sur Charge":
+                    fieldProvision.setDisable(false);
+                    break;
                 case "Eau":
-                    setFieldVisibility(true, fieldNouvelIndice, fieldPartieFixe, fieldPartieVariable);
+                    fieldNouvelIndice.setDisable(false);
+                    fieldAncienIndice.setDisable(false);
+                    fieldPartieFixe.setDisable(false);
+                    fieldPartieVariable.setDisable(false);
                     break;
                 case "Entretien":
-                    setFieldVisibility(true, fieldMontantEntretien);
+                    fieldMontantEntretien.setDisable(false);
                     break;
                 case "Ordures Ménagères":
-                    setFieldVisibility(true, fieldMontantOrdures);
+                    fieldMontantOrdures.setDisable(false);
                     break;
                 case "Électricité":
-                    setFieldVisibility(true, fieldMontantElectricite);
+                    fieldMontantElectricite.setDisable(false);
                     break;
                 default:
                     break;
@@ -73,27 +81,30 @@ public class CtrlCharges {
     }
 
     private void setupComboBox() {
-        // Pré-sélectionner une option pour éviter un champ vide au lancement
+        comboTypeCharges.getItems().setAll("Provision sur charge", "Eau", "Entretien", "Ordures Ménagères", "Électricité");
         comboTypeCharges.getSelectionModel().selectFirst();
-        comboTypeCharges.getItems().setAll("Eau", "Entretien", "Ordures Ménagères", "Électricité");
     }
 
     private void resetFields() {
+        fieldProvision.clear();
         fieldNouvelIndice.clear();
         fieldPartieFixe.clear();
         fieldPartieVariable.clear();
         fieldMontantEntretien.clear();
         fieldMontantOrdures.clear();
         fieldMontantElectricite.clear();
-        setFieldVisibility(false, fieldNouvelIndice, fieldPartieFixe, fieldPartieVariable, fieldMontantEntretien, fieldMontantOrdures, fieldMontantElectricite);
+        fieldProvision.setDisable(true);
+        fieldNouvelIndice.setDisable(true);
+        fieldPartieFixe.setDisable(true);
+        fieldPartieVariable.setDisable(true);
+        fieldMontantEntretien.setDisable(true);
+        fieldMontantOrdures.setDisable(true);
+        fieldMontantElectricite.setDisable(true);
+        fieldAncienIndice.setDisable(true);
+
     }
 
-    private void setFieldVisibility(boolean visible, TextField... fields) {
-        for (TextField field : fields) {
-            field.setVisible(visible);
-            field.setManaged(visible);
-        }
-    }
+
 
     private void fieldSetup() {
         fieldProvision.setPromptText("Provision sur charge (€)");
@@ -123,34 +134,50 @@ public class CtrlCharges {
 
         try {
             String typeCharge = comboTypeCharges.getValue();
-            double provision = Double.parseDouble(fieldProvision.getText());
+            LocalDate date = dateCharge.getValue();
+            Date sqlDate = Date.valueOf(date);
 
-            // Gestion des données spécifiques au type de charges
             switch (typeCharge) {
+                case "Provision sur charge":
+                    Charges chargeProvision = new Charges.ProvisionCharge(sqlDate );
+                    ((Charges.ProvisionCharge) chargeProvision).setProvision(Float.parseFloat(fieldProvision.getText()));
+                    chargeProvision.setIdBail(idBail);
+                    chargeProvision.save();
+                    break;
+
                 case "Eau":
-                    double nouvelIndice = Double.parseDouble(fieldNouvelIndice.getText());
-                    double partieFixe = Double.parseDouble(fieldPartieFixe.getText());
-                    double partieVariable = Double.parseDouble(fieldPartieVariable.getText());
-                    System.out.printf("Type: %s, Provision: %.2f, Nouvel Indice: %.2f, Partie Fixe: %.2f, Partie Variable: %.2f%n",
-                            typeCharge, provision, nouvelIndice, partieFixe, partieVariable);
+                    Charges chargeEau = new Charges.ChargeEau(sqlDate);
+                    ((Charges.ChargeEau) chargeEau).setNouvelIndice(Integer.parseInt(fieldNouvelIndice.getText()));
+
+                    ((Charges.ChargeEau) chargeEau).setAncienIndice(Integer.parseInt(fieldAncienIndice.getText()));
+                    ((Charges.ChargeEau) chargeEau).setPartieFixe(Float.parseFloat(fieldPartieFixe.getText()));
+                    ((Charges.ChargeEau) chargeEau).setPartieVariable(Float.parseFloat(fieldPartieVariable.getText()));
+                    ((Charges.ChargeEau) chargeEau).calculerMontant();
+
+                    chargeEau.setIdBail(idBail);
+                    chargeEau.save();
                     break;
 
                 case "Entretien":
-                    double montantEntretien = Double.parseDouble(fieldMontantEntretien.getText());
-                    System.out.printf("Type: %s, Provision: %.2f, Montant Entretien: %.2f%n",
-                            typeCharge, provision, montantEntretien);
+                    Charges chargeEntretien = new Charges.ChargeEntretien(sqlDate);
+                    chargeEntretien.setMontant(Float.parseFloat(fieldMontantEntretien.getText()));
+                    chargeEntretien.setIdBail(idBail);
+                    chargeEntretien.save();
                     break;
 
                 case "Ordures Ménagères":
-                    double montantOrdures = Double.parseDouble(fieldMontantOrdures.getText());
-                    System.out.printf("Type: %s, Provision: %.2f, Montant Ordures: %.2f%n",
-                            typeCharge, provision, montantOrdures);
+
+                    Charges chargeOrdures = new Charges.ChargeOrduresMenageres(sqlDate);
+                    chargeOrdures.setMontant(Float.parseFloat(fieldMontantOrdures.getText()));
+                    chargeOrdures.setIdBail(idBail);
+                    chargeOrdures.save();
                     break;
 
                 case "Électricité":
-                    double montantElectricite = Double.parseDouble(fieldMontantElectricite.getText());
-                    System.out.printf("Type: %s, Provision: %.2f, Montant Électricité: %.2f%n",
-                            typeCharge, provision, montantElectricite);
+                    Charges chargeElectricite = new Charges.ChargeElectricite(sqlDate);
+                    chargeElectricite.setMontant(Float.parseFloat(fieldMontantElectricite.getText()));
+                    chargeElectricite.setIdBail(idBail);
+                    chargeElectricite.save();
                     break;
 
                 default:
@@ -163,12 +190,13 @@ public class CtrlCharges {
             successAlert.setContentText("Charge ajoutée avec succès !");
             successAlert.showAndWait();
 
-        } catch (NumberFormatException e) {
+        } catch (Exception e) {
             Alert errorAlert = new Alert(Alert.AlertType.ERROR);
             errorAlert.setTitle("Erreur");
-            errorAlert.setHeaderText("Format de saisie incorrect");
-            errorAlert.setContentText("Veuillez saisir des valeurs numériques valides.");
+            errorAlert.setHeaderText("Erreur lors de l'ajout de la charge");
+            errorAlert.setContentText(e.getMessage());
             errorAlert.showAndWait();
+            e.printStackTrace();
         }
     }
 
@@ -181,11 +209,13 @@ public class CtrlCharges {
     }
 
     private boolean fieldsNotEmpty() {
-        if (fieldProvision.getText().isEmpty() || dateCharge.getValue() == null) {
+        if (dateCharge.getValue() == null) {
             return false;
         }
 
         switch (comboTypeCharges.getValue()) {
+            case "Provision sur charge":
+                return !fieldProvision.getText().isEmpty();
             case "Eau":
                 return !fieldNouvelIndice.getText().isEmpty()
                         && !fieldPartieFixe.getText().isEmpty()
@@ -207,9 +237,5 @@ public class CtrlCharges {
         stage.close();
     }
 
-    @FXML
-    public void Accueil(ActionEvent event) {
-        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-        JfxUtil.showWindow(stage, VueAccueil.class);
-    }
+
 }
