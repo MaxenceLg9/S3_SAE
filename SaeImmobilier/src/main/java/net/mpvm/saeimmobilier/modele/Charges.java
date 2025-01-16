@@ -13,15 +13,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class Charges {
+public abstract class Charges {
 
     private int idCharges;
     private float montant;
     private Date dateReleve;
 
-    public Charges(Date dateReleve){
-        this.dateReleve = dateReleve;
-    }
     // Constructeur
     private Charges(int idCharges, Date dateReleve) {
         this.idCharges = idCharges;
@@ -103,7 +100,7 @@ public class Charges {
             List<Map<String, Object>> result = selectQueryElement.getResult();
             for (Map<String, Object> row : result) {
                 //TODO : unfinished constructor de merde
-                chargesList.add(new Charges((int) row.get("IdCharges"),(Date) row.get("DateCharge")));
+//                chargesList.add(new Charges((int) row.get("IdCharges"),(Date) row.get("DateCharge")));
             }
         } catch (QueryElement.QEltException qEltException) {
             qEltException.getSqlException().printStackTrace();
@@ -123,6 +120,124 @@ public class Charges {
     // Méthode pour valider la régularisation des charges
     public boolean validerRegularisationCharges(float montantVerse, float montantDu) {
         return Math.abs(montantVerse - montantDu) <= 0.01; // Tolérance d'arrondi
+    }
+
+    public class ChargeOrduresMenageres extends Charges {
+        private int idChargesOrduresMenageres;
+
+        private ChargeOrduresMenageres(int idCharges,Date dateReleve) {
+            super(idCharges,dateReleve);
+        }
+        public ChargeOrduresMenageres(Date dateReleve) {
+            this(-1,dateReleve);
+        }
+
+        // Getters et Setters
+
+        public int getIdChargesOrduresMenageres() {
+            return idChargesOrduresMenageres;
+        }
+
+        public void setIdChargesOrduresMenageres(int idChargesOrduresMenageres) {
+            this.idChargesOrduresMenageres = idChargesOrduresMenageres;
+        }
+    }
+
+    public class ChargeEntretien extends Charges {
+        private int idChargeEntretien;
+
+        private ChargeEntretien(int idCharges,Date dateReleve) {
+            super(idCharges,dateReleve);
+        }
+        // Constructeur
+        public ChargeEntretien(Date dateReleve) {
+            this(-1,dateReleve);
+        }
+
+        // Getters et Setters
+
+        public int getIdChargeEntretien() {
+            return idChargeEntretien;
+        }
+
+        public void setIdChargeEntretien(int idChargeEntretien) {
+            this.idChargeEntretien = idChargeEntretien;
+        }
+    }
+
+    public class ChargeElectricite extends Charges {
+
+        private ChargeElectricite(int idCharges,Date dateReleve) {
+            super(idCharges,dateReleve);
+        }
+        // Constructeur
+        public ChargeElectricite(Date dateReleve) {
+            this(-1,dateReleve);
+        }
+
+    }
+
+    public class ChargeEau extends Charges{
+        private int IdChargeEau;
+        private int NouvelIndice;
+        private float PartieFixe;
+        private float PartieVariable;
+        private int AncienIndice;
+
+        private ChargeEau(int idCharges,Date dateReleve) {
+            super(idCharges,dateReleve);
+        }
+        public ChargeEau(Date DateReleve) {
+
+            this(-1,DateReleve);
+        }
+        public int getNouvelIndice() {
+
+            return NouvelIndice;
+        }
+
+        public void setNouvelIndice(int NouvelIndice) throws IllegalArgumentException {
+            if (NouvelIndice < AncienIndice) {
+                throw new IllegalArgumentException("Le nouvel indice ne peut pas être inférieur à l'ancien.");
+            }
+            this.NouvelIndice = NouvelIndice;
+        }
+
+        public int getAncienIndice() {
+            return AncienIndice;
+        }
+
+        public void setAncienIndice(int AncienIndice) {
+            this.AncienIndice = AncienIndice;
+        }
+
+        public float getPartieFixe() {
+            return PartieFixe;
+        }
+
+        public void setPartieFixe(float PartieFixe) {
+            this.PartieFixe = PartieFixe;
+        }
+        public void mettreAJourIndice(int NouvelIndice) throws IllegalArgumentException {
+            if (NouvelIndice < AncienIndice) {
+                throw new IllegalArgumentException("Le nouvel indice ne peut pas être inférieur à l'ancien.");
+            }
+            this.AncienIndice = this.NouvelIndice;
+            this.NouvelIndice = NouvelIndice;
+        }
+        public int getIdChargeEau() {
+            return IdChargeEau;
+        }
+        public void setIdChargeEau(int IdChargeEau)  {
+            this.IdChargeEau = IdChargeEau;
+        }
+
+        public float getPartieVariable() {
+            return PartieVariable;
+        }
+        public void setPartieVariable(float PartieVariable) {
+            this.PartieVariable = PartieVariable;
+        }
     }
 
     public static class ChargesException extends Queryable.QbleException {
