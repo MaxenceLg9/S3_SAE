@@ -23,6 +23,7 @@ public class Bail extends Queryable {
 	private float depotGarantie;
 	private boolean renouvelable;
 	private BienLouable bienLouable;
+	private String cheminFichier;
 
 	private Date dateSignature;
 
@@ -32,7 +33,7 @@ public class Bail extends Queryable {
 	public static final String DELETE_QUERY_BIEN = "DELETE FROM Bail WHERE IdBien = ?";
 
 
-	private Bail(int idBail, Date dateDebut, float loyer, boolean renouvelable, float totalCharge, float depotGarantie, Date dateSignature, Date dateFin, BienLouable bienLouable){
+	private Bail(int idBail, Date dateDebut, float loyer, boolean renouvelable, float totalCharge, float depotGarantie, Date dateSignature, Date dateFin, BienLouable bienLouable, String cheminFichier){
 		this.idBail = idBail;
 		this.dateDebut = dateDebut;
 		this.loyer = loyer;
@@ -42,10 +43,20 @@ public class Bail extends Queryable {
 		this.depotGarantie = depotGarantie;
 		this.renouvelable = renouvelable;
 		this.bienLouable = bienLouable;
+		setCheminFichier(cheminFichier);
 	}
+
+	private void setCheminFichier(String cheminFichier) {
+		this.cheminFichier = "./baux/" + cheminFichier;
+	}
+
+	public String getCheminFichier() {
+		return this.cheminFichier;
+	}
+
 	// Constructeur
-	public Bail(Date dateDebut, float loyer, boolean renouvelable, float totalCharge, float depotGarantie, Date dateSignature, Date dateFin, BienLouable bienLouable){
-		this(-1, dateDebut, loyer, renouvelable, totalCharge, depotGarantie, dateSignature, dateFin, bienLouable);
+	public Bail(Date dateDebut, float loyer, boolean renouvelable, float totalCharge, float depotGarantie, Date dateSignature, Date dateFin, BienLouable bienLouable, String cheminFichier){
+		this(-1, dateDebut, loyer, renouvelable, totalCharge, depotGarantie, dateSignature, dateFin, bienLouable, cheminFichier);
 	}
 
 	private Bail(Map<String, Object> row) throws Bien.BienException {
@@ -57,7 +68,8 @@ public class Bail extends Queryable {
 				(float) row.get("TotalCharges"),
 				(Date) row.get("DateSignature"),
 				(Date) row.get("DateFin"),
-				BienLouable.BLBuilder.getBienLouable((int) row.get("IdBien")));
+				BienLouable.BLBuilder.getBienLouable((int) row.get("IdBien")),
+				(String) row.get("CheminDocument"));
 	}
 
 	public BienLouable getBienLouable(){
@@ -291,12 +303,12 @@ public class Bail extends Queryable {
 	public void save() throws BailException {
 		if(this.getIdBail() != -1)
 			throw new BailException("Le bail existe déjà dans la table", null);
-		try (UpdateQueryElement query = new UpdateQueryElement("INSERT INTO Bail (DateDebut, MontantLoyer, Renouvelable, TotalCharges, DepotGarantie, DateSignature, DateFin, IdBien) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", true)){
-			query.setArgs(Map.of(1, this.getDateDebut(), 2, this.getLoyer(), 3, false, 4, this.getTotalCharge(), 5, this.getProvisionSurCharge(), 6, this.getDateSignature(), 7, this.getDateFin(), 8, this.getBienLouable().getIdBien())).execute();
+		try (UpdateQueryElement query = new UpdateQueryElement("INSERT INTO Bail (DateDebut, MontantLoyer, Renouvelable, TotalCharges, DepotGarantie, DateSignature, DateFin, IdBien, CheminDocument) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", true)){
+			query.setArgs(Map.of(1, this.getDateDebut(), 2, this.getLoyer(), 3, false, 4, this.getTotalCharge(), 5, this.getProvisionSurCharge(), 6, this.getDateSignature(), 7, this.getDateFin(), 8, this.getBienLouable().getIdBien(), 9, this.getCheminFichier())).execute();
 			Result rs = query.getGeneratedKeys();
 			this.idBail = ((BigInteger) rs.getFirst().get("GENERATED_KEY")).intValue();
 		}catch (QueryElement.QEltException e) {
-			e.getSqlException().printStackTrace();
+			e.printStackTrace();
 			throw new BailException("Erreur lors de l'insertion du bail", e.getSqlException());
 		}
 	}

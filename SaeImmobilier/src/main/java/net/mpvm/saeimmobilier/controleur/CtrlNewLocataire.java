@@ -29,17 +29,17 @@ public class CtrlNewLocataire {
 
     @FXML
     private List<TextField> fieldsLocataires;
-    private CtrlLouerUnBien parentCtrl;
+    private CtrlGererUnBail parentCtrl;
 
     @FXML
     public void initialize(){
         Platform.runLater(() -> {
             Stage stage = (Stage) fieldNom.getScene().getWindow();
-            if(!stage.getProperties().containsKey("controleur") || stage.getProperties().get("controleur") == null || !(stage.getProperties().get("controleur") instanceof CtrlLouerUnBien)){
+            if(!stage.getProperties().containsKey("controleur") || stage.getProperties().get("controleur") == null || !(stage.getProperties().get("controleur") instanceof CtrlGererUnBail)){
                 JfxUtil.displayError("Erreur", "Erreur lors du chargement de la page");
                 stage.close();
             }
-            this.parentCtrl = (CtrlLouerUnBien) stage.getProperties().get("controleur");
+            this.parentCtrl = (CtrlGererUnBail) stage.getProperties().get("controleur");
             fieldSetup();
             groupButton();
         });

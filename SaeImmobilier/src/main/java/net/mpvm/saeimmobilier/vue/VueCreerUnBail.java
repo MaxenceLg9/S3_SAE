@@ -6,7 +6,7 @@ import net.mpvm.saeimmobilier.modele.Garage;
 import net.mpvm.saeimmobilier.sql.Query.QueryElement;
 import net.mpvm.saeimmobilier.util.JfxUtil;
 
-public class VueLouerUnBien extends Application {
+public class VueCreerUnBail extends Application {
 
     public static void main(String[] args) {
         Application.launch(args);
@@ -24,6 +24,6 @@ public class VueLouerUnBien extends Application {
                 QueryElement.removeStaticConnection();
             });
         }
-        JfxUtil.updateStage(primaryStage, "louerunbien.fxml", "Louer un bien");
+        JfxUtil.updateStage(primaryStage, "creerUnBail.fxml", "Louer un bien");
     }
 }
