@@ -9,9 +9,11 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
+import net.mpvm.saeimmobilier.modele.AssociationBailLocataires;
 import net.mpvm.saeimmobilier.modele.Bail;
 import net.mpvm.saeimmobilier.modele.BienLouable;
 import net.mpvm.saeimmobilier.modele.Locataire;
+import net.mpvm.saeimmobilier.sql.Query.Queryable;
 import net.mpvm.saeimmobilier.util.JfxUtil;
 import net.mpvm.saeimmobilier.vue.VueNewLocataire;
 import org.jetbrains.annotations.NotNull;
@@ -76,36 +78,25 @@ public class CtrlLouerUnBien {
     }
 
     public void valider(ActionEvent event) {
-        Bail b = new Bail(Date.valueOf(dateDebut.getValue()),Float.parseFloat(fieldMontantLoyer.getText()), checkBoxRenouvelable.isSelected(), Float.parseFloat(fieldTotalCharges.getText()), Float.parseFloat(fieldDepotGarantie.getText()) ,Date.valueOf(dateFin.getValue()), Date.valueOf(dateSignature.getValue()),idBien);
-
-        List<Locataire> locataires = choiceBoxesLocataires.stream().map(ChoiceBox::getValue).toList();
-        Map<Locataire,Float> repartitionsElec = collectToMap(fieldsRepartitionsElec, "Invalid number format for electricity repartition: ");
-        Map<Locataire,Float> repartitionsEau = collectToMap(fieldsRepartitionsEau, "Invalid number format for water repartition: ");
-        Map<Locataire,Float> orduresMenageres = collectToMap(fieldsOrduresMenageres, "Invalid number format for garbage repartition: ");
+        if(choiceBoxesLocataires.isEmpty()) {
+            JfxUtil.displayError("Pas de locataire", "Veuillez ajouter un locataire");
+            return;
+        }
         try {
+            Bail b = new Bail(Date.valueOf(dateDebut.getValue()),Float.parseFloat(fieldMontantLoyer.getText()), checkBoxRenouvelable.isSelected(), Float.parseFloat(fieldTotalCharges.getText()), Float.parseFloat(fieldDepotGarantie.getText()) ,Date.valueOf(dateFin.getValue()), Date.valueOf(dateSignature.getValue()),BienLouable.BLBuilder.getBienLouable(idBien));
+
+            Map<Locataire, AssociationBailLocataires> locatairesAssociations = choiceBoxesLocataires.stream()
+                    .collect(Collectors.toMap(x -> x.getValue(),
+                            x -> new AssociationBailLocataires(x.getValue(), b,
+                                    Float.parseFloat(fieldsRepartitionsElec.get(choiceBoxesLocataires.indexOf(x)).getText()),
+                                    Float.parseFloat(fieldsRepartitionsEau.get(choiceBoxesLocataires.indexOf(x)).getText()),
+                                    Float.parseFloat(fieldsOrduresMenageres.get(choiceBoxesLocataires.indexOf(x)).getText()))));
+
             b.save();
-            b.setLocataires(locataires, repartitionsElec, repartitionsEau, orduresMenageres);
-        } catch (Bail.BailException e) {
+            b.setLocatairesAssociation(locatairesAssociations);
+        } catch (Queryable.QbleException e) {
             e.printStackTrace();
         }
-    }
-
-    @NotNull
-    private Map<Locataire, Float> collectToMap(List<TextField> fieldsRepartitionsElec, String string) {
-        return IntStream.range(0, fieldsRepartitionsElec.size())
-                .filter(x -> !fieldsRepartitionsElec.get(x).getText().isBlank()) // Skip empty TextFields
-                .boxed()
-                .collect(Collectors.toMap(
-                        x -> choiceBoxesLocataires.get(x).getValue(), // Get the Locataire from the ChoiceBox
-                        x -> {
-                            try {
-                                return Float.parseFloat(fieldsRepartitionsElec.get(x).getText()); // Parse the TextField value to Float
-                            } catch (NumberFormatException e) {
-                                throw new IllegalArgumentException(
-                                        string + fieldsRepartitionsElec.get(x).getText());
-                            }
-                        }
-                ));
     }
 
     public void annuler(ActionEvent event) {
@@ -208,7 +199,7 @@ public class CtrlLouerUnBien {
 
     public void newLocataire(ActionEvent event) {
         Stage s = new Stage();
-        s.getProperties().put("controlleur",this);
+        s.getProperties().put("controleur",this);
         JfxUtil.showWindow(s, VueNewLocataire.class);
     }
 }

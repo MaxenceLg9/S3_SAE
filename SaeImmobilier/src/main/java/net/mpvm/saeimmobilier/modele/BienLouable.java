@@ -241,10 +241,12 @@ public abstract class BienLouable extends Bien {
     @Override
     public void delete() throws BienLouableException {
         try(UpdateQueryElement updateQueryElement = new UpdateQueryElement(DELETE_QUERY, true)){
+            Bail.delete(this);
             updateQueryElement.setArgs(
                             Map.of(1,this.getIdBien()))
                     .execute();
         }catch(QueryElement.QEltException QEltException){
+            QEltException.getSqlException().printStackTrace();
             throw new BienLouableException("Erreur lors de la suppression du bien", QEltException.getSqlException());
         }
     }
@@ -261,6 +263,18 @@ public abstract class BienLouable extends Bien {
             this.nbPieces = nbPieces;
             this.surface = surface;
             this.immeuble = immeuble;
+        }
+
+        public static BienLouable getBienLouable(int idBien) throws BienException {
+            try {
+                return (BienLouable) getFromId(idBien, TypeBien.GARAGE);
+            }catch (BienException e){
+                try {
+                    return (BienLouable) getFromId(idBien, TypeBien.HABITATION);
+                }catch (BienException e1){
+                    throw new BienException("Le bien n'existe pas", null);
+                }
+            }
         }
 
 

@@ -12,9 +12,17 @@ import java.sql.Date;
 
 public final class Immeuble extends Bien{
 
-	public static final Immeuble IMMEUBLE = new Immeuble.IBuilder("Toulouse", "31000", "1 rue de la paix", "6789012345",Date.valueOf(LocalDate.now()),"IMMEUBLE COMME JAIME").build();
+	public static final Immeuble IMMEUBLE;
 
-	public static final String INSERT_QUERY = "INSERT INTO Bien (Adresse, Ville, CodePostal, TypeBien, NumeroFiscal, IdProprio, DateAjout) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    static {
+        try {
+            IMMEUBLE = new IBuilder("Toulouse", "31000", "1 rue de la paix", "6789012345",Date.valueOf(LocalDate.now()),"IMMEUBLE COMME JAIME").build();
+        } catch (BienException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static final String INSERT_QUERY = "INSERT INTO Bien (Adresse, Ville, CodePostal, TypeBien, NumeroFiscal, IdProprio, DateAjout) VALUES (?, ?, ?, ?, ?, ?, ?)";
 	public static final String SELECT_QUERY = "SELECT * FROM Bien WHERE TypeBien = 'IMMEUBLE'";
 	public static final String SELECT_WHERE_QUERY = "SELECT * FROM Bien WHERE Adresse = ? AND Ville = ? AND CodePostal = ?";
 	public static final String DELETE_QUERY = "DELETE FROM Bien WHERE IdBien = ? AND TypeBien = 'IMMEUBLE'";
@@ -49,7 +57,7 @@ public final class Immeuble extends Bien{
 			List<Map<String, Object>> result = query.getResult();
 			if (!result.isEmpty()) {
 				int idBien = (int) result.getFirst().get("IdImmeuble");
-				return new IBuilder(idBien).build();
+				return IBuilder.getImmeuble(idBien);
 			}
 		} catch (QueryElement.QEltException e) {
 			throw new ImmeubleException("Erreur lors de la recherche par localisation", e.getSqlException());
@@ -192,6 +200,7 @@ public final class Immeuble extends Bien{
 			super.delete();
 		}
 		catch (QueryElement.QEltException e) {
+			e.getSqlException().printStackTrace();
 			throw new ImmeubleException("Erreur lors de la suppression du bien", e.getSqlException());
 		}
 	}
@@ -237,16 +246,20 @@ public final class Immeuble extends Bien{
 			this(ville, codePostal, adresse, numeroFiscal,dateAjout, idProprio, -1);
 		}
 
-		public IBuilder(int idBien) throws BienException {
-			this(getFromId(idBien, Immeuble.class));
+		public static Immeuble getImmeuble(int idBien) throws BienException{
+			return (Immeuble) getFromId(idBien, TypeBien.IMMEUBLE);
 		}
 
 		@Override
-		public Immeuble build() {
+		public Immeuble build() throws BienException {
 			if(this.getIdBien() == -1)
 				return new Immeuble(this);
-			if(checkPresentIn(Immeuble.class))
-				return (Immeuble) get(this.getIdBien());
+			if(checkPresentIn()){
+				if(get(this.getIdBien()) instanceof Immeuble)
+					return (Immeuble) get(this.getIdBien());
+				else
+					throw new Bien.BienException("Le bien n'est pas du bon type", null);
+			}
 			Immeuble immeuble = new Immeuble(this);
 			add(immeuble);
 			return immeuble;

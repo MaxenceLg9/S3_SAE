@@ -6,9 +6,7 @@ import net.mpvm.saeimmobilier.sql.Query.QueryElement;
 import net.mpvm.saeimmobilier.sql.Query.Result;
 import net.mpvm.saeimmobilier.sql.Query.SelectQueryElement;
 import net.mpvm.saeimmobilier.sql.Query.UpdateQueryElement;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -28,13 +26,23 @@ public class TestQueryElement {
         updateQueryElement = null;
     }
 
+    @BeforeAll
+    public static void setUp(){
+        QueryElement.newStaticConnection();
+    }
+
+    @AfterAll
+    public static void setDown(){
+        QueryElement.rollBackStaticConnection();
+        QueryElement.removeStaticConnection();
+    }
+
     @AfterEach
     public void close() throws QueryElement.QEltException {
         if(selectQueryElement != null && !selectQueryElement.isClosed()) {
             selectQueryElement.close();
         }
         if(updateQueryElement != null && !updateQueryElement.isClosed()) {
-            updateQueryElement.rollback();
             updateQueryElement.close();
         }
     }

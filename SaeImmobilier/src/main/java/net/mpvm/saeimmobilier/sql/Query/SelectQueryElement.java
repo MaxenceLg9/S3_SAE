@@ -39,21 +39,7 @@ public final class SelectQueryElement extends QueryElement<Result> {
         if(rows != null)
             return rows;
         rows = new Result();
-        try {
-            ResultSetMetaData metaData = rs.getMetaData();
-            int columnCount = metaData.getColumnCount();
-            while (rs.next()) {
-                Map<String, Object> row = new LinkedHashMap<>();
-                for (int i = 1; i <= columnCount; i++) {
-                    row.put(metaData.getColumnName(i), rs.getObject(i));
-                }
-                rows.add(row);
-            }
-            rs.close();
-        }
-        catch(SQLException sqlException){
-            throw new QEltException("Error getting the result", sqlException);
-        }
+        resultSetIntoResult(rs, rows);
         System.out.println(rows.size() + " rows selected");
         return rows;
     }
