@@ -50,8 +50,14 @@ public final class Locataire extends Queryable {
 
 	public static void setLocatairesAssociation(Map<Locataire,AssociationBailLocataires> locatairesAssociation) throws Bail.BailException {
 		if (locatairesAssociation == null || locatairesAssociation.isEmpty()) {
-			throw new IllegalArgumentException("Locataires list cannot be null or empty.");
+			throw new Bail.BailException("Locataires list cannot be null or empty.",null);
 		}
+		if(locatairesAssociation.values().stream().mapToDouble(AssociationBailLocataires::getPartElectricite).sum() != 100 ||
+				locatairesAssociation.values().stream().mapToDouble(AssociationBailLocataires::getPartEntretien).sum() != 100 ||
+				locatairesAssociation.values().stream().mapToDouble(AssociationBailLocataires::getPartOrduresMenageres).sum() != 100 ||
+				locatairesAssociation.values().stream().mapToDouble(AssociationBailLocataires::getPartEau).sum() != 100 ||
+				locatairesAssociation.values().stream().mapToDouble(AssociationBailLocataires::getPartLoyer).sum() != 100)
+			throw new Bail.BailException("La somme des répartitions doit être égal à 100",null);
 
 		try (UpdateQueryElement query = new UpdateQueryElement(
 				"INSERT INTO AssocieBailLocataire" +
@@ -60,19 +66,20 @@ public final class Locataire extends Queryable {
 						"ON DUPLICATE KEY UPDATE " +
 						"RepartitionElectricite = VALUES(RepartitionElectricite), " +
 						"RepartitionEntretien = VALUES(RepartitionEntretien), " +
-						"RepartitionOrdures_Menageres = VALUES(RepartitionOrdures_Menageres)"+
-						"RepartitionEau = VALUES(RepartitionEau)" +
+						"RepartitionOrdures_Menageres = VALUES(RepartitionOrdures_Menageres),"+
+						"RepartitionEau = VALUES(RepartitionEau)," +
 						"RepartitionLoyer = VALUES(RepartitionLoyer)",
 				true)) {
+			AssociationBailLocataires.delete(locatairesAssociation.values().iterator().next().getBail());
 			for(AssociationBailLocataires association : locatairesAssociation.values()){
 				query.setArgs(Map.of(
 						1, association.getLocataire().getIdLocataire(),
 						2, association.getBail().getIdBail(),
-						3, association.getRepartitionElectricite(),
-						4, association.getRepartitionEntretien(),
-						5, association.getRepartitionOrduresMenageres(),
+						3, association.getPartElectricite(),
+						4, association.getPartEntretien(),
+						5, association.getPartOrduresMenageres(),
 						6, association.getPartEau(),
-						7, association.getRepartitionLoyer()
+						7, association.getPartLoyer()
 				));
 
 

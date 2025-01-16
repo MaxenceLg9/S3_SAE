@@ -1,45 +1,59 @@
 package net.mpvm.saeimmobilier.modele;
 
+import net.mpvm.saeimmobilier.sql.Query.QueryElement;
+import net.mpvm.saeimmobilier.sql.Query.Queryable;
+import net.mpvm.saeimmobilier.sql.Query.UpdateQueryElement;
+
 import java.sql.Date;
+import java.util.Map;
 
 public class AssociationBailLocataires {
 
     private final Locataire locataire;
     private final Bail bail;
     private final float partEau;
-    private final float repartitionLoyer;
+    private final float partLoyer;
 
-    private float repartitionElectricite;
-    private float repartitionEntretien;
-    private float repartitionOrduresMenageres;
+    private float partElectricite;
+    private float partEntretien;
+    private float partOrduresMenageres;
     private Date dateEntree;
     private Date dateSortie;
 
-    public AssociationBailLocataires(Locataire locataire, Bail bail, float repartitionElectricite, float repartitionEntretien, float repartitionOrduresMenageres, float partEau, float repartitionLoyer) {
+    public AssociationBailLocataires(Locataire locataire, Bail bail, float partElectricite, float partEntretien, float partOrduresMenageres, float partEau, float partLoyer) {
         this.locataire = locataire;
         this.bail = bail;
-        this.repartitionElectricite = repartitionElectricite;
-        this.repartitionEntretien = repartitionEntretien;
-        this.repartitionOrduresMenageres = repartitionOrduresMenageres;
+        this.partElectricite = partElectricite;
+        this.partEntretien = partEntretien;
+        this.partOrduresMenageres = partOrduresMenageres;
         this.partEau = partEau;
-        this.repartitionLoyer = repartitionLoyer;
+        this.partLoyer = partLoyer;
     }
 
-    public AssociationBailLocataires(Locataire locataire, Bail bail, float repartitionElectricite, float repartitionEntretien, float repartitionOrduresMenageres, float partEau, float repartitionLoyer, Date dateEntree) {
-        this(locataire, bail, repartitionElectricite, repartitionEntretien, repartitionOrduresMenageres, partEau, repartitionLoyer);
+    public AssociationBailLocataires(Locataire locataire, Bail bail, float partElectricite, float partEntretien, float partOrduresMenageres, float partEau, float partLoyer, Date dateEntree) {
+        this(locataire, bail, partElectricite, partEntretien, partOrduresMenageres, partEau, partLoyer);
         this.dateEntree = dateEntree;
     }
 
-    public AssociationBailLocataires(Locataire locataire, Bail bail, float repartitionElectricite, float repartitionEntretien, float repartitionOrduresMenageres, float partEau, float repartitionLoyer, Date dateEntree, Date dateSortie) {
-        this(locataire, bail, repartitionElectricite, repartitionEntretien, repartitionOrduresMenageres, partEau, repartitionLoyer, dateEntree);
+    public AssociationBailLocataires(Locataire locataire, Bail bail, float partElectricite, float partEntretien, float partOrduresMenageres, float partEau, float partLoyer, Date dateEntree, Date dateSortie) {
+        this(locataire, bail, partElectricite, partEntretien, partOrduresMenageres, partEau, partLoyer, dateEntree);
         this.dateSortie = dateSortie;
     }
 
-    public float getRepartitionOrduresMenageres() {
-        return repartitionOrduresMenageres;
+    public float getPartOrduresMenageres() {
+        return partOrduresMenageres;
     }
 
-    public Date getDateEntree() {
+    public static void delete(Bail bail) throws Queryable.QbleException {
+        try (UpdateQueryElement updateQueryElement = new UpdateQueryElement("DELETE FROM AssocieBailLocataire WHERE IdBail = ?", true)) {
+            updateQueryElement.setArgs(Map.of(1, bail.getIdBail()));
+            updateQueryElement.execute();
+        } catch (QueryElement.QEltException e) {
+            throw new Queryable.QbleException("Erreur lors de la suppression des associations de bail", e.getSqlException());
+        }
+    }
+
+        public Date getDateEntree() {
         return dateEntree;
     }
 
@@ -47,12 +61,12 @@ public class AssociationBailLocataires {
         return dateSortie;
     }
 
-    public float getRepartitionEntretien() {
-        return repartitionEntretien;
+    public float getPartEntretien() {
+        return partEntretien;
     }
 
-    public float getRepartitionElectricite() {
-        return repartitionElectricite;
+    public float getPartElectricite() {
+        return partElectricite;
     }
 
     public Locataire getLocataire() {
@@ -63,8 +77,8 @@ public class AssociationBailLocataires {
         return bail;
     }
 
-    public float getRepartitionLoyer() {
-        return this.repartitionLoyer;
+    public float getPartLoyer() {
+        return this.partLoyer;
     }
 
     public float getPartEau() {

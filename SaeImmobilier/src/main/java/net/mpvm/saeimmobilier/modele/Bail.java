@@ -168,7 +168,7 @@ public class Bail extends Queryable {
 
 		Map<Locataire,AssociationBailLocataires> locatairesAssociation = Locataire.getLocatairesAssociation(this);
 		if(locatairesAssociation.keySet().size() > 1){
-			partsLoyer = locatairesAssociation.values().stream().collect(Collectors.toMap(AssociationBailLocataires::getLocataire, AssociationBailLocataires::getRepartitionLoyer));
+			partsLoyer = locatairesAssociation.values().stream().collect(Collectors.toMap(AssociationBailLocataires::getLocataire, AssociationBailLocataires::getPartLoyer));
 		}
 
 		return partsLoyer;
@@ -282,6 +282,7 @@ public class Bail extends Queryable {
 			this.idBail = ((BigInteger) rs.getFirst().get("GENERATED_KEY")).intValue();
 		} catch (QueryElement.QEltException e) {
 			e.printStackTrace();
+			e.getSqlException().printStackTrace();
 			throw new BailException("Erreur lors de l'insertion du bail", e.getSqlException());
 		}
 	}
