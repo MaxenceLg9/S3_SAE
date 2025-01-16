@@ -44,19 +44,19 @@ CREATE TABLE Bien(
 );
 
 CREATE TABLE Travaux(
-    IdTravaux            INT auto_increment,
-    NumeroFacture        VARCHAR(10),
-    Entreprise           VARCHAR(50),
-    Montant              DOUBLE,
-    MontantNonDeductible DOUBLE,
-    MontantADeclarer     DOUBLE,
-    Reduction            DOUBLE,
-    DateTravaux          DATE,
-    Nature               VARCHAR(50),
-    NumeroDevis          VARCHAR(10),
-    IdBien               INT,
-    PRIMARY KEY (IdTravaux),
-    FOREIGN KEY (IdBien) REFERENCES Bien (IdBien)
+                        IdTravaux            INT auto_increment,
+                        NumeroFacture        VARCHAR(10),
+                        Entreprise           VARCHAR(50),
+                        Montant              DOUBLE,
+                        MontantNonDeductible DOUBLE,
+                        MontantADeclarer     DOUBLE,
+                        Reduction            DOUBLE,
+                        DateTravaux          DATE,
+                        Nature               VARCHAR(50),
+                        NumeroDevis          VARCHAR(10),
+                        IdBien               INT,
+                        PRIMARY KEY (IdTravaux),
+                        FOREIGN KEY (IdBien) REFERENCES Bien (IdBien)
 );
 CREATE TABLE Assurance(
                           IdAssurance INT auto_increment,
@@ -144,23 +144,16 @@ CREATE TABLE Charges(
                         IdCharges INT auto_increment,
                         Montant DOUBLE,
                         DateCharge DATE,
+                        Pourcentage DOUBLE,
                         TypeCharges VARCHAR(50),
                         ProvisionSurCharge DOUBLE,
+                        NouvelIndice INT,
+                        AncienIndice INT,
+                        PartieFixe DOUBLE,
+                        PartieVariable DOUBLE,
                         IdBail INT NOT NULL,
                         PRIMARY KEY(IdCharges),
                         FOREIGN KEY(IdBail) REFERENCES Bail(IdBail)
-);
-
-CREATE TABLE ChargesEau(
-                           IdChargesEau INT auto_increment,
-                           NouvelIndice INT,
-                           AncienIndice INT,
-                           PartieFixe DOUBLE,
-                           PartieVariable DOUBLE,
-                           IdCharges INT NOT NULL,
-                           PRIMARY KEY(IdChargesEau),
-                           UNIQUE(IdCharges),
-                           FOREIGN KEY(IdCharges) REFERENCES Charges(IdCharges)
 );
 
 CREATE TABLE Paiement(
@@ -179,9 +172,11 @@ CREATE TABLE AssocieBailLocataire(
                                      IdBail INT,
                                      DateEntree DATE,
                                      DateSortie DATE,
-                                     RepartitionEntretien DOUBLE,
-                                     RepartitionElectricite VARCHAR(50),
-                                     RepartitionOrdures_Menageres VARCHAR(50),
+                                     RepartitionEntretien float,
+                                     RepartitionElectricite float,
+                                     RepartitionOrdures_Menageres float,
+                                     RepartitionEau float,
+                                     RepartitionLoyer float,
                                      PRIMARY KEY(IdLocataire, IdBail),
                                      FOREIGN KEY(IdLocataire) REFERENCES Locataire(IdLocataire),
                                      FOREIGN KEY(IdBail) REFERENCES Bail(IdBail)
@@ -197,22 +192,6 @@ CREATE TABLE Document(
                          FOREIGN KEY(IdBail) REFERENCES Bail(IdBail)
 );
 
-CREATE TABLE ChargesEntretien(
-                                 IdChargesEntretien INT auto_increment,
-                                 Pourcentage DOUBLE,
-                                 IdCharges INT NOT NULL,
-                                 PRIMARY KEY(IdChargesEntretien),
-                                 UNIQUE(IdCharges),
-                                 FOREIGN KEY(IdCharges) REFERENCES Charges(IdCharges)
-);
-CREATE TABLE ChargesOrduresMenageres(
-                                 IdChargesOrduresMenageres INT auto_increment,
-                                 Pourcentage DOUBLE,
-                                 IdCharges INT NOT NULL,
-                                 PRIMARY KEY(IdChargesOrduresMenageres),
-                                 UNIQUE(IdCharges),
-                                 FOREIGN KEY(IdCharges) REFERENCES Charges(IdCharges)
-);
 CREATE TABLE DeclarationFiscale(
                                    IdDeclarationFiscale INT auto_increment,
                                    Annee INT,
