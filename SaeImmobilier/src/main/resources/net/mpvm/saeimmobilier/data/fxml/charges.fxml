@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
+
+<?import javafx.scene.layout.Region?>
+<BorderPane prefHeight="720.0" prefWidth="1280.0" styleClass="backgroundColor" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.mpvm.saeimmobilier.controleur.CtrlCharges">
+    <top>
+        <VBox alignment="CENTER">
+            <Label fx:id="labelTitle" alignment="TOP_CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Création de charges" textAlignment="CENTER" textFill="WHITE">
+                <font>
+                    <Font name="System Bold" size="30.0" />
+                </font>
+            </Label>
+            <Region prefHeight="30.0" /> <!-- Espacement entre le titre et le reste de la page -->
+        </VBox>
+    </top>
+
+    <center>
+        <!-- Inner BorderPane -->
+        <BorderPane>
+            <!-- Top section of inner BorderPane -->
+            <top>
+                <GridPane alignment="CENTER" hgap="20" vgap="10" BorderPane.alignment="CENTER">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="200.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="200.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="200.0" />
+                    </columnConstraints>
+                    <children>
+                        <Label text="Date (Charges)" textFill="WHITE" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                            <font>
+                                <Font name="Calibri" size="16.0" />
+                            </font>
+                        </Label>
+                        <DatePicker fx:id="dateCharge" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+
+                        <Label text="Provision sur Charge (Charges)" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                            <font>
+                                <Font name="Calibri" size="16.0" />
+                            </font>
+                        </Label>
+                        <TextField fx:id="fieldProvision" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+                        <Label text="Type de Charges" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="0">
+                            <font>
+                                <Font name="Calibri" size="16.0" />
+                            </font>
+                        </Label>
+                        <ComboBox fx:id="comboTypeCharges" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                            <items>
+                                <FXCollections fx:factory="observableArrayList">
+                                    <String fx:value="Eau" />
+                                    <String fx:value="Entretien" />
+                                    <String fx:value="Ordures Ménagères" />
+                                    <String fx:value="Électricité" />
+                                </FXCollections>
+                            </items>
+                        </ComboBox>
+                    </children>
+                </GridPane>
+            </top>
+
+            <!-- Center section of inner BorderPane -->
+            <center>
+                <GridPane alignment="CENTER" hgap="20" vgap="10" BorderPane.alignment="CENTER">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="200.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="200.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="200.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="200.0" />
+                    </columnConstraints>
+                    <children>
+                        <!-- Eau Fields -->
+                        <Label text="Nouvel Indice (Eau)" textFill="WHITE" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                            <font>
+                                <Font name="Calibri" size="16.0" />
+                            </font>
+                        </Label>
+                        <TextField fx:id="fieldNouvelIndice" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+
+                        <Label text="Partie Fixe (Eau)" textFill="WHITE" GridPane.columnIndex="0" GridPane.rowIndex="2">
+                            <font>
+                                <Font name="Calibri" size="16.0" />
+                            </font>
+                        </Label>
+                        <TextField fx:id="fieldPartieFixe" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+
+                        <Label text="Partie Variable (Eau)" textFill="WHITE" GridPane.columnIndex="0" GridPane.rowIndex="4">
+                            <font>
+                                <Font name="Calibri" size="16.0" />
+                            </font>
+                        </Label>
+                        <TextField fx:id="fieldPartieVariable" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+
+                        <!-- Entretien Fields -->
+                        <Label text="Montant Entretien" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                            <font>
+                                <Font name="Calibri" size="16.0" />
+                            </font>
+                        </Label>
+                        <TextField fx:id="fieldMontantEntretien" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+                        <!-- Ordures Ménagères Fields -->
+                        <Label text="Montant Ordures Ménagères" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="0">
+                            <font>
+                                <Font name="Calibri" size="16.0" />
+                            </font>
+                        </Label>
+                        <TextField fx:id="fieldMontantOrdures" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+
+                        <!-- Électricité Fields -->
+                        <Label text="Montant Électricité" textFill="WHITE" GridPane.columnIndex="3" GridPane.rowIndex="0">
+                            <font>
+                                <Font name="Calibri" size="16.0" />
+                            </font>
+                        </Label>
+                        <TextField fx:id="fieldMontantElectricite" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                    </children>
+                </GridPane>
+            </center>
+        </BorderPane>
+    </center>
+
+    <bottom>
+        <GridPane alignment="CENTER" hgap="20.0" vgap="10.0" BorderPane.alignment="CENTER">
+            <children>
+                <Button alignment="CENTER" mnemonicParsing="false" onAction="#annuler" prefWidth="200.0" styleClass="button-supprimer" text="Retour à l'accueil" textFill="WHITE" GridPane.columnIndex="0" />
+                <Button alignment="CENTER" mnemonicParsing="false" onAction="#ajouterCharge" prefWidth="200.0" styleClass="button-valider" text="Ajouter la charge" textFill="WHITE" GridPane.columnIndex="1" />
+            </children>
+        </GridPane>
+    </bottom>
+</BorderPane>

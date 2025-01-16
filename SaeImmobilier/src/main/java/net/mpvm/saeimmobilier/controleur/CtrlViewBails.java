@@ -95,11 +95,15 @@ public class CtrlViewBails {
 
                 Button resilierBailButton = new Button("Résilier");
                 resilierBailButton.setOnAction(event -> resilierBail(bail));
-
+                Button creerCharges = new Button("Attribuer Charges");
+                creerCharges.setOnAction(event -> creerCharges(bail.getIdBail(),event));
+                Button voirDocument = new Button("Voir Document");
+                voirDocument.setOnAction(event -> voirDocument(bail.getIdBail(),event));
                 // Application des styles
                 List<Label> labels = List.of(dateDebut, dateFin, montantLoyer, dateSignature, colocation);
                 labels.forEach(label -> label.getStyleClass().add("assurance-label"));
-
+                voirDocument.getStyleClass().add("button-valider");
+                creerCharges.getStyleClass().add("button-valider");
                 gererLocatairesButton.getStyleClass().add("button-valider");
                 resilierBailButton.getStyleClass().add("button-supprimer");
 
@@ -110,6 +114,8 @@ public class CtrlViewBails {
                 gp.add(colocation, 4, 0);
                 gp.add(gererLocatairesButton, 5, 0);
                 gp.add(resilierBailButton, 6, 0);
+                gp.add(creerCharges, 5, 1);
+                gp.add(voirDocument, 6, 1);
 
                 vBoxBails.getChildren().add(gp);
             }
@@ -143,6 +149,20 @@ public class CtrlViewBails {
         } catch (Bail.BailException e) {
             JfxUtil.displayError("Erreur lors de la résiliation", e.getMessage());
         }
+    }
+    private void creerCharges(int idBail,ActionEvent event){
+        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+        stage.close();
+        Stage s = new Stage();
+        s.getProperties().put("bail",idBail);
+        JfxUtil.showWindow(s,VueCharges.class);
+    }
+    private void voirDocument(int idBail,ActionEvent event){
+        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+        stage.close();
+        Stage s = new Stage();
+        s.getProperties().put("bail",idBail);
+        JfxUtil.showWindow(s,VueCharges.class);
     }
 
     @FXML
