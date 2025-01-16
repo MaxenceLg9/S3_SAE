@@ -70,6 +70,11 @@
                                         <Font name="System Bold" size="14.0" />
                                     </font>
                                 </Button>
+                                <Button fx:id="btnCalculs" mnemonicParsing="false" onAction="#Calculs" prefWidth="190.0" text="Calculs" textFill="WHITE">
+                                    <font>
+                                        <Font name="System Bold" size="14.0" />
+                                    </font>
+                                </Button>
                             </children>
                             <padding>
                                 <Insets top="20.0" />

@@ -21,6 +21,8 @@
             <Button fx:id="btnCalculerImpots" text="Calculer Impôts" onAction="#calculerImpots" prefWidth="200" styleClass="button-valider" />
             <Button fx:id="btnCalculerLoyers" text="Calculer Loyers" onAction="#calculerLoyers" prefWidth="200" styleClass="button-valider" />
             <Button fx:id="btnCalculerCharges" text="Calculer Charges" onAction="#calculerCharges" prefWidth="200" styleClass="button-valider" />
+            <Button fx:id="btnRetour" text="Retour à l'accueil" onAction="#retourAccueil" prefWidth="200" styleClass="button-supprimer" />
+
         </HBox>
 
         <!-- Zone des résultats -->

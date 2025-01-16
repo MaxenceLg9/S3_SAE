@@ -122,4 +122,10 @@ public class CtrlAccueil {
         JfxUtil.showWindow(stage, VueNewAssurance.class);
         stage.getProperties().put("parent", this);
     }
+    @FXML
+    public void Calculs() {
+        Stage stage = new Stage();
+        JfxUtil.showWindow(stage, VueCalculChargesEtImpots.class);
+        stage.getProperties().put("parent", this);
+    }
 }

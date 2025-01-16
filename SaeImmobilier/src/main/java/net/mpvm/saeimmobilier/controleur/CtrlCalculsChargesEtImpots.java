@@ -1,8 +1,10 @@
 package net.mpvm.saeimmobilier.controleur;
 
 import com.sun.webkit.BackForwardList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.text.TextFlow;
@@ -12,6 +14,7 @@ import javafx.scene.text.FontWeight;
 
 import javafx.scene.layout.GridPane;
 
+import javafx.stage.Stage;
 import net.mpvm.saeimmobilier.modele.Bail;
 import net.mpvm.saeimmobilier.modele.Charges;
 import net.mpvm.saeimmobilier.modele.Travaux;
@@ -74,5 +77,10 @@ public class CtrlCalculsChargesEtImpots {
         } catch (Exception e) {
             txtResultats.setText("Erreur : " + e.getMessage());
         }
+    }
+    @FXML
+    private void retourAccueil(ActionEvent event) {
+        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+        stage.close();
     }
 }
