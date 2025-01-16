@@ -3,7 +3,6 @@ package net.mpvm.saeimmobilier.controleur;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.geometry.HPos;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
@@ -13,10 +12,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import net.mpvm.saeimmobilier.modele.AssociationBailLocataires;
-import net.mpvm.saeimmobilier.modele.Bail;
-import net.mpvm.saeimmobilier.modele.BienLouable;
-import net.mpvm.saeimmobilier.modele.Locataire;
+import net.mpvm.saeimmobilier.modele.*;
 import net.mpvm.saeimmobilier.sql.Query.Queryable;
 import net.mpvm.saeimmobilier.util.JfxUtil;
 import net.mpvm.saeimmobilier.vue.VueNewLocataire;
@@ -55,22 +51,25 @@ public class CtrlGererUnBail {
 
     private List<ChoiceBox<Locataire>> choiceBoxesLocataires;
     private List<TextField> fieldsRepartitionsElec;
-    private List<TextField> fieldsRepartitionsEau;
+    private List<TextField> fieldsRepartitionsEntretien;
     private List<TextField> fieldsOrduresMenageres;
     private List<DatePicker> datesDebut;
     private List<DatePicker> datesFin;
-
-    private int idBien;
+    private List<TextField> fieldsRepartitionsEau;
+    private List<TextField> fieldsRepartitionsLoyer;
 
     boolean isModification;
     private File selectedFile;
     private BienLouable bienLouable;
 
+
     public void initialize(){
         choiceBoxesLocataires = new LinkedList<>();
         fieldsRepartitionsElec = new LinkedList<>();
-        fieldsRepartitionsEau = new LinkedList<>();
+        fieldsRepartitionsEntretien = new LinkedList<>();
         fieldsOrduresMenageres = new LinkedList<>();
+        fieldsRepartitionsEau = new LinkedList<>();
+        fieldsRepartitionsLoyer = new LinkedList<>();
         datesDebut = new LinkedList<>();
         datesFin = new LinkedList<>();
         Platform.runLater(() -> {
@@ -92,7 +91,6 @@ public class CtrlGererUnBail {
             labelSurface.setText("Surface " + bienLouable.getSurface());
             labelNbPieces.setText(bienLouable.getNbPieces() + " pièces");
             labelDateAjout.setText("Ajouté le " + bienLouable.getDateAjout().toString());
-            idBien = bienLouable.getIdBien();
         });
     }
 
@@ -114,7 +112,7 @@ public class CtrlGererUnBail {
     private boolean fieldsEmpty() {
         for(int i = 0; i < choiceBoxesLocataires.size(); i++){
             if(choiceBoxesLocataires.size()>1)
-                if(choiceBoxesLocataires.get(i).getValue() == null || fieldsRepartitionsElec.get(i).getText().isEmpty() || fieldsRepartitionsEau.get(i).getText().isEmpty() || fieldsOrduresMenageres.get(i).getText().isEmpty() || datesDebut.get(i).getValue() == null){
+                if(choiceBoxesLocataires.get(i).getValue() == null || fieldsRepartitionsElec.get(i).getText().isEmpty() || fieldsRepartitionsEntretien.get(i).getText().isEmpty() || fieldsOrduresMenageres.get(i).getText().isEmpty() || datesDebut.get(i).getValue() == null){
                     System.out.println("fields locataire null");
                     return true;
                 }
@@ -138,22 +136,24 @@ public class CtrlGererUnBail {
 
     private void trySavingBail() {
         try {
-            Bail b = new Bail(Date.valueOf(dateDebut.getValue()),Float.parseFloat(fieldMontantLoyer.getText()), checkBoxRenouvelable.isSelected(), Float.parseFloat(fieldTotalCharges.getText()), Float.parseFloat(fieldDepotGarantie.getText()) ,Date.valueOf(dateFin.getValue()), Date.valueOf(dateSignature.getValue()),BienLouable.BLBuilder.getBienLouable(idBien), selectedFile.getName());
+            Bail b = new Bail(Date.valueOf(dateDebut.getValue()),Float.parseFloat(fieldMontantLoyer.getText()), checkBoxRenouvelable.isSelected(), Float.parseFloat(fieldTotalCharges.getText()), Float.parseFloat(fieldDepotGarantie.getText()) ,Date.valueOf(dateFin.getValue()), Date.valueOf(dateSignature.getValue()),bienLouable, selectedFile.getName());
             b.save();
 
             Map<Locataire,AssociationBailLocataires> locataireAssociations;
             if(choiceBoxesLocataires.size() < 2){
                 locataireAssociations = Map.of(choiceBoxesLocataires.getFirst().getValue(),
                         new AssociationBailLocataires(choiceBoxesLocataires.getFirst().getValue(), b,
-                                100,100,100
+                                100,100,100,100,100
                         ));
             }else {
                 locataireAssociations = choiceBoxesLocataires.stream()
                         .collect(Collectors.toMap(ChoiceBox::getValue,
                                 x -> new AssociationBailLocataires(x.getValue(), b,
                                         Float.parseFloat(fieldsRepartitionsElec.get(choiceBoxesLocataires.indexOf(x)).getText()),
-                                        Float.parseFloat(fieldsRepartitionsEau.get(choiceBoxesLocataires.indexOf(x)).getText()),
+                                        Float.parseFloat(fieldsRepartitionsEntretien.get(choiceBoxesLocataires.indexOf(x)).getText()),
                                         Float.parseFloat(fieldsOrduresMenageres.get(choiceBoxesLocataires.indexOf(x)).getText()),
+                                        Float.parseFloat(fieldsRepartitionsEau.get(choiceBoxesLocataires.indexOf(x)).getText()),
+                                        Float.parseFloat(fieldsRepartitionsLoyer.get(choiceBoxesLocataires.indexOf(x)).getText()),
                                         Date.valueOf(datesDebut.get(choiceBoxesLocataires.indexOf(x)).getValue())
                                 )));
             }
@@ -235,13 +235,21 @@ public class CtrlGererUnBail {
             repartitionElec.setPromptText("Répartition électricité");
             repartitionElec.setPrefSize(200, 30);
 
-            TextField repartitionEau = new TextField();
-            repartitionEau.setPromptText("Répartition eau");
-            repartitionEau.setPrefSize(200, 30);
+            TextField repartitionsEntretien = new TextField();
+            repartitionsEntretien.setPromptText("Répartition entretien");
+            repartitionsEntretien.setPrefSize(200, 30);
 
             TextField orduresMenageres = new TextField();
             orduresMenageres.setPromptText("Ordures ménagères");
             orduresMenageres.setPrefSize(200, 30);
+
+            TextField repartitionEau = new TextField();
+            repartitionEau.setPromptText("Repartition de la facture d'eau");
+            repartitionEau.setPrefSize(200, 30);
+
+            TextField repartitionLoyer = new TextField();
+            repartitionLoyer.setPromptText("Repartition du loyer");
+            repartitionLoyer.setPrefSize(200, 30);
 
             DatePicker dateDebut = new DatePicker();
             dateDebut.setPromptText("Date de début");
@@ -253,55 +261,16 @@ public class CtrlGererUnBail {
             dateFin.setVisible(isModification);
 
             Button supprimerLigne = new Button("Supprimer");
-            supprimerLigne.setOnAction(_ -> {
-                int index = choiceBoxesLocataires.indexOf(choiceBox);
-                choiceBoxesLocataires.remove(index);
-                fieldsRepartitionsElec.remove(index);
-                fieldsRepartitionsEau.remove(index);
-                fieldsOrduresMenageres.remove(index);
-                datesDebut.remove(index);
-                datesFin.remove(index);
-                gridPaneLocataires.getChildren().removeAll(gridPaneLine);
-            });
+            setSupprimerLineAction(supprimerLigne, choiceBox, gridPaneLine);
             supprimerLigne.setPrefSize(200, 30);
             supprimerLigne.setStyle("-fx-background-color: red; -fx-text-fill: white;");
 
             gridPaneLine.setHgap(10);
             gridPaneLine.setVgap(5);
 
-            gridPaneLine.add(locataire, 0, 0);
-            gridPaneLine.add(choiceBox, 1, 0);
-            gridPaneLine.add(repartitionElec, 2, 0);
-            gridPaneLine.add(repartitionEau, 3, 0);
-            gridPaneLine.add(orduresMenageres, 4, 0);
-            gridPaneLine.add(dateDebut, 5, 0);
-            gridPaneLine.add(dateFin, 6, 0);
-            gridPaneLine.add(supprimerLigne, 7, 0);
-
-
-            ColumnConstraints c = new ColumnConstraints();
-            c.setPrefWidth(200);
-            c.setMaxWidth(Region.USE_COMPUTED_SIZE);
-            c.setFillWidth(true);
-            c.setHgrow(Priority.NEVER);
-            c.setHalignment(HPos.CENTER);
-
-            gridPaneLine.getColumnConstraints().add(c);
-            gridPaneLine.getColumnConstraints().add(c);
-            gridPaneLine.getColumnConstraints().add(c);
-            gridPaneLine.getColumnConstraints().add(c);
-            gridPaneLine.getColumnConstraints().add(c);
-            gridPaneLine.getColumnConstraints().add(c);
-            gridPaneLine.getColumnConstraints().add(c);
-            gridPaneLine.getColumnConstraints().add(c);
-
-
-            choiceBoxesLocataires.add(choiceBox);
-            fieldsRepartitionsElec.add(repartitionElec);
-            fieldsRepartitionsEau.add(repartitionEau);
-            fieldsOrduresMenageres.add(orduresMenageres);
-            datesDebut.add(dateDebut);
-            datesFin.add(dateFin);
+            addToLine(gridPaneLine, locataire, choiceBox, repartitionElec, repartitionsEntretien, repartitionLoyer, repartitionEau, orduresMenageres, dateDebut, dateFin, supprimerLigne);
+            makeConstraints(gridPaneLine);
+            addtToLists(choiceBox, repartitionElec, repartitionsEntretien, repartitionLoyer, repartitionEau, dateDebut, dateFin);
 
 
             int rows = gridPaneLocataires.getRowCount();
@@ -320,11 +289,72 @@ public class CtrlGererUnBail {
         }
     }
 
+    private void setSupprimerLineAction(Button supprimerLigne, ChoiceBox<Locataire> choiceBox, GridPane gridPaneLine) {
+        supprimerLigne.setOnAction(_ -> {
+            int index = choiceBoxesLocataires.indexOf(choiceBox);
+            choiceBoxesLocataires.remove(index);
+            fieldsRepartitionsElec.remove(index);
+            fieldsRepartitionsEntretien.remove(index);
+            fieldsOrduresMenageres.remove(index);
+            fieldsRepartitionsEau.remove(index);
+            fieldsRepartitionsLoyer.remove(index);
+            datesDebut.remove(index);
+            datesFin.remove(index);
+            gridPaneLocataires.getChildren().removeAll(gridPaneLine);
+        });
+    }
+
+    private static void addToLine(GridPane gridPaneLine, Label locataire, ChoiceBox<Locataire> choiceBox, TextField repartitionElec, TextField repartitionsEntretien, TextField repartitionLoyer, TextField repartitionEau, TextField orduresMenageres, DatePicker dateDebut, DatePicker dateFin, Button supprimerLigne) {
+        gridPaneLine.add(locataire, 0, 0);
+        gridPaneLine.add(choiceBox, 1, 0);
+        gridPaneLine.add(repartitionElec, 2, 0);
+        gridPaneLine.add(repartitionsEntretien, 3, 0);
+        gridPaneLine.add(repartitionLoyer, 4, 0);
+        gridPaneLine.add(repartitionEau, 5, 0);
+        gridPaneLine.add(orduresMenageres, 6, 0);
+        gridPaneLine.add(dateDebut, 7, 0);
+        gridPaneLine.add(dateFin, 8, 0);
+        gridPaneLine.add(supprimerLigne, 9, 0);
+    }
+
+    private static void makeConstraints(GridPane gridPaneLine) {
+        ColumnConstraints c = new ColumnConstraints();
+        c.setPrefWidth(200);
+        c.setMaxWidth(Region.USE_COMPUTED_SIZE);
+        c.setFillWidth(true);
+        c.setHgrow(Priority.NEVER);
+        c.setHalignment(HPos.CENTER);
+
+        gridPaneLine.getColumnConstraints().add(c);
+        gridPaneLine.getColumnConstraints().add(c);
+        gridPaneLine.getColumnConstraints().add(c);
+        gridPaneLine.getColumnConstraints().add(c);
+        gridPaneLine.getColumnConstraints().add(c);
+        gridPaneLine.getColumnConstraints().add(c);
+        gridPaneLine.getColumnConstraints().add(c);
+        gridPaneLine.getColumnConstraints().add(c);
+        gridPaneLine.getColumnConstraints().add(c);
+        gridPaneLine.getColumnConstraints().add(c);
+    }
+
+    private void addtToLists(ChoiceBox<Locataire> choiceBox, TextField repartitionElec, TextField repartitionsEntretien, TextField repartitionLoyer, TextField repartitionEau, DatePicker dateDebut, DatePicker dateFin) {
+        choiceBoxesLocataires.add(choiceBox);
+        fieldsRepartitionsElec.add(repartitionElec);
+        fieldsRepartitionsEntretien.add(repartitionsEntretien);
+        fieldsOrduresMenageres.add(repartitionLoyer);
+        fieldsRepartitionsEau.add(repartitionEau);
+        fieldsRepartitionsLoyer.add(repartitionLoyer);
+        datesDebut.add(dateDebut);
+        datesFin.add(dateFin);
+    }
+
     private void setVisibleFieldsColocations(boolean visible) {
         for (int i = 0; i < choiceBoxesLocataires.size(); i++) {
             fieldsRepartitionsElec.get(i).setVisible(visible);
-            fieldsRepartitionsEau.get(i).setVisible(visible);
+            fieldsRepartitionsEntretien.get(i).setVisible(visible);
             fieldsOrduresMenageres.get(i).setVisible(visible);
+            fieldsRepartitionsEau.get(i).setVisible(visible);
+            fieldsRepartitionsLoyer.get(i).setVisible(visible);
             datesDebut.get(i).setVisible(visible);
         }
     }

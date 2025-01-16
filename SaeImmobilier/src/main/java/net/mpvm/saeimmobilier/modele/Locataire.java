@@ -24,7 +24,6 @@ public final class Locataire extends Queryable {
 	private String email;
 	private String nom;
 	private String prenom;
-	private float totalCharge;
 
 
 	private Locataire(String nom, String prenom, String email, char sexe, String telephone, int idLocataire) {
@@ -34,7 +33,6 @@ public final class Locataire extends Queryable {
 		this.sexe = sexe;
 		this.telephone = telephone;
 		this.idLocataire = idLocataire;
-		this.totalCharge = 0f;
 	}
 
 	public Locataire(String nom, String prenom, String email, char sexe, String telephone) {
@@ -56,19 +54,25 @@ public final class Locataire extends Queryable {
 		}
 
 		try (UpdateQueryElement query = new UpdateQueryElement(
-				"INSERT INTO AssocieBailLocataire (IdLocataire, IdBail, RepartitionElectricite, RepartitionEntretien, RepartitionOrdures_Menageres) " +
-						"VALUES (?, ?, ?, ?, ?) " +
+				"INSERT INTO AssocieBailLocataire" +
+						"(IdLocataire, IdBail, RepartitionElectricite, RepartitionEntretien, RepartitionOrdures_Menageres, RepartitionEau, RepartitionLoyer) " +
+						"VALUES (?, ?, ?, ?, ?, ?, ?) " +
 						"ON DUPLICATE KEY UPDATE " +
 						"RepartitionElectricite = VALUES(RepartitionElectricite), " +
 						"RepartitionEntretien = VALUES(RepartitionEntretien), " +
-						"RepartitionOrdures_Menageres = VALUES(RepartitionOrdures_Menageres)",true)) {
+						"RepartitionOrdures_Menageres = VALUES(RepartitionOrdures_Menageres)"+
+						"RepartitionEau = VALUES(RepartitionEau)" +
+						"RepartitionLoyer = VALUES(RepartitionLoyer)",
+				true)) {
 			for(AssociationBailLocataires association : locatairesAssociation.values()){
 				query.setArgs(Map.of(
 						1, association.getLocataire().getIdLocataire(),
 						2, association.getBail().getIdBail(),
 						3, association.getRepartitionElectricite(),
 						4, association.getRepartitionEntretien(),
-						5, association.getRepartitionOrduresMenageres()
+						5, association.getRepartitionOrduresMenageres(),
+						6, association.getPartEau(),
+						7, association.getRepartitionLoyer()
 				));
 
 
@@ -91,7 +95,9 @@ public final class Locataire extends Queryable {
 				locataires.put(locataire,new AssociationBailLocataires(locataire,bail,
 						JfxUtil.doubleToFloat(row.get("RepartitionElectricite")),
 						JfxUtil.doubleToFloat(row.get("RepartitionEntretien")),
-						JfxUtil.doubleToFloat(row.get("RepartitionOrdures_Menageres"))
+						JfxUtil.doubleToFloat(row.get("RepartitionOrdures_Menageres")),
+						JfxUtil.doubleToFloat(row.get("RepartitionEau")),
+						JfxUtil.doubleToFloat(row.get("RepartitionLoyer"))
 				));
 			}
 		} catch (QueryElement.QEltException qEltException) {
@@ -145,10 +151,6 @@ public final class Locataire extends Queryable {
 		this.prenom = prenom;
 	}
 
-	public void ajouterBail(Bail bail) {
-
-	}
-
 	public List<Charges> getCharges() throws LocataireException {
 		try {
 			return Charges.getChargesFromLocataire(this);
@@ -164,10 +166,6 @@ public final class Locataire extends Queryable {
 		} catch (Bail.BailException e) {
 			throw new LocataireException("Erreur",e.getSqlException());
 		}
-	}
-
-
-	public void addCharges(float charges) {
 	}
 
 	public static List<Locataire> getLocatairesFromBail(Bail bail) throws LocataireException {
@@ -189,10 +187,6 @@ public final class Locataire extends Queryable {
 			throw new LocataireException("Erreur lors de la récupération des locataires",e.getSqlException());
 		}
 	}
-
-	public float getTotalCharge(){return this.totalCharge;}
-
-	public void setTotalCharge(float totalCharge) {this.totalCharge = totalCharge;}
 
 
 	public void save() throws LocataireException{
@@ -224,7 +218,7 @@ public final class Locataire extends Queryable {
 
 	@Override
 	public void archiver() throws QbleException {
-
+		//TODO : est-ce utile?
 	}
 
 	public void modify() throws LocataireException{
@@ -269,83 +263,6 @@ public final class Locataire extends Queryable {
 		return l;
 	}
 
-	public  static List<Locataire> getLocatairesFromBail(int idBail) throws LocataireException {
-		List<Locataire> locataires = new LinkedList<>();
-		final String SELECT_QUERY = "SELECT L.* FROM Locataire L JOIN AssocieBailLocataire ABL ON L.IdLocataire = ABL.IdLocataire WHERE ABL.IdBail = ?";
-
-		try (SelectQueryElement selectQueryElement = new SelectQueryElement(SELECT_QUERY)) {
-			selectQueryElement.setArgs(Map.of(1, idBail));
-			selectQueryElement.execute();
-			List<Map<String, Object>> result = selectQueryElement.getResult();
-			for (Map<String, Object> row : result) {
-				locataires.add(new Locataire(row));
-			}
-		} catch (QueryElement.QEltException qEltException) {
-			qEltException.getSqlException().printStackTrace();
-			throw new LocataireException("Erreur lors de la récupération des locataires", qEltException.getSqlException());
-		}
-		return locataires;
-	}
-
-	public static Map<Locataire, Float> getRepartitionElectricite(int idBail) throws LocataireException {
-		Map<Locataire, Float> repartitionElectricite = new HashMap<>();
-		final String SELECT_QUERY = "SELECT L.*, ABL.RepartitionElectricite FROM Locataire L JOIN AssocieBailLocataire ABL ON L.IdLocataire = ABL.IdLocataire WHERE ABL.IdBail = ?";
-
-		try (SelectQueryElement selectQueryElement = new SelectQueryElement(SELECT_QUERY)) {
-			selectQueryElement.setArgs(Map.of(1, idBail));
-			selectQueryElement.execute();
-			List<Map<String, Object>> result = selectQueryElement.getResult();
-			for (Map<String, Object> row : result) {
-				Locataire locataire = new Locataire(row);
-				Float repartition = Float.parseFloat(row.get("RepartitionElectricite").toString());
-				repartitionElectricite.put(locataire, repartition);
-			}
-		} catch (QueryElement.QEltException qEltException) {
-			qEltException.getSqlException().printStackTrace();
-			throw new LocataireException("Erreur lors de la récupération de la répartition de l'électricité", qEltException.getSqlException());
-		}
-		return repartitionElectricite;
-	}
-
-	public static Map<Locataire, Float> getRepartitionOrduresMenageres(int idBail) throws LocataireException {
-		Map<Locataire, Float> repartitionOrdures = new HashMap<>();
-		final String SELECT_QUERY = "SELECT L.*, ABL.RepartitionOrdures_Menageres FROM Locataire L JOIN AssocieBailLocataire ABL ON L.IdLocataire = ABL.IdLocataire WHERE ABL.IdBail = ?";
-
-		try (SelectQueryElement selectQueryElement = new SelectQueryElement(SELECT_QUERY)) {
-			selectQueryElement.setArgs(Map.of(1, idBail));
-			selectQueryElement.execute();
-			List<Map<String, Object>> result = selectQueryElement.getResult();
-			for (Map<String, Object> row : result) {
-				Locataire locataire = new Locataire(row);
-				Float repartition = Float.parseFloat(row.get("RepartitionOrdures_Menageres").toString());
-				repartitionOrdures.put(locataire, repartition);
-			}
-		} catch (QueryElement.QEltException qEltException) {
-			qEltException.getSqlException().printStackTrace();
-			throw new LocataireException("Erreur lors de la récupération de la répartition des ordures ménagères", qEltException.getSqlException());
-		}
-		return repartitionOrdures;
-	}
-
-	public static Map<Locataire, Float> getRepartitionEntretien(int idBail) throws LocataireException {
-		Map<Locataire, Float> repartitionEntretien = new HashMap<>();
-		final String SELECT_QUERY = "SELECT L.*, ABL.RepartitionEntretien FROM Locataire L JOIN AssocieBailLocataire ABL ON L.IdLocataire = ABL.IdLocataire WHERE ABL.IdBail = ?";
-
-		try (SelectQueryElement selectQueryElement = new SelectQueryElement(SELECT_QUERY)) {
-			selectQueryElement.setArgs(Map.of(1, idBail));
-			selectQueryElement.execute();
-			List<Map<String, Object>> result = selectQueryElement.getResult();
-			for (Map<String, Object> row : result) {
-				Locataire locataire = new Locataire(row);
-				Float repartition = Float.parseFloat(row.get("RepartitionEntretien").toString());
-				repartitionEntretien.put(locataire, repartition);
-			}
-		} catch (QueryElement.QEltException qEltException) {
-			qEltException.getSqlException().printStackTrace();
-			throw new LocataireException("Erreur lors de la récupération de la répartition de l'entretien", qEltException.getSqlException());
-		}
-		return repartitionEntretien;
-	}
 
 
 
