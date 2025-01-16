@@ -4,6 +4,7 @@ package net.mpvm.saeimmobilier.modele;
 import net.mpvm.saeimmobilier.sql.Query.*;
 import net.mpvm.saeimmobilier.util.Unfinished;
 
+import java.io.File;
 import java.math.BigInteger;
 import java.sql.SQLException;
 import java.util.*;
@@ -66,11 +67,15 @@ public class Bail extends Queryable {
 	}
 
 	private void setCheminFichier(String cheminFichier) {
-		this.cheminFichier = "./baux/" + cheminFichier;
+		this.cheminFichier = cheminFichier;
 	}
 
 	public String getCheminFichier() {
 		return this.cheminFichier;
+	}
+
+	public File getDocument(){
+		return new File("./baux/" + this.cheminFichier);
 	}
 
 	// Constructeur
