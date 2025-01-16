@@ -86,6 +86,8 @@ public class Charges {
 
         return totalCharges;
     }
+
+    @Unfinished
     public static List<Charges> getChargesFromLocataire(Locataire locataire) throws ChargesException {
         List<Charges> chargesList = new LinkedList<>();
         final String SELECT_QUERY = """
