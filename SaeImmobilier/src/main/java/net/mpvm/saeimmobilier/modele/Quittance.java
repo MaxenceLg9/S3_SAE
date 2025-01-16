@@ -1,13 +1,15 @@
 package net.mpvm.saeimmobilier.modele;
 
 
+import java.sql.Date;
+
 public class Quittance extends Document {
     private float montantLoyer;
     private float montantCharges;
     private Paiement paiement;
     private int IdQuittance;
     // Constructeur privé qui demande tous les attributs (y compris ceux de la classe parente)
-    private Quittance(String cheminDocument, ModeleDate dateAjout, int IdQuittance, float montantLoyer, float montantCharges) {
+    private Quittance(String cheminDocument, Date dateAjout, int IdQuittance, float montantLoyer, float montantCharges) {
         super(cheminDocument, dateAjout); // Appelle le constructeur de la classe parente
         this.montantLoyer = montantLoyer;
         this.montantCharges = montantCharges;
@@ -15,7 +17,7 @@ public class Quittance extends Document {
     }
 
     // Constructeur public qui demande tous les attributs sauf ceux de la classe parente
-    public Quittance(String cheminDocument, ModeleDate dateAjout, float montantLoyer, float montantCharges) {
+    public Quittance(String cheminDocument, Date dateAjout, float montantLoyer, float montantCharges) {
         super(cheminDocument, dateAjout); // Appelle le constructeur de la classe parente
         this.montantLoyer = montantLoyer;
         this.montantCharges = montantCharges;
