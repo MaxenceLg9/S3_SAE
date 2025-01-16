@@ -34,22 +34,25 @@ public class Travaux extends Queryable {
 		this.numeroFacture=numeroFacture;
 		this.reduction=reduction;
 		this.nature=nature;
-
 	}
 
-	private Travaux(TBuilder builder) {
-		this(builder.IdTravaux, builder.numeroFacture, builder.numeroDevis, builder.montant,builder.montantNonDeductible,builder.reduction,builder.nature,builder.entreprise,builder.dateTravaux);
-		this.numeroFacture = builder.numeroFacture;
-		this.entreprise = builder.entreprise;
-		this.montant = builder.montant;
-		this.montantNonDeductible = builder.montantNonDeductible;
-		this.reduction = builder.reduction;
-		this.nature = builder.nature;
-		this.numeroDevis = builder.numeroDevis;
-		this.dateTravaux = builder.dateTravaux;
-
-
+	public Travaux(String numeroFacture,String numeroDevis,Float montant,Float montantNonDeductible,Float reduction,String nature,String entreprise,Date dateTravaux){
+		this(-1,numeroFacture,numeroDevis,montant,montantNonDeductible,reduction,nature,entreprise,dateTravaux);
 	}
+
+	private Travaux(Map<String,Object> args) {
+		this(((Number) args.get("IdTravaux")).intValue(),
+				(String) args.get("NumeroFacture"),
+				(String) args.get("NumeroDevis"),
+				JfxUtil.doubleToFloat(args.get("Montant")),
+				JfxUtil.doubleToFloat(args.get("MontantNonDeductible")),
+				JfxUtil.doubleToFloat(args.get("Reduction")),
+				(String) args.get("Nature"),
+				(String) args.get("Entreprise"),
+				(Date) args.get("DateTravaux"));
+	}
+
+
 	public static boolean numeroFactureExiste(String numeroFacture) {
 		String query = "SELECT COUNT(*) as count FROM Travaux WHERE NumeroFacture = ?";
 		try (SelectQueryElement sqlQuery = new SelectQueryElement(query)) {
@@ -141,8 +144,8 @@ public class Travaux extends Queryable {
 			selectQueryElement.execute();
 			List<Map<String, Object>> result = selectQueryElement.getResult();
 
-			if (!result.isEmpty() && result.get(0).get("TotalImpots") != null) {
-				totalImpots = (double) result.get(0).get("TotalImpots");
+			if (!result.isEmpty() && result.getFirst().get("TotalImpots") != null) {
+				totalImpots = (double) result.getFirst().get("TotalImpots");
 			}
 		} catch (QueryElement.QEltException qEltException) {
 			qEltException.getSqlException().printStackTrace();
@@ -162,7 +165,7 @@ public class Travaux extends Queryable {
 		try (SelectQueryElement query = new SelectQueryElement(SELECT_QUERY)) {
 			Result rs = query.execute();
 			for (Map<String, Object> row : rs) {
-				Travaux travaux = new Travaux.TBuilder(row).build();
+				Travaux travaux = new Travaux(row);
 				travauxList.add(travaux);
 			}
 		} catch (QueryElement.QEltException qEltException) {
@@ -198,7 +201,7 @@ public class Travaux extends Queryable {
 			Result rs = query.execute();
 			for (Map<String, Object> row : rs) {
 				// Utilisation du builder directement depuis les données
-				Travaux travaux = new Travaux.TBuilder(row).build();
+				Travaux travaux = new Travaux(row);
 				travauxList.add(travaux);
 			}
 		} catch (QueryElement.QEltException qEltException) {
@@ -221,19 +224,10 @@ public class Travaux extends Queryable {
 			Result rs = query.execute();
 
 			if (!rs.isEmpty()) {
-				Map<String, Object> row = rs.get(0); // Assuming the first result is the one we need.
-				return new Travaux.TBuilder(
-						(int) row.get("IdTravaux"),
-						(String) row.get("NumeroFacture"),
-						(String) row.get("Entreprise"),
-						(Date) row.get("DateTravaux"),
-						(String) row.get("NumeroDevis"),
-						(Float) row.get("Montant"),
-						(Float) row.get("MontantNonDeductible"),
-						(String) row.get("Nature"),
-						(Float) row.get("Reduction")
-						)
-						.build();
+				Map<String, Object> row = rs.getFirst(); // Assuming the first result is the one we need.
+				return new Travaux(
+						row
+						);
 			} else {
 				throw new TravauxException("Aucun travail trouvé avec le numéro de facture : " + numeroFacture);
 			}
@@ -482,48 +476,6 @@ public class Travaux extends Queryable {
 	}
 	public void setRecuperableLocataire(boolean recuperableLocataire) {
 		this.recuperableLocataire = recuperableLocataire;
-	}
-	public static class TBuilder {
-		private int IdTravaux;
-		private String numeroFacture;
-		private String entreprise;
-		private Float montant;
-		private Float montantNonDeductible;
-		private Float reduction;
-		private String nature;
-		private String numeroDevis;
-		private Date dateTravaux;
-
-		public TBuilder(Map<String, Object> args) {
-			this.IdTravaux = ((Number) args.get("IdTravaux")).intValue();
-			this.numeroFacture = (String) args.get("NumeroFacture");
-			this.entreprise = (String) args.get("Entreprise");
-			this.montant = JfxUtil.doubleToFloat((Double) args.get("Montant"));
-			this.montantNonDeductible = JfxUtil.doubleToFloat((Double) args.get("MontantNonDeductible"));
-			this.reduction = JfxUtil.doubleToFloat((Double) args.get("Reduction"));
-			this.nature = (String) args.get("Nature");
-			this.numeroDevis = (String) args.get("NumeroDevis");
-			this.dateTravaux = (Date) args.get("DateTravaux");
-		}
-		public TBuilder(int id,String numeroFacture, String entreprise, Date dateTravaux,String numeroDevis, Float montant,Float montantNonDeductible, String nature, Float reduction) {
-			this.IdTravaux=id;
-			this.numeroFacture = numeroFacture;
-			this.dateTravaux = dateTravaux;
-			this.entreprise = entreprise;
-			this.numeroDevis = numeroDevis;
-			this.montant = montant;
-			this.montantNonDeductible = montantNonDeductible;
-			this.nature = nature;
-			this.reduction = reduction;
-		}
-		public TBuilder(String numeroFacture, String entreprise, Date dateTravaux,String numeroDevis, Float montant,Float montantNonDeductible, String nature, Float reduction) {
-			this(-1, numeroFacture,entreprise,dateTravaux,numeroDevis,montant,montantNonDeductible,nature,reduction);
-		}
-
-
-		public Travaux build() {
-			return new Travaux(this);
-		}
 	}
 
 	public static class TravauxException extends Queryable.QbleException {

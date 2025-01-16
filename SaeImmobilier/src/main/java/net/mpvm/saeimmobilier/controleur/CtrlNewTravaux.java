@@ -121,8 +121,7 @@ public class CtrlNewTravaux {
                 }
 
                 // Création et sauvegarde des travaux
-                Travaux travaux = new Travaux.TBuilder(numeroFacture, entreprise, dateTravaux, numeroDevis, montant, montantNonDeductible, nature, reduction)
-                        .build();
+                Travaux travaux = new Travaux(numeroFacture,numeroDevis,  montant, montantNonDeductible,reduction, nature,entreprise, dateTravaux);
 
                 travaux.save();
                 JfxUtil.setAlert(Alert.AlertType.INFORMATION, "Succès", "Ajout de Travaux", "Les travaux ont été ajoutés avec succès !");
