@@ -102,7 +102,7 @@ public class CtrlAccueil {
 
 
     public void gererLocation(ActionEvent actionEvent) {
-        //JfxUtil.showWindow(stage,VueEnsembleBails.class);
+//        JfxUtil.showWindow(stage,VueEnsembleBails.class);
     }
 
     public void deconnexion(ActionEvent event) {

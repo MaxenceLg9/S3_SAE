@@ -45,7 +45,7 @@ public abstract class QueryElement<T> implements Closeable {
         try {
             StaticConnection.rollback();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
     }
 

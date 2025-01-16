@@ -27,7 +27,7 @@ public class CtrlViewBails {
 
     @FXML
     public void initialize() {
-        vBoxBails.sceneProperty().addListener((observable, oldScene, newScene) -> {
+        vBoxBails.sceneProperty().addListener((_, _, newScene) -> {
             if (newScene != null) {
                 Stage stage = (Stage) newScene.getWindow();
                 if (stage != null) {
