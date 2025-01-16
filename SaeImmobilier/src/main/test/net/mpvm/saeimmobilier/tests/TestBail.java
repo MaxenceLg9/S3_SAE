@@ -59,6 +59,17 @@ public class TestBail {
         assertThrows(Bail.BailException.class,() -> bail.setLocatairesAssociation(Map.of()));
         Map<Locataire, AssociationBailLocataires> locatairesAssociation = Map.of(TestLocataire.LOCATAIRE1,
                 new AssociationBailLocataires(TestLocataire.LOCATAIRE1, bail, 100, 100, 100, 100, 100));
-        assertThrows(Bail.BailException.class, () -> bail.setLocatairesAssociation(locatairesAssociation));
+        assertThrows(Bail.BailException.class, () -> bail.setLocatairesAssociation(Map.
+                of(TestLocataire.LOCATAIRE1,
+                new AssociationBailLocataires(TestLocataire.LOCATAIRE1, bail, 100, 100, 100, 100, 100))));
+
+        TestLocataire.LOCATAIRE1.save();
+        bail.setLocatairesAssociation(locatairesAssociation);
+
+        TestLocataire.LOCATAIRE2.save();
+        bail.setLocatairesAssociation(Map.of(TestLocataire.LOCATAIRE1,
+                new AssociationBailLocataires(TestLocataire.LOCATAIRE1, bail, 50, 50, 50, 50, 50),
+                TestLocataire.LOCATAIRE2,
+                new AssociationBailLocataires(TestLocataire.LOCATAIRE1, bail, 50, 50, 50, 50, 50)));
     }
 }
