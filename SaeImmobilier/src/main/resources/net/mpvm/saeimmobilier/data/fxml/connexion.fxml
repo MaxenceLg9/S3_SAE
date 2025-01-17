@@ -33,7 +33,7 @@
                <GridPane.margin>
                   <Insets left="10.0" right="10.0" />
                </GridPane.margin></PasswordField>
-             <Button fx:id="btnConnexion" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#Connexion" prefHeight="35.0" prefWidth="100.0" style="-fx-background-color: #2ECC71;" text="Connexion" GridPane.rowIndex="2" />
+             <Button fx:id="btnConnexion" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#Connexion" prefHeight="35.0" prefWidth="100.0" styleClass="button-valider" text="Connexion" GridPane.rowIndex="2" />
             <Hyperlink fx:id="hyperLinkmdpOublie" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#mdpOublie" prefHeight="30.0" prefWidth="150.0" text="Mot de passe oublié ?" textFill="#38d7ff" GridPane.rowIndex="3">
                <font>
                   <Font size="14.0" />
@@ -49,7 +49,7 @@
       </GridPane>
    </center>
    <bottom>
-      <Button fx:id="BtwQuitter" minHeight="35.0" minWidth="125.0" mnemonicParsing="false" onAction="#Quitter" style="-fx-background-color: #FF6F61; -fx-background-radius: 10px;" text="Quitter" textFill="WHITE" BorderPane.alignment="CENTER_LEFT">
+      <Button fx:id="BtwQuitter" minHeight="35.0" minWidth="125.0" mnemonicParsing="false" onAction="#Quitter" styleClass="button-supprimer"  text="Quitter" textFill="WHITE" BorderPane.alignment="CENTER_LEFT">
          <BorderPane.margin>
             <Insets bottom="10.0" left="10.0" />
          </BorderPane.margin>

@@ -358,6 +358,7 @@ public class CtrlGererBien {
             JfxUtil.setAlert(Alert.AlertType.INFORMATION, "Succès", "Modification du bien", "Le bien a été modifié avec succès !");
             alertFieldsEmptyBienLouable();
         }catch (Bien.BienException e){
+            e.printStackTrace();
             JfxUtil.displayError("Erreur lors de la récupération de l'immeuble", e.getMessage());
         }
     }

@@ -14,11 +14,13 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <BorderPane prefHeight="720.0" prefWidth="1280.0" styleClass="backgroundColor" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.mpvm.saeimmobilier.controleur.CtrlAccueil">
     <top>
         <VBox alignment="TOP_CENTER" BorderPane.alignment="CENTER">
             <children>
-                <Label fx:id="welcomeText" alignment="CENTER" contentDisplay="CENTER" text="Bienvenue sur Plazatpplication" textAlignment="CENTER" textFill="#FFFFFF">
+                <Label fx:id="welcomeText" alignment="CENTER" contentDisplay="CENTER" text="Bienvenue sur Plazapplication" textAlignment="CENTER" textFill="#FFFFFF">
                     <font>
                         <Font name="Arial Black" size="36.0" />
                     </font>
@@ -34,7 +36,7 @@
     </top>
     <center>
         <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-            <left>
+            <left >
                 <GridPane BorderPane.alignment="CENTER">
                     <BorderPane.margin>
                         <Insets />
@@ -80,60 +82,11 @@
                 </GridPane>
             </left>
             <center>
-                <TabPane fx:id="tabPane" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" tabMaxHeight="1.7976931034862315E308" tabMaxWidth="1.7976931034862315E308" BorderPane.alignment="CENTER">
-                    <tabs>
-                        <Tab text="Assurances">
-                            <content>
-                                <TableView fx:id="tableViewAssurances" prefHeight="200.0" prefWidth="200.0" styleClass="backgroundColor">
-                                    <columns>
-                                        <TableColumn prefWidth="75.0" text="idAssurance" />
-                                        <TableColumn prefWidth="75.0" text="QuotiteJurisprudence" />
-                                        <TableColumn prefWidth="75.0" text="ProtectionJuridique" />
-                                        <TableColumn prefWidth="75.0" text="Prime" />
-                                        <TableColumn prefWidth="75.0" text="TypeContrat" />
-                                    </columns>
-                                </TableView>
-                            </content>
-                        </Tab>
-                        <Tab text="Locataires">
-                            <content>
-                                <TableView fx:id="tableViewLocataires" prefHeight="200.0" prefWidth="200.0" styleClass="backgroundColor">
-                                    <columns>
-                                        <TableColumn prefWidth="75.0" text="IdLocataire" />
-                                        <TableColumn prefWidth="75.0" text="Nom" />
-                                        <TableColumn prefWidth="75.0" text="Prénom" />
-                                        <TableColumn prefWidth="75.0" text="Sexe" />
-                                        <TableColumn prefWidth="75.0" text="Téléphone" />
-                                        <TableColumn prefWidth="75.0" text="Email" />
-                                    </columns>
-                                </TableView>
-                            </content>
-                        </Tab>
-                        <Tab text="Immeubles">
-                            <content>
-                                <TableView fx:id="tableViewBiens" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #FFFFFF;">
-                                    <columns>
-                                        <TableColumn prefWidth="75.0" text="idBien" />
-                                        <TableColumn prefWidth="139.0" text="ComplémentAdresse" />
-                                        <TableColumn prefWidth="11.0" text="Adresse" />
-                                        <TableColumn prefWidth="75.0" text="Ville" />
-                                        <TableColumn prefWidth="75.0" text="CodePostal" />
-                                        <TableColumn prefWidth="75.0" text="TypeBien" />
-                                        <TableColumn prefWidth="75.0" text="Surface" />
-                                        <TableColumn prefWidth="75.0" text="NombrePieces" />
-                                        <TableColumn prefWidth="75.0" text="NumeroFiscal" />
-                                        <TableColumn prefWidth="75.0" text="DateAjout" />
-                                        <TableColumn prefWidth="75.0" text="Id_Assurance" />
-                                        <TableColumn prefWidth="75.0" text="Id_Propriétaire" />
-                                    </columns>
-                                </TableView>
-                            </content>
-                        </Tab>
-                    </tabs>
-                    <BorderPane.margin>
-                        <Insets />
-                    </BorderPane.margin>
-                </TabPane>
+                <ImageView fitHeight="250.0" fitWidth="330.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true" GridPane.halignment="LEFT" GridPane.valignment="TOP">
+                    <image>
+                        <Image url="@../images/logo_without_background.png" />
+                    </image>
+                </ImageView>
             </center>
             <BorderPane.margin>
                 <Insets bottom="10.0" right="10.0" />

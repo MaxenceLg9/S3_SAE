@@ -67,8 +67,8 @@ public class CtrlNewAssurance {
         btnAjouterAssurance.getStyleClass().add("button-valider");
         btnAjouterAssurance.setOnAction(this::ajouterAssurance);
 
-        Button btnAnnuler = new Button("Annuler");
-        btnAnnuler.getStyleClass().add("button-supprimer");
+        Button btnAnnuler = new Button("Effacer la saisie");
+        btnAnnuler.getStyleClass().add("button");
         btnAnnuler.setOnAction(this::Effacer);
 
         Button btnRetourAccueil = new Button("Retour à l'Accueil");
