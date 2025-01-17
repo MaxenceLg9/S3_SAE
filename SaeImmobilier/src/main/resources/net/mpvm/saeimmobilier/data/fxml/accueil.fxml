@@ -80,7 +80,7 @@
                                 <Insets top="20.0" />
                             </padding>
                         </VBox>
-                        <Button mnemonicParsing="false" onAction="#deconnexion" prefWidth="190.0" style="-fx-background-color: #FF2222;" text="Déconnexion" textFill="WHITE" GridPane.rowIndex="1">
+                        <Button mnemonicParsing="false" onAction="#deconnexion" prefWidth="190.0" styleClass="button-supprimer" text="Déconnexion" textFill="WHITE" GridPane.rowIndex="1">
                             <font>
                                 <Font name="System Bold" size="14.0" />
                             </font>
