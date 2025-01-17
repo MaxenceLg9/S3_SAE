@@ -9,9 +9,12 @@ import net.mpvm.saeimmobilier.modele.*;
 import net.mpvm.saeimmobilier.util.JfxUtil;
 import net.mpvm.saeimmobilier.vue.VueAccueil;
 
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+
 import java.sql.Date;
 import java.time.LocalDate;
-import java.util.Optional;
+
 
 public class CtrlCharges {
 
@@ -40,35 +43,55 @@ public class CtrlCharges {
 
     @FXML
     public void initialize() {
+        resetFields();
+        fieldSetup();
         setupComboBox();
         resetFields();
-        comboTypeCharges.valueProperty().addListener((observable, oldValue, newValue) -> {
-            resetFields();
+        comboTypeCharges.valueProperty().addListener((obs, oldValue, newValue) -> {
             switch (newValue) {
-                case "Provision sur Charge":
+                case "Provision sur charge":
+                    resetFields();
                     fieldProvision.setDisable(false);
                     break;
                 case "Eau":
+                    resetFields();
                     fieldNouvelIndice.setDisable(false);
                     fieldAncienIndice.setDisable(false);
                     fieldPartieFixe.setDisable(false);
                     fieldPartieVariable.setDisable(false);
                     break;
                 case "Entretien":
+                    resetFields();
                     fieldMontantEntretien.setDisable(false);
                     break;
                 case "Ordures Ménagères":
+                    resetFields();
                     fieldMontantOrdures.setDisable(false);
                     break;
                 case "Électricité":
+                    resetFields();
                     fieldMontantElectricite.setDisable(false);
                     break;
                 default:
                     break;
             }
         });
+        dateCharge.sceneProperty().addListener((observable, oldScene, newScene) -> {
+            System.out.println("Scène modifiée : " + newScene);
+            if (newScene != null) {
+                newScene.windowProperty().addListener((obs, oldWindow, newWindow) -> {
+                    System.out.println("Fenêtre détectée : " + newWindow);
+                    if (newWindow instanceof Stage stage) {
+                        System.out.println("Stage trouvé !");
+                        setIdBail(stage);
+                    } else {
+                        System.out.println("Pas de stage détecté.");
+                    }
+                });
+            }
+        });
 
-        fieldSetup();
+
     }
 
     public void setIdBail(Stage stage) {
@@ -82,7 +105,7 @@ public class CtrlCharges {
 
     private void setupComboBox() {
         comboTypeCharges.getItems().setAll("Provision sur charge", "Eau", "Entretien", "Ordures Ménagères", "Électricité");
-        comboTypeCharges.getSelectionModel().selectFirst();
+        comboTypeCharges.setValue(null);
     }
 
     private void resetFields() {
@@ -109,13 +132,14 @@ public class CtrlCharges {
     private void fieldSetup() {
         fieldProvision.setPromptText("Provision sur charge (€)");
         fieldNouvelIndice.setPromptText("Nouvel indice (eau)");
+        fieldAncienIndice.setPromptText("Ancien indice (eau)");
         fieldPartieFixe.setPromptText("Partie fixe (€)");
         fieldPartieVariable.setPromptText("Partie variable (€)");
         fieldMontantEntretien.setPromptText("Montant entretien (€)");
         fieldMontantOrdures.setPromptText("Montant ordures ménagères (€)");
         fieldMontantElectricite.setPromptText("Montant électricité (€)");
 
-        applyNumericValidation(fieldProvision, fieldNouvelIndice, fieldPartieFixe, fieldPartieVariable, fieldMontantEntretien, fieldMontantOrdures, fieldMontantElectricite);
+        applyNumericValidation(fieldProvision, fieldNouvelIndice, fieldPartieFixe, fieldPartieVariable, fieldMontantEntretien, fieldMontantOrdures, fieldMontantElectricite,fieldAncienIndice);
     }
 
     private void applyNumericValidation(TextField... fields) {
@@ -131,6 +155,7 @@ public class CtrlCharges {
             alertFieldsEmpty();
             return;
         }
+        System.out.println(idBail);
 
         try {
             String typeCharge = comboTypeCharges.getValue();
@@ -140,7 +165,7 @@ public class CtrlCharges {
             switch (typeCharge) {
                 case "Provision sur charge":
                     Charges chargeProvision = new Charges.ProvisionCharge(sqlDate );
-                    ((Charges.ProvisionCharge) chargeProvision).setProvision(Float.parseFloat(fieldProvision.getText()));
+                    chargeProvision.setMontant(Float.parseFloat(fieldProvision.getText()));
                     chargeProvision.setIdBail(idBail);
                     chargeProvision.save();
                     break;
@@ -170,6 +195,7 @@ public class CtrlCharges {
                     Charges chargeOrdures = new Charges.ChargeOrduresMenageres(sqlDate);
                     chargeOrdures.setMontant(Float.parseFloat(fieldMontantOrdures.getText()));
                     chargeOrdures.setIdBail(idBail);
+
                     chargeOrdures.save();
                     break;
 
