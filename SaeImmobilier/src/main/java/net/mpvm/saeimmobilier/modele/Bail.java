@@ -345,6 +345,7 @@ public class Bail extends Queryable {
 		if(this.getIdBail() == -1)
 			throw new Bail.BailException("Le bail n'existe pas dans la table", null);
 		try(UpdateQueryElement query = new UpdateQueryElement(DELETE_QUERY, true)){
+			AssociationBailLocataires.delete(this);
 			query.setArgs(Map.of(1,this.getIdBail())).execute();
 			this.getDocument().delete();
 			this.idBail = -1;

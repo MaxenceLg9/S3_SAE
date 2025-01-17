@@ -239,7 +239,8 @@ public abstract class BienLouable extends Bien {
     @Override
     public void delete() throws BienLouableException {
         try(UpdateQueryElement updateQueryElement = new UpdateQueryElement(DELETE_QUERY, true)){
-            Bail.deleteFromBienLouable(this);
+            for(Bail b : Bail.getBauxFromBien(this))
+                b.delete();
             updateQueryElement.setArgs(
                             Map.of(1,this.getIdBien()))
                     .execute();
