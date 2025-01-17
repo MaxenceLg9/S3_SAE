@@ -18,7 +18,7 @@
     <top>
         <VBox alignment="TOP_CENTER" prefWidth="0.0" BorderPane.alignment="CENTER">
             <children>
-                <Label fx:id="welcomeText" alignment="CENTER" contentDisplay="CENTER" text="Bienvenue sur l'application" textAlignment="CENTER" textFill="#FFFFFF">
+                <Label fx:id="welcomeText" alignment="CENTER" contentDisplay="CENTER" text="Bienvenue sur Plazatpplication" textAlignment="CENTER" textFill="#FFFFFF">
                     <font>
                         <Font name="Arial Black" size="36.0" />
                     </font>

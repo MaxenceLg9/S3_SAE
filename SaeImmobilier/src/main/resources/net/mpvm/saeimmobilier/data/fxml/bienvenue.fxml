@@ -21,7 +21,7 @@
    <children>
       <VBox alignment="CENTER" fillWidth="false">
          <children>
-            <Label fx:id="welcomeText" alignment="CENTER" contentDisplay="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="60.0" prefWidth="600.0" text="Bienvenue sur l'application" textAlignment="CENTER" textFill="#FFFFFF">
+            <Label fx:id="welcomeText" alignment="CENTER" contentDisplay="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="60.0" prefWidth="600.0" text="Bienvenue sur Plazatpplication" textAlignment="CENTER" textFill="#FFFFFF">
                <font>
                   <Font name="Arial Black" size="40.0" />
                </font>
