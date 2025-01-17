@@ -327,6 +327,8 @@ public class Bail extends Queryable {
 			throw new Bail.BailException("Le bail n'existe pas dans la table", null);
 		try(UpdateQueryElement query = new UpdateQueryElement(DELETE_QUERY, true)){
 			query.setArgs(Map.of(1,this.getIdBail())).execute();
+			this.getDocument().delete();
+			this.idBail = -1;
 		}
 		catch (QueryElement.QEltException e) {
 			throw new Bail.BailException("Erreur lors de la suppression du bien", e.getSqlException());
