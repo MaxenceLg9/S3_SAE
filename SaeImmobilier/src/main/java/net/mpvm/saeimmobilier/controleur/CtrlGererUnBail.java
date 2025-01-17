@@ -99,6 +99,8 @@ public class CtrlGererUnBail {
             JfxUtil.displayError("Champs vides", "Veuillez remplir tous les champs");
             return;
         }
+        if(bienLouable == null)
+            JfxUtil.displayError("Bien non trouvé", "Veuillez fermer puis réouvrir la page");
         if(choiceBoxesLocataires.isEmpty()) {
             JfxUtil.displayError("Pas de locataire", "Veuillez ajouter un locataire");
             return;
@@ -107,6 +109,7 @@ public class CtrlGererUnBail {
             return;
         }
         trySavingBail();
+        JfxUtil.displayError("Bail enregistré", "Le bail a été enregistré avec succès");
     }
 
     private boolean fieldsEmpty() {

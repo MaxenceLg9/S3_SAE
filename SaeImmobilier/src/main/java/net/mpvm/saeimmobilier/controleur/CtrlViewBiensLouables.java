@@ -54,7 +54,7 @@ public class CtrlViewBiensLouables {
 
 
 
-    private void afficheBiens() {
+    public void afficheBiens() {
         try {
             Label titre = new Label("Liste des Biens Louables");
             titre.setStyle("-fx-font-size: 24px; -fx-text-fill: white; -fx-font-weight: bold;");
@@ -110,7 +110,7 @@ public class CtrlViewBiensLouables {
                 });
 
                 Button modifierButton = new Button("Modifier");
-                modifierButton.setOnAction(event-> modifierBien(bien.getIdBien(),event));
+                modifierButton.setOnAction(event-> modifierBien(bien,event));
 
                 List<Label> labels = List.of(Nom,typeBien, CAdresse, surface, nbPieces);
                 Nom.getStyleClass().add("assurance-title");
@@ -176,9 +176,9 @@ public class CtrlViewBiensLouables {
     }
 
     @FXML
-    private void modifierBien(int idBien,ActionEvent event) {
+    private void modifierBien(BienLouable bien,ActionEvent event) {
         Stage s = new Stage();
-        s.getProperties().put("bien",idBien);
+        s.getProperties().put("bien",bien);
         JfxUtil.showWindow(s, VueModifierBien.class);
     }
 }

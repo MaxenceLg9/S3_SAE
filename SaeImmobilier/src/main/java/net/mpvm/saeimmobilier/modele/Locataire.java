@@ -61,6 +61,13 @@ public final class Locataire extends Queryable {
 			throw new Bail.BailException("La somme des répartitions doit être égal à 100",null);
 		if(locatairesAssociation.keySet().stream().anyMatch(x -> x.getIdLocataire() == -1))
 			throw new Bail.BailException("Un locataire n'existe pas dans la base de données",null);
+
+		Collection<Locataire> locataires = locatairesAssociation.values().stream().map(AssociationBailLocataires::getLocataire).toList();
+		// Use a Set to check for duplicates
+		Set<Locataire> uniqueLocataires = new HashSet<>(locataires);
+		if(uniqueLocataires.size() < locataires.size()){
+			throw new Bail.BailException("Duplicate locataires in list",null);
+		}
 		try (UpdateQueryElement query = new UpdateQueryElement(
 				"INSERT INTO AssocieBailLocataire" +
 						"(IdLocataire, IdBail, RepartitionElectricite, RepartitionEntretien, RepartitionOrdures_Menageres, RepartitionEau, RepartitionLoyer, DateDebut, DateFin) " +

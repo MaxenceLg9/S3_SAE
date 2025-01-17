@@ -41,6 +41,10 @@ public abstract class QueryElement<T> implements Closeable {
         }
     }
 
+    public static void newStaticConnection(Connection connection){
+        StaticConnection = connection;
+    }
+
     public static void rollBackStaticConnection() {
         try {
             StaticConnection.rollback();

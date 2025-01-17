@@ -15,7 +15,7 @@ public class VueModifierBien extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        if(!stage.getProperties().containsKey("bien") || !(stage.getProperties().get("bien") instanceof Bien)) {
+        if(!stage.getProperties().containsKey("bien")) {
             stage.getProperties().put("bien", Garage.GARAGE);
 //            stage.getProperties().put("bien", Immeuble.IMMEUBLE);
         }

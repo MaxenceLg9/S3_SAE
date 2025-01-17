@@ -14,6 +14,7 @@ import net.mpvm.saeimmobilier.modele.Bail;
 import net.mpvm.saeimmobilier.util.JfxUtil;
 import net.mpvm.saeimmobilier.vue.*;
 
+import java.io.IOException;
 import java.util.List;
 
 public class CtrlViewBails {
@@ -108,7 +109,13 @@ public class CtrlViewBails {
                 Button creerCharges = new Button("Attribuer Charges");
                 creerCharges.setOnAction(event -> creerCharges(bail.getIdBail(), event));
                 Button voirDocument = new Button("Voir Document");
-                voirDocument.setOnAction(event -> voirDocument(bail.getIdBail(), event));
+                voirDocument.setOnAction(_ -> {
+                    try {
+                        bail.openDocument();
+                    } catch (IOException e) {
+                        JfxUtil.displayError("Erreur lors de l'ouverture du document", "Veuillez retenter plus tard");
+                    }
+                });
                 Button revaloriserLoyer = new Button("Revaloriser Loyer");
                 revaloriserLoyer.setOnAction(event -> {
                     fieldRevaloriser.setDisable(false); // Rendre le champ texte actif
