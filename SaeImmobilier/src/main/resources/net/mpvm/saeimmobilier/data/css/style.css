@@ -63,13 +63,14 @@
 
 }
 .button {
-    -fx-font-family: "Arial";
     -fx-padding: 10px 20px;
     -fx-cursor: hand;
     -fx-transition: 0.3s;
     -fx-background-radius: 5px;
     -fx-background-color: #C9DDFF;
     -fx-text-fill: black;
+    -fx-font-family: Calibri;
+    -fx-font-size: 16px;
 }
 
 .button:hover {
@@ -77,6 +78,9 @@
     -fx-scale-y: 1.1;
     -fx-opacity: 0.9;
     -fx-background-color: #abbbd7;
+    -fx-font-weight: Bold;
+    -fx-font-family: Calibri;
+    -fx-font-size: 16px;
 }
 .button-supprimer{
     -fx-background-color: #D64933;

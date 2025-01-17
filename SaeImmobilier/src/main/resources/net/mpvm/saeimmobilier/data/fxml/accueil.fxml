@@ -50,30 +50,18 @@
                         <VBox alignment="TOP_CENTER" prefHeight="316.0" prefWidth="226.0" spacing="20.0">
                             <children>
                                 <Button fx:id="btnAjoutBien" styleClass="button"  mnemonicParsing="false" onAction="#ajouterBien" prefWidth="190.0" text="Ajout d'un bien" textFill="WHITE">
-                                    <font>
-                                        <Font name="System Bold" size="14.0" />
-                                    </font>
+
                                 </Button>
                                 <Button fx:id="btnAjoutAssurance" styleClass="button" mnemonicParsing="false" onAction="#ajouterAssurance" prefWidth="190.0" text="Ajout d'une assurance" textFill="WHITE">
-                                    <font>
-                                        <Font name="System Bold" size="14.0" />
-                                    </font>
+
                                 </Button>
                                 <Button fx:id="btnViewBien" styleClass="button" mnemonicParsing="false" onAction="#vueImmeubles" prefWidth="190.0" text="Vue des biens" textFill="WHITE">
-                                    <font>
-                                        <Font name="System Bold" size="14.0" />
-                                    </font>
+
                                 </Button>
 
-                                <Button fx:id="btnLocations" styleClass="button" mnemonicParsing="false" onAction="#gererLocation" prefWidth="190.0" text="Gérer les locations" textFill="WHITE">
-                                    <font>
-                                        <Font name="System Bold" size="14.0" />
-                                    </font>
-                                </Button>
+
                                 <Button fx:id="btnCalculs" styleClass="button" mnemonicParsing="false" onAction="#Calculs" prefWidth="190.0" text="Calculs" textFill="WHITE">
-                                    <font>
-                                        <Font name="System Bold" size="14.0" />
-                                    </font>
+
                                 </Button>
                             </children>
                             <padding>
