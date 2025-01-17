@@ -166,8 +166,6 @@ public class CtrlViewBails {
     }
 
     private void gererLocataires(int idBail, ActionEvent event) {
-        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-        stage.close();
         Stage s = new Stage();
         s.getProperties().put("bail", idBail);
         JfxUtil.showWindow(s, VueLocataires.class);
@@ -193,16 +191,6 @@ public class CtrlViewBails {
     }
 
     private void creerCharges(int idBail, ActionEvent event) {
-        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-        stage.close();
-        Stage s = new Stage();
-        s.getProperties().put("bail", idBail);
-        JfxUtil.showWindow(s, VueCharges.class);
-    }
-
-    private void voirDocument(int idBail, ActionEvent event) {
-        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-        stage.close();
         Stage s = new Stage();
         s.getProperties().put("bail", idBail);
         JfxUtil.showWindow(s, VueCharges.class);
@@ -212,8 +200,5 @@ public class CtrlViewBails {
     private void retourBiens(ActionEvent event) {
         Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         stage.close();
-        Stage s = new Stage();
-        s.getProperties().put("bien", idBien);
-        JfxUtil.showWindow(s, VueBiensLouables.class);
     }
 }

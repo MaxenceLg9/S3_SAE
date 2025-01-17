@@ -152,8 +152,6 @@ public class CtrlViewBiensLouables {
     }
 
     private void gererBails(int idBien,ActionEvent event) {
-        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-        stage.close();
         Stage s = new Stage();
         s.getProperties().put("bien", idBien);
         JfxUtil.showWindow(s, VueBails.class);
