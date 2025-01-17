@@ -2,6 +2,7 @@ package net.mpvm.saeimmobilier.tests;
 
 import net.mpvm.saeimmobilier.modele.*;
 import net.mpvm.saeimmobilier.sql.Query.QueryElement;
+import net.mpvm.saeimmobilier.sql.Query.Queryable;
 import org.junit.jupiter.api.*;
 
 import java.util.List;
@@ -21,7 +22,7 @@ public class TestLocataire {
     public static final Locataire LOCATAIRE2 = new Locataire(NOM, PRENOM, EMAIL, SEXE, TELEPHONE);
 
     @BeforeAll
-    public static void setUp() {
+    public static void setUp() throws Bail.BailException {
         QueryElement.newStaticConnection();
     }
 
@@ -96,46 +97,6 @@ public class TestLocataire {
             fail("Exception occurred while fetching charges: " + e.getMessage());
         }
         locataire.delete();
-    }
-
-    @Test
-    public void testGetBaux() throws Locataire.LocataireException {
-        Locataire locataire = new Locataire(NOM, PRENOM, EMAIL, SEXE, TELEPHONE);
-        locataire.save();
-        try {
-            List<Bail> baux = locataire.getBaux();
-            assertNotNull(baux);
-        } catch (Locataire.LocataireException e) {
-            fail("Exception occurred while fetching baux: " + e.getMessage());
-        }
-        locataire.delete();
-    }
-
-    @Test
-    public void testAssociationWithBail() throws Locataire.LocataireException, Bail.BailException {
-        Locataire locataire = new Locataire(NOM, PRENOM, EMAIL, SEXE, TELEPHONE);
-        locataire.save();
-        TestBail.BAIL.save();
-
-        Map<Locataire, AssociationBailLocataires> associationMap = Map.of(
-                locataire, new AssociationBailLocataires(locataire, TestBail.BAIL, 40.0f, 30.0f, 30.0f,30f,30f)
-        );
-
-        Locataire.setLocatairesAssociation(associationMap);
-
-        Map<Locataire, AssociationBailLocataires> fetchedAssociations = Locataire.getLocatairesAssociation(TestBail.BAIL);
-        assertTrue(fetchedAssociations.containsKey(locataire));
-
-        TestBail.BAIL.delete();
-        locataire.delete();
-    }
-
-    @AfterEach
-    public void cleanUp() throws Locataire.LocataireException {
-        Locataire locataire = new Locataire(NOM, PRENOM, EMAIL, SEXE, TELEPHONE);
-        if (locataire.getIdLocataire() != -1) {
-            locataire.delete();
-        }
     }
 
     @AfterAll

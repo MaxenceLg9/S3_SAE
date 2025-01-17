@@ -43,6 +43,9 @@ public class TestBail {
     @Test
     public void testInstance() throws Queryable.QbleException {
         Bail bail = new Bail(DATE_DEBUT, LOYER, RENOUVELABLE, DEPOT_GARANTIE, TOTAL_CHARGES, DATE_SIGNATURE, DATE_FIN, BienLouable.BLBuilder.getBienLouable(GARAGE.getIdBien()),"");
+        GARAGE.delete();
+        assertThrows(Bail.BailException.class, bail::save);
+        GARAGE.save();
         bail.save();
         bail.delete();
     }
@@ -70,6 +73,11 @@ public class TestBail {
         bail.setLocatairesAssociation(Map.of(TestLocataire.LOCATAIRE1,
                 new AssociationBailLocataires(TestLocataire.LOCATAIRE1, bail, 50, 50, 50, 50, 50),
                 TestLocataire.LOCATAIRE2,
-                new AssociationBailLocataires(TestLocataire.LOCATAIRE1, bail, 50, 50, 50, 50, 50)));
+                new AssociationBailLocataires(TestLocataire.LOCATAIRE2, bail, 50, 50, 50, 50, 50)));
+
+        assertThrows(Bail.BailException.class, () -> bail.setLocatairesAssociation(Map.of(TestLocataire.LOCATAIRE1,
+                new AssociationBailLocataires(TestLocataire.LOCATAIRE1, bail, 50, 50, 50, 50, 50),
+                TestLocataire.LOCATAIRE2,
+                new AssociationBailLocataires(TestLocataire.LOCATAIRE1, bail, 50, 50, 50, 50, 50))));
     }
 }

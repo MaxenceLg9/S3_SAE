@@ -44,6 +44,7 @@ public class TestGarage {
     public static void setDown() throws Immeuble.ImmeubleException {
         IMMEUBLE.delete();
         QueryElement.rollBackStaticConnection();
+        QueryElement.removeStaticConnection();
     }
 
     @Test

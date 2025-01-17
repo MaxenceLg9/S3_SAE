@@ -1,6 +1,9 @@
 package net.mpvm.saeimmobilier.tests;
 
 import net.mpvm.saeimmobilier.modele.Proprietaire;
+import net.mpvm.saeimmobilier.sql.Query.QueryElement;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -9,6 +12,17 @@ public class TestProprietaire {
 
     private static final String EMAIL = "johndoe@gmail.com";
     private static final String PASSWORD = "A1!password";
+
+    @BeforeAll
+    public static void setUp(){
+        QueryElement.newStaticConnection();
+    }
+
+    @AfterAll
+    public static void setDown(){
+        QueryElement.rollBackStaticConnection();
+        QueryElement.removeStaticConnection();
+    }
 
     @Test
     public void testInstanceProprietaire() throws Proprietaire.ProprietaireException {

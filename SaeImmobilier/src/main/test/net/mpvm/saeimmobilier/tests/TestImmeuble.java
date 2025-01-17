@@ -11,8 +11,7 @@ import org.junit.jupiter.api.Test;
 import java.sql.Date;
 import java.time.LocalDate;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TestImmeuble {
     
@@ -48,6 +47,10 @@ public class TestImmeuble {
     @Test
     public void testFactoryPatternInstance() throws Bien.BienException {
         Immeuble immeuble = new Immeuble.IBuilder(VILLE, CODE_POSTAL, ADRESSE, NUMERO_FISCAL_IMMEUBLE,DATE,IDPROPRIO).build();
+
+        assertEquals(-1, immeuble.getIdBien());
+        assertNotEquals(IMMEUBLE,immeuble);
+
         immeuble.save();
         Immeuble immeuble1 = Immeuble.IBuilder.getImmeuble(immeuble.getIdBien());
         assertEquals(immeuble, immeuble1);
