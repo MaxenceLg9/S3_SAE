@@ -20,13 +20,11 @@ public class Caution {
     private Caution(int idCaution, String TypeContratTravail,Locataire locataire ) {
         this.idCaution = idCaution;
 
-        this.typeContratTravail = typeContratTravail;
         this.locataire = locataire;
     }
 
     // Constructeur public (sans idCaution)
     public Caution( String TypeContratTravail,Locataire locataire ) {
-        this.typeContratTravail = typeContratTravail;
         this.locataire = locataire;
     }
 

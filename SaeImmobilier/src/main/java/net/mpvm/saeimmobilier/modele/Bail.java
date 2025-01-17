@@ -98,9 +98,6 @@ public class Bail extends Queryable {
 		}
 	}
 
-	public static void deleteFromBienLouable(BienLouable bienLouable) {
-	}
-
 	private void setCheminFichier(String cheminFichier) {
 
 	}
