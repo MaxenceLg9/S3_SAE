@@ -56,7 +56,7 @@ CREATE TABLE Travaux(
                         NumeroDevis          VARCHAR(10),
                         IdBien               INT,
                         PRIMARY KEY (IdTravaux),
-                        FOREIGN KEY (IdBien) REFERENCES Bien (IdBien)
+                        FOREIGN KEY (IdBien) REFERENCES Bien(IdBien)
 );
 CREATE TABLE Assurance(
                           IdAssurance INT auto_increment,
@@ -234,14 +234,6 @@ CREATE TABLE TaxesFoncieres(
                                PRIMARY KEY(IdTaxesFoncieres),
                                UNIQUE(IdDocument),
                                FOREIGN KEY(IdDocument) REFERENCES Document(IdDocument)
-);
-
-CREATE TABLE Realiser(
-                         IdTravaux INT,
-                         IdBien INT,
-                         PRIMARY KEY(IdTravaux, IdBien),
-                         FOREIGN KEY(IdTravaux) REFERENCES Travaux(IdTravaux),
-                         FOREIGN KEY(IdBien) REFERENCES Bien(IdBien)
 );
 
 -- Trigger pour calculer TotalCharges dans la table Bail
