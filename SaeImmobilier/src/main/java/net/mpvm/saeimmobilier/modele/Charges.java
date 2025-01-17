@@ -6,6 +6,8 @@ import net.mpvm.saeimmobilier.sql.Query.Queryable;
 import net.mpvm.saeimmobilier.sql.Query.SelectQueryElement;
 import net.mpvm.saeimmobilier.util.Unfinished;
 import net.mpvm.saeimmobilier.sql.Query.UpdateQueryElement;
+
+import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -184,7 +186,7 @@ public abstract class Charges {
             throw new ChargesException("Cette charge existe déjà dans la table.", null);
         }
 
-        // Validation des données
+        // Validation des données communes
         if (this.montant < 0) {
             throw new ChargesException("Le montant de la charge ne peut pas être négatif.", null);
         }
@@ -194,7 +196,7 @@ public abstract class Charges {
 
         // Préparer la requête SQL
         String INSERT_QUERY = """
-        INSERT INTO Charges (Montant, DateCharge, TypeCharges, NouvelIndice, AncienIndice, PartieFixe, PartieVariable, IdBail)
+        INSERT INTO Charges (Montant, DateCharge, TypeCharge, NouvelIndice, AncienIndice, PartieFixe, PartieVariable, IdBail)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?)
     """;
 
@@ -202,54 +204,54 @@ public abstract class Charges {
             // Déterminer les valeurs spécifiques selon le type de charge
             Map<Integer, Object> args = switch (this) {
                 case ProvisionCharge pc -> Map.of(
-                        1, this.getMontant(),
-                        2, this.getDateReleve(),
+                        1, pc.getMontant(),
+                        2, pc.getDateReleve(),
                         3, "Provision sur charge",
-                        4, null, // NouvelIndice
-                        5, null, // AncienIndice
-                        6, null, // PartieFixe
-                        7, null, // PartieVariable
-                        8, this.getIdBail()
+                        4, 0, // NouvelIndice
+                        5, 0, // AncienIndice
+                        6, 0, // PartieFixe
+                        7, 0, // PartieVariable
+                        8, pc.getIdBail()
                 );
                 case ChargeEau ce -> Map.of(
-                        1, this.getMontant(),
-                        2, this.getDateReleve(),
+                        1, ce.getMontant(),
+                        2, ce.getDateReleve(),
                         3, "Eau",
                         4, ce.getNouvelIndice(),
                         5, ce.getAncienIndice(),
                         6, ce.getPartieFixe(),
                         7, ce.getPartieVariable(),
-                        8, this.getIdBail()
+                        8, ce.getIdBail()
                 );
-                case ChargeEntretien ce -> Map.of(
-                        1, this.getMontant(),
-                        2, this.getDateReleve(),
+                case ChargeEntretien cen -> Map.of(
+                        1, cen.getMontant(),
+                        2, cen.getDateReleve(),
                         3, "Entretien",
-                        4, null, // NouvelIndice
-                        5, null, // AncienIndice
-                        6, null, // PartieFixe
-                        7, null, // PartieVariable
-                        8, this.getIdBail()
+                        4, 0, // NouvelIndice
+                        5, 0, // AncienIndice
+                        6, 0, // PartieFixe
+                        7, 0, // PartieVariable
+                        8, cen.getIdBail()
                 );
                 case ChargeOrduresMenageres com -> Map.of(
-                        1, this.getMontant(),
-                        2, this.getDateReleve(),
+                        1, com.getMontant(),
+                        2, com.getDateReleve(),
                         3, "Ordures ménagères",
-                        4, null, // NouvelIndice
-                        5, null, // AncienIndice
-                        6, null, // PartieFixe
-                        7, null, // PartieVariable
-                        8, this.getIdBail()
+                        4, 0, // NouvelIndice
+                        5, 0, // AncienIndice
+                        6, 0, // PartieFixe
+                        7, 0, // PartieVariable
+                        8, com.getIdBail()
                 );
-                case ChargeElectricite ce -> Map.of(
-                        1, this.getMontant(),
-                        2, this.getDateReleve(),
+                case ChargeElectricite cel -> Map.of(
+                        1, cel.getMontant(),
+                        2, cel.getDateReleve(),
                         3, "Électricité",
-                        4, null, // NouvelIndice
-                        5, null, // AncienIndice
-                        6, null, // PartieFixe
-                        7, null, // PartieVariable
-                        8, this.getIdBail()
+                        4, 0, // NouvelIndice
+                        5, 0, // AncienIndice
+                        6, 0, // PartieFixe
+                        7, 0, // PartieVariable
+                        8, cel.getIdBail()
                 );
                 default -> throw new ChargesException("Type de charge inconnu ou non supporté.", null);
             };
@@ -257,7 +259,13 @@ public abstract class Charges {
             // Exécuter la requête avec les arguments
             query.setArgs(args).execute();
 
-            System.out.println("Charge ajoutée avec succès.");
+            // Récupérer l'ID généré
+            List<Map<String, Object>> generatedKeys = query.getGeneratedKeys();
+            if (!generatedKeys.isEmpty()) {
+                this.idCharges = ((BigInteger) generatedKeys.getFirst().get("GENERATED_KEY")).intValue();
+            }
+
+            System.out.println("Charge ajoutée avec succès : ID " + this.idCharges);
         } catch (QueryElement.QEltException qEltException) {
             throw new ChargesException(
                     "Erreur lors de l'ajout de la charge : " + qEltException.getSqlException().getMessage(),
@@ -266,7 +274,8 @@ public abstract class Charges {
         }
     }
 
-    private int getIdBail() {
+
+    int getIdBail() {
         return this.idBail;
     }
 
@@ -275,18 +284,11 @@ public abstract class Charges {
         this.idBail=idBail;
     }
     public static class ProvisionCharge extends Charges {
-        private float provision;
         public ProvisionCharge(int idCharges, Date dateReleve) {
             super(idCharges,dateReleve);
         }
         public ProvisionCharge(Date dateReleve) {
             this(-1,dateReleve);
-        }
-        public void setProvision(float provision){
-            this.provision=provision;
-        }
-        public float getProvision(){
-            return provision;
         }
 
 
@@ -356,7 +358,7 @@ public abstract class Charges {
 
             // Appliquer le montant calculé à l'objet
             this.setMontant(montant);
-            return 0;
+            return montant;
         }
 
         // Getters et setters
