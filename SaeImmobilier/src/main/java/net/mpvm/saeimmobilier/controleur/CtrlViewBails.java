@@ -100,7 +100,7 @@ public class CtrlViewBails {
                 Button voirDocument = new Button("Voir Document");
                 voirDocument.setOnAction(event -> voirDocument(bail.getIdBail(),event));
                 Button revaloriserLoyer = new Button("Revaloriser Loyer");
-                revaloriserLoyer.setOnAction(event -> bail.mettreAJourLoyer(1));
+                revaloriserLoyer.setOnAction(event -> bail.revaloriserLoyer(1));
                 // Application des styles
                 List<Label> labels = List.of(dateDebut, dateFin, montantLoyer, dateSignature, colocation);
                 labels.forEach(label -> label.getStyleClass().add("assurance-label"));
