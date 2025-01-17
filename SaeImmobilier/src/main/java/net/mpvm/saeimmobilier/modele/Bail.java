@@ -4,10 +4,14 @@ package net.mpvm.saeimmobilier.modele;
 import net.mpvm.saeimmobilier.sql.Query.*;
 import net.mpvm.saeimmobilier.util.Unfinished;
 
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 import java.math.BigInteger;
 import java.sql.SQLException;
 import java.util.*;
 import java.sql.Date;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class Bail extends Queryable {
@@ -66,11 +70,19 @@ public class Bail extends Queryable {
 	}
 
 	private void setCheminFichier(String cheminFichier) {
-		this.cheminFichier = "./baux/" + cheminFichier;
+		this.cheminFichier = cheminFichier;
 	}
 
 	public String getCheminFichier() {
 		return this.cheminFichier;
+	}
+
+	public File getDocument(){
+		return new File("./baux/" + this.cheminFichier);
+	}
+
+	public void openDocument() throws IOException {
+		Desktop.getDesktop().open(getDocument());
 	}
 
 	// Constructeur
@@ -114,7 +126,7 @@ public class Bail extends Queryable {
 	}
 
 
-	public void mettreAJourLoyer(int icc){
+	public void revaloriserLoyer(int icc){
 		setLoyer(this.loyer * icc);
 		try(UpdateQueryElement updateQueryElement = new UpdateQueryElement("UPDATE Bail SET MontantLoyer = ? WHERE IdBail = ?", true)){
 			updateQueryElement.setArgs(Map.of(1, this.loyer, 2, this.idBail)).execute();
@@ -322,6 +334,8 @@ public class Bail extends Queryable {
 			throw new Bail.BailException("Le bail n'existe pas dans la table", null);
 		try(UpdateQueryElement query = new UpdateQueryElement(DELETE_QUERY, true)){
 			query.setArgs(Map.of(1,this.getIdBail())).execute();
+			this.getDocument().delete();
+			this.idBail = -1;
 		}
 		catch (QueryElement.QEltException e) {
 			throw new Bail.BailException("Erreur lors de la suppression du bien", e.getSqlException());

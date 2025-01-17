@@ -181,6 +181,8 @@ public class CtrlGererBien {
                 add(fieldAdresse);
                 add(fieldVille);
                 add(fieldCodePostal);
+                add(fieldIdProprio);
+                add(fieldNumeroFiscal);
             }
         };
         fieldCodePostal.setTextFormatter(new TextFormatter<>(change ->
