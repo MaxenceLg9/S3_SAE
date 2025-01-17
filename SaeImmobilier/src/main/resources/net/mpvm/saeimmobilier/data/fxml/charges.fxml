@@ -39,6 +39,9 @@
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="200.0" />
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="200.0" />
                     </columnConstraints>
+                    <padding>
+                        <Insets top="10.0" right="50.0" bottom="10.0" left="50.0" />
+                    </padding>
                     <children>
                         <Label text="Date (Charges)" textFill="WHITE" GridPane.columnIndex="0" GridPane.rowIndex="0">
                             <font>
@@ -83,6 +86,9 @@
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="200.0" />
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="200.0" />
                     </columnConstraints>
+                    <padding>
+                        <Insets top="10.0" right="50.0" bottom="10.0" left="50.0" />
+                    </padding>
                     <children>
                         <!-- Eau Fields -->
                         <Label text="Nouvel Indice (Eau)" textFill="WHITE" GridPane.columnIndex="0" GridPane.rowIndex="0">
@@ -142,6 +148,9 @@
 
     <bottom>
         <GridPane alignment="CENTER" hgap="20.0" vgap="10.0" BorderPane.alignment="CENTER">
+            <padding>
+                <Insets top="20.0" right="30.0" bottom="40.0" left="30.0" />
+            </padding>
             <children>
                 <Button alignment="CENTER" mnemonicParsing="false" onAction="#annuler" prefWidth="200.0" styleClass="button-supprimer" text="Retour" textFill="WHITE" GridPane.columnIndex="0" />
                 <Button alignment="CENTER" mnemonicParsing="false" onAction="#ajouterCharge" prefWidth="200.0" styleClass="button-valider" text="Ajouter la charge" textFill="WHITE" GridPane.columnIndex="1" />
