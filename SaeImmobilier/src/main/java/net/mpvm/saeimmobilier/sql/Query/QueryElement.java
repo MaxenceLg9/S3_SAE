@@ -82,7 +82,10 @@ public abstract class QueryElement<T> implements Closeable {
      */
     public boolean isClosed() throws QEltException {
         try{
-            return this.connection.isClosed() && this.preparedStatement.isClosed();
+            if(StaticConnection != null)
+                return this.preparedStatement.isClosed();
+            else
+                return this.preparedStatement.isClosed() && this.connection.isClosed();
         }
         catch(SQLException sqlException){
             throw new QEltException("error when checking if the queryElement is closed", sqlException);
