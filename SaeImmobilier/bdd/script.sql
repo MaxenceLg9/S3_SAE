@@ -177,7 +177,6 @@ CREATE TABLE AssocieBailLocataire(
                                      RepartitionOrdures_Menageres float,
                                      RepartitionEau float,
                                      RepartitionLoyer float,
-                                     TypeCharge VARCHAR(50),
                                      PRIMARY KEY(IdLocataire, IdBail),
                                      FOREIGN KEY(IdLocataire) REFERENCES Locataire(IdLocataire),
                                      FOREIGN KEY(IdBail) REFERENCES Bail(IdBail)
