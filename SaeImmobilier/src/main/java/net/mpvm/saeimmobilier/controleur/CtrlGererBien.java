@@ -88,8 +88,6 @@ public class CtrlGererBien {
         this.listTypeBien.setOnAction(actionEvent -> {
             TypeBien selectedType = this.listTypeBien.getValue();
             if (selectedType == TypeBien.IMMEUBLE) {
-                this.fieldIdProprio.setText("");
-                this.fieldNumeroFiscal.setText("");
                 enableFieldsForImmeuble();
             } else if (selectedType == TypeBien.GARAGE || selectedType == TypeBien.HABITATION) {
                 // Activer uniquement les champs pour GARAGE ou HABITATION
@@ -186,8 +184,6 @@ public class CtrlGererBien {
                 add(fieldAdresse);
                 add(fieldVille);
                 add(fieldCodePostal);
-                add(fieldIdProprio);
-                add(fieldNumeroFiscal);
             }
         };
         fieldCodePostal.setTextFormatter(new TextFormatter<>(change ->
