@@ -109,7 +109,7 @@ public class CtrlGererUnBail {
             return;
         }
         trySavingBail();
-        JfxUtil.displayError("Bail enregistré", "Le bail a été enregistré avec succès");
+        JfxUtil.setAlert(Alert.AlertType.INFORMATION,"Sauvegarde confirmé","Bail enregistré", "Le bail a été enregistré avec succès");
     }
 
     private boolean fieldsEmpty() {
