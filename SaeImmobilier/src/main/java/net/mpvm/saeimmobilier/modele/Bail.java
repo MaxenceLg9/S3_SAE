@@ -4,11 +4,14 @@ package net.mpvm.saeimmobilier.modele;
 import net.mpvm.saeimmobilier.sql.Query.*;
 import net.mpvm.saeimmobilier.util.Unfinished;
 
+import java.awt.*;
 import java.io.File;
+import java.io.IOException;
 import java.math.BigInteger;
 import java.sql.SQLException;
 import java.util.*;
 import java.sql.Date;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class Bail extends Queryable {
@@ -78,6 +81,10 @@ public class Bail extends Queryable {
 		return new File("./baux/" + this.cheminFichier);
 	}
 
+	public void openDocument() throws IOException {
+		Desktop.getDesktop().open(getDocument());
+	}
+
 	// Constructeur
 	public Bail(Date dateDebut, float loyer, boolean renouvelable, float totalCharge, float depotGarantie, Date dateSignature, Date dateFin, BienLouable bienLouable, String cheminFichier){
 		this(-1, dateDebut, loyer, renouvelable, totalCharge, depotGarantie, dateSignature, dateFin, bienLouable, cheminFichier);
@@ -119,7 +126,7 @@ public class Bail extends Queryable {
 	}
 
 
-	public void mettreAJourLoyer(int icc){
+	public void revaloriserLoyer(int icc){
 		setLoyer(this.loyer * icc);
 		try(UpdateQueryElement updateQueryElement = new UpdateQueryElement("UPDATE Bail SET MontantLoyer = ? WHERE IdBail = ?", true)){
 			updateQueryElement.setArgs(Map.of(1, this.loyer, 2, this.idBail)).execute();
