@@ -6,6 +6,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -65,9 +66,18 @@ public class CtrlViewBails {
             retourBiens.getStyleClass().add("button-supprimer");
             vBoxBails.getChildren().add(retourBiens);
             Button ajouterBail = new Button("Ajouter Bail");
-            ajouterBail.setOnAction(event -> ajouterBail(event,idBien));
+            ajouterBail.setOnAction(event -> ajouterBail(event, idBien));
             ajouterBail.getStyleClass().add("button-valider");
             vBoxBails.getChildren().add(ajouterBail);
+            TextField fieldRevaloriser = new TextField();
+            fieldRevaloriser.setPromptText("Donner un numéro de ICC");
+            fieldRevaloriser.setDisable(true);
+            fieldRevaloriser.setMaxWidth(400);
+            vBoxBails.getChildren().add(fieldRevaloriser);
+            Button revaloriserValider = new Button("Valider Revalorisation");
+            revaloriserValider.setDisable(true);
+            revaloriserValider.getStyleClass().add("button-valider");
+            vBoxBails.getChildren().add(revaloriserValider);
             List<Bail> baux = Bail.findByBien(idBien);
 
             if (baux.isEmpty()) {
@@ -91,16 +101,33 @@ public class CtrlViewBails {
                 Label colocation = new Label("Colocation " + bail.isColocation());
 
                 Button gererLocatairesButton = new Button("Gérer Locataires");
-                gererLocatairesButton.setOnAction(event -> gererLocataires(bail.getIdBail(),event));
+                gererLocatairesButton.setOnAction(event -> gererLocataires(bail.getIdBail(), event));
 
                 Button resilierBailButton = new Button("Résilier");
                 resilierBailButton.setOnAction(event -> resilierBail(bail));
                 Button creerCharges = new Button("Attribuer Charges");
-                creerCharges.setOnAction(event -> creerCharges(bail.getIdBail(),event));
+                creerCharges.setOnAction(event -> creerCharges(bail.getIdBail(), event));
                 Button voirDocument = new Button("Voir Document");
-                voirDocument.setOnAction(event -> voirDocument(bail.getIdBail(),event));
+                voirDocument.setOnAction(event -> voirDocument(bail.getIdBail(), event));
                 Button revaloriserLoyer = new Button("Revaloriser Loyer");
-                revaloriserLoyer.setOnAction(event -> bail.revaloriserLoyer(1));
+                revaloriserLoyer.setOnAction(event -> {
+                    fieldRevaloriser.setDisable(false); // Rendre le champ texte actif
+                    revaloriserValider.setDisable(false); // Rendre le bouton valider actif
+                });
+                revaloriserValider.setOnAction(validerEvent -> {
+                    try {
+                        int iccValue = Integer.parseInt(fieldRevaloriser.getText().trim());
+                        bail.revaloriserLoyer(iccValue); // Revaloriser le loyer avec la valeur du champ texte
+                        afficheBails(); // Rafraîchir l'affichage des baux après modification
+                        JfxUtil.setAlert(Alert.AlertType.INFORMATION,
+                                "Revalorisation réussie",
+                                null,
+                                "Le loyer a été revalorisé avec succès.");
+                    } catch (NumberFormatException ex) {
+                        JfxUtil.displayError("Erreur de saisie", "Veuillez entrer un numéro ICC valide.");
+                    }
+                });
+
                 // Application des styles
                 List<Label> labels = List.of(dateDebut, dateFin, montantLoyer, dateSignature, colocation);
                 labels.forEach(label -> label.getStyleClass().add("assurance-label"));
@@ -123,7 +150,6 @@ public class CtrlViewBails {
                 gp.add(revaloriserLoyer, 6, 1);
                 gp.add(voirDocument, 5, 1);
 
-
                 vBoxBails.getChildren().add(gp);
             }
         } catch (Bail.BailException e) {
@@ -136,15 +162,16 @@ public class CtrlViewBails {
         Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         stage.close();
         Stage s = new Stage();
-        s.getProperties().put("bail",idBail);
-        JfxUtil.showWindow(s,VueLocataires.class);
-
+        s.getProperties().put("bail", idBail);
+        JfxUtil.showWindow(s, VueLocataires.class);
     }
+
     private void ajouterBail(ActionEvent event, int idBien) {
         Stage s = new Stage();
-        s.getProperties().put("idBien",idBien);
+        s.getProperties().put("idBien", idBien);
         JfxUtil.showWindow(s, VueCreerUnBail.class);
     }
+
     private void resilierBail(Bail bail) {
         try {
             bail.delete();
@@ -157,19 +184,21 @@ public class CtrlViewBails {
             JfxUtil.displayError("Erreur lors de la résiliation", e.getMessage());
         }
     }
-    private void creerCharges(int idBail,ActionEvent event){
+
+    private void creerCharges(int idBail, ActionEvent event) {
         Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         stage.close();
         Stage s = new Stage();
-        s.getProperties().put("bail",idBail);
-        JfxUtil.showWindow(s,VueCharges.class);
+        s.getProperties().put("bail", idBail);
+        JfxUtil.showWindow(s, VueCharges.class);
     }
-    private void voirDocument(int idBail,ActionEvent event){
+
+    private void voirDocument(int idBail, ActionEvent event) {
         Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         stage.close();
         Stage s = new Stage();
-        s.getProperties().put("bail",idBail);
-        JfxUtil.showWindow(s,VueCharges.class);
+        s.getProperties().put("bail", idBail);
+        JfxUtil.showWindow(s, VueCharges.class);
     }
 
     @FXML
@@ -177,7 +206,7 @@ public class CtrlViewBails {
         Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         stage.close();
         Stage s = new Stage();
-        s.getProperties().put("bien",idBien);
+        s.getProperties().put("bien", idBien);
         JfxUtil.showWindow(s, VueBiensLouables.class);
     }
 }
