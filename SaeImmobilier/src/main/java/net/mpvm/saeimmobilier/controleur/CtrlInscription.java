@@ -160,7 +160,10 @@ public class CtrlInscription {
     }
 
     private boolean MDPIdentique() {
+        fieldPassword.setText(fieldPasswordVisible.getText());
+        fieldConfirmPassword.setText(fieldConfirmPasswordVisible.getText());
         return fieldPassword.getText().equals(fieldConfirmPassword.getText());
+
     }
 
     private boolean isValidEmail(String email) {
