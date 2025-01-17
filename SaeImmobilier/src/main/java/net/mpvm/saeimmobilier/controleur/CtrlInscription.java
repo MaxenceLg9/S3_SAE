@@ -76,10 +76,10 @@ public class CtrlInscription {
             add(fieldConfirmPassword);
         }};
 
-        fieldPassword.setOnAction(e -> fieldPasswordVisible.setText(fieldPassword.getText()));
-        fieldPasswordVisible.setOnAction(e -> fieldPassword.setText(fieldPasswordVisible.getText()));
-        fieldConfirmPassword.setOnAction(e -> fieldConfirmPasswordVisible.setText(fieldConfirmPassword.getText()));
-        fieldConfirmPasswordVisible.setOnAction(e -> fieldConfirmPassword.setText(fieldConfirmPasswordVisible.getText()));
+        fieldPassword.setOnAction(_ -> fieldPasswordVisible.setText(fieldPassword.getText()));
+        fieldPasswordVisible.setOnAction(_ -> fieldPassword.setText(fieldPasswordVisible.getText()));
+        fieldConfirmPassword.setOnAction(_ -> fieldConfirmPasswordVisible.setText(fieldConfirmPassword.getText()));
+        fieldConfirmPasswordVisible.setOnAction(_ -> fieldConfirmPassword.setText(fieldConfirmPasswordVisible.getText()));
         // Hide visible fields initially
         fieldPasswordVisible.setVisible(false);
         fieldConfirmPasswordVisible.setVisible(false);
@@ -93,8 +93,6 @@ public class CtrlInscription {
 
     @FXML
     public void Valider(ActionEvent event) {
-        fieldPassword.setText(fieldPasswordVisible.getText());
-        fieldConfirmPassword.setText(fieldConfirmPasswordVisible.getText());
         if (fieldsNotEmpty()) {
             if (!isValidEmail(fieldMail.getText())) {
                 JfxUtil.setAlert(Alert.AlertType.ERROR,
