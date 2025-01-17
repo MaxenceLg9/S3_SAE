@@ -85,6 +85,16 @@ public class Travaux extends Queryable {
 		}
 	}
 
+	public static List<Travaux> getTravauxFromImmeuble(Immeuble immeuble) throws TravauxException {
+		try(SelectQueryElement selectQueryElement = new SelectQueryElement("SELECT * FROM Travaux WHERE IdBien = ?")){
+			selectQueryElement.setArgs(Map.of(1,immeuble.getIdBien()));
+			selectQueryElement.execute();
+			return selectQueryElement.getResult().stream().map(Travaux::new).toList();
+		} catch (QueryElement.QEltException e) {
+			throw new TravauxException("Erreur lors de la récupération des travaux", e.getSqlException());
+		}
+	}
+
 	@Override
 	public void save() throws TravauxException {
 		// Vérification des champs obligatoires
@@ -227,7 +237,7 @@ public class Travaux extends Queryable {
 				Map<String, Object> row = rs.getFirst(); // Assuming the first result is the one we need.
 				return new Travaux(
 						row
-						);
+				);
 			} else {
 				throw new TravauxException("Aucun travail trouvé avec le numéro de facture : " + numeroFacture);
 			}

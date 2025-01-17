@@ -14,15 +14,15 @@ public final class Immeuble extends Bien{
 
 	public static final Immeuble IMMEUBLE;
 
-    static {
-        try {
-            IMMEUBLE = new IBuilder("Toulouse", "31000", "1 rue de la paix", "6789012345",Date.valueOf(LocalDate.now()),"IMMEUBLE COMME JAIME").build();
-        } catch (BienException e) {
-            throw new RuntimeException(e);
-        }
-    }
+	static {
+		try {
+			IMMEUBLE = new IBuilder("Toulouse", "31000", "1 rue de la paix", "6789012345",Date.valueOf(LocalDate.now()),"IMMEUBLE COMME JAIME").build();
+		} catch (BienException e) {
+			throw new RuntimeException(e);
+		}
+	}
 
-    public static final String INSERT_QUERY = "INSERT INTO Bien (Adresse, Ville, CodePostal, TypeBien, NumeroFiscal, IdProprio, DateAjout) VALUES (?, ?, ?, ?, ?, ?, ?)";
+	public static final String INSERT_QUERY = "INSERT INTO Bien (Adresse, Ville, CodePostal, TypeBien, NumeroFiscal, IdProprio, DateAjout) VALUES (?, ?, ?, ?, ?, ?, ?)";
 	public static final String SELECT_QUERY = "SELECT * FROM Bien WHERE TypeBien = 'IMMEUBLE'";
 	public static final String SELECT_WHERE_QUERY = "SELECT * FROM Bien WHERE Adresse = ? AND Ville = ? AND CodePostal = ?";
 	public static final String DELETE_QUERY = "DELETE FROM Bien WHERE IdBien = ? AND TypeBien = 'IMMEUBLE'";
@@ -97,9 +97,8 @@ public final class Immeuble extends Bien{
 		return TypeBien.IMMEUBLE;
 	}
 
-	public List<Travaux> getTravauxAssocies() {
-		//TODO : use a query
-		return null;
+	public List<Travaux> getTravauxAssocies() throws Travaux.TravauxException {
+		return Travaux.getTravauxFromImmeuble(this);
 	}
 
 	public List<BienLouable> getBiensAssocies() throws ImmeubleException {
@@ -164,7 +163,7 @@ public final class Immeuble extends Bien{
 									4, TypeBien.IMMEUBLE.name(),
 									5, this.getNumeroFiscal(),
 									6, this.getIdProprio(),
-											7, this.getDateAjout()))
+									7, this.getDateAjout()))
 					.execute();
 			super.save(q);
 			BBuilder.add(this);
