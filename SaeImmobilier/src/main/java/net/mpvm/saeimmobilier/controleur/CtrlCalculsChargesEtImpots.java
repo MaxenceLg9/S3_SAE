@@ -88,6 +88,7 @@ public class CtrlCalculsChargesEtImpots {
 
             }
         } catch (Exception e) {
+            e.printStackTrace();
             txtResultats.setText("Erreur : " + e.getMessage());
         }
     }
@@ -112,6 +113,7 @@ public class CtrlCalculsChargesEtImpots {
                 txtResultats.appendText(String.format("\nTotal des charges pour le propriétaire : %.2f €", totalCharges));
             }
         } catch (Exception e) {
+            e.printStackTrace();
             txtResultats.setText("Erreur : " + e.getMessage());
         }
     }

@@ -5,6 +5,7 @@ import net.mpvm.saeimmobilier.sql.Query.*;
 import net.mpvm.saeimmobilier.util.JfxUtil;
 import net.mpvm.saeimmobilier.util.Unfinished;
 
+
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
@@ -34,7 +35,7 @@ public class Bail extends Queryable {
 	private Date dateSignature;
 
 	private static final String SELECT_BAUX_FROM_LOCATAIRE = "SELECT B.* FROM Bail B JOIN AssocieBailLocataire ABL ON B.IdBail = ABL.IdBail WHERE ABL.IdLocataire = ?";
-	private static final String SELECT_TOTAL_LOYER = "SELECT SUM(Bail.MontantLoyer) AS TotalLoyers FROM Bail JOIN Bien B ON Bail.IdBien = B.IdBien AND Bail.Archive = FALSE";
+	private static final String SELECT_TOTAL_LOYER = "SELECT SUM(Bail.MontantLoyer) AS TotalLoyers FROM Bail JOIN Bien B ON Bail.IdBien = B.IdBien AND Bail.Archive IS NULL";
 	public static final String DELETE_QUERY = "DELETE FROM Bail WHERE IdBail = ?";
 	public static final String DELETE_QUERY_BIEN = "DELETE FROM Bail WHERE IdBien = ?";
 
@@ -97,8 +98,11 @@ public class Bail extends Queryable {
 		}
 	}
 
+	public static void deleteFromBienLouable(BienLouable bienLouable) {
+	}
+
 	private void setCheminFichier(String cheminFichier) {
-		this.cheminFichier = cheminFichier;
+
 	}
 
 	public String getCheminFichier() {
@@ -181,12 +185,12 @@ public class Bail extends Queryable {
 
 		return totalLoyers;
 	}
-	public static List<Bail> findAllCalculLoyers() throws Travaux.TravauxException {
+	public static List<Bail> findAllCalculLoyers() throws Bail.BailException {
 		List<Bail> bailslist = new ArrayList<>();
 		String SELECT_QUERY = """
-        SELECT IdBail, DateDebut, MontantLoyer,DateFin
+        SELECT *
         FROM Bail B
-        WHERE B.ARCHIVE=FALSE
+        WHERE B.ARCHIVE is null
     	""";
 
 		try (SelectQueryElement query = new SelectQueryElement(SELECT_QUERY)) {
@@ -196,7 +200,7 @@ public class Bail extends Queryable {
 				bailslist.add(bail);
 			}
 		} catch (QueryElement.QEltException qEltException) {
-			throw new Travaux.TravauxException("Erreur lors de la récupération des travaux", qEltException.getSqlException());
+			throw new Bail.BailException("Erreur lors de la récupération des bails", qEltException.getSqlException());
 		}
 
 		return bailslist;
