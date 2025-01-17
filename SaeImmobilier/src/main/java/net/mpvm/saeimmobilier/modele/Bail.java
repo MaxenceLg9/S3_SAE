@@ -28,7 +28,7 @@ public class Bail extends Queryable {
 	private Date dateFin;
 	private float depotGarantie;
 	private boolean renouvelable;
-	private BienLouable bienLouable;
+	private final BienLouable bienLouable;
 	private String cheminFichier;
 
 	private Date dateSignature;
@@ -51,12 +51,30 @@ public class Bail extends Queryable {
 		this.bienLouable = bienLouable;
 		setCheminFichier(cheminFichier);
 	}
-	private Bail(int idBail, Date dateDebut, float loyer,Date dateFin){
-		this.idBail=idBail;
-		this.dateDebut = dateDebut;
-		this.loyer = loyer;
-		this.dateFin = dateFin;
+
+	// Constructeur
+	public Bail(Date dateDebut, float loyer, boolean renouvelable, float totalCharge, float depotGarantie, Date dateSignature, Date dateFin, BienLouable bienLouable, String cheminFichier){
+		this(-1, dateDebut, loyer, renouvelable, totalCharge, depotGarantie, dateSignature, dateFin, bienLouable, cheminFichier);
 	}
+
+	private Bail(Map<String, Object> row) throws Bien.BienException {
+		this(row,BienLouable.BLBuilder.getBienLouable((int) row.get("IdBien")));
+	}
+
+	private Bail(Map<String, Object> row, BienLouable bienLouable) {
+		this((int) row.get("IdBail"),
+				(Date) row.get("DateDebut"),
+				JfxUtil.doubleToFloat(row.get("MontantLoyer")),
+				(boolean) row.get("Renouvelable"),
+				JfxUtil.doubleToFloat(row.get("DepotGarantie")),
+				JfxUtil.doubleToFloat(row.get("TotalCharges")),
+				(Date) row.get("DateSignature"),
+				(Date) row.get("DateFin"),
+				bienLouable,
+				(String) row.get("CheminDocument"));
+	}
+
+
 	public static Bail getBailFromCharges(Charges charges) {
 		try(SelectQueryElement selectQueryElement = new SelectQueryElement("SELECT * FROM Bail B JOIN Charges C ON C.IdBail = B.Bail WHERE C.IdCharges = ?")){
 			selectQueryElement.setArgs(Map.of(1, charges.getIdCharges()));
@@ -67,6 +85,15 @@ public class Bail extends Queryable {
 		catch (QueryElement.QEltException e) {
 			e.printStackTrace();
 			return null;
+		}
+	}
+
+	public static List<Bail> getBauxFromBien(BienLouable bienLouable) throws BailException {
+		try(SelectQueryElement selectQueryElement = new SelectQueryElement("SELECT * FROM Bail WHERE IdBien = ?")){
+			selectQueryElement.setArgs(Map.of(1,bienLouable.getIdBien())).execute();
+			return selectQueryElement.getResult().stream().map(x -> new Bail(x,bienLouable)).toList();
+		}catch (QueryElement.QEltException e){
+			throw new Bail.BailException("Impossible de récupérer les baux de ce bien", null);
 		}
 	}
 
@@ -86,23 +113,7 @@ public class Bail extends Queryable {
 		Desktop.getDesktop().open(getDocument());
 	}
 
-	// Constructeur
-	public Bail(Date dateDebut, float loyer, boolean renouvelable, float totalCharge, float depotGarantie, Date dateSignature, Date dateFin, BienLouable bienLouable, String cheminFichier){
-		this(-1, dateDebut, loyer, renouvelable, totalCharge, depotGarantie, dateSignature, dateFin, bienLouable, cheminFichier);
-	}
 
-	private Bail(Map<String, Object> row) throws Bien.BienException {
-		this((int) row.get("IdBail"),
-				(Date) row.get("DateDebut"),
-				JfxUtil.doubleToFloat(row.get("MontantLoyer")),
-				(boolean) row.get("Renouvelable"),
-				JfxUtil.doubleToFloat(row.get("DepotGarantie")),
-				JfxUtil.doubleToFloat(row.get("TotalCharges")),
-				(Date) row.get("DateSignature"),
-				(Date) row.get("DateFin"),
-				BienLouable.BLBuilder.getBienLouable((int) row.get("IdBien")),
-				(String) row.get("CheminDocument"));
-	}
 
 	public BienLouable getBienLouable(){
 		return this.bienLouable;

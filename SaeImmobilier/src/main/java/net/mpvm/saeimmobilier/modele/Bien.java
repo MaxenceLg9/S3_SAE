@@ -3,7 +3,9 @@ package net.mpvm.saeimmobilier.modele;
 import net.mpvm.saeimmobilier.sql.Query.QueryElement;
 import net.mpvm.saeimmobilier.sql.Query.Queryable;
 import net.mpvm.saeimmobilier.sql.Query.SelectQueryElement;
+import net.mpvm.saeimmobilier.sql.Query.UpdateQueryElement;
 
+import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.*;
 import java.util.*;
@@ -72,14 +74,11 @@ public abstract class Bien extends Queryable {
         //TODO : query
     }
 
-    public void save() throws BienException {
-        try(SelectQueryElement selectQueryElement = new SelectQueryElement(SELECT_ID_QUERY)){
-            selectQueryElement.setArgs(Map.of(1,numeroFiscal));
-            selectQueryElement.execute();
-            Map<String,Object> result = selectQueryElement.getResult().getFirst();
-            this.idBien = (int) result.get("IdBien");
+    public void save(UpdateQueryElement updateQueryElement) throws BienException {
+        try {
+            this.idBien = ((BigInteger) updateQueryElement.getGeneratedKeys().getFirst().get("GENERATED_KEY")).intValue();
         } catch (QueryElement.QEltException e) {
-            throw new BienException("Erreur lors de la récupération de l'ID du bien", e.getSqlException());
+            throw new BienException("Impossible de sauvegarder le document",null);
         }
     }
 

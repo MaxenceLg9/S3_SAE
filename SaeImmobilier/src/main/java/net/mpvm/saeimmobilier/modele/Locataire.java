@@ -165,12 +165,8 @@ public final class Locataire extends Queryable {
 	}
 
 
-	public List<Bail> getBaux() throws LocataireException {
-		try{
-			return Bail.getBauxFromLocataire(this);
-		} catch (Bail.BailException e) {
-			throw new LocataireException("Erreur",e.getSqlException());
-		}
+	public List<Bail> getBaux() throws Bail.BailException {
+		return Bail.getBauxFromLocataire(this);
 	}
 
 	public static List<Locataire> getLocatairesFromBail(Bail bail) throws LocataireException {

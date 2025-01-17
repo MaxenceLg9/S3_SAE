@@ -2,7 +2,6 @@ package net.mpvm.saeimmobilier.modele;
 
 
 import net.mpvm.saeimmobilier.sql.Query.QueryElement;
-import net.mpvm.saeimmobilier.sql.Query.Result;
 import net.mpvm.saeimmobilier.sql.Query.SelectQueryElement;
 import net.mpvm.saeimmobilier.sql.Query.UpdateQueryElement;
 import net.mpvm.saeimmobilier.util.Unfinished;
@@ -55,9 +54,8 @@ public abstract class BienLouable extends Bien {
     }
 
     @Unfinished
-    public ArrayList<Bail> getBaux() {
-        //TODO : make a query
-        return null;
+    public List<Bail> getBaux() throws Bail.BailException {
+        return Bail.getBauxFromBien(this);
     }
 
     @Override
@@ -147,7 +145,7 @@ public abstract class BienLouable extends Bien {
                             7, this.getImmeuble().getIdBien(),
                             8, this.getIdProprio()
                     )).execute();
-            super.save();
+            super.save(updateQueryElement);
             BBuilder.add(this);
         }
         catch (QueryElement.QEltException QEltException){
@@ -241,10 +239,11 @@ public abstract class BienLouable extends Bien {
     @Override
     public void delete() throws BienLouableException {
         try(UpdateQueryElement updateQueryElement = new UpdateQueryElement(DELETE_QUERY, true)){
-            Bail.delete(this);
+            Bail.deleteFromBienLouable(this);
             updateQueryElement.setArgs(
                             Map.of(1,this.getIdBien()))
                     .execute();
+            super.delete();
         }catch(QueryElement.QEltException QEltException){
             QEltException.getSqlException().printStackTrace();
             throw new BienLouableException("Erreur lors de la suppression du bien", QEltException.getSqlException());
