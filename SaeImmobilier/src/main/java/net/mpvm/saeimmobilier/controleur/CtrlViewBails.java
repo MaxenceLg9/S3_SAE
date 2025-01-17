@@ -82,7 +82,7 @@ public class CtrlViewBails {
                 gp.setHgap(10);
                 gp.setVgap(5);
                 gp.setAlignment(Pos.TOP_CENTER);
-                gp.getStyleClass().add("bail-gridpane");
+                gp.getStyleClass().add("locataire-gridpane");
 
                 Label dateDebut = new Label("Début " + bail.getDateDebut());
                 Label dateFin = new Label("Fin " + bail.getDateFin());
@@ -99,23 +99,30 @@ public class CtrlViewBails {
                 creerCharges.setOnAction(event -> creerCharges(bail.getIdBail(),event));
                 Button voirDocument = new Button("Voir Document");
                 voirDocument.setOnAction(event -> voirDocument(bail.getIdBail(),event));
+                Button revaloriserLoyer = new Button("Revaloriser Loyer");
+                revaloriserLoyer.setOnAction(event -> bail.mettreAJourLoyer(1));
                 // Application des styles
                 List<Label> labels = List.of(dateDebut, dateFin, montantLoyer, dateSignature, colocation);
                 labels.forEach(label -> label.getStyleClass().add("assurance-label"));
+                dateDebut.getStyleClass().add("assurance-title");
+                dateFin.getStyleClass().add("assurance-title");
                 voirDocument.getStyleClass().add("button-valider");
                 creerCharges.getStyleClass().add("button-valider");
+                revaloriserLoyer.getStyleClass().add("button-valider");
                 gererLocatairesButton.getStyleClass().add("button-valider");
                 resilierBailButton.getStyleClass().add("button-supprimer");
 
                 gp.add(dateDebut, 0, 0);
                 gp.add(dateFin, 1, 0);
-                gp.add(montantLoyer, 2, 0);
-                gp.add(dateSignature, 3, 0);
-                gp.add(colocation, 4, 0);
+                gp.add(montantLoyer, 0, 1);
+                gp.add(dateSignature, 1, 1);
+                gp.add(colocation, 2, 1);
                 gp.add(gererLocatairesButton, 5, 0);
-                gp.add(resilierBailButton, 6, 0);
-                gp.add(creerCharges, 5, 1);
-                gp.add(voirDocument, 6, 1);
+                gp.add(resilierBailButton, 7, 0);
+                gp.add(creerCharges, 6, 0);
+                gp.add(revaloriserLoyer, 6, 1);
+                gp.add(voirDocument, 5, 1);
+
 
                 vBoxBails.getChildren().add(gp);
             }

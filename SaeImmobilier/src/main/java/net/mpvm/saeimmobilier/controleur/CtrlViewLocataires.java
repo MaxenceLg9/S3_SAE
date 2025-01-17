@@ -81,7 +81,7 @@ public class CtrlViewLocataires {
             gp.getColumnConstraints().addAll(col1, col1);
 
             Label nom = new Label("Nom " + l.getNom());
-            Label prenom = new Label("Prenom " + l.getPrenom());
+            Label prenom = new Label("Prénom " + l.getPrenom());
             Label email = new Label("Email " + l.getEmail());
             Label telephone = new Label("N° tel. " + l.getTelephone());
             Label sexe = new Label("Sexe " + l.getSexe());
@@ -97,13 +97,13 @@ public class CtrlViewLocataires {
             button.getStyleClass().add("button-supprimer");
 
             gp.add(nom, 0, 0);
-            gp.add(prenom, 0, 1);
-            gp.add(email, 1, 1);
-            gp.add(telephone, 1, 0);
-            gp.add(sexe, 2, 2);
+            gp.add(prenom, 1, 0);
+            gp.add(email, 0, 1);
+            gp.add(telephone, 1, 1);
+            gp.add(sexe, 2, 1);
 
             button.setId(String.valueOf(l.getIdLocataire()));
-            gp.add(button, 2, 1);
+            gp.add(button, 2, 0);
 
             gp.setAlignment(Pos.TOP_CENTER);
 

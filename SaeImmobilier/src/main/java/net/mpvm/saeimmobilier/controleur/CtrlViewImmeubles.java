@@ -27,7 +27,7 @@ public class CtrlViewImmeubles {
 
 
 
-    private void afficheImmeubles() {
+    public void afficheImmeubles() {
         try {
             // Effacer les éléments existants avant de les ajouter à nouveau
             vBoxImmeubles.getChildren().clear();
@@ -160,6 +160,8 @@ public class CtrlViewImmeubles {
     private void ajouterBien(ActionEvent event){
         Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         Stage s = new Stage();
+        s.getProperties().put("controleur",this);
         JfxUtil.showWindow(s, VueNewBien.class);
+
     }
 }

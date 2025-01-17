@@ -2,6 +2,7 @@ package net.mpvm.saeimmobilier.modele;
 
 
 import net.mpvm.saeimmobilier.sql.Query.*;
+import net.mpvm.saeimmobilier.util.JfxUtil;
 import net.mpvm.saeimmobilier.util.Unfinished;
 
 import java.awt.*;
@@ -93,10 +94,10 @@ public class Bail extends Queryable {
 	private Bail(Map<String, Object> row) throws Bien.BienException {
 		this((int) row.get("IdBail"),
 				(Date) row.get("DateDebut"),
-				(int) (float) row.get("MontantLoyer"),
+				JfxUtil.doubleToFloat(row.get("MontantLoyer")),
 				(boolean) row.get("Renouvelable"),
-				(float) row.get("DepotGarantie"),
-				(float) row.get("TotalCharges"),
+				JfxUtil.doubleToFloat(row.get("DepotGarantie")),
+				JfxUtil.doubleToFloat(row.get("TotalCharges")),
 				(Date) row.get("DateSignature"),
 				(Date) row.get("DateFin"),
 				BienLouable.BLBuilder.getBienLouable((int) row.get("IdBien")),

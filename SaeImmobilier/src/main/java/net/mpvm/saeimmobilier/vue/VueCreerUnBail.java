@@ -14,7 +14,8 @@ public class VueCreerUnBail extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        if(!primaryStage.getProperties().containsKey("bienLouable")){
+        if(!primaryStage.getProperties().containsKey("idBien")){
+            System.out.println("Starting transaction at" + this.getClass().getSimpleName());
             QueryElement.newStaticConnection();
             primaryStage.getProperties().put("bienLouable", Garage.GARAGE);
             Garage.GARAGE.save();

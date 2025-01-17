@@ -51,6 +51,7 @@ public class CtrlGererBien {
     private Date currentDate;
 
     private Bien bien;
+    private CtrlViewImmeubles controleur;
 
 
     @FXML
@@ -75,6 +76,10 @@ public class CtrlGererBien {
                 this.LabelDate.setText(formattedDate);
                 listTypeBienSetup();
             }
+            if(stage.getProperties().containsKey("controleur")){
+                this.controleur = (CtrlViewImmeubles) stage.getProperties().get("controleur");
+            }
+
         });
     }
 
@@ -285,7 +290,9 @@ public class CtrlGererBien {
                                 this.fieldIdProprio.getText(),
                                 this.datesql
                         ).build().save();
-
+                        if(controleur != null){
+                            controleur.afficheImmeubles();
+                        }
                         JfxUtil.setAlert(Alert.AlertType.INFORMATION, "Succès", "Ajout du bien", "Le bien de type Garage a été ajouté avec succès !");
                     }
                 } else {
