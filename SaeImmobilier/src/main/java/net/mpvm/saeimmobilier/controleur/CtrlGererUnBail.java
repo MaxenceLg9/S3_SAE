@@ -109,7 +109,7 @@ public class CtrlGererUnBail {
             return;
         }
         trySavingBail();
-        JfxUtil.displayError("Bail enregistré", "Le bail a été enregistré avec succès");
+        JfxUtil.setAlert(Alert.AlertType.INFORMATION,"Validation","Bail enregistré", "Le bail a été enregistré avec succès");
     }
 
     private boolean fieldsEmpty() {
@@ -273,7 +273,7 @@ public class CtrlGererUnBail {
 
             addToLine(gridPaneLine, locataire, choiceBox, repartitionElec, repartitionsEntretien, repartitionLoyer, repartitionEau, orduresMenageres, dateDebut, dateFin, supprimerLigne);
             makeConstraints(gridPaneLine);
-            addtToLists(choiceBox, repartitionElec, repartitionsEntretien, repartitionLoyer, repartitionEau, orduresMenageres, dateDebut, dateFin);
+            addToLists(choiceBox, repartitionElec, repartitionsEntretien, repartitionLoyer, repartitionEau, orduresMenageres, dateDebut, dateFin);
 
 
             int rows = gridPaneLocataires.getRowCount();
@@ -340,7 +340,7 @@ public class CtrlGererUnBail {
         gridPaneLine.getColumnConstraints().add(c);
     }
 
-    private void addtToLists(ChoiceBox<Locataire> choiceBox, TextField repartitionElec, TextField repartitionsEntretien, TextField repartitionLoyer, TextField repartitionEau, TextField orduresMenageres, DatePicker dateDebut, DatePicker dateFin) {
+    private void addToLists(ChoiceBox<Locataire> choiceBox, TextField repartitionElec, TextField repartitionsEntretien, TextField repartitionLoyer, TextField repartitionEau, TextField orduresMenageres, DatePicker dateDebut, DatePicker dateFin) {
         choiceBoxesLocataires.add(choiceBox);
         fieldsRepartitionsElec.add(repartitionElec);
         fieldsRepartitionsEntretien.add(repartitionsEntretien);

@@ -55,7 +55,6 @@ public class Assurance extends Queryable{
         return assurances;
     }
 
-
     public float getTotalPrime() {
         return this.prime + this.protectionJuridique;
     }

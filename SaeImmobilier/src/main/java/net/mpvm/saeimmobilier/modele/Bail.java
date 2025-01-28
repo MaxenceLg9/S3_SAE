@@ -342,8 +342,10 @@ public class Bail extends Queryable {
 		try(UpdateQueryElement query = new UpdateQueryElement(DELETE_QUERY, true)){
 			AssociationBailLocataires.delete(this);
 			query.setArgs(Map.of(1,this.getIdBail())).execute();
-			this.getDocument().delete();
 			this.idBail = -1;
+			if(this.getDocument().exists()){
+				this.getDocument().delete();
+			}
 		}
 		catch (QueryElement.QEltException e) {
 			throw new Bail.BailException("Erreur lors de la suppression du bien", e.getSqlException());

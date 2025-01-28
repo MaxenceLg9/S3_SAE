@@ -64,7 +64,7 @@ public final class Locataire extends Queryable {
 
 		Collection<Locataire> locataires = locatairesAssociation.values().stream().map(AssociationBailLocataires::getLocataire).toList();
 		// Use a Set to check for duplicates
-		Set<Locataire> uniqueLocataires = new HashSet<>(locataires);
+		Set<Locataire> uniqueLocataires = locataires.stream().collect(HashSet::new, HashSet::add, HashSet::addAll);
 		if(uniqueLocataires.size() < locataires.size()){
 			throw new Bail.BailException("Duplicate locataires in list",null);
 		}
