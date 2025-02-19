@@ -293,7 +293,7 @@ public class CtrlGererUnBail {
     }
 
     private void setSupprimerLineAction(Button supprimerLigne, ChoiceBox<Locataire> choiceBox, GridPane gridPaneLine) {
-        supprimerLigne.setOnAction(_ -> {
+        supprimerLigne.setOnAction(e -> {
             int index = choiceBoxesLocataires.indexOf(choiceBox);
             choiceBoxesLocataires.remove(index);
             fieldsRepartitionsElec.remove(index);

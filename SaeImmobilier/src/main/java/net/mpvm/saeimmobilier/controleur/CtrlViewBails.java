@@ -29,7 +29,7 @@ public class CtrlViewBails {
 
     @FXML
     public void initialize() {
-        vBoxBails.sceneProperty().addListener((_, _, newScene) -> {
+        vBoxBails.sceneProperty().addListener((e, f, newScene) -> {
             if (newScene != null) {
                 Stage stage = (Stage) newScene.getWindow();
                 if (stage != null) {
@@ -109,7 +109,7 @@ public class CtrlViewBails {
                 Button creerCharges = new Button("Attribuer Charges");
                 creerCharges.setOnAction(event -> creerCharges(bail.getIdBail(), event));
                 Button voirDocument = new Button("Voir Document");
-                voirDocument.setOnAction(_ -> {
+                voirDocument.setOnAction(event -> {
                     try {
                         bail.openDocument();
                     } catch (IOException e) {

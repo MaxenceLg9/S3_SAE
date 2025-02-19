@@ -20,7 +20,7 @@ public class VueCreerUnBail extends Application {
             primaryStage.getProperties().put("bienLouable", Garage.GARAGE);
             Garage.GARAGE.save();
             Garage.GARAGE.getImmeuble().save();
-            primaryStage.setOnCloseRequest(_ -> {
+            primaryStage.setOnCloseRequest(e -> {
                 QueryElement.rollBackStaticConnection();
                 QueryElement.removeStaticConnection();
             });

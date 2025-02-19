@@ -325,8 +325,6 @@ public class Bail extends Queryable {
 			Result rs = query.getGeneratedKeys();
 			this.idBail = ((BigInteger) rs.getFirst().get("GENERATED_KEY")).intValue();
 		} catch (QueryElement.QEltException e) {
-			e.printStackTrace();
-			e.getSqlException().printStackTrace();
 			throw new BailException("Erreur lors de l'insertion du bail", e.getSqlException());
 		}
 	}

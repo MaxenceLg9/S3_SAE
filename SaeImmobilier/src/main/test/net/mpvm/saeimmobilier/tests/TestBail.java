@@ -35,7 +35,9 @@ public class TestBail {
     }
 
     @AfterAll
-    public static void setDown() {
+    public static void setDown() throws Queryable.QbleException {
+        IMMEUBLE.delete();
+        GARAGE.delete();
         QueryElement.rollBackStaticConnection();
         QueryElement.removeStaticConnection();
     }

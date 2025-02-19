@@ -67,7 +67,6 @@ public class TestQueryElement {
             }
         assertTrue(i == result.size() && !rs.next());
         rs.close();
-        connection.close();
     }
 
     @Test

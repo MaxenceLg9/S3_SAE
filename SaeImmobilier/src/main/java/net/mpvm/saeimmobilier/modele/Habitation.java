@@ -2,7 +2,6 @@ package net.mpvm.saeimmobilier.modele;
 
 import net.mpvm.saeimmobilier.sql.Query.QueryElement;
 import net.mpvm.saeimmobilier.sql.Query.SelectQueryElement;
-import org.jetbrains.annotations.NotNull;
 
 import java.sql.Date;
 import java.sql.SQLException;
@@ -54,7 +53,7 @@ public final class Habitation extends BienLouable {
     }
 
     public static class HBuilder extends BLBuilder {
-        public HBuilder(String complementAdresse, int nbPieces, String NumeroFiscal, Immeuble immeuble, float surface,  String idProprio, @NotNull Date dateAjout) {
+        public HBuilder(String complementAdresse, int nbPieces, String NumeroFiscal, Immeuble immeuble, float surface,  String idProprio, Date dateAjout) {
             this(complementAdresse, nbPieces,NumeroFiscal,immeuble,surface,dateAjout, idProprio, -1);
         }
 
