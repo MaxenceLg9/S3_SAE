@@ -51,7 +51,7 @@ public class CtrlGererBien {
     private Date currentDate;
 
     private Bien bien;
-    private CtrlViewImmeubles controleur;
+    private CtrlViewBiensLouables controleur;
 
 
     @FXML
@@ -76,8 +76,8 @@ public class CtrlGererBien {
                 this.LabelDate.setText(formattedDate);
                 listTypeBienSetup();
             }
-            if(stage.getProperties().containsKey("controleur")){
-                this.controleur = (CtrlViewImmeubles) stage.getProperties().get("controleur");
+            if(stage.getProperties().containsKey("controleur") && stage.getProperties().get("controleur") instanceof CtrlViewBiensLouables){
+                this.controleur = (CtrlViewBiensLouables) stage.getProperties().get("controleur");
             }
 
         });
@@ -287,7 +287,7 @@ public class CtrlGererBien {
                                 this.datesql
                         ).build().save();
                         if(controleur != null){
-                            controleur.afficheImmeubles();
+                            controleur.afficheBiens();
                         }
                         JfxUtil.setAlert(Alert.AlertType.INFORMATION, "Succès", "Ajout du bien", "Le bien de type Garage a été ajouté avec succès !");
                     }
@@ -356,7 +356,9 @@ public class CtrlGererBien {
                 immeuble.modify();
             }
             JfxUtil.setAlert(Alert.AlertType.INFORMATION, "Succès", "Modification du bien", "Le bien a été modifié avec succès !");
-            alertFieldsEmptyBienLouable();
+            if(controleur != null){
+                controleur.afficheBiens();
+            }
         }catch (Bien.BienException e){
             e.printStackTrace();
             JfxUtil.displayError("Erreur lors de la récupération de l'immeuble", e.getMessage());

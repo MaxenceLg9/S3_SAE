@@ -19,6 +19,7 @@ public class TestQueryElement {
 
     private SelectQueryElement selectQueryElement;
     private UpdateQueryElement updateQueryElement;
+    private static Connection connection;
 
     @BeforeEach
     public void init() {
@@ -27,8 +28,9 @@ public class TestQueryElement {
     }
 
     @BeforeAll
-    public static void setUp(){
-        QueryElement.newStaticConnection();
+    public static void setUp() throws SQLException {
+        connection = BD.getConnection(false);
+        QueryElement.newStaticConnection(connection);
     }
 
     @AfterAll
@@ -52,7 +54,6 @@ public class TestQueryElement {
         selectQueryElement = new SelectQueryElement(Locataire.SELECT_QUERY);
         Result result = selectQueryElement.execute();
 
-        Connection connection = BD.getConnection(false);
         ResultSet rs = connection.prepareStatement(Locataire.SELECT_QUERY).executeQuery();
         int i = 0;
         while(rs.next() && i < result.size())
@@ -66,7 +67,6 @@ public class TestQueryElement {
             }
         assertTrue(i == result.size() && !rs.next());
         rs.close();
-        connection.close();
     }
 
     @Test

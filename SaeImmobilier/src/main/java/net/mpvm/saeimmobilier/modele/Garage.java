@@ -3,7 +3,6 @@ package net.mpvm.saeimmobilier.modele;
 
 import net.mpvm.saeimmobilier.sql.Query.QueryElement;
 import net.mpvm.saeimmobilier.sql.Query.SelectQueryElement;
-import org.jetbrains.annotations.NotNull;
 
 import java.sql.Date;
 import java.sql.SQLException;
@@ -24,7 +23,7 @@ public final class Garage extends BienLouable {
         }
     }
 
-    public static final String SELECT_QUERY = "SELECT * FROM bien WHERE TypeBien = 'GARAGE'";
+    public static final String SELECT_QUERY = "SELECT * FROM Bien WHERE TypeBien = 'GARAGE'";
 
 	Garage(String complementAdresse, int nbPieces, String NumeroFiscal, Immeuble immeuble, float surface, Date dateAjout, String idProprio, int idBien) throws BienException {
 		super(complementAdresse, nbPieces, NumeroFiscal, immeuble, surface, dateAjout, idProprio, idBien);
@@ -34,7 +33,6 @@ public final class Garage extends BienLouable {
 		this(gBuilder.getComplementAdresse(),gBuilder.getNbPieces(),gBuilder.getNumeroFiscal(),gBuilder.getImmeuble(),gBuilder.getSurface(),gBuilder.getDateAjout(), gBuilder.getIdProprio(), gBuilder.getIdBien());
 	}
 
-	@NotNull
 	public static List<Garage> findAll() throws GarageException {
 		List<Garage> garages = new LinkedList<>();
 		try (SelectQueryElement selectQueryElement = new SelectQueryElement(SELECT_QUERY)) {
@@ -57,7 +55,7 @@ public final class Garage extends BienLouable {
 
 	public static class GBuilder extends BLBuilder {
 		
-		public GBuilder(String complementAdresse, int nbPieces, String NumeroFiscal, @NotNull Immeuble immeuble, float surface, String idProprio, @NotNull Date dateAjout) {
+		public GBuilder(String complementAdresse, int nbPieces, String NumeroFiscal, Immeuble immeuble, float surface, String idProprio, Date dateAjout) {
 			this(complementAdresse, nbPieces,NumeroFiscal,immeuble,surface,dateAjout, idProprio, -1);
 		}
 

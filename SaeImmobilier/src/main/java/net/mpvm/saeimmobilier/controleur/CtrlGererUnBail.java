@@ -99,6 +99,8 @@ public class CtrlGererUnBail {
             JfxUtil.displayError("Champs vides", "Veuillez remplir tous les champs");
             return;
         }
+        if(bienLouable == null)
+            JfxUtil.displayError("Bien non trouvé", "Veuillez fermer puis réouvrir la page");
         if(choiceBoxesLocataires.isEmpty()) {
             JfxUtil.displayError("Pas de locataire", "Veuillez ajouter un locataire");
             return;
@@ -107,6 +109,7 @@ public class CtrlGererUnBail {
             return;
         }
         trySavingBail();
+        JfxUtil.setAlert(Alert.AlertType.INFORMATION,"Sauvegarde confirmé","Bail enregistré", "Le bail a été enregistré avec succès");
     }
 
     private boolean fieldsEmpty() {
@@ -290,7 +293,7 @@ public class CtrlGererUnBail {
     }
 
     private void setSupprimerLineAction(Button supprimerLigne, ChoiceBox<Locataire> choiceBox, GridPane gridPaneLine) {
-        supprimerLigne.setOnAction(_ -> {
+        supprimerLigne.setOnAction(e -> {
             int index = choiceBoxesLocataires.indexOf(choiceBox);
             choiceBoxesLocataires.remove(index);
             fieldsRepartitionsElec.remove(index);

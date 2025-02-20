@@ -20,7 +20,6 @@ public class Bail extends Queryable {
 
 
 	private int idBail;
-	private float provisionSurCharge;
 	private float factureEau;
 	private float totalCharge;
 	private float loyer;
@@ -99,7 +98,7 @@ public class Bail extends Queryable {
 	}
 
 	private void setCheminFichier(String cheminFichier) {
-
+		this.cheminFichier = cheminFichier;
 	}
 
 	public String getCheminFichier() {
@@ -140,7 +139,7 @@ public class Bail extends Queryable {
 
 
 	public void revaloriserLoyer(int icc){
-		setLoyer(this.loyer * icc);
+		setLoyer(this.loyer * icc/100);
 		try(UpdateQueryElement updateQueryElement = new UpdateQueryElement("UPDATE Bail SET MontantLoyer = ? WHERE IdBail = ?", true)){
 			updateQueryElement.setArgs(Map.of(1, this.loyer, 2, this.idBail)).execute();
 		}
@@ -224,20 +223,8 @@ public class Bail extends Queryable {
 		return partsLoyer;
 	}
 
-
-
-
 	public int getIdBail() {
 		return idBail;
-	}
-
-
-	public float getProvisionSurCharge() {
-		return provisionSurCharge;
-	}
-
-	public void setProvisionSurCharge(float provisionSurCharge) {
-		this.provisionSurCharge = provisionSurCharge;
 	}
 
 	public float getFactureEau() {
@@ -321,18 +308,23 @@ public class Bail extends Queryable {
 		return Locataire.getLocatairesAssociation(this);
 	}
 
+	public float getDepotGarantie() {
+		return depotGarantie;
+	}
+
+	public void setDepotGarantie(float depotGarantie) {
+		this.depotGarantie = depotGarantie;
+	}
 
 	@Override
 	public void save() throws BailException {
 		if(this.getIdBail() != -1)
 			throw new BailException("Le bail existe déjà dans la table", null);
 		try (UpdateQueryElement query = new UpdateQueryElement("INSERT INTO Bail (DateDebut, MontantLoyer, Renouvelable, TotalCharges, DepotGarantie, DateSignature, DateFin, IdBien, CheminDocument) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", true)){
-			query.setArgs(Map.of(1, this.getDateDebut(), 2, this.getLoyer(), 3, false, 4, this.getTotalCharge(), 5, this.getProvisionSurCharge(), 6, this.getDateSignature(), 7, this.getDateFin(), 8, this.getBienLouable().getIdBien(), 9, this.getCheminFichier())).execute();
+			query.setArgs(Map.of(1, this.getDateDebut(), 2, this.getLoyer(), 3, 1, 4, this.getTotalCharge(), 5, this.getDepotGarantie(), 6, this.getDateSignature(), 7, this.getDateFin(), 8, this.getBienLouable().getIdBien(), 9, this.getCheminFichier())).execute();
 			Result rs = query.getGeneratedKeys();
 			this.idBail = ((BigInteger) rs.getFirst().get("GENERATED_KEY")).intValue();
 		} catch (QueryElement.QEltException e) {
-			e.printStackTrace();
-			e.getSqlException().printStackTrace();
 			throw new BailException("Erreur lors de l'insertion du bail", e.getSqlException());
 		}
 	}

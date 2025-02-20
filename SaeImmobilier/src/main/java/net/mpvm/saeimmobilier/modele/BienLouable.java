@@ -15,11 +15,11 @@ import java.util.Map;
 
 public abstract class BienLouable extends Bien {
 
-    public static final String INSERT_QUERY = "INSERT INTO bien (ComplementAdresse, TypeBien, Surface, NombrePieces, NumeroFiscal, DateAjout, IdImmeuble, IdProprio) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-    public static final String DELETE_QUERY = "DELETE FROM bien WHERE IdBien = ?";
-    public static final String UPDATE_QUERY = "UPDATE bien SET ComplementAdresse = ?, Surface = ?, NombrePieces = ? , NumeroFiscal = ?, IdProprio = ? WHERE IdBien = ?";
-    public static final String SELECT_QUERY = "SELECT * FROM bien WHERE TypeBien in ('HABITATION','GARAGE')";
-    public static final String SELECT_QUERY_ID = "SELECT IdImmeuble FROM bien WHERE IdBien = ?";
+    public static final String INSERT_QUERY = "INSERT INTO Bien (ComplementAdresse, TypeBien, Surface, NombrePieces, NumeroFiscal, DateAjout, IdImmeuble, IdProprio) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    public static final String DELETE_QUERY = "DELETE FROM Bien WHERE IdBien = ?";
+    public static final String UPDATE_QUERY = "UPDATE Bien SET ComplementAdresse = ?, Surface = ?, NombrePieces = ? , NumeroFiscal = ?, IdProprio = ? WHERE IdBien = ?";
+    public static final String SELECT_QUERY = "SELECT * FROM Bien WHERE TypeBien in ('HABITATION','GARAGE')";
+    public static final String SELECT_QUERY_ID = "SELECT IdImmeuble FROM Bien WHERE IdBien = ?";
 
     private String complementAdresse;
     private int ancienIndex;
@@ -167,7 +167,7 @@ public abstract class BienLouable extends Bien {
         }
         catch(QueryElement.QEltException QEltException){
             System.out.println(QEltException.getMessage());
-            throw new BienLouableException(STR."Erreur lors de la récupération des biens : \{QEltException.getSqlException().getMessage()}", QEltException.getSqlException());
+            throw new BienLouableException("Erreur lors de la récupération des biens : " + QEltException.getSqlException().getMessage(), QEltException.getSqlException());
         }
         return biens;
     }
@@ -178,7 +178,7 @@ public abstract class BienLouable extends Bien {
             selectQueryElement.setArgs(Map.of(1, idImmeuble));
             sortResult(biens, selectQueryElement);
         } catch (QueryElement.QEltException e) {
-            throw new BienException(STR."Erreur lors de la récupération des biens pour l'immeuble ID \{idImmeuble}", e.getSqlException());
+            throw new BienException("Erreur lors de la récupération des biens pour l'immeuble ID " + idImmeuble, e.getSqlException());
         }
 
         return biens;

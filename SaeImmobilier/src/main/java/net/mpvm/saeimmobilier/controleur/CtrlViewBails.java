@@ -14,6 +14,7 @@ import net.mpvm.saeimmobilier.modele.Bail;
 import net.mpvm.saeimmobilier.util.JfxUtil;
 import net.mpvm.saeimmobilier.vue.*;
 
+import java.io.IOException;
 import java.util.List;
 
 public class CtrlViewBails {
@@ -28,7 +29,7 @@ public class CtrlViewBails {
 
     @FXML
     public void initialize() {
-        vBoxBails.sceneProperty().addListener((_, _, newScene) -> {
+        vBoxBails.sceneProperty().addListener((e, f, newScene) -> {
             if (newScene != null) {
                 Stage stage = (Stage) newScene.getWindow();
                 if (stage != null) {
@@ -108,7 +109,13 @@ public class CtrlViewBails {
                 Button creerCharges = new Button("Attribuer Charges");
                 creerCharges.setOnAction(event -> creerCharges(bail.getIdBail(), event));
                 Button voirDocument = new Button("Voir Document");
-                voirDocument.setOnAction(event -> voirDocument(bail.getIdBail(), event));
+                voirDocument.setOnAction(event -> {
+                    try {
+                        bail.openDocument();
+                    } catch (IOException e) {
+                        JfxUtil.displayError("Erreur lors de l'ouverture du document", "Veuillez retenter plus tard");
+                    }
+                });
                 Button revaloriserLoyer = new Button("Revaloriser Loyer");
                 revaloriserLoyer.setOnAction(event -> {
                     fieldRevaloriser.setDisable(false); // Rendre le champ texte actif
@@ -159,8 +166,6 @@ public class CtrlViewBails {
     }
 
     private void gererLocataires(int idBail, ActionEvent event) {
-        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-        stage.close();
         Stage s = new Stage();
         s.getProperties().put("bail", idBail);
         JfxUtil.showWindow(s, VueLocataires.class);
@@ -186,16 +191,6 @@ public class CtrlViewBails {
     }
 
     private void creerCharges(int idBail, ActionEvent event) {
-        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-        stage.close();
-        Stage s = new Stage();
-        s.getProperties().put("bail", idBail);
-        JfxUtil.showWindow(s, VueCharges.class);
-    }
-
-    private void voirDocument(int idBail, ActionEvent event) {
-        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-        stage.close();
         Stage s = new Stage();
         s.getProperties().put("bail", idBail);
         JfxUtil.showWindow(s, VueCharges.class);
@@ -205,8 +200,5 @@ public class CtrlViewBails {
     private void retourBiens(ActionEvent event) {
         Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         stage.close();
-        Stage s = new Stage();
-        s.getProperties().put("bien", idBien);
-        JfxUtil.showWindow(s, VueBiensLouables.class);
     }
 }

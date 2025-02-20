@@ -246,7 +246,7 @@ BEGIN
     SET TotalCharges = (
         SELECT IFNULL(SUM(Montant), 0)
         FROM Charges
-        WHERE Charges.IdBail = NEW.IdBail
+        WHERE Chas.IdBail = NEW.IdBail
     )
     WHERE Bail.IdBail = NEW.IdBail;
 END;

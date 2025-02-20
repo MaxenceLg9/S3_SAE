@@ -9,8 +9,7 @@ import java.sql.SQLException;
 
 import net.mpvm.saeimmobilier.sql.Connection.BD;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TestBD {
 
@@ -29,6 +28,7 @@ public class TestBD {
     @Test
     public void testDeuxInstancesNotEquals() throws SQLException {
         Connection connection2 = BD.getConnection(false);
+        assertNotNull(connection);
         assertNotEquals(connection, connection2);
     }
 }
