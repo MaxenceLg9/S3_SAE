@@ -1,13 +1,10 @@
 package net.mpvm.saeimmobilier.controleur;
 
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import net.mpvm.saeimmobilier.modele.*;
-import net.mpvm.saeimmobilier.util.JfxUtil;
-import net.mpvm.saeimmobilier.vue.VueAccueil;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
