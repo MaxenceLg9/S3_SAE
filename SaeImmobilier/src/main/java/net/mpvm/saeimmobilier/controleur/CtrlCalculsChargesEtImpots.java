@@ -89,6 +89,7 @@ public class CtrlCalculsChargesEtImpots {
         }
     }
 
+    //Calcul les différentes charges et remplis les différents champs associés afin de les visualiser
     @FXML
     private void calculerCharges() {
         try {
@@ -108,7 +109,7 @@ public class CtrlCalculsChargesEtImpots {
             } else{
                 txtResultats.appendText(String.format("\nTotal des charges pour le propriétaire : %.2f €", totalCharges));
             }
-        } catch (Exception e) {
+        } catch (Exception e) { //Affiche une erreur sinon
             e.printStackTrace();
             txtResultats.setText("Erreur : " + e.getMessage());
         }

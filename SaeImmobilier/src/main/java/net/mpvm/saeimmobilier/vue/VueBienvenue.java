@@ -6,7 +6,9 @@ import net.mpvm.saeimmobilier.util.JfxUtil;
 
 import java.io.IOException;
 
-
+/**
+ * Configure la scène principale avec le fichier FXML spécifié et les propriétés de la fenêtre.
+ */
 public class VueBienvenue extends Application{
 
     public static void main(String[] args) {
