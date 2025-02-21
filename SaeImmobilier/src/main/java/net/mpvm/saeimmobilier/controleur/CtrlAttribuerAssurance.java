@@ -22,8 +22,7 @@ public class CtrlAttribuerAssurance {
 
     public static final String BUTTON_SUPPRIMER = "button-supprimer";
     public static final String BUTTON_VALIDER = "button-valider";
-    private static final String ASSURANCE_LABEL = "assurance-label";
-    public static final String ASSURANCE_TITLE = "assurance-title";
+    private static final String ASSURANCE_LABEL_CLASS = "assurance-label";
     @FXML
     public VBox vBoxContent;
 
@@ -114,8 +113,13 @@ public class CtrlAttribuerAssurance {
             });
             chooseButton.setOnAction(event -> attribuerAssurance(Bien.BBuilder.get(IdBien), a));
 
-            nomAssurance.getStyleClass().add(ASSURANCE_TITLE);
-            JfxUtil.setClass(ASSURANCE_LABEL,protectionJuridique,prime,typeContrat,annee,totalPrime,idBienLabel);
+            nomAssurance.getStyleClass().add("assurance-title");
+            protectionJuridique.getStyleClass().add(ASSURANCE_LABEL_CLASS);
+            prime.getStyleClass().add(ASSURANCE_LABEL_CLASS);
+            typeContrat.getStyleClass().add(ASSURANCE_LABEL_CLASS);
+            annee.getStyleClass().add(ASSURANCE_LABEL_CLASS);
+            totalPrime.getStyleClass().add(ASSURANCE_LABEL_CLASS);
+            idBienLabel.getStyleClass().add(ASSURANCE_LABEL_CLASS);
             deleteButton.getStyleClass().add(BUTTON_SUPPRIMER);
             chooseButton.getStyleClass().add(BUTTON_VALIDER);
 
@@ -143,10 +147,11 @@ public class CtrlAttribuerAssurance {
 
 
     private void creerAssurance(ActionEvent event) {
+        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+        stage.close();
         Stage s = new Stage();
         JfxUtil.showWindow(s, VueNewAssurance.class);
     }
-
     @FXML
     private void retourImmeubles(ActionEvent actionEvent) {
         Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
@@ -162,7 +167,13 @@ public class CtrlAttribuerAssurance {
 
         try {
             assurance.attribuerUneAssurance(bien);
-            JfxUtil.setAlert(Alert.AlertType.INFORMATION, "Succès", "Attribution réussie", "L'assurance a été attribuée avec succès au bien !");
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Succès");
+            alert.setHeaderText("Attribution réussie");
+            alert.setContentText("L'assurance a été attribuée avec succès au bien !");
+            alert.showAndWait();
+
             // Actualisation de la liste des assurances
             afficheAssurances();
 
@@ -181,7 +192,11 @@ public class CtrlAttribuerAssurance {
         try {
             assurances.get(id).delete();
             afficheAssurances();
-            JfxUtil.setAlert(Alert.AlertType.INFORMATION, "Suppression réussie", null, "L'assurance a été supprimée avec succès.");
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Suppression réussie");
+            alert.setHeaderText(null);
+            alert.setContentText("L'assurance a été supprimée avec succès.");
+            alert.showAndWait();
         } catch (Assurance.AssuranceException e) {
             JfxUtil.displayError("Erreur lors de la suppression de l'assurance", e.getMessage());
         }
