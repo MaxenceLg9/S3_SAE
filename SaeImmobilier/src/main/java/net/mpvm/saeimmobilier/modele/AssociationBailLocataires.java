@@ -7,18 +7,23 @@ import net.mpvm.saeimmobilier.sql.Query.UpdateQueryElement;
 import java.sql.Date;
 import java.util.Map;
 
+
+//Classe d'association permettant de gérer les relations entre les locataires & un bail
 public class AssociationBailLocataires {
 
+
+    //gestion des repartitions de charges
     private final Locataire locataire;
     private final Bail bail;
     private final float partEau;
     private final float partLoyer;
-
     private final float partElectricite;
     private final float partEntretien;
     private final float partOrduresMenageres;
     private final Date dateEntree;
     private Date dateSortie;
+
+
 
     public AssociationBailLocataires(Locataire locataire, Bail bail, float partElectricite, float partEntretien, float partOrduresMenageres, float partEau, float partLoyer) {
         this(locataire, bail, partElectricite, partEntretien, partOrduresMenageres, partEau, partLoyer, bail.getDateDebut());
@@ -54,7 +59,7 @@ public class AssociationBailLocataires {
         }
     }
 
-        public Date getDateEntree() {
+    public Date getDateEntree() {
         return dateEntree;
     }
 
