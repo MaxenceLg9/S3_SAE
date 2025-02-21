@@ -74,12 +74,9 @@ public abstract class Bien extends Queryable {
         //TODO : query
     }
 
-    public void save(UpdateQueryElement updateQueryElement) throws BienException {
-        try {
-            this.idBien = ((BigInteger) updateQueryElement.getGeneratedKeys().getFirst().get("GENERATED_KEY")).intValue();
-        } catch (QueryElement.QEltException e) {
-            throw new BienException("Impossible de sauvegarder le document",null);
-        }
+    //fonction pour "sauvegarder" l'id générée par
+    protected void updateID(UpdateQueryElement updateQueryElement) throws QbleException {
+        this.idBien = lastID(updateQueryElement);
     }
 
     public void delete() throws BienException {
@@ -87,6 +84,7 @@ public abstract class Bien extends Queryable {
     }
 
 
+    //trouve tous les biens
     public static List<? extends Bien> findAll() throws BienException {
         List<Bien> biens = new ArrayList<>();
         try(SelectQueryElement selectQueryElement = new SelectQueryElement(SELECT_QUERY)){
@@ -97,6 +95,7 @@ public abstract class Bien extends Queryable {
         return biens;
     }
 
+    //fonction pour différencier les différents types de Bien et les instancier correctement
     private static void sortResult(List<Bien> biens, SelectQueryElement selectQueryElement) throws QueryElement.QEltException {
         selectQueryElement.execute();
         List<Map<String, Object>> result = selectQueryElement.getResult();
