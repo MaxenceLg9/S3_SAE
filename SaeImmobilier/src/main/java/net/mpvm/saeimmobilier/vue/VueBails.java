@@ -5,7 +5,9 @@ import javafx.stage.Stage;
 import net.mpvm.saeimmobilier.util.JfxUtil;
 
 import static javafx.application.Application.launch;
-
+/**
+ * Configure la scène principale avec le fichier FXML spécifié et les propriétés de la fenêtre.
+ */
 public class VueBails extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {

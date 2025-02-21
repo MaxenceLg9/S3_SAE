@@ -5,7 +5,9 @@ import javafx.stage.Stage;
 import net.mpvm.saeimmobilier.modele.Garage;
 import net.mpvm.saeimmobilier.sql.Query.QueryElement;
 import net.mpvm.saeimmobilier.util.JfxUtil;
-
+/**
+ * Configure la scène principale avec le fichier FXML spécifié et les propriétés de la fenêtre.
+ */
 public class VueCreerUnBail extends Application {
 
     public static void main(String[] args) {
