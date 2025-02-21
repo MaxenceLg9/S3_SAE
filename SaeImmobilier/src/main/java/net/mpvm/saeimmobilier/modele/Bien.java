@@ -5,7 +5,6 @@ import net.mpvm.saeimmobilier.sql.Query.Queryable;
 import net.mpvm.saeimmobilier.sql.Query.SelectQueryElement;
 import net.mpvm.saeimmobilier.sql.Query.UpdateQueryElement;
 
-import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.*;
 import java.util.*;
@@ -14,7 +13,6 @@ import java.util.*;
 public abstract class Bien extends Queryable {
 
     private static final String SELECT_QUERY = "SELECT * FROM bien";
-    private static final String SELECT_ID_QUERY = "SELECT IdBien FROM bien WHERE NumeroFiscal = ?";
     private static final String SELECT_QUERY_BY_ID = "SELECT * FROM bien WHERE IdBien = ?";
     public static final String SELECT_FROM_ID = "SELECT * FROM Bien WHERE IdBien = ?";
     public static final String DELETE_QUERY = "DELETE FROM Bien WHERE IdBien = ? AND TypeBien = ?";
@@ -156,8 +154,6 @@ public abstract class Bien extends Queryable {
     public String getTypeBienString(){
         return getTypeBien().name();
     }
-
-    abstract Map<String, Object> getArgs();
 
     public void setIdProprio(String idProprio) {
         this.idProprio = idProprio;
