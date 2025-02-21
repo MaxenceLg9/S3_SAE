@@ -6,11 +6,14 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import net.mpvm.saeimmobilier.modele.Proprietaire;
+import net.mpvm.saeimmobilier.sql.Query.QueryElement;
+import net.mpvm.saeimmobilier.sql.Query.UpdateQueryElement;
 import net.mpvm.saeimmobilier.util.JfxUtil;
 import net.mpvm.saeimmobilier.vue.VueBienvenue;
 import net.mpvm.saeimmobilier.vue.VueConnexion;
-
+import net.mpvm.saeimmobilier.sql.Query.UpdateQueryElement;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 public class CtrlInscription {
@@ -42,6 +45,9 @@ public class CtrlInscription {
 
     private ArrayList<TextField> fieldsMDP;
 
+    public CtrlInscription() throws QueryElement.QEltException {
+    }
+
     @FXML
     public void initialize() {
         assert fieldPassword != null : "fieldNewPassword is null";
@@ -66,6 +72,13 @@ public class CtrlInscription {
         fieldSetup();
         checkBoxVisibilite.setSelected(false); // Default: password hidden
     }
+    private void updatePasswordFields() {
+        fieldPassword.setText(fieldPasswordVisible.getText());
+        fieldPasswordVisible.setText(fieldPassword.getText());
+        fieldConfirmPassword.setText(fieldConfirmPasswordVisible.getText());
+        fieldConfirmPasswordVisible.setText(fieldConfirmPassword.getText());
+    }
+
 
     private void fieldSetup() {
         setFieldsPromptText();
@@ -74,6 +87,8 @@ public class CtrlInscription {
             add(fieldMail);
             add(fieldPassword);
             add(fieldConfirmPassword);
+            add(fieldPasswordVisible);
+            add(fieldConfirmPasswordVisible);
         }};
 
         fieldPassword.setOnAction(e -> fieldPasswordVisible.setText(fieldPassword.getText()));
@@ -93,6 +108,7 @@ public class CtrlInscription {
 
     @FXML
     public void Valider(ActionEvent event) {
+        updatePasswordFields();
         if (fieldsNotEmpty()) {
             if (!isValidEmail(fieldMail.getText())) {
                 JfxUtil.setAlert(Alert.AlertType.ERROR,
@@ -150,9 +166,9 @@ public class CtrlInscription {
     }
 
     private boolean fieldsNotEmpty() {
-
+        updatePasswordFields();
         for (TextField textField : fieldsMDP) {
-            if (textField.getText().isEmpty()) {
+            if (textField.getText().trim().isEmpty()) {
                 return false;
             }
         }
@@ -160,11 +176,10 @@ public class CtrlInscription {
     }
 
     private boolean MDPIdentique() {
-        fieldPassword.setText(fieldPasswordVisible.getText());
-        fieldConfirmPassword.setText(fieldConfirmPasswordVisible.getText());
+        updatePasswordFields();  // Use the helper method
         return fieldPassword.getText().equals(fieldConfirmPassword.getText());
-
     }
+
 
     private boolean isValidEmail(String email) {
         return Pattern.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$", email);
@@ -175,25 +190,25 @@ public class CtrlInscription {
     }
 
     @FXML
-    private void setupVisibility(ActionEvent actionEventS) {
-        if (checkBoxVisibilite.isSelected()) {
-            // Show passwords in plain text (visible TextField)
+    private void setupVisibility(ActionEvent event) {
+        boolean isVisible = checkBoxVisibilite.isSelected();
+
+        // Synchroniser les valeurs avant de changer la visibilité
+        if (isVisible) {
             fieldPasswordVisible.setText(fieldPassword.getText());
-            fieldPasswordVisible.setVisible(true);
-            fieldPassword.setVisible(false);
-
             fieldConfirmPasswordVisible.setText(fieldConfirmPassword.getText());
-            fieldConfirmPasswordVisible.setVisible(true);
-            fieldConfirmPassword.setVisible(false);
         } else {
-            // Hide plain text fields and restore PasswordField
             fieldPassword.setText(fieldPasswordVisible.getText());
-            fieldPassword.setVisible(true);
-            fieldPasswordVisible.setVisible(false);
-
             fieldConfirmPassword.setText(fieldConfirmPasswordVisible.getText());
-            fieldConfirmPassword.setVisible(true);
-            fieldConfirmPasswordVisible.setVisible(false);
         }
+
+        // Changer la visibilité
+        fieldPassword.setVisible(!isVisible);
+        fieldPasswordVisible.setVisible(isVisible);
+        fieldConfirmPassword.setVisible(!isVisible);
+        fieldConfirmPasswordVisible.setVisible(isVisible);
     }
+
+
+
 }
