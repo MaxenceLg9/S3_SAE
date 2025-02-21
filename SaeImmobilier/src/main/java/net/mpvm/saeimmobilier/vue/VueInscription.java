@@ -6,7 +6,9 @@ import net.mpvm.saeimmobilier.util.JfxUtil;
 
 
 
-
+/**
+ * Configure la scène principale avec le fichier FXML spécifié et les propriétés de la fenêtre.
+ */
 public class VueInscription extends Application {
     public static void main(String[] args) {
         launch(args);

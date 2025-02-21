@@ -23,11 +23,15 @@ import java.util.stream.Collectors;
 
 public class CtrlAttribuerAssurance {
 
+    public static final String BUTTON_SUPPRIMER = "button-supprimer";
+    public static final String BUTTON_VALIDER = "button-valider";
+    private static final String ASSURANCE_LABEL_CLASS = "assurance-label";
     @FXML
     public VBox vBoxContent;
 
     private Map<Integer, Assurance> assurances;
     private int IdBien;
+
 
     public void initialize() {
         vBoxContent.sceneProperty().addListener((observable, oldScene, newScene) -> {
@@ -38,7 +42,7 @@ public class CtrlAttribuerAssurance {
                     try {
                         afficheAssurances();
                     } catch (Assurance.AssuranceException e) {
-                        throw new RuntimeException(e);
+                        throw new IllegalArgumentException("Impossible d'afficher les assurances");
                     }
                 } else {
                     System.out.println("Pas de stage");
@@ -71,13 +75,13 @@ public class CtrlAttribuerAssurance {
         vBoxContent.getChildren().clear();
         vBoxContent.getChildren().add(titre);
         Button retourImmeubles = new Button("Retour aux immeubles");
-        retourImmeubles.setOnAction(event -> retourImmeubles(event));
-        retourImmeubles.getStyleClass().add("button-supprimer");
+        retourImmeubles.setOnAction(this::retourImmeubles);
+        retourImmeubles.getStyleClass().add(BUTTON_SUPPRIMER);
         vBoxContent.getChildren().add(retourImmeubles);
 
         Button creerAssurance = new Button("Créer Assurance");
-        creerAssurance.setOnAction(event -> creerAssurance(event));
-        creerAssurance.getStyleClass().add("button-valider");
+        creerAssurance.setOnAction(this::creerAssurance);
+        creerAssurance.getStyleClass().add(BUTTON_VALIDER);
         vBoxContent.getChildren().add(creerAssurance);
 
         for (Assurance a : assurances.values()) {
@@ -113,14 +117,14 @@ public class CtrlAttribuerAssurance {
             chooseButton.setOnAction(event -> attribuerAssurance(IdBien, a));
 
             nomAssurance.getStyleClass().add("assurance-title");
-            protectionJuridique.getStyleClass().add("assurance-label");
-            prime.getStyleClass().add("assurance-label");
-            typeContrat.getStyleClass().add("assurance-label");
-            annee.getStyleClass().add("assurance-label");
-            totalPrime.getStyleClass().add("assurance-label");
-            idBienLabel.getStyleClass().add("assurance-label");
-            deleteButton.getStyleClass().add("button-supprimer");
-            chooseButton.getStyleClass().add("button-valider");
+            protectionJuridique.getStyleClass().add(ASSURANCE_LABEL_CLASS);
+            prime.getStyleClass().add(ASSURANCE_LABEL_CLASS);
+            typeContrat.getStyleClass().add(ASSURANCE_LABEL_CLASS);
+            annee.getStyleClass().add(ASSURANCE_LABEL_CLASS);
+            totalPrime.getStyleClass().add(ASSURANCE_LABEL_CLASS);
+            idBienLabel.getStyleClass().add(ASSURANCE_LABEL_CLASS);
+            deleteButton.getStyleClass().add(BUTTON_SUPPRIMER);
+            chooseButton.getStyleClass().add(BUTTON_VALIDER);
 
             gp.add(nomAssurance, 0, 0);
             gp.add(annee, 0, 1);
@@ -158,7 +162,7 @@ public class CtrlAttribuerAssurance {
     }
 
 
-    public void attribuerAssurance(int idBien, Assurance assurance) {
+    void attribuerAssurance(int idBien, Assurance assurance) {
         if (assurance == null) {
             JfxUtil.displayError("Erreur", "L'assurance sélectionnée est invalide.");
             return;
@@ -205,7 +209,7 @@ public class CtrlAttribuerAssurance {
         try{
             return a.selectIdBien();
         } catch (Assurance.AssuranceException e) {
-            throw new RuntimeException(e);
+            throw new IllegalArgumentException("Mauvais id");
         }
 
     }

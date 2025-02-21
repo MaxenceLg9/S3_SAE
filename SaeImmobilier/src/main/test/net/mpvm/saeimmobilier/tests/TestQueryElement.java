@@ -154,7 +154,7 @@ public class TestQueryElement {
         selectQueryElement = new SelectQueryElement(Locataire.SELECT_QUERY);
         updateQueryElement = new UpdateQueryElement(Locataire.INSERT_QUERY, false);
 
-        assertEquals(selectQueryElement.getNArgs(),0);
-        assertEquals(updateQueryElement.getNArgs(),5);
+        assertEquals(0, selectQueryElement.getNArgs());
+        assertEquals(5, updateQueryElement.getNArgs());
     }
 }

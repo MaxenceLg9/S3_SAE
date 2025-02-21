@@ -20,11 +20,7 @@ module net.mpvm.saeimmobilier {
     requires io;
     requires forms;
     requires java.desktop;
-
-    //opens net.mpvm.saeimmobilier.data.fxml to javafx.fxml;
-    //opens net.mpvm.saeimmobilier.data.images to javafx.fxml;
-    //opens net.mpvm.saeimmobilier.vue to javafx.fxml;
-    //opens net.mpvm.saeimmobilier.controleur to javafx.fxml;
+    
     exports net.mpvm.saeimmobilier.vue;
     exports net.mpvm.saeimmobilier.controleur;
     opens net.mpvm.saeimmobilier.controleur to javafx.fxml;
