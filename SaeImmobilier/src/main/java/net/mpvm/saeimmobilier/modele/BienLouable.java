@@ -145,7 +145,7 @@ public abstract class BienLouable extends Bien {
                             7, this.getImmeuble().getIdBien(),
                             8, this.getIdProprio()
                     )).execute();
-            super.save(updateQueryElement);
+            super.updateID(updateQueryElement);
             BBuilder.add(this);
         }
         catch (QueryElement.QEltException QEltException){
@@ -153,6 +153,7 @@ public abstract class BienLouable extends Bien {
         }
     }
 
+    //methode pour renvoyer tous les BienLouables
     public static List<? extends BienLouable> findAll() throws BienLouableException {
         List<BienLouable> biens = new LinkedList<>();
         try(SelectQueryElement selectQueryElement = new SelectQueryElement(SELECT_QUERY)) {
@@ -171,6 +172,8 @@ public abstract class BienLouable extends Bien {
         }
         return biens;
     }
+
+    //renvoie tous les BienLouables associés à un immeuble
     public static List<BienLouable> findByImmeuble(int idImmeuble) throws BienException {
         List<BienLouable> biens = new ArrayList<>();
         String query = "SELECT * FROM Bien WHERE IdImmeuble = ? AND (TypeBien = 'HABITATION' OR TypeBien = 'GARAGE')";
@@ -184,23 +187,7 @@ public abstract class BienLouable extends Bien {
         return biens;
     }
 
-
-
-    public static int findIdImmeuble(int idBien) throws BienException {
-        try (SelectQueryElement selectQueryElement = new SelectQueryElement(SELECT_QUERY_ID)) {
-            selectQueryElement.setArgs(Map.of(1, idBien));
-            selectQueryElement.execute();
-            List<Map<String, Object>> result = selectQueryElement.getResult();
-            if (!result.isEmpty()) {
-                return Integer.parseInt(result.getFirst().get("IdImmeuble").toString());
-            } else {
-                throw new BienException("Aucun immeuble trouvé pour le bien avec ID " + idBien, null);
-            }
-        } catch (QueryElement.QEltException e) {
-            throw new BienException("Erreur lors de la récupération de l'ID immeuble pour le bien avec ID " + idBien, e.getSqlException());
-        }
-    }
-
+    //methode pour trier comme dans Bien, afin de correctement instancier les objects de la BD
     private static void sortResult(List<BienLouable> biens, SelectQueryElement selectQueryElement) throws QueryElement.QEltException {
         selectQueryElement.execute();
         List<Map<String, Object>> result = selectQueryElement.getResult();
