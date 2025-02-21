@@ -1,5 +1,6 @@
 package net.mpvm.saeimmobilier.sql.Query;
 
+import java.math.BigInteger;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -9,6 +10,15 @@ public abstract class Queryable {
     public abstract void modify() throws QbleException;
     public abstract void delete() throws QbleException;
     public abstract void archiver() throws QbleException;
+
+    //fonction pour renvoyer la dernière clée générée (PRIMAREY KEY : AUTO_INCREMENT)
+    public int lastID(UpdateQueryElement updateQueryElement) throws QbleException{
+        try {
+            return ((BigInteger) updateQueryElement.getGeneratedKeys().getFirst().get("GENERATED_KEY")).intValue();
+        } catch (QueryElement.QEltException e) {
+            throw new Queryable.QbleException("Impossible de sauvegarder le document",null);
+        }
+    }
 
 
     public static List<? extends Queryable> findAll() throws QbleException {
