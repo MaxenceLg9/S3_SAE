@@ -5,19 +5,16 @@ import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import net.mpvm.saeimmobilier.modele.Assurance;
 import net.mpvm.saeimmobilier.modele.Bien;
 import net.mpvm.saeimmobilier.util.JfxUtil;
-import net.mpvm.saeimmobilier.vue.VueImmeubles;
 import net.mpvm.saeimmobilier.vue.VueNewAssurance;
 
 
 import java.util.Map;
-import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -101,7 +98,7 @@ public class CtrlAttribuerAssurance {
             Label typeContrat = new Label("Type de Contrat " + a.getTypeContrat());
             Label annee = new Label("Année " + a.getAnnee());
             Label totalPrime = new Label("Total Prime " + a.getTotalPrime());
-            Label idBienLabel = new Label("ID Bien associé : " + setIdBienAssurance(a));
+            Label idBienLabel = new Label("ID Bien associé : " + a.selectIdBien());
             Button deleteButton = new Button("Supprimer l'assurance");
             Button chooseButton = new Button("  Choisir  ");
 
@@ -114,7 +111,7 @@ public class CtrlAttribuerAssurance {
                     }
                 }
             });
-            chooseButton.setOnAction(event -> attribuerAssurance(IdBien, a));
+            chooseButton.setOnAction(event -> attribuerAssurance(Bien.BBuilder.get(IdBien), a));
 
             nomAssurance.getStyleClass().add("assurance-title");
             protectionJuridique.getStyleClass().add(ASSURANCE_LABEL_CLASS);
@@ -162,14 +159,14 @@ public class CtrlAttribuerAssurance {
     }
 
 
-    void attribuerAssurance(int idBien, Assurance assurance) {
+    void attribuerAssurance(Bien bien, Assurance assurance) {
         if (assurance == null) {
             JfxUtil.displayError("Erreur", "L'assurance sélectionnée est invalide.");
             return;
         }
 
         try {
-            assurance.attribuerUneAssurance(idBien, assurance.getIdAssurance());
+            assurance.attribuerUneAssurance(bien);
 
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Succès");
@@ -184,7 +181,7 @@ public class CtrlAttribuerAssurance {
             // Affichage de l'erreur avec des détails pertinents
             JfxUtil.displayError(
                     "Erreur lors de l'attribution de l'assurance",
-                    "ID Bien : " + idBien + "\nID Assurance : " + assurance.getIdAssurance() +
+                    "ID Bien : " + bien.getIdBien() + "\nID Assurance : " + assurance.getIdAssurance() +
                             "\nOn ne peut pas associer 2 assurances différentes \nsur un même bien la même année. "
             );
 
@@ -205,12 +202,5 @@ public class CtrlAttribuerAssurance {
         }
         afficheAssurances();
     }
-    private String setIdBienAssurance(Assurance a)  {
-        try{
-            return a.selectIdBien();
-        } catch (Assurance.AssuranceException e) {
-            throw new IllegalArgumentException("Mauvais id");
-        }
 
-    }
 }
