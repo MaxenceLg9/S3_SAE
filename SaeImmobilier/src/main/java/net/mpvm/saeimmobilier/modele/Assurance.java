@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+
+//Classe de gestion des assurances
 public class Assurance extends Queryable{
 
     private int idAssurance;
@@ -18,6 +20,8 @@ public class Assurance extends Queryable{
     private TypeContrat typeContrat; // Type Propriétaire ou aide juridique
     private String numeroContrat;
     private String nomAssurance;
+
+
     private Assurance(int idAssurance, TypeContrat typeContrat, int annee, float protectionJuridique, float prime, String numeroContrat, String nomAssurance) {
         this.nomAssurance = nomAssurance;
         if (typeContrat == null) {
@@ -114,6 +118,7 @@ public class Assurance extends Queryable{
         this.typeContrat = typeContrat;
     }
 
+    //renvoie le bien associé à l'assurance
     public Bien getBien() {
         //TODO : Use a query
         return null;
@@ -123,6 +128,8 @@ public class Assurance extends Queryable{
         return 0;
     }
 
+
+    //sauvegarde l'assurance dans la BD
     @Override
     public void save() throws AssuranceException {
         // Vérifie si l'assurance existe déjà (id différent de -1)
@@ -170,6 +177,7 @@ public class Assurance extends Queryable{
 
 
 
+    //modifie dans la BD l'assurance
     @Override
     public void modify() throws QbleException {
         if (this.idAssurance <= 0) {
@@ -218,6 +226,8 @@ public class Assurance extends Queryable{
     public void setNomAssurance(String nomAssurance) {
         this.nomAssurance = nomAssurance;
     }
+
+    //suppression de l'assurance dans la BD
     public void delete() throws AssuranceException {
         if (this.idAssurance <= 0) {
             throw new AssuranceException("L'ID de l'assurance est invalide pour une suppression.");
@@ -246,50 +256,28 @@ public class Assurance extends Queryable{
     public void archiver() throws QbleException {
 
     }
-    public void attribuerUneAssurance(int idBien, int idAssurance) throws AssuranceException {
-        if (idBien <= 0 || idAssurance <= 0) {
+
+    //associe une assurance à un bien
+    public void attribuerUneAssurance(Bien bien) throws AssuranceException {
+        if (bien.getIdBien() <= 0 || idAssurance <= 0) {
             throw new AssuranceException("L'ID du bien et de l'assurance doivent être valides.");
         }
-
-        String CHECK_QUERY = """
-    SELECT COUNT(*) as count FROM Assurance
-    WHERE IdBien = ? AND Annee = ?
-    """;
-
+        String CHECK_QUERY = "SELECT COUNT(*) as count FROM AssuranceHERE IdBien = ? AND Annee = ?";
         try (SelectQueryElement checkQuery = new SelectQueryElement(CHECK_QUERY)) {
-            checkQuery.setArgs(Map.of(
-                    1, idBien,
-                    2, this.annee
-            ));
+            checkQuery.setArgs(Map.of(1, bien.getIdBien(), 2, this.annee));
             Result rs = checkQuery.execute();
-
             if (!rs.isEmpty()) {
-                int count = ((Number) rs.get(0).get("count")).intValue();
+                int count = ((Number) rs.getFirst().get("count")).intValue();
                 if (count > 0) {
-                    throw new AssuranceException(
-                            "Une assurance pour le bien avec la même année existe déjà. Association refusée."
-                    );
+                    throw new AssuranceException("Une assurance pour le bien avec la même année existe déjà. Association refusée.");
                 }
             }
         } catch (QueryElement.QEltException e) {
-            throw new AssuranceException(
-                    "Erreur lors de la vérification des assurances existantes : " + e.getSqlException().getMessage(),
-                    e.getSqlException()
-            );
+            throw new AssuranceException("Erreur lors de la vérification des assurances existantes : " + e.getSqlException().getMessage(), e.getSqlException());
         }
-
-        String UPDATE_QUERY = """
-                              UPDATE Assurance
-                              SET IdBien = ?
-                              WHERE IdAssurance = ?
-                              """;
-
+        String UPDATE_QUERY = "UPDATE Assurance SET IdBien = ? WHERE IdAssurance = ?";
         try (UpdateQueryElement query = new UpdateQueryElement(UPDATE_QUERY, true)) {
-            query.setArgs(Map.of(
-                    1, idBien,
-                    2, idAssurance
-            ));
-
+            query.setArgs(Map.of(1, bien.getIdBien(), 2, idAssurance));
             int rowsAffected = query.execute();
             if (rowsAffected == 0) {
                 throw new AssuranceException("Aucune assurance correspondante trouvée pour l'attribution.");
@@ -297,7 +285,7 @@ public class Assurance extends Queryable{
 
         } catch (QueryElement.QEltException e) {
             throw new AssuranceException(
-                    "Erreur lors de l'attribution de l'assurance avec ID " + idAssurance + " au bien avec ID " + idBien,
+                    "Erreur lors de l'attribution de l'assurance avec ID " + idAssurance + " au bien avec ID " + bien.getIdBien(),
                     e.getSqlException()
             );
         }
@@ -316,7 +304,8 @@ public class Assurance extends Queryable{
         this.idAssurance = id;
     }
 
-    public String selectIdBien() throws AssuranceException {
+    //renvoie l'idBien
+    public int selectIdBien() throws AssuranceException {
         if (this.idAssurance <= 0) {
             throw new AssuranceException("L'ID de l'assurance est invalide.");
         }
@@ -328,12 +317,12 @@ public class Assurance extends Queryable{
 
             if (rs.isEmpty()) {
                 // Renvoie "aucun" si aucun résultat n'est trouvé
-                return "aucun";
+                throw new AssuranceException("Aucun bien trouvé pour l'asssurance");
             }
 
             // Récupère le premier résultat et retourne l'ID du bien sous forme de chaîne
-            Map<String, Object> row = rs.get(0);
-            return String.valueOf(row.get("IdBien"));
+            Map<String, Object> row = rs.getFirst();
+            return (int) row.get("IdBien");
         } catch (QueryElement.QEltException qEltException) {
             throw new AssuranceException(
                     "Erreur lors de la récupération de l'ID du bien associé à l'assurance avec ID " + this.idAssurance,
