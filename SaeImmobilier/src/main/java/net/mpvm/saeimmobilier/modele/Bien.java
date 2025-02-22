@@ -14,7 +14,7 @@ public abstract class Bien extends Queryable {
 
     private static final String SELECT_QUERY = "SELECT * FROM bien";
     private static final String SELECT_QUERY_BY_ID = "SELECT * FROM bien WHERE IdBien = ?";
-    public static final String SELECT_FROM_ID = "SELECT * FROM Bien WHERE IdBien = ?";
+    private static final String SELECT_FROM_IMMEUBLE="SELECT * FROM Bien WHERE IdImmeuble = ?";
 
     private int idBien;
     private String numeroFiscal;
@@ -201,7 +201,7 @@ public abstract class Bien extends Queryable {
         }
 
         private static Bien getFromQuery(int idBien, TypeBien type) throws BienException {
-            try(SelectQueryElement selectQueryElement = new SelectQueryElement(SELECT_FROM_ID)){
+            try(SelectQueryElement selectQueryElement = new SelectQueryElement(SELECT_QUERY_BY_ID)){
                 selectQueryElement.setArgs(Map.of(1, idBien));
                 selectQueryElement.execute();
                 List<Map<String,Object>> result = selectQueryElement.getResult();
