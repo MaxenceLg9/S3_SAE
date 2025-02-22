@@ -149,7 +149,7 @@
                             <Font name="System Bold" size="14.0" />
                         </font>
                     </Button>
-                    <Button alignment="CENTER" mnemonicParsing="false" onAction="#annuler" prefHeight="35.0" prefWidth="200.0" style="-fx-background-color: #E74C3C; -fx-background-radius: 10px;" text="Retour à l'accueil" textFill="WHITE" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.rowSpan="2147483647">
+                    <Button alignment="CENTER" mnemonicParsing="false" onAction="#annuler" prefHeight="35.0" prefWidth="200.0" style="-fx-background-color: #E74C3C; -fx-background-radius: 10px;" text="Retour" textFill="WHITE" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.rowSpan="2147483647">
                         <GridPane.margin>
                             <Insets />
                         </GridPane.margin>

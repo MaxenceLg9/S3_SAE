@@ -52,6 +52,29 @@ public class Travaux extends Queryable {
 				(Date) args.get("DateTravaux"));
 	}
 
+	public Travaux(Map<String, Object> x, Integer idb) {
+		super();
+	}
+
+
+
+	public static List<Travaux> findTravauxByBien(int idBien) throws TravauxException {
+		List<Travaux> travaux = new ArrayList<>();
+		String query = "SELECT * FROM Travaux WHERE IdBien = ?";
+
+		try (SelectQueryElement selectQueryElement = new SelectQueryElement(query)) {
+			selectQueryElement.setArgs(Map.of(1, idBien));
+			Result result = selectQueryElement.execute();
+			for (Map<String, Object> row : result) {
+				Travaux travail = new Travaux(row);
+				travaux.add(travail);
+			}
+		} catch (QueryElement.QEltException e) {
+			throw new TravauxException("Erreur lors de la récupération des travaux pour le bien ID " + idBien, e.getSqlException());
+		}
+
+		return travaux;
+	}
 
 	public static boolean numeroFactureExiste(String numeroFacture) {
 		String query = "SELECT COUNT(*) as count FROM Travaux WHERE NumeroFacture = ?";
