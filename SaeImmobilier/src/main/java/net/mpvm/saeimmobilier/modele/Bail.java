@@ -290,7 +290,7 @@ public class Bail extends Queryable {
 
 
 	@Unfinished
-	public List<Charges> getCharges() {
+	public List<Charges> getCharges() throws Charges.ChargesException {
 		return Charges.getChargesFromBail(this);
 	}
 
@@ -333,6 +333,7 @@ public class Bail extends Queryable {
 	public void modify() throws QbleException {
 	}
 
+
 	@Override
 	public void delete() throws Bail.BailException {
 		if(this.getIdBail() == -1)
@@ -347,6 +348,7 @@ public class Bail extends Queryable {
 			throw new Bail.BailException("Erreur lors de la suppression du bien", e.getSqlException());
 		}
 	}
+
 
 	public static void delete(BienLouable bienLouable) throws BailException {
 		try(UpdateQueryElement query = new UpdateQueryElement(DELETE_QUERY_BIEN, true)){

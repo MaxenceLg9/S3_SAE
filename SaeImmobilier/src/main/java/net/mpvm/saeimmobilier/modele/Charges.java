@@ -17,6 +17,8 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class Charges {
+    public static final String DELETE_QUERY = "DELETE FROM Charges WHERE IdCharges = ?";
+    public static final String DELETE_QUERY_BAIL = "DELETE FROM Charges WHERE IdBail = ?";
 
     private int idCharges;
     private float montant;
