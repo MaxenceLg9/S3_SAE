@@ -10,7 +10,9 @@ import net.mpvm.saeimmobilier.util.JfxUtil;
 
 import java.sql.Date;
 import java.time.LocalDate;
-
+/**
+ * Configure la scène principale avec le fichier FXML spécifié et les propriétés de la fenêtre.
+ */
 public class VueModifierBien extends Application {
 
     @Override

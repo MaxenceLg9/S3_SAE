@@ -142,11 +142,12 @@ public class CtrlViewLocataires {
                 .ifPresent(r -> deleteLocataire(id));
     }
 
+    //Permet la suppression d'un locataire
     private void deleteLocataire(int id){
         try {
             locataires.get(id).delete();
-        } catch (Locataire.LocataireException e) {
-            // TODO: handle exception with visual
+        } catch (Locataire.LocataireException e) { //Renvoi une erreur en cas de problème
+            JfxUtil.displayError("Erreur lors de la suppresion","Erreur lors de la suppresion");
         }
         afficheLocataires();
     }
