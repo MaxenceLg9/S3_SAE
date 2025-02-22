@@ -54,7 +54,7 @@ public class AssociationBailLocataires {
         }
     }
 
-        public Date getDateEntree() {
+    public Date getDateEntree() {
         return dateEntree;
     }
 
