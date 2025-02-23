@@ -78,8 +78,25 @@ public abstract class Bien extends Queryable {
         this.idBien = lastID(updateQueryElement);
     }
 
-    public void delete() throws BienException {
-        this.idBien = -1;
+    public void delete() throws QueryElement.QEltException {
+        String DELETE_TRAVAUX = "DELETE FROM Travaux WHERE IdBien = ?";
+
+        try (UpdateQueryElement deleteTravauxQuery = new UpdateQueryElement(DELETE_TRAVAUX, true)) {
+            deleteTravauxQuery.setArgs(Map.of(1, this.getIdBien())).execute();
+        }catch (QueryElement.QEltException e){
+            e.getSqlException().printStackTrace();
+            throw new QueryElement.QEltException("Erreur lors de la suppression du bienT", e.getSqlException());
+        }
+
+        String UPDATE_ASSURANCES = "UPDATE Assurance SET IdBien = NULL WHERE IdBien = ?";
+        try (UpdateQueryElement updateQuery = new UpdateQueryElement(UPDATE_ASSURANCES, true)) {
+            updateQuery.setArgs(Map.of(1, this.getIdBien())).execute();
+        }catch (QueryElement.QEltException e){
+            e.getSqlException().printStackTrace();
+            throw new QueryElement.QEltException("Erreur lors de la suppression du bienA", e.getSqlException());
+        }
+
+
     }
 
 
