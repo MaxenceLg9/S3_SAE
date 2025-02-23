@@ -8,8 +8,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-import java.lang.annotation.*;
 
 public class Assurance extends Queryable{
 
@@ -54,7 +52,35 @@ public class Assurance extends Queryable{
 
         return assurances;
     }
-
+//    public void bienNull(Bien bien) throws AssuranceException {
+//        String UPDATE_IDBIEN = "UPDATE Assurance SET IdBien =NULL WHERE IdAssurance= ?";
+//        try (UpdateQueryElement query = new UpdateQueryElement(UPDATE_IDBIEN, true)) {
+//            query.setArgs(Map.of(
+//                    1, bien.getIdBien()
+//            )).execute();
+//        } catch (QueryElement.QEltException e) {
+//            throw new AssuranceException(
+//                    "Erreur lors de l'ajout de l'assurance : " + e.getSqlException().getMessage(),
+//                    e.getSqlException());
+//        }
+//
+//    }
+//    public List<Assurance> getAssurancesFromBien(Bien bien) throws AssuranceException {
+//        List<Assurance> assurances = new ArrayList<>();
+//        String SELECT_QUERY = "SELECT IdAssurance,ProtectionJuridique,Prime,TypeContrat,Annee,NomAssurance,NumeroContrat FROM Assurance WHERE IdBien= ?";
+//
+//        try (SelectQueryElement query = new SelectQueryElement(SELECT_QUERY)) {
+//            Result r=query.setArgs(Map.of(1,bien.getIdBien())).execute();
+//            for(Map<String,Object> row : r){
+//                Assurance assurance = new Assurance.ABuilder(row).build();
+//                assurances.add(assurance);
+//            }
+//        } catch (QueryElement.QEltException qEltException) {
+//            throw new AssuranceException("Erreur lors de la récupération des assurances", qEltException.getSqlException());
+//        }
+//
+//        return assurances;
+//    }
 
     public float getTotalPrime() {
         return this.prime + this.protectionJuridique;

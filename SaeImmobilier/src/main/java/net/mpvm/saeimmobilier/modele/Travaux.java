@@ -85,15 +85,15 @@ public class Travaux extends Queryable {
 		}
 	}
 
-	public static List<Travaux> getTravauxFromImmeuble(Immeuble immeuble) throws TravauxException {
-		try(SelectQueryElement selectQueryElement = new SelectQueryElement("SELECT * FROM Travaux WHERE IdBien = ?")){
-			selectQueryElement.setArgs(Map.of(1,immeuble.getIdBien()));
-			selectQueryElement.execute();
-			return selectQueryElement.getResult().stream().map(Travaux::new).toList();
-		} catch (QueryElement.QEltException e) {
-			throw new TravauxException("Erreur lors de la récupération des travaux", e.getSqlException());
-		}
-	}
+//	public static List<Travaux> getTravauxFromImmeuble(Immeuble immeuble) throws TravauxException {
+//		try(SelectQueryElement selectQueryElement = new SelectQueryElement("SELECT * FROM Travaux WHERE IdBien = ?")){
+//			selectQueryElement.setArgs(Map.of(1,immeuble.getIdBien()));
+//			selectQueryElement.execute();
+//			return selectQueryElement.getResult().stream().map(Travaux::new).toList();
+//		} catch (QueryElement.QEltException e) {
+//			throw new TravauxException("Erreur lors de la récupération des travaux", e.getSqlException());
+//		}
+//	}
 
 	@Override
 	public void save() throws TravauxException {
