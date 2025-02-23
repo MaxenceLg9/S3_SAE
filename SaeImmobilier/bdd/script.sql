@@ -59,15 +59,14 @@ CREATE TABLE Travaux(
                         FOREIGN KEY (IdBien) REFERENCES Bien(IdBien)
 );
 CREATE TABLE Assurance(
-                          IdAssurance INT auto_increment,
+                          IdAssurance INT auto_increment PRIMARY KEY,
                           NumeroContrat VARCHAR(50) UNIQUE NOT NULL,
                           ProtectionJuridique DOUBLE,
                           Prime DOUBLE,
                           TypeContrat VARCHAR(20),
                           Annee INT,
                           IdBien INTEGER,
-                          NomAssurance VARCHAR(50),
-                          PRIMARY KEY(IdAssurance)
+                          NomAssurance VARCHAR(50)
 );
 
 
