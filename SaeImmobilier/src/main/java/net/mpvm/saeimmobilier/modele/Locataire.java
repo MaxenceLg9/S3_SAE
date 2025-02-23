@@ -172,9 +172,9 @@ public final class Locataire extends Queryable {
 	}
 
 
-	public List<Bail> getBaux() throws Bail.BailException {
-		return Bail.getBauxFromLocataire(this);
-	}
+//	public List<Bail> getBaux() throws Bail.BailException {
+//		return Bail.getBauxFromLocataire(this);
+//	}
 
 	public static List<Locataire> getLocatairesFromBail(Bail bail) throws LocataireException {
 		try(SelectQueryElement query = new SelectQueryElement("""
@@ -217,8 +217,11 @@ public final class Locataire extends Queryable {
 	}
 
 	public void delete() throws LocataireException {
-		try(UpdateQueryElement query = new UpdateQueryElement(DELETE_QUERY, true)){
+		try{
+			UpdateQueryElement query = new UpdateQueryElement("DELETE FROM AssocieBailLocataire WHERE IdLocataire=?", true);
 			query.setArgs(Map.of(1,this.getIdLocataire())).execute();
+			UpdateQueryElement query2 = new UpdateQueryElement(DELETE_QUERY, true);
+			query2.setArgs(Map.of(1,this.getIdLocataire())).execute();
 		}
 		catch (QueryElement.QEltException e) {
 			throw new LocataireException("Erreur lors de la suppression du locataire");

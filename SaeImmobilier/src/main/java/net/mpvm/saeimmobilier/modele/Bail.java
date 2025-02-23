@@ -75,18 +75,18 @@ public class Bail extends Queryable {
 	}
 
 
-	public static Bail getBailFromCharges(Charges charges) {
-		try(SelectQueryElement selectQueryElement = new SelectQueryElement("SELECT * FROM Bail B JOIN Charges C ON C.IdBail = B.Bail WHERE C.IdCharges = ?")){
-			selectQueryElement.setArgs(Map.of(1, charges.getIdCharges()));
-			Result result = selectQueryElement.execute();
-			Map<String, Object> row = result.getFirst();
-			return new Bail(row);
-		}
-		catch (QueryElement.QEltException e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
+//	public static Bail getBailFromCharges(Charges charges) {
+//		try(SelectQueryElement selectQueryElement = new SelectQueryElement("SELECT * FROM Bail B JOIN Charges C ON C.IdBail = B.Bail WHERE C.IdCharges = ?")){
+//			selectQueryElement.setArgs(Map.of(1, charges.getIdCharges()));
+//			Result result = selectQueryElement.execute();
+//			Map<String, Object> row = result.getFirst();
+//			return new Bail(row);
+//		}
+//		catch (QueryElement.QEltException e) {
+//			e.printStackTrace();
+//			return null;
+//		}
+//	}
 
 	public static List<Bail> getBauxFromBien(BienLouable bienLouable) throws BailException {
 		try(SelectQueryElement selectQueryElement = new SelectQueryElement("SELECT * FROM Bail WHERE IdBien = ?")){
@@ -148,22 +148,22 @@ public class Bail extends Queryable {
 		}
 	}
 
-	public static List<Bail> getBauxFromLocataire(Locataire locataire) throws BailException {
-		ArrayList<Bail> bauxList = new ArrayList<>();
-		try (SelectQueryElement selectQueryElement = new SelectQueryElement(SELECT_BAUX_FROM_LOCATAIRE)) {
-			selectQueryElement.setArgs(Map.of(-1, locataire.getIdLocataire())); // Assuming getId() retrieves the current Locataire's ID.
-			selectQueryElement.execute();
-			List<Map<String, Object>> result = selectQueryElement.getResult();
-			for (Map<String, Object> row : result) {
-				bauxList.add(new Bail(row)); // Assuming Bail has a constructor that accepts a map of database row values.
-			}
-		} catch (QueryElement.QEltException qEltException) {
-			qEltException.getSqlException().printStackTrace();
-			throw new BailException("Erreur lors de la récupération des baux du locataire", qEltException.getSqlException());
-		}
-		return bauxList;
-
-	}
+//	public static List<Bail> getBauxFromLocataire(Locataire locataire) throws BailException {
+//		ArrayList<Bail> bauxList = new ArrayList<>();
+//		try (SelectQueryElement selectQueryElement = new SelectQueryElement(SELECT_BAUX_FROM_LOCATAIRE)) {
+//			selectQueryElement.setArgs(Map.of(-1, locataire.getIdLocataire())); // Assuming getId() retrieves the current Locataire's ID.
+//			selectQueryElement.execute();
+//			List<Map<String, Object>> result = selectQueryElement.getResult();
+//			for (Map<String, Object> row : result) {
+//				bauxList.add(new Bail(row)); // Assuming Bail has a constructor that accepts a map of database row values.
+//			}
+//		} catch (QueryElement.QEltException qEltException) {
+//			qEltException.getSqlException().printStackTrace();
+//			throw new BailException("Erreur lors de la récupération des baux du locataire", qEltException.getSqlException());
+//		}
+//		return bauxList;
+//
+//	}
 	public static double calculerLoyersProprietaire() throws Exception {
 		double totalLoyers = 0.0;
 
@@ -332,30 +332,55 @@ public class Bail extends Queryable {
 	@Override
 	public void modify() throws QbleException {
 	}
+	public void supprimerAssocEtCharges()throws Bail.BailException{
+		try {
+			String DELETE_ASSOCIATIONS = "DELETE FROM AssocieBailLocataire WHERE IdBail = ?";
+			try (UpdateQueryElement deleteAssociationsQuery = new UpdateQueryElement(DELETE_ASSOCIATIONS, true)) {
+				deleteAssociationsQuery.setArgs(Map.of(1, this.getIdBail())).execute();
+			}
 
+			String DELETE_CHARGES = "DELETE FROM Charges WHERE IdBail = ?";
+			try (UpdateQueryElement deleteChargesQuery = new UpdateQueryElement(DELETE_CHARGES, true)) {
+				deleteChargesQuery.setArgs(Map.of(1, this.getIdBail())).execute();
+			}
+		}catch (QueryElement.QEltException e) {
+			throw new Bail.BailException("Erreur lors de la suppression du bail", e.getSqlException());
+		}
+	}
 	@Override
 	public void delete() throws Bail.BailException {
-		if(this.getIdBail() == -1)
+		if (this.getIdBail() == -1){
 			throw new Bail.BailException("Le bail n'existe pas dans la table", null);
-		try(UpdateQueryElement query = new UpdateQueryElement(DELETE_QUERY, true)){
-			AssociationBailLocataires.delete(this);
-			query.setArgs(Map.of(1,this.getIdBail())).execute();
+		}
+
+		try (UpdateQueryElement query = new UpdateQueryElement(DELETE_QUERY, true)) {
+			this.supprimerAssocEtCharges();
+			query.setArgs(Map.of(1, this.getIdBail())).execute();
 			this.getDocument().delete();
 			this.idBail = -1;
+		} catch (QueryElement.QEltException e) {
+			throw new Bail.BailException("Erreur lors de la suppression du bail", e.getSqlException());
 		}
-		catch (QueryElement.QEltException e) {
+	}
+
+
+	public void delete(BienLouable bienLouable) throws BailException {
+		if (this.getIdBail() == -1)
+			throw new Bail.BailException("Le bail n'existe pas dans la table", null);
+
+		try {
+			this.supprimerAssocEtCharges();
+
+			try (UpdateQueryElement query = new UpdateQueryElement(DELETE_QUERY_BIEN, true)) {
+				query.setArgs(Map.of(1, bienLouable.getIdBien())).execute();
+				this.getDocument().delete();
+
+			}
+		} catch (QueryElement.QEltException e) {
 			throw new Bail.BailException("Erreur lors de la suppression du bien", e.getSqlException());
 		}
 	}
 
-	public static void delete(BienLouable bienLouable) throws BailException {
-		try(UpdateQueryElement query = new UpdateQueryElement(DELETE_QUERY_BIEN, true)){
-			query.setArgs(Map.of(1,bienLouable.getIdBien())).execute();
-		}
-		catch (QueryElement.QEltException e) {
-			throw new Bail.BailException("Erreur lors de la suppression du bien", e.getSqlException());
-		}
-	}
 
 
 	@Override
