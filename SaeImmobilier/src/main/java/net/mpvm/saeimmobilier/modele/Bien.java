@@ -5,6 +5,7 @@ import net.mpvm.saeimmobilier.sql.Query.Queryable;
 import net.mpvm.saeimmobilier.sql.Query.SelectQueryElement;
 import net.mpvm.saeimmobilier.sql.Query.UpdateQueryElement;
 
+import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.*;
 import java.util.*;
@@ -13,8 +14,9 @@ import java.util.*;
 public abstract class Bien extends Queryable {
 
     private static final String SELECT_QUERY = "SELECT * FROM bien";
+    private static final String SELECT_ID_QUERY = "SELECT IdBien FROM bien WHERE NumeroFiscal = ?";
     private static final String SELECT_QUERY_BY_ID = "SELECT * FROM bien WHERE IdBien = ?";
-    private static final String SELECT_FROM_IMMEUBLE="SELECT * FROM Bien WHERE IdImmeuble = ?";
+    public static final String SELECT_FROM_ID = "SELECT * FROM Bien WHERE IdBien = ?";
 
     private int idBien;
     private String numeroFiscal;
@@ -138,6 +140,8 @@ public abstract class Bien extends Queryable {
         return getTypeBien().name();
     }
 
+    abstract Map<String, Object> getArgs();
+
     public void setIdProprio(String idProprio) {
         this.idProprio = idProprio;
     }
@@ -162,6 +166,9 @@ public abstract class Bien extends Queryable {
     @Override
     public void archiver() {
 
+    }
+
+    public void update() {
     }
 
     public String getIdProprio() {
@@ -218,7 +225,7 @@ public abstract class Bien extends Queryable {
         }
 
         private static Bien getFromQuery(int idBien, TypeBien type) throws BienException {
-            try(SelectQueryElement selectQueryElement = new SelectQueryElement(SELECT_QUERY_BY_ID)){
+            try(SelectQueryElement selectQueryElement = new SelectQueryElement(SELECT_FROM_ID)){
                 selectQueryElement.setArgs(Map.of(1, idBien));
                 selectQueryElement.execute();
                 List<Map<String,Object>> result = selectQueryElement.getResult();
