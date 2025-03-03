@@ -8,10 +8,13 @@ import net.mpvm.saeimmobilier.modele.Proprietaire;
 import net.mpvm.saeimmobilier.util.JfxUtil;
 import net.mpvm.saeimmobilier.vue.VueConnexion;
 import net.mpvm.saeimmobilier.vue.VueInscription;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class CtrlBienvenue {
 
+    private static final Logger log = LoggerFactory.getLogger(CtrlBienvenue.class);
     @FXML
     private Button btnDefault;
 
@@ -20,7 +23,8 @@ public class CtrlBienvenue {
             toggleButton(Proprietaire.countProprietaire() == 0);
         } catch (Proprietaire.ProprietaireException e) {
             JfxUtil.displayError("Erreur de récupération des données", "L'application n'a pas pu se lancer. Vérifiez votre connexion à la base de données.");
-            throw new RuntimeException();
+            System.out.println(e.getSqlException());
+//            throw new RuntimeException();
         }
         // Initialisation
     }
