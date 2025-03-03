@@ -7,7 +7,7 @@ public abstract class Queryable {
 
     public abstract void save() throws QbleException;
     public abstract void modify() throws QbleException;
-    public abstract void delete() throws QbleException;
+    public abstract void delete() throws QueryElement.QEltException;
     public abstract void archiver() throws QbleException;
 
 
