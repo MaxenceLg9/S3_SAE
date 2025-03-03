@@ -9,11 +9,11 @@ import java.util.regex.Pattern;
 import net.mpvm.saeimmobilier.sql.Query.*;
 
 public class Proprietaire extends Queryable{
-	public static final String INSERT_QUERY = "INSERT INTO proprietaire (Email,MotDePasse) VALUES (?,?)";
-	public static final String SELECT_QUERY = "SELECT * FROM proprietaire";
-	public static final String DELETE_QUERY = "DELETE FROM proprietaire WHERE IdProprietaire = ?";
-	public static final String SELECT_COUNT_WHERE_EMAIL = "SELECT COUNT(*) AS count FROM proprietaire WHERE email = ?";
-	public static final String SELECT_COUNT_PROPRIETAIRE = "SELECT COUNT(*) AS count FROM proprietaire";
+	public static final String INSERT_QUERY = "INSERT INTO Proprietaire (Email,MotDePasse) VALUES (?,?)";
+	public static final String SELECT_QUERY = "SELECT * FROM Proprietaire";
+	public static final String DELETE_QUERY = "DELETE FROM Proprietaire";
+	public static final String SELECT_COUNT_WHERE_EMAIL = "SELECT COUNT(*) AS count FROM Proprietaire WHERE email = ?";
+	public static final String SELECT_COUNT_PROPRIETAIRE = "SELECT COUNT(*) AS count FROM Proprietaire";
 
 
 	private String email;
@@ -63,7 +63,7 @@ public class Proprietaire extends Queryable{
 			return (long) rs.getFirst().get("count");
 		}
 		catch (QueryElement.QEltException qEltException){
-			throw new ProprietaireException("Erreur lors de la récupération du nombre de propriétaires");
+			throw new ProprietaireException("Erreur lors de la récupération du nombre de propriétaires",qEltException.getSqlException());
 		}
 	}
 
@@ -110,14 +110,19 @@ public class Proprietaire extends Queryable{
 		}
 	}
 
+
 	@Override
 	public void modify() throws QbleException {
 
 	}
 
 	@Override
-	public void delete() throws QbleException {
-
+	public void delete() throws ProprietaireException {
+		try (UpdateQueryElement query = new UpdateQueryElement(DELETE_QUERY, true)) {
+			query.execute();
+		} catch (QueryElement.QEltException QEltException) {
+			throw new ProprietaireException("Erreur lors de l'ajout du propriétaire : ", QEltException.getSqlException());
+		}
 	}
 
 	@Override
@@ -161,8 +166,8 @@ public class Proprietaire extends Queryable{
 		public ProprietaireException(String message){
 			super(message);
 		}
-		public ProprietaireException(String message, Throwable cause){
-			super(message, (SQLException) cause);
+		public ProprietaireException(String message, SQLException cause){
+			super(message, cause);
 		}
 	}
 }
