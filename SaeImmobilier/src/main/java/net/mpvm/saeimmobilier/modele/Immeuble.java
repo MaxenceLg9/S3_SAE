@@ -165,7 +165,7 @@ public final class Immeuble extends Bien{
 									6, this.getIdProprio(),
 									7, this.getDateAjout()))
 					.execute();
-			super.save(q);
+			super.updateID(q);
 			BBuilder.add(this);
 		}
 		catch (QueryElement.QEltException qEltException){
