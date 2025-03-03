@@ -110,14 +110,19 @@ public class Proprietaire extends Queryable{
 		}
 	}
 
+
 	@Override
 	public void modify() throws QbleException {
 
 	}
 
 	@Override
-	public void delete() throws QbleException {
-
+	public void delete() throws ProprietaireException {
+		try (UpdateQueryElement query = new UpdateQueryElement(DELETE_QUERY, true)) {
+			query.execute();
+		} catch (QueryElement.QEltException QEltException) {
+			throw new ProprietaireException("Erreur lors de l'ajout du propriétaire : ", QEltException.getSqlException());
+		}
 	}
 
 	@Override
