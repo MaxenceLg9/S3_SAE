@@ -95,8 +95,7 @@ public abstract class Bien extends Queryable {
             e.getSqlException().printStackTrace();
             throw new QueryElement.QEltException("Erreur lors de la suppression du bienA", e.getSqlException());
         }
-
-
+        this.idBien = -1;
     }
 
 
