@@ -11,7 +11,7 @@ import net.mpvm.saeimmobilier.sql.Query.*;
 public class Proprietaire extends Queryable{
 	public static final String INSERT_QUERY = "INSERT INTO proprietaire (Email,MotDePasse) VALUES (?,?)";
 	public static final String SELECT_QUERY = "SELECT * FROM proprietaire";
-	public static final String DELETE_QUERY = "DELETE FROM proprietaire";
+	public static final String DELETE_QUERY = "DELETE FROM proprietaire WHERE IdProprietaire = ?";
 	public static final String SELECT_COUNT_WHERE_EMAIL = "SELECT COUNT(*) AS count FROM proprietaire WHERE email = ?";
 	public static final String SELECT_COUNT_PROPRIETAIRE = "SELECT COUNT(*) AS count FROM proprietaire";
 
@@ -110,19 +110,14 @@ public class Proprietaire extends Queryable{
 		}
 	}
 
-
 	@Override
 	public void modify() throws QbleException {
 
 	}
 
 	@Override
-	public void delete() throws ProprietaireException {
-		try (UpdateQueryElement query = new UpdateQueryElement(DELETE_QUERY, true)) {
-			query.execute();
-		} catch (QueryElement.QEltException QEltException) {
-			throw new ProprietaireException("Erreur lors de l'ajout du propriétaire : ", QEltException.getSqlException());
-		}
+	public void delete() throws QbleException {
+
 	}
 
 	@Override
