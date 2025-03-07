@@ -130,35 +130,19 @@ public class CtrlConnexion {
     }
 
     private void alertFormatMail() {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Erreur");
-        alert.setHeaderText("Adresse mail invalide");
-        alert.setContentText("Vérifier le format du mail");
-        alert.showAndWait();
+        JfxUtil.displayError("Adresse mail invalide","Vérifier le format du mail");
     }
 
     private void alertMailEmpty() {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Erreur");
-        alert.setHeaderText("Mail non précisé");
-        alert.setContentText("Veuillez remplir tous les champs");
-        alert.showAndWait();
+        JfxUtil.displayError("Mail non précisé","Veuillez remplir tous les champs");
     }
 
     private void alertPwdEmpty() {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Erreur");
-        alert.setHeaderText("Mot passe non entré");
-        alert.setContentText("Veuillez remplir tous les champs");
-        alert.showAndWait();
+        JfxUtil.displayError("Mot passe non entré","Veuillez remplir tous les champs");
     }
 
     private void alertIncorrectEmpty() {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Erreur");
-        alert.setHeaderText("Identifiant ou mot de passe Incorrect");
-        alert.setContentText("Veuillez vérifier votre mail et votre mot de passe");
-        alert.showAndWait();
+        JfxUtil.displayError("Identifiant ou mot de passe Incorrect","Veuillez vérifier votre mail et votre mot de passe");
     }
 
     private boolean isValidEmail(String email) {

@@ -33,6 +33,7 @@ public class CtrlNewLocataire {
 
     @FXML
     public void initialize(){
+        //récupération du controleur passé en paramètres
         Platform.runLater(() -> {
             Stage stage = (Stage) fieldNom.getScene().getWindow();
             if(!stage.getProperties().containsKey("controleur") || stage.getProperties().get("controleur") == null || !(stage.getProperties().get("controleur") instanceof CtrlGererUnBail)){
