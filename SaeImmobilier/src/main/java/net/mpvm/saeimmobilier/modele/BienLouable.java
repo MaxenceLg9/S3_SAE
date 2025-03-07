@@ -108,6 +108,7 @@ public abstract class BienLouable extends Bien {
         this.immeuble = immeuble;
     }
 
+    @Override
     Map<String,Object> getArgs(){
         return Map.of(
                 "ComplementAdresse", this.getComplementAdresse(),
@@ -223,21 +224,8 @@ public abstract class BienLouable extends Bien {
         }
     }
 
-    @Override
-    public void delete() throws BienLouableException {
-        try(UpdateQueryElement updateQueryElement = new UpdateQueryElement(DELETE_QUERY, true)){
 
-            for(Bail b : Bail.getBauxFromBien(this))
-                b.delete();
-            updateQueryElement.setArgs(
-                            Map.of(1,this.getIdBien()))
-                    .execute();
-            super.delete();
-        }catch(QueryElement.QEltException QEltException){
-            QEltException.getSqlException().printStackTrace();
-            throw new BienLouableException("Erreur lors de la suppression du bien", QEltException.getSqlException());
-        }
-    }
+
     public abstract static class BLBuilder extends BBuilder{
 
         private final String complementAdresse;
