@@ -9,6 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import net.mpvm.saeimmobilier.modele.Bien;
 import net.mpvm.saeimmobilier.modele.BienLouable;
 import net.mpvm.saeimmobilier.modele.Immeuble;
 import net.mpvm.saeimmobilier.vue.*;
@@ -126,11 +127,9 @@ public class CtrlViewImmeubles {
             alert.setHeaderText(null);
             alert.setContentText("L'immeuble a été supprimé avec succès.");
             alert.showAndWait();
-        } catch (Immeuble.ImmeubleException e) {
+        } catch (Bien.BienException e) {
             JfxUtil.displayError("Erreur lors de la suppression de l'immeuble", e.getMessage());
             e.printStackTrace();
-        } catch (BienLouable.BienLouableException e) {
-            throw new RuntimeException(e);
         }
     }
 

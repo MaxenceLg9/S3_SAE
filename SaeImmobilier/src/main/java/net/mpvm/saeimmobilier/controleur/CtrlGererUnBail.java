@@ -119,8 +119,7 @@ public class CtrlGererUnBail {
                     System.out.println("fields locataire null");
                     return true;
                 }
-                else
-                if(choiceBoxesLocataires.get(i).getValue() == null) {
+                else if(choiceBoxesLocataires.get(i).getValue() == null) {
                     System.out.println("locataire null");
                     return true;
                 }

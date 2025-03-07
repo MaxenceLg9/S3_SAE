@@ -46,26 +46,26 @@ public class CtrlCharges {
         resetFields();
         comboTypeCharges.valueProperty().addListener((obs, oldValue, newValue) -> {
             switch (newValue) {
-                case "Provision sur charge":
+                case Charges.PROVISION_SUR_CHARGE:
                     resetFields();
                     fieldProvision.setDisable(false);
                     break;
-                case "Eau":
+                case Charges.EAU:
                     resetFields();
                     fieldNouvelIndice.setDisable(false);
                     fieldAncienIndice.setDisable(false);
                     fieldPartieFixe.setDisable(false);
                     fieldPartieVariable.setDisable(false);
                     break;
-                case "Entretien":
+                case Charges.ENTRETIEN:
                     resetFields();
                     fieldMontantEntretien.setDisable(false);
                     break;
-                case "Ordures Ménagères":
+                case Charges.ORDURES_MENAGERES:
                     resetFields();
                     fieldMontantOrdures.setDisable(false);
                     break;
-                case "Électricité":
+                case Charges.ELECTRICITE:
                     resetFields();
                     fieldMontantElectricite.setDisable(false);
                     break;
@@ -101,7 +101,7 @@ public class CtrlCharges {
     }
 
     private void setupComboBox() {
-        comboTypeCharges.getItems().setAll("Provision sur charge", "Eau", "Entretien", "Ordures Ménagères", "Électricité");
+        comboTypeCharges.getItems().setAll(Charges.PROVISION_SUR_CHARGE, Charges.EAU, Charges.ENTRETIEN, Charges.ORDURES_MENAGERES, Charges.ELECTRICITE);
         comboTypeCharges.setValue(null);
     }
 
@@ -160,34 +160,26 @@ public class CtrlCharges {
             Date sqlDate = Date.valueOf(date);
 
             switch (typeCharge) {
-                case "Provision sur charge":
+                case Charges.PROVISION_SUR_CHARGE:
                     Charges chargeProvision = new Charges.ProvisionCharge(sqlDate );
                     chargeProvision.setMontant(Float.parseFloat(fieldProvision.getText()));
                     chargeProvision.setIdBail(idBail);
                     chargeProvision.save();
                     break;
 
-                case "Eau":
-                    Charges chargeEau = new Charges.ChargeEau(sqlDate);
-                    ((Charges.ChargeEau) chargeEau).setNouvelIndice(Integer.parseInt(fieldNouvelIndice.getText()));
-
-                    ((Charges.ChargeEau) chargeEau).setAncienIndice(Integer.parseInt(fieldAncienIndice.getText()));
-                    ((Charges.ChargeEau) chargeEau).setPartieFixe(Float.parseFloat(fieldPartieFixe.getText()));
-                    ((Charges.ChargeEau) chargeEau).setPartieVariable(Float.parseFloat(fieldPartieVariable.getText()));
-                    ((Charges.ChargeEau) chargeEau).calculerMontant();
-
-                    chargeEau.setIdBail(idBail);
+                case Charges.EAU:
+                    Charges.ChargeEau chargeEau = getChargeEau(sqlDate);
                     chargeEau.save();
                     break;
 
-                case "Entretien":
+                case Charges.ENTRETIEN:
                     Charges chargeEntretien = new Charges.ChargeEntretien(sqlDate);
                     chargeEntretien.setMontant(Float.parseFloat(fieldMontantEntretien.getText()));
                     chargeEntretien.setIdBail(idBail);
                     chargeEntretien.save();
                     break;
 
-                case "Ordures Ménagères":
+                case Charges.ORDURES_MENAGERES:
 
                     Charges chargeOrdures = new Charges.ChargeOrduresMenageres(sqlDate);
                     chargeOrdures.setMontant(Float.parseFloat(fieldMontantOrdures.getText()));
@@ -196,7 +188,7 @@ public class CtrlCharges {
                     chargeOrdures.save();
                     break;
 
-                case "Électricité":
+                case Charges.ELECTRICITE:
                     Charges chargeElectricite = new Charges.ChargeElectricite(sqlDate);
                     chargeElectricite.setMontant(Float.parseFloat(fieldMontantElectricite.getText()));
                     chargeElectricite.setIdBail(idBail);
@@ -223,6 +215,19 @@ public class CtrlCharges {
         }
     }
 
+    private Charges.ChargeEau getChargeEau(Date sqlDate) {
+        Charges.ChargeEau chargeEau = new Charges.ChargeEau(sqlDate);
+        chargeEau.setNouvelIndice(Integer.parseInt(fieldNouvelIndice.getText()));
+
+        chargeEau.setAncienIndice(Integer.parseInt(fieldAncienIndice.getText()));
+        chargeEau.setPartieFixe(Float.parseFloat(fieldPartieFixe.getText()));
+        chargeEau.setPartieVariable(Float.parseFloat(fieldPartieVariable.getText()));
+        chargeEau.calculerMontant();
+
+        chargeEau.setIdBail(idBail);
+        return chargeEau;
+    }
+
     private void alertFieldsEmpty() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Erreur");
@@ -236,22 +241,16 @@ public class CtrlCharges {
             return false;
         }
 
-        switch (comboTypeCharges.getValue()) {
-            case "Provision sur charge":
-                return !fieldProvision.getText().isEmpty();
-            case "Eau":
-                return !fieldNouvelIndice.getText().isEmpty()
-                        && !fieldPartieFixe.getText().isEmpty()
-                        && !fieldPartieVariable.getText().isEmpty();
-            case "Entretien":
-                return !fieldMontantEntretien.getText().isEmpty();
-            case "Ordures Ménagères":
-                return !fieldMontantOrdures.getText().isEmpty();
-            case "Électricité":
-                return !fieldMontantElectricite.getText().isEmpty();
-            default:
-                return false;
-        }
+        return switch (comboTypeCharges.getValue()) {
+            case Charges.PROVISION_SUR_CHARGE -> !fieldProvision.getText().isEmpty();
+            case Charges.EAU -> !fieldNouvelIndice.getText().isEmpty()
+                    && !fieldPartieFixe.getText().isEmpty()
+                    && !fieldPartieVariable.getText().isEmpty();
+            case Charges.ENTRETIEN -> !fieldMontantEntretien.getText().isEmpty();
+            case Charges.ORDURES_MENAGERES -> !fieldMontantOrdures.getText().isEmpty();
+            case Charges.ELECTRICITE -> !fieldMontantElectricite.getText().isEmpty();
+            default -> false;
+        };
     }
 
     @FXML

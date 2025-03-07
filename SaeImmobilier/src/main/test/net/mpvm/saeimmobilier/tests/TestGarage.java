@@ -41,7 +41,7 @@ public class TestGarage {
     }
 
     @AfterAll
-    public static void setDown() throws Immeuble.ImmeubleException {
+    public static void setDown() throws Bien.BienException {
         IMMEUBLE.delete();
         QueryElement.rollBackStaticConnection();
         QueryElement.removeStaticConnection();

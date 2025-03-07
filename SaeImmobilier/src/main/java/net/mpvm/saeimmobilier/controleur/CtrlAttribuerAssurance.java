@@ -147,11 +147,10 @@ public class CtrlAttribuerAssurance {
 
 
     private void creerAssurance(ActionEvent event) {
-        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-        stage.close();
         Stage s = new Stage();
         JfxUtil.showWindow(s, VueNewAssurance.class);
     }
+
     @FXML
     private void retourImmeubles(ActionEvent actionEvent) {
         Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
