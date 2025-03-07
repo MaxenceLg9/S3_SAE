@@ -81,24 +81,41 @@ public abstract class Bien extends Queryable {
         this.idBien = lastID(updateQueryElement);
     }
 
-    public void delete() throws QueryElement.QEltException {
+    //super méthode pour supprimer le Bien : gère les spécificités des classes filles
+    public final void delete() throws QueryElement.QEltException {
+        //check de la présence du bien dans la BD
+        if (this.getIdBien() == -1){
+            throw new Immeuble.ImmeubleException("Le bien n'existe pas dans la table", null);
+        }
+
+        //gestion des spécificités de chaque type
+        if(this instanceof Immeuble immeuble){
+            for (BienLouable b :immeuble.getBiensAssocies()){
+                b.delete();
+            }
+        }else{
+            for(Bail b : Bail.getBauxFromBien((BienLouable) this))
+                b.delete();
+        }
+
+        //Gestion de la suppression des contraintes Travaux & Assurances
         String DELETE_TRAVAUX = "DELETE FROM Travaux WHERE IdBien = ?";
-
-        try (UpdateQueryElement deleteTravauxQuery = new UpdateQueryElement(DELETE_TRAVAUX, true)) {
-            deleteTravauxQuery.setArgs(Map.of(1, this.getIdBien())).execute();
-        }catch (QueryElement.QEltException e){
-            e.getSqlException().printStackTrace();
-            throw new QueryElement.QEltException("Erreur lors de la suppression du bienT", e.getSqlException());
-        }
-
         String UPDATE_ASSURANCES = "UPDATE Assurance SET IdBien = NULL WHERE IdBien = ?";
-        try (UpdateQueryElement updateQuery = new UpdateQueryElement(UPDATE_ASSURANCES, true)) {
+        //Initialisation des différentes query
+        try (
+                UpdateQueryElement deleteTravauxQuery = new UpdateQueryElement(DELETE_TRAVAUX, true);
+                UpdateQueryElement updateQuery = new UpdateQueryElement(UPDATE_ASSURANCES, true);
+                UpdateQueryElement deleteQuery = new UpdateQueryElement(DELETE_QUERY, true);
+        ) {
+            //init des paramètres et exécutions des requêtes
+            deleteTravauxQuery.setArgs(Map.of(1, this.getIdBien())).execute();
             updateQuery.setArgs(Map.of(1, this.getIdBien())).execute();
-        }catch (QueryElement.QEltException e){
+            deleteQuery.setArgs(Map.of(1, this.getIdBien(), 2, this.getTypeBien().name())).execute();
+            this.idBien = -1;
+        } catch (QueryElement.QEltException e){
             e.getSqlException().printStackTrace();
-            throw new QueryElement.QEltException("Erreur lors de la suppression du bienA", e.getSqlException());
+            throw new Bien.BienException("Erreur lors de la suppression du bienA", e.getSqlException());
         }
-        this.idBien = -1;
     }
 
 
@@ -168,13 +185,11 @@ public abstract class Bien extends Queryable {
 
     }
 
-    public void update() {
-    }
-
     public String getIdProprio() {
         return this.idProprio;
     }
 
+    //Factory builder pour préserver l'unicité entre les biens créés et ceux chargés de la BD
     public abstract static class BBuilder extends Queryable.Builder{
 
         private final int IdBien;

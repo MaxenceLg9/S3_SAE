@@ -26,16 +26,10 @@ public class CtrlAccueil {
         stage.getProperties().put("parent", this);
     }
 
-
-
     public void vueImmeubles(ActionEvent event) {
         Stage stage = new Stage();
         JfxUtil.showWindow(stage,VueImmeubles.class);
     }
-
-
-
-
 
     public void deconnexion(ActionEvent event) {
         try {
@@ -54,6 +48,7 @@ public class CtrlAccueil {
         JfxUtil.showWindow(stage, VueNewAssurance.class);
         stage.getProperties().put("parent", this);
     }
+
     @FXML
     public void Calculs() {
         Stage stage = new Stage();

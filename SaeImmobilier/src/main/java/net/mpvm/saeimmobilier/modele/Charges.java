@@ -20,6 +20,11 @@ public abstract class Charges {
     public static final String DELETE_QUERY = "DELETE FROM Charges WHERE IdCharges = ?";
     public static final String DELETE_QUERY_BAIL = "DELETE FROM Charges WHERE IdBail = ?";
 
+    public static final String PROVISION_SUR_CHARGE = "Provision sur charge";
+    public static final String ORDURES_MENAGERES = "Ordures Ménagères";
+    public static final String ELECTRICITE = "Électricité";
+    public static final String ENTRETIEN = "Entretien";
+    public static final String EAU = "Eau";
     private int idCharges;
     private float montant;
     private Date dateReleve;
@@ -123,27 +128,27 @@ public abstract class Charges {
 
                 Charges charge;
                 switch (typeCharges) {
-                    case "Eau" -> {
+                    case EAU -> {
                         ChargeEau chargeEau = new ChargeEau(idCharges, dateCharge);
                         chargeEau.setMontant(montant);
                         charge = chargeEau;
                     }
-                    case "Provision sur charge" -> {
+                    case PROVISION_SUR_CHARGE -> {
                         ProvisionCharge provisionCharge = new ProvisionCharge(idCharges, dateCharge);
                         provisionCharge.setMontant(montant);
                         charge = provisionCharge;
                     }
-                    case "Ordures Ménagères" -> {
+                    case ORDURES_MENAGERES -> {
                         ChargeOrduresMenageres chargeOrdures = new ChargeOrduresMenageres(idCharges, dateCharge);
                         chargeOrdures.setMontant(montant);
                         charge = chargeOrdures;
                     }
-                    case "Électricité" -> {
+                    case ELECTRICITE -> {
                         ChargeElectricite chargeElectricite = new ChargeElectricite(idCharges, dateCharge);
                         chargeElectricite.setMontant(montant);
                         charge = chargeElectricite;
                     }
-                    case "Entretien" -> {
+                    case ENTRETIEN -> {
                         ChargeEntretien chargeEntretien = new ChargeEntretien(idCharges, dateCharge);
                         chargeEntretien.setMontant(montant);
                         charge = chargeEntretien;
@@ -230,7 +235,7 @@ public abstract class Charges {
                 case ProvisionCharge pc -> Map.of(
                         1, pc.getMontant(),
                         2, pc.getDateReleve(),
-                        3, "Provision sur charge",
+                        3, PROVISION_SUR_CHARGE,
                         4, 0, // NouvelIndice
                         5, 0, // AncienIndice
                         6, 0, // PartieFixe
@@ -240,7 +245,7 @@ public abstract class Charges {
                 case ChargeEau ce -> Map.of(
                         1, ce.getMontant(),
                         2, ce.getDateReleve(),
-                        3, "Eau",
+                        3, EAU,
                         4, ce.getNouvelIndice(),
                         5, ce.getAncienIndice(),
                         6, ce.getPartieFixe(),
@@ -250,7 +255,7 @@ public abstract class Charges {
                 case ChargeEntretien cen -> Map.of(
                         1, cen.getMontant(),
                         2, cen.getDateReleve(),
-                        3, "Entretien",
+                        3, ENTRETIEN,
                         4, 0, // NouvelIndice
                         5, 0, // AncienIndice
                         6, 0, // PartieFixe
@@ -260,7 +265,7 @@ public abstract class Charges {
                 case ChargeOrduresMenageres com -> Map.of(
                         1, com.getMontant(),
                         2, com.getDateReleve(),
-                        3, "Ordures ménagères",
+                        3, ORDURES_MENAGERES,
                         4, 0, // NouvelIndice
                         5, 0, // AncienIndice
                         6, 0, // PartieFixe
@@ -270,7 +275,7 @@ public abstract class Charges {
                 case ChargeElectricite cel -> Map.of(
                         1, cel.getMontant(),
                         2, cel.getDateReleve(),
-                        3, "Électricité",
+                        3, ELECTRICITE,
                         4, 0, // NouvelIndice
                         5, 0, // AncienIndice
                         6, 0, // PartieFixe

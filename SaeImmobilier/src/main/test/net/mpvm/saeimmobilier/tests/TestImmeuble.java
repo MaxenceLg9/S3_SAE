@@ -52,9 +52,12 @@ public class TestImmeuble {
         assertNotEquals(IMMEUBLE,immeuble);
 
         immeuble.save();
+        assertNotEquals(-1,immeuble.getIdBien());
         Immeuble immeuble1 = Immeuble.IBuilder.getImmeuble(immeuble.getIdBien());
         assertEquals(immeuble, immeuble1);
         immeuble.delete();
+        assertEquals(-1, immeuble.getIdBien());
+        assertNull(Bien.BBuilder.get(239));
     }
 
     @Test
