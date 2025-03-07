@@ -14,7 +14,9 @@ public abstract class Queryable {
     //fonction pour renvoyer la dernière clée générée (PRIMAREY KEY : AUTO_INCREMENT)
     public int lastID(UpdateQueryElement updateQueryElement) throws QbleException{
         try {
-            return ((BigInteger) updateQueryElement.getGeneratedKeys().getFirst().get("GENERATED_KEY")).intValue();
+            int id = ((BigInteger) updateQueryElement.getGeneratedKeys().getFirst().get("GENERATED_KEY")).intValue();
+            System.out.println("Clé générée reçue : " + id);
+            return id;
         } catch (QueryElement.QEltException e) {
             throw new Queryable.QbleException("Impossible de sauvegarder le document",null);
         }

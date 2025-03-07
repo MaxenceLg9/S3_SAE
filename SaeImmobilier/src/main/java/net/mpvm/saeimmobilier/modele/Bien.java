@@ -80,20 +80,10 @@ public abstract class Bien extends Queryable {
     }
 
     //super méthode pour supprimer le Bien : gère les spécificités des classes filles
-    public final void delete() throws QueryElement.QEltException {
+    public final void delete() throws BienException {
         //check de la présence du bien dans la BD
         if (this.getIdBien() == -1){
             throw new Immeuble.ImmeubleException("Le bien n'existe pas dans la table", null);
-        }
-
-        //gestion des spécificités de chaque type
-        if(this instanceof Immeuble immeuble){
-            for (BienLouable b :immeuble.getBiensAssocies()){
-                b.delete();
-            }
-        }else{
-            for(Bail b : Bail.getBauxFromBien((BienLouable) this))
-                b.delete();
         }
 
         //Gestion de la suppression des contraintes Travaux & Assurances
@@ -104,7 +94,17 @@ public abstract class Bien extends Queryable {
                 UpdateQueryElement deleteTravauxQuery = new UpdateQueryElement(DELETE_TRAVAUX, true);
                 UpdateQueryElement updateQuery = new UpdateQueryElement(UPDATE_ASSURANCES, true);
                 UpdateQueryElement deleteQuery = new UpdateQueryElement(DELETE_QUERY, true);
-        ) {
+        ){
+        //gestion des spécificités de chaque type
+        if(this instanceof Immeuble immeuble){
+            for (BienLouable b :immeuble.getBiensAssocies()){
+                b.delete();
+            }
+        }else{
+            for(Bail b : Bail.getBauxFromBien((BienLouable) this))
+                b.delete();
+        }
+
             //init des paramètres et exécutions des requêtes
             deleteTravauxQuery.setArgs(Map.of(1, this.getIdBien())).execute();
             updateQuery.setArgs(Map.of(1, this.getIdBien())).execute();
