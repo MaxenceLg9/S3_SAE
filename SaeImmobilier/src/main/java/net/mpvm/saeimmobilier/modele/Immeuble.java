@@ -21,7 +21,7 @@ public final class Immeuble extends Bien{
 			throw new RuntimeException(e);
 		}
 	}
-
+	public static final String SELECT_QUERY_ID = "SELECT * FROM Bien WHERE IdBien = ? AND TypeBien = 'IMMEUBLE'";
 	public static final String INSERT_QUERY = "INSERT INTO Bien (Adresse, Ville, CodePostal, TypeBien, NumeroFiscal, IdProprio, DateAjout) VALUES (?, ?, ?, ?, ?, ?, ?)";
 	public static final String SELECT_QUERY = "SELECT * FROM Bien WHERE TypeBien = 'IMMEUBLE'";
 	public static final String SELECT_WHERE_QUERY = "SELECT * FROM Bien WHERE Adresse = ? AND Ville = ? AND CodePostal = ?";
@@ -97,9 +97,9 @@ public final class Immeuble extends Bien{
 		return TypeBien.IMMEUBLE;
 	}
 
-	public List<Travaux> getTravauxAssocies() throws Travaux.TravauxException {
-		return Travaux.getTravauxFromImmeuble(this);
-	}
+//	public List<Travaux> getTravauxAssocies() throws Travaux.TravauxException {
+//		return Travaux.getTravauxFromImmeuble(this);
+//	}
 
 	public List<BienLouable> getBiensAssocies() throws ImmeubleException {
 		List<BienLouable> bienLouablesAssocies = new LinkedList<>();
@@ -202,12 +202,15 @@ public final class Immeuble extends Bien{
 
 		try (UpdateQueryElement deleteQuery = new UpdateQueryElement(DELETE_QUERY, true)) {
 			super.delete();
+			deleteQuery.setArgs(Map.of(1, this.getIdBien())).execute();
+
 		}
-		catch (QueryElement.QEltException e) {
+		 catch (QueryElement.QEltException e) {
 			e.getSqlException().printStackTrace();
 			throw new ImmeubleException("Erreur lors de la suppression du bien", e.getSqlException());
 		}
 	}
+
 
 	@Override
 	public String toString(){
