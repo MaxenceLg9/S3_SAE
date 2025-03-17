@@ -1,20 +1,22 @@
 package net.mpvm.saeimmobilier.controleur;
 
+import java.util.ArrayList;
+import java.util.regex.Pattern;
+
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import net.mpvm.saeimmobilier.modele.Proprietaire;
 import net.mpvm.saeimmobilier.sql.Query.QueryElement;
-import net.mpvm.saeimmobilier.sql.Query.UpdateQueryElement;
 import net.mpvm.saeimmobilier.util.JfxUtil;
 import net.mpvm.saeimmobilier.vue.VueBienvenue;
 import net.mpvm.saeimmobilier.vue.VueConnexion;
-import net.mpvm.saeimmobilier.sql.Query.UpdateQueryElement;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.regex.Pattern;
 
 public class CtrlInscription {
 

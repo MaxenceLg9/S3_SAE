@@ -1,5 +1,7 @@
 package net.mpvm.saeimmobilier.controleur;
 
+import java.util.List;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -12,9 +14,11 @@ import javafx.stage.Stage;
 import net.mpvm.saeimmobilier.modele.Bien;
 import net.mpvm.saeimmobilier.modele.BienLouable;
 import net.mpvm.saeimmobilier.util.JfxUtil;
-import net.mpvm.saeimmobilier.vue.*;
-
-import java.util.List;
+import net.mpvm.saeimmobilier.vue.VueAttribuerAssurance;
+import net.mpvm.saeimmobilier.vue.VueBails;
+import net.mpvm.saeimmobilier.vue.VueCreerUnBail;
+import net.mpvm.saeimmobilier.vue.VueModifierBien;
+import net.mpvm.saeimmobilier.vue.VueNewBien;
 
 
 public class CtrlViewBiensLouables {

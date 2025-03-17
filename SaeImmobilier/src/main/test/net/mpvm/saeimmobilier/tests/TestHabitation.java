@@ -1,15 +1,21 @@
 package net.mpvm.saeimmobilier.tests;
 
-import net.mpvm.saeimmobilier.modele.*;
-import net.mpvm.saeimmobilier.sql.Query.QueryElement;
-import org.junit.jupiter.api.*;
-
 import java.sql.Date;
 import java.time.LocalDate;
-import java.util.Map;
 
+import org.junit.jupiter.api.AfterAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+
+import net.mpvm.saeimmobilier.modele.Bien;
+import net.mpvm.saeimmobilier.modele.BienLouable;
+import net.mpvm.saeimmobilier.modele.Habitation;
+import net.mpvm.saeimmobilier.modele.Immeuble;
+import net.mpvm.saeimmobilier.modele.TypeBien;
+import net.mpvm.saeimmobilier.sql.Query.QueryElement;
 import static net.mpvm.saeimmobilier.tests.TestImmeuble.IMMEUBLE;
-import static org.junit.jupiter.api.Assertions.*;
 
 public class TestHabitation {
 
@@ -42,7 +48,7 @@ public class TestHabitation {
     }
 
     @AfterAll
-    public static void setDown() throws Immeuble.ImmeubleException {
+    public static void setDown() throws Immeuble.ImmeubleException, BienLouable.BienLouableException {
         IMMEUBLE.delete();
         QueryElement.rollBackStaticConnection();
         QueryElement.removeStaticConnection();

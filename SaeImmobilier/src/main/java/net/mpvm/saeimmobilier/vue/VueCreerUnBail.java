@@ -26,6 +26,13 @@ public class VueCreerUnBail extends Application {
                 QueryElement.rollBackStaticConnection();
                 QueryElement.removeStaticConnection();
             });
+        } else {
+            // Si idBien est passé, on initialise la connexion
+            QueryElement.newStaticConnection();
+            primaryStage.setOnCloseRequest(e -> {
+                QueryElement.rollBackStaticConnection();
+                QueryElement.removeStaticConnection();
+            });
         }
         JfxUtil.updateStage(primaryStage, "creerUnBail.fxml", "Louer un bien");
     }

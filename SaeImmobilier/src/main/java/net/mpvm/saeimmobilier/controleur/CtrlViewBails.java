@@ -1,5 +1,8 @@
 package net.mpvm.saeimmobilier.controleur;
 
+import java.io.IOException;
+import java.util.List;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -12,10 +15,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import net.mpvm.saeimmobilier.modele.Bail;
 import net.mpvm.saeimmobilier.util.JfxUtil;
-import net.mpvm.saeimmobilier.vue.*;
-
-import java.io.IOException;
-import java.util.List;
+import net.mpvm.saeimmobilier.vue.VueCharges;
+import net.mpvm.saeimmobilier.vue.VueLocataires;
 
 public class CtrlViewBails {
 
@@ -174,7 +175,7 @@ public class CtrlViewBails {
     private void ajouterBail(ActionEvent event, int idBien) {
         Stage s = new Stage();
         s.getProperties().put("idBien", idBien);
-        JfxUtil.showWindow(s, VueCreerUnBail.class);
+        JfxUtil.updateStage(s, "creerUnBail.fxml", "Créer un bail");
     }
 
     private void resilierBail(Bail bail) {
