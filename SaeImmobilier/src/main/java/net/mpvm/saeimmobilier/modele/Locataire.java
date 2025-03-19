@@ -58,7 +58,7 @@ public final class Locataire extends Queryable {
 				locatairesAssociation.values().stream().mapToDouble(AssociationBailLocataires::getPartOrduresMenageres).sum() != 100 ||
 				locatairesAssociation.values().stream().mapToDouble(AssociationBailLocataires::getPartEau).sum() != 100 ||
 				locatairesAssociation.values().stream().mapToDouble(AssociationBailLocataires::getPartLoyer).sum() != 100)
-			throw new Bail.BailException("La somme des répartitions doit être égal à 100",null);
+			throw new Bail.BailException("La somme des répartitions doit être égale à 100",null);
 		if(locatairesAssociation.keySet().stream().anyMatch(x -> x.getIdLocataire() == -1))
 			throw new Bail.BailException("Un locataire n'existe pas dans la base de données",null);
 

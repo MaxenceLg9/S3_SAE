@@ -63,8 +63,7 @@
         <Label text="Fin" GridPane.rowIndex="2" GridPane.columnIndex="0" style="-fx-text-fill: white;"/>
         <Label text="Signature" GridPane.rowIndex="3" GridPane.columnIndex="0" style="-fx-text-fill: white;"/>
         <Label text="Loyer" GridPane.rowIndex="5" GridPane.columnIndex="0" style="-fx-text-fill: white;"/>
-        <Label text="Total Charges" GridPane.rowIndex="6" GridPane.columnIndex="0" style="-fx-text-fill: white;"/>
-        <Label text="Garantie" GridPane.rowIndex="7" GridPane.columnIndex="0" style="-fx-text-fill: white;"/>
+        <Label text="Garantie" GridPane.rowIndex="6" GridPane.columnIndex="0" style="-fx-text-fill: white;"/>
         
         <!-- Colonne 2 - Champs de saisie -->
         <Label text="Dates du Bail" GridPane.rowIndex="0" GridPane.columnIndex="1" style="-fx-text-fill: white; -fx-font-weight: bold;"/>
@@ -73,8 +72,7 @@
         <DatePicker fx:id="dateSignature" GridPane.rowIndex="3" GridPane.columnIndex="1" style="-fx-background-color: #ecf0f1;"/>
         <Label text="Charges" GridPane.rowIndex="4" GridPane.columnIndex="1" style="-fx-text-fill: white; -fx-font-weight: bold;"/>
         <TextField fx:id="fieldMontantLoyer" GridPane.rowIndex="5" GridPane.columnIndex="1" style="-fx-background-color: #ecf0f1;"/>
-        <TextField fx:id="fieldTotalCharges" GridPane.rowIndex="6" GridPane.columnIndex="1" style="-fx-background-color: #ecf0f1;"/>
-        <TextField fx:id="fieldDepotGarantie" GridPane.rowIndex="7" GridPane.columnIndex="1" style="-fx-background-color: #ecf0f1;"/>
+        <TextField fx:id="fieldDepotGarantie" GridPane.rowIndex="6" GridPane.columnIndex="1" style="-fx-background-color: #ecf0f1;"/>
         
         <!-- Colonne 3 - Type de Location -->
         <Label text="Type de Location" GridPane.rowIndex="0" GridPane.columnIndex="2" style="-fx-text-fill: white; -fx-font-weight: bold;"/>
@@ -92,18 +90,16 @@
         
         <!-- Colonne 5 - Répartition Loyer -->
         <Label text="Répartition Loyer" GridPane.rowIndex="0" GridPane.columnIndex="4" style="-fx-text-fill: white; -fx-font-weight: bold;"/>
-        <HBox spacing="10" GridPane.rowIndex="1" GridPane.columnIndex="4">
+        <HBox spacing="10" alignment="CENTER" GridPane.rowIndex="1" GridPane.columnIndex="4">
             <CheckBox fx:id="checkBoxLoyerEuro" text="Euro" style="-fx-text-fill: white;"/>
-            <CheckBox fx:id="checkBoxLoyerPourcentage" text="Pourcentage" style="-fx-text-fill: white;"/>
+            <CheckBox fx:id="checkBoxLoyerPourcentage" text="Pourcentages" style="-fx-text-fill: white;"/>
         </HBox>
         <Label fx:id="labelResteLoyer" GridPane.rowIndex="10" GridPane.columnIndex="4" style="-fx-text-fill: white;"/>
         
         <!-- Colonne 6 - Répartition Charges -->
         <Label text="Répartition Charges" GridPane.rowIndex="0" GridPane.columnIndex="5" style="-fx-text-fill: white; -fx-font-weight: bold;"/>
-        <HBox spacing="10" GridPane.rowIndex="1" GridPane.columnIndex="5">
-            <CheckBox fx:id="checkBoxChargesEuro" text="Euro" style="-fx-text-fill: white;"/>
-            <CheckBox fx:id="checkBoxChargesPourcentage" text="Pourcentage" style="-fx-text-fill: white;"/>
-        </HBox>
+
+        <Label text="Pourcentages" textAlignment="CENTER" GridPane.rowIndex="1" GridPane.columnIndex="5" style="-fx-text-fill: white; -fx-font-weight: italic;"/>
         <Label fx:id="labelResteCharges" GridPane.rowIndex="10" GridPane.columnIndex="5" style="-fx-text-fill: white;"/>
 
         <Label text="Date Début" GridPane.rowIndex="0" GridPane.columnIndex="6" style="-fx-text-fill: white; -fx-font-weight: bold;"/>
@@ -116,4 +112,4 @@
             <Button text="Enregistrer PDF" onAction="#saveBailDoc" minWidth="100" styleClass="button-valider"/>
         </HBox>
     </GridPane>
-</VBox> 
+</VBox>

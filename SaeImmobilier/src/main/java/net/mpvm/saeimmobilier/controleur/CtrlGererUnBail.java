@@ -5,12 +5,14 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.sql.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -33,166 +35,107 @@ import net.mpvm.saeimmobilier.util.JfxUtil;
 import net.mpvm.saeimmobilier.vue.VueNewLocataire;
 
 public class CtrlGererUnBail {
-
-    public DatePicker dateDebut, dateFin, dateSignature; public TextField fieldMontantLoyer, fieldTotalCharges, fieldDepotGarantie, fieldNbColocataires;
-    public CheckBox checkBoxArchive, checkBoxRenouvelable, checkBoxLocationSimple, checkBoxColocation, checkBoxLoyerEuro, checkBoxLoyerPourcentage, checkBoxChargesEuro, checkBoxChargesPourcentage;
-    public Label labelResteLoyer, labelResteCharges, labelAdresse, labelComplementAdresse, labelType; public GridPane gridPaneContent;
+    private static final Logger LOGGER = Logger.getLogger(CtrlGererUnBail.class.getName());
+    private static final int MIN_COLOCATAIRES = 2;
+    private static final int MAX_COLOCATAIRES = 8;
+    private static final double EPSILON = 0.01;
+    private static final String DEFAULT_COLOCATAIRES = "2";
+    private static final int GRID_FIRST_LOCATAIRE_COL = 3;
+    private static final int GRID_LAST_COL = 7;
+    
+    public DatePicker dateDebut, dateFin, dateSignature;
+    public TextField fieldMontantLoyer, fieldDepotGarantie, fieldNbColocataires;
+    public CheckBox checkBoxArchive, checkBoxRenouvelable, checkBoxLocationSimple, checkBoxColocation, checkBoxLoyerEuro, checkBoxLoyerPourcentage;
+    public Label labelResteLoyer, labelResteCharges, labelAdresse, labelComplementAdresse, labelType;
+    public GridPane gridPaneContent;
     private List<ChoiceBox<Locataire>> choiceBoxesLocataires = new LinkedList<>();
     private List<DatePicker> datesDebut = new LinkedList<>(), datesFin = new LinkedList<>();
     private List<TextField> fieldsRepartitionsCharges = new LinkedList<>(), fieldsRepartitionsLoyer = new LinkedList<>();
-    boolean isModification; private File selectedFile; private BienLouable bienLouable;
+    boolean isModification;
+    private File selectedFile;
+    private BienLouable bienLouable;
 
     public void initialize() {
         try {
-            addNonNegativeValidation(fieldMontantLoyer); addNonNegativeValidation(fieldTotalCharges); addNonNegativeValidation(fieldDepotGarantie);
-            checkBoxLocationSimple.setSelected(true); checkBoxLocationSimple.setDisable(false); fieldNbColocataires.setText("2");
-            System.out.println("Début de l'initialisation du contrôleur");
+            addNonNegativeValidation(fieldMontantLoyer);
+            addNonNegativeValidation(fieldDepotGarantie);
+            checkBoxLocationSimple.setSelected(true);
+            checkBoxLocationSimple.setDisable(false);
+            fieldNbColocataires.setText(DEFAULT_COLOCATAIRES);
 
-            // Initialisation des listes
             choiceBoxesLocataires = new LinkedList<>();
             fieldsRepartitionsCharges = new LinkedList<>();
             fieldsRepartitionsLoyer = new LinkedList<>();
             datesDebut = new LinkedList<>();
             datesFin = new LinkedList<>();
 
-            // Ajout de la validation des nombres non-négatifs
-            addNonNegativeValidation(fieldMontantLoyer);
-            addNonNegativeValidation(fieldTotalCharges);
-            addNonNegativeValidation(fieldDepotGarantie);
-
-            System.out.println("Listes initialisées");
-
-            // Initialisation des checkboxes de type de location
-            checkBoxLocationSimple.setSelected(true);
-
-            checkBoxLocationSimple.setDisable(false);
-            fieldNbColocataires.setText("2"); // Initialisation par défaut à 2 colocataires
-            System.out.println("Checkbox location simple initialisée");
-
-
             checkBoxLocationSimple.setOnAction(e -> {
                 checkBoxColocation.setSelected(!checkBoxLocationSimple.isSelected());
                 fieldNbColocataires.setDisable(!checkBoxColocation.isSelected());
                 updateColocationFields();
-                if (!checkBoxColocation.isSelected()) {
+                if (checkBoxLocationSimple.isSelected()) {
                     labelResteLoyer.setText("");
                     labelResteCharges.setText("");
-                    // Réinitialiser à un seul locataire
+                    updateNombreColocataires(1);
+                    if (!fieldsRepartitionsLoyer.isEmpty() && !fieldsRepartitionsCharges.isEmpty()) {
+                        fieldsRepartitionsLoyer.get(0).setText(fieldMontantLoyer.getText());
+                        fieldsRepartitionsCharges.get(0).setText("100");
+                        fieldsRepartitionsLoyer.get(0).setDisable(true);
+                        fieldsRepartitionsCharges.get(0).setDisable(true);
+                    }
+                } else {
+                    if (!fieldsRepartitionsLoyer.isEmpty() && !fieldsRepartitionsCharges.isEmpty()) {
+                        fieldsRepartitionsLoyer.get(0).setDisable(false);
+                        fieldsRepartitionsCharges.get(0).setDisable(false);
+                    }
                     updateNombreColocataires(2);
                 }
             });
+
 
             checkBoxColocation.setOnAction(e -> {
                 if (checkBoxColocation.isSelected()) {
                     checkBoxLocationSimple.setSelected(false);
-                } else {
-                    checkBoxLocationSimple.setSelected(true);
-                }
-                fieldNbColocataires.setDisable(!checkBoxColocation.isSelected());
-                if (checkBoxColocation.isSelected()) {
-                    // Forcer au moins 2 colocataires quand on active la colocation
                     int nbColocataires = Math.max(2, Integer.parseInt(fieldNbColocataires.getText()));
                     fieldNbColocataires.setText(String.valueOf(nbColocataires));
                     updateNombreColocataires(nbColocataires);
+                    if (!fieldsRepartitionsLoyer.isEmpty() && !fieldsRepartitionsCharges.isEmpty()) {
+                        fieldsRepartitionsLoyer.get(0).setDisable(false);
+                        fieldsRepartitionsCharges.get(0).setDisable(false);
+                    }
                     updateRepartitionLabels();
+                    LOGGER.info("Colocation sélectionnée avec " + nbColocataires + " colocataires.");
                 } else {
-                    updateNombreColocataires(2);
+                    checkBoxLocationSimple.setSelected(true);
+                    updateNombreColocataires(1);
+                    if (!fieldsRepartitionsLoyer.isEmpty() && !fieldsRepartitionsCharges.isEmpty()) {
+                        fieldsRepartitionsLoyer.get(0).setText(fieldMontantLoyer.getText());
+                        fieldsRepartitionsCharges.get(0).setText("100");
+                        fieldsRepartitionsLoyer.get(0).setDisable(true);
+                        fieldsRepartitionsCharges.get(0).setDisable(true);
+                    }
                     labelResteLoyer.setText("");
                     labelResteCharges.setText("");
+                    LOGGER.info("Location simple sélectionnée.");
                 }
+                fieldNbColocataires.setDisable(!checkBoxColocation.isSelected());
             });
 
-            System.out.println("Checkboxes de type de location initialisées");
 
-            // Ajout du listener sur le champ nombre de colocataires
-            fieldNbColocataires.textProperty().addListener((observable, oldValue, newValue) -> {
-                if (!newValue.isEmpty() && checkBoxColocation.isSelected()) {
-                    try {
-                        int nbColocataires = Integer.parseInt(newValue);
-                        if (nbColocataires < 2) {
-                            fieldNbColocataires.setText("2");
-                            nbColocataires = 2;
-                        } else if (nbColocataires > 8) {
-                            fieldNbColocataires.setText("8");
-                            nbColocataires = 8;
-                        }
-                        updateNombreColocataires(nbColocataires);
-                    } catch (NumberFormatException ex) {
-                        fieldNbColocataires.setText(oldValue);
-                    }
-                }
-            });
-
-            // Ajout du premier locataire par défaut
-            addLocataireToBail(null);
-            // Mise à jour des champs pour le mode location simple
-            updateColocationFields();
-
-            // Initialisation des checkboxes de répartition
-            checkBoxLoyerEuro.setSelected(true);
-            checkBoxLoyerEuro.setOnAction(e -> {
-                checkBoxLoyerPourcentage.setSelected(!checkBoxLoyerEuro.isSelected());
-                checkBoxLoyerEuro.setSelected(checkBoxLoyerEuro.isSelected());
-                updateRepartitionLabels();
-                updatePromptTexts();
-            });
-
-            checkBoxLoyerPourcentage.setOnAction(e -> {
-                checkBoxLoyerEuro.setSelected(!checkBoxLoyerPourcentage.isSelected());
-                checkBoxLoyerPourcentage.setSelected(checkBoxLoyerPourcentage.isSelected());
-                updateRepartitionLabels();
-                updatePromptTexts();
-            });
-
-            checkBoxChargesEuro.setSelected(true);
-
-            checkBoxChargesEuro.setOnAction(e -> {
-                checkBoxChargesPourcentage.setSelected(!checkBoxChargesEuro.isSelected());
-                checkBoxChargesEuro.setSelected(checkBoxChargesEuro.isSelected());
-                updateRepartitionLabels();
-                updatePromptTexts();
-            });
-
-            checkBoxChargesPourcentage.setOnAction(e -> {
-                checkBoxChargesEuro.setSelected(!checkBoxChargesPourcentage.isSelected());
-                checkBoxChargesPourcentage.setSelected(checkBoxChargesPourcentage.isSelected());
-                updateRepartitionLabels();
-                updatePromptTexts();
-            });
-
-            // Initial update of remaining amounts based on Euro being selected by default
-            updateRepartitionLabels();
-
-            checkBoxChargesPourcentage.setOnAction(e -> {
-                checkBoxChargesEuro.setSelected(!checkBoxChargesPourcentage.isSelected());
-                checkBoxChargesPourcentage.setSelected(checkBoxChargesPourcentage.isSelected());
-                updateRepartitionLabels();
-            });
-
-            System.out.println("Checkboxes de répartition initialisées");
-
-            // Désactivation initiale du champ nombre de colocataires
-            fieldNbColocataires.setDisable(true);
-            System.out.println("Champ nombre de colocataires initialisé");
-
-            // Ajout d'un listener sur le champ nombre de colocataires
             fieldNbColocataires.textProperty().addListener((observable, oldValue, newValue) -> {
                 if (!newValue.isEmpty()) {
                     try {
                         int nbColocataires = Integer.parseInt(newValue);
-                        // En mode colocation, forcer entre 2 et 8 colocataires
                         if (checkBoxColocation.isSelected()) {
-                            if (nbColocataires < 2) {
-                                fieldNbColocataires.setText("2");
-                                return;
+                            if (nbColocataires < MIN_COLOCATAIRES) {
+                                fieldNbColocataires.setText(DEFAULT_COLOCATAIRES);
+                                nbColocataires = MIN_COLOCATAIRES;
+                            } else if (nbColocataires > MAX_COLOCATAIRES) {
+                                fieldNbColocataires.setText(String.valueOf(MAX_COLOCATAIRES));
+                                nbColocataires = MAX_COLOCATAIRES;
                             }
-                            if (nbColocataires > 8) {
-                                fieldNbColocataires.setText("8");
-                                return;
-                            }
-                        } else if (nbColocataires != 2) {
-                            // En mode location simple, forcer à 1
-                            fieldNbColocataires.setText("2");
+                        } else if (nbColocataires != MIN_COLOCATAIRES) {
+                            fieldNbColocataires.setText(DEFAULT_COLOCATAIRES);
                             return;
                         }
                         updateNombreColocataires(nbColocataires);
@@ -202,20 +145,20 @@ public class CtrlGererUnBail {
                 }
             });
 
-            // Ajout des listeners sur les champs de montant
+            addLocataireToBail(null);
+            updateColocationFields();
+
+            checkBoxLoyerEuro.setSelected(true);
+            checkBoxLoyerEuro.setOnAction(_ -> updateLoyerCheckBoxes(true));
+            checkBoxLoyerPourcentage.setOnAction(_ -> updateLoyerCheckBoxes(false));
+
+            updateRepartitionLabels();
+            fieldNbColocataires.setDisable(true);
+
             fieldMontantLoyer.textProperty().addListener((observable, oldValue, newValue) -> {
-                if (checkBoxColocation.isSelected()) {
-                    updateRepartitionLabels();
-                }
+                updateRepartitionLabels();
             });
 
-            fieldTotalCharges.textProperty().addListener((observable, oldValue, newValue) -> {
-                if (checkBoxColocation.isSelected()) {
-                    updateRepartitionLabels();
-                }
-            });
-
-            // Ajout des listeners sur les DatePicker du bail
             dateDebut.valueProperty().addListener((observable, oldValue, newValue) -> {
                 updateLocataireDates();
             });
@@ -224,44 +167,27 @@ public class CtrlGererUnBail {
                 updateLocataireDates();
             });
 
-            // Récupération du bien louable depuis les propriétés du stage
             Platform.runLater(() -> {
-                System.out.println("Début de l'initialisation dans Platform.runLater");
                 Stage currentStage = (Stage) labelAdresse.getScene().getWindow();
-                System.out.println("Stage récupéré");
 
                 try {
-                    System.out.println("Propriétés du stage : " + currentStage.getProperties());
-
                     if (currentStage.getProperties().containsKey("idBien")) {
-                        System.out.println("Récupération du bien via idBien");
                         bienLouable = BienLouable.BLBuilder.getBienLouable((int) currentStage.getProperties().get("idBien"));
                     } else if (currentStage.getProperties().containsKey("bienLouable")) {
-                        System.out.println("Récupération du bien via bienLouable");
                         bienLouable = (BienLouable) currentStage.getProperties().get("bienLouable");
-                    } else {
-                        System.out.println("Aucune propriété de bien trouvée");
                     }
 
                     if (bienLouable != null) {
-                        System.out.println("Bien louable trouvé : " + bienLouable.getIdBien());
-                        // Mise à jour des labels avec les informations du bien
                         labelAdresse.setText(bienLouable.getAdresse());
                         labelComplementAdresse.setText(bienLouable.getComplementAdresse());
                         labelType.setText(bienLouable.getTypeBien().toString());
-
-                    } else {
-                        System.out.println("Bien louable non trouvé");
                     }
                 } catch (Bien.BienException e) {
-                    System.out.println("Erreur lors de la récupération du bien : " + e.getMessage());
+                    LOGGER.log(Level.SEVERE, "Erreur lors de la récupération du bien", e);
                 }
             });
-
-            System.out.println("Fin de l'initialisation du contrôleur");
         } catch (Exception e) {
-            System.out.println("Exception inattendue : " + e.getMessage());
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Exception inattendue", e);
             JfxUtil.displayError("Erreur inattendue",
                     "Une erreur inattendue est survenue :\n" +
                             "Type : " + e.getClass().getName() + "\n" +
@@ -269,6 +195,14 @@ public class CtrlGererUnBail {
                             "Cause : " + (e.getCause() != null ? e.getCause().getMessage() : "Aucune cause"));
         }
     }
+
+    private void updateLoyerCheckBoxes(boolean isEuroSelected) {
+        checkBoxLoyerPourcentage.setSelected(!isEuroSelected);
+        checkBoxLoyerEuro.setSelected(isEuroSelected);
+        updateRepartitionLabels();
+        updatePromptTexts();
+    }
+
     private void updateLocataireDates() {
         for (int i = 0; i < datesDebut.size(); i++) {
             datesDebut.get(i).setValue(dateDebut.getValue());
@@ -279,49 +213,78 @@ public class CtrlGererUnBail {
     private void updateColocationFields() {
         boolean isColocation = checkBoxColocation.isSelected();
         for (int index = 0; index < choiceBoxesLocataires.size(); index++) {
-            final int i = index;
-            final int rowIndex = i + 2;
-            if (i == 0) {
-                final int firstLocataireCol = 3;
+            final int rowIndex = index + 2;
+            
+            // Toujours afficher le premier locataire
+            if (index == 0) {
                 gridPaneContent.getChildren().stream()
-                        .filter(node -> GridPane.getRowIndex(node) == rowIndex && GridPane.getColumnIndex(node) == firstLocataireCol)
+                        .filter(node -> GridPane.getRowIndex(node) == rowIndex && 
+                                GridPane.getColumnIndex(node) == GRID_FIRST_LOCATAIRE_COL)
                         .forEach(node -> node.setVisible(true));
             }
-            // Mettre à jour la visibilité des autres éléments
-            for (int col = 3; col <= 7; col++) {
-                final int finalCol = col;
+            
+            // Gérer la visibilité des autres colonnes
+            for (int col = GRID_FIRST_LOCATAIRE_COL; col <= GRID_LAST_COL; col++) {
+                final int currentCol = col;
+                final int finalIndex = index;
                 gridPaneContent.getChildren().stream()
                         .filter(node -> GridPane.getRowIndex(node) == rowIndex &&
-                                GridPane.getColumnIndex(node) == finalCol &&
-                                !(i == 0 && finalCol == 3)) // Ne pas cacher la première ChoiceBox
+                                GridPane.getColumnIndex(node) == currentCol &&
+                                !(finalIndex == 0 && currentCol == GRID_FIRST_LOCATAIRE_COL))
                         .forEach(node -> node.setVisible(isColocation));
             }
         }
         updateRepartitionLabels();
     }
 
+    private float parseFloatWithLocale(String text) {
+        if (text == null || text.trim().isEmpty()) {
+            return 0.0f;
+        }
+        text = text.trim().replace(',', '.');
+        try {
+            return Float.parseFloat(text);
+        } catch (NumberFormatException e) {
+            return 0.0f;
+        }
+    }
+
     private void updateRepartitionLabels() {
         float totalLoyer = 0;
-        float totalCharges = 0;
         float totalRepartitionLoyer = 0;
         float totalRepartitionCharges = 0;
-        try {
-            if (!fieldMontantLoyer.getText().isEmpty()) {
-                totalLoyer = Float.parseFloat(fieldMontantLoyer.getText());
-            }
-            if (!fieldTotalCharges.getText().isEmpty()) {
-                totalCharges = Float.parseFloat(fieldTotalCharges.getText());
-            }
 
-            for (int i = 0; i < fieldsRepartitionsLoyer.size(); i++) {
-                if (!fieldsRepartitionsLoyer.get(i).getText().isEmpty()) {
-                    totalRepartitionLoyer += Float.parseFloat(fieldsRepartitionsLoyer.get(i).getText());
+        try {
+            String montantLoyerText = fieldMontantLoyer.getText().trim();
+            if (!montantLoyerText.isEmpty()) {
+                totalLoyer = parseFloatWithLocale(montantLoyerText);
+                if (totalLoyer < 0) {
+                    JfxUtil.displayError("Erreur de saisie", "Le montant du loyer ne peut pas être négatif");
+                    return;
                 }
             }
 
-            for (int i = 0; i < fieldsRepartitionsCharges.size(); i++) {
-                if (!fieldsRepartitionsCharges.get(i).getText().isEmpty()) {
-                    totalRepartitionCharges += Float.parseFloat(fieldsRepartitionsCharges.get(i).getText());
+            for (TextField field : fieldsRepartitionsLoyer) {
+                String text = field.getText().trim();
+                if (!text.isEmpty()) {
+                    float value = parseFloatWithLocale(text);
+                    if (value < 0) {
+                        JfxUtil.displayError("Erreur de saisie", "La répartition du loyer ne peut pas être négative");
+                        return;
+                    }
+                    totalRepartitionLoyer += value;
+                }
+            }
+
+            for (TextField field : fieldsRepartitionsCharges) {
+                String text = field.getText().trim();
+                if (!text.isEmpty()) {
+                    float value = parseFloatWithLocale(text);
+                    if (value < 0) {
+                        JfxUtil.displayError("Erreur de saisie", "La répartition des charges ne peut pas être négative");
+                        return;
+                    }
+                    totalRepartitionCharges += value;
                 }
             }
 
@@ -331,19 +294,16 @@ public class CtrlGererUnBail {
                 labelResteLoyer.setText(String.format("Reste à répartir : %.2f %%", 100 - totalRepartitionLoyer));
             }
 
-            if (checkBoxChargesEuro.isSelected()) {
-                labelResteCharges.setText(String.format("Reste à répartir : %.2f €", totalCharges - totalRepartitionCharges));
-            } else {
-                labelResteCharges.setText(String.format("Reste à répartir : %.2f %%", 100 - totalRepartitionCharges));
-            }
-        } catch (NumberFormatException e) {
-            System.out.println("Erreur de conversion des valeurs numériques");
+            labelResteCharges.setText(String.format("Reste à répartir : %.2f %%", 100 - totalRepartitionCharges));
+
+        } catch (Exception e) {
+            JfxUtil.displayError("Erreur inattendue", "Une erreur est survenue lors du calcul des répartitions");
+            e.printStackTrace();
         }
     }
 
     public void valider(ActionEvent event) {
         try {
-            // Vérification des champs obligatoires
             if (fieldsEmpty()) {
                 JfxUtil.displayError("Erreur de validation",
                         "Veuillez remplir tous les champs obligatoires :\n" +
@@ -355,7 +315,6 @@ public class CtrlGererUnBail {
                 return;
             }
 
-            // Vérification de la présence du bien louable
             if (bienLouable == null) {
                 JfxUtil.displayError("Erreur de bien louable",
                         "Le bien louable n'a pas été trouvé.\n" +
@@ -363,29 +322,24 @@ public class CtrlGererUnBail {
                 return;
             }
 
-            // Vérification de la présence d'au moins un locataire
             if (choiceBoxesLocataires.isEmpty()) {
                 JfxUtil.displayError("Erreur de locataire",
                         "Veuillez ajouter au moins un locataire au bail.");
                 return;
             }
 
-            // Vérification de la sauvegarde du fichier
             if (trySavingFile() == -1) {
                 return;
             }
 
-            // Vérification des dates
             if (!validateDates()) {
                 return;
             }
 
-            // Vérification des répartitions
-            if (!validateRepartition()) {
+            if (validateRepartition()) {
                 return;
             }
 
-            // Si toutes les vérifications sont passées, procéder à la sauvegarde du bail
             trySavingBail();
             JfxUtil.setAlert(Alert.AlertType.INFORMATION,
                     "Sauvegarde confirmée",
@@ -401,54 +355,57 @@ public class CtrlGererUnBail {
     }
 
     private boolean fieldsEmpty() {
-        for (int i = 0; i < choiceBoxesLocataires.size(); i++) {
-            if (choiceBoxesLocataires.size() > 2) {
-                if (choiceBoxesLocataires.get(i).getValue() == null || fieldsRepartitionsCharges.get(i).getText().isEmpty() || datesDebut.get(i).getValue() == null) {
-                    System.out.println("Champ locataire vide à l'index " + i);
-                    return true;
-                }
-            } else if (choiceBoxesLocataires.get(i).getValue() == null) {
-                System.out.println("Locataire non sélectionné à l'index " + i);
+        if (checkBoxLocationSimple.isSelected()) {
+            if (choiceBoxesLocataires.isEmpty() || choiceBoxesLocataires.get(0).getValue() == null) {
+                LOGGER.warning("Locataire non sélectionné pour la location simple");
                 return true;
             }
-            if (isModification && datesFin.get(i).getValue() == null) {
-                System.out.println("Date de fin vide pour le locataire à l'index " + i);
+            if (isModification && datesFin.get(0).getValue() == null) {
+                LOGGER.warning("Date de fin vide pour le locataire");
                 return true;
+            }
+        } else {
+            for (int i = 0; i < choiceBoxesLocataires.size(); i++) {
+                if (choiceBoxesLocataires.get(i).getValue() == null || fieldsRepartitionsCharges.get(i).getText().isEmpty() || datesDebut.get(i).getValue() == null) {
+                    LOGGER.warning("Champ locataire vide à l'index " + i);
+                    return true;
+                }
+                if (isModification && datesFin.get(i).getValue() == null) {
+                    LOGGER.warning("Date de fin vide pour le locataire à l'index " + i);
+                    return true;
+                }
             }
         }
         if (dateDebut.getValue() == null) {
-            System.out.println("Date de début vide");
+            LOGGER.warning("Date de début vide");
             return true;
         }
         if (dateFin.getValue() == null) {
-            System.out.println("Date de fin vide");
+            LOGGER.warning("Date de fin vide");
             return true;
         }
         if (fieldMontantLoyer.getText().isEmpty()) {
-            System.out.println("Montant du loyer vide");
+            LOGGER.warning("Montant du loyer vide");
             return true;
         }
-        if (fieldTotalCharges.getText().isEmpty()) {
-            System.out.println("Total des charges vide");
-            return true;
-        }
+
         if (fieldDepotGarantie.getText().isEmpty()) {
-            System.out.println("Dépôt de garantie vide");
+            LOGGER.warning("Dépôt de garantie vide");
             return true;
         }
         if (dateSignature.getValue() == null) {
-            System.out.println("Date de signature vide");
+            LOGGER.warning("Date de signature vide");
             return true;
         }
-        System.out.println("Fichier non sélectionné");
-        return selectedFile == null;
+        if (selectedFile == null) {
+            LOGGER.warning("Fichier non sélectionné");
+            return true;
+        }
+        return false;
     }
-
-
 
     private void trySavingBail() {
         try {
-            // Vérification explicite des dates avant conversion
             if (dateDebut.getValue() == null || dateFin.getValue() == null || dateSignature.getValue() == null) {
                 JfxUtil.displayError("Erreur de dates",
                         "Certaines dates sont manquantes :\n" +
@@ -458,36 +415,32 @@ public class CtrlGererUnBail {
                 return;
             }
 
-            // Vérification des dates
             if (!validateDates()) {
                 return;
             }
 
-            // Conversion sécurisée des dates
             Date dateDebutSQL = Date.valueOf(dateDebut.getValue());
             Date dateFinSQL = Date.valueOf(dateFin.getValue());
             Date dateSignatureSQL = Date.valueOf(dateSignature.getValue());
 
-            // Vérification de la répartition des montants ou pourcentages
-            if (!validateRepartition()) {
+            if (validateRepartition()) {
                 return;
             }
 
-            // Création du bail avec les dates converties
+            String fileName = selectedFile != null ? selectedFile.getName() : null;
             Bail b = new Bail(dateDebutSQL,
                     Float.parseFloat(fieldMontantLoyer.getText()),
                     checkBoxRenouvelable.isSelected(),
-                    Float.parseFloat(fieldTotalCharges.getText()),
+                    Float.parseFloat("0"),
                     Float.parseFloat(fieldDepotGarantie.getText()),
                     dateFinSQL,
                     dateSignatureSQL,
                     bienLouable,
-                    selectedFile.getName());
+                    fileName);
             b.save();
 
             Map<Locataire, AssociationBailLocataires> locataireAssociations;
             if (choiceBoxesLocataires.size() < 2) {
-                // Vérification du locataire sélectionné
                 ChoiceBox<Locataire> firstChoiceBox = choiceBoxesLocataires.getFirst();
                 if (firstChoiceBox == null || firstChoiceBox.getValue() == null) {
                     JfxUtil.displayError("Erreur de locataire", "Veuillez sélectionner un locataire");
@@ -495,111 +448,102 @@ public class CtrlGererUnBail {
                 }
                 Locataire locataire = firstChoiceBox.getValue();
                 Date dateDebutLocataireSQL = Date.valueOf(datesDebut.get(0).getValue());
-                Date dateFinLocataireSQL = isModification && datesFin.get(0).getValue() != null ?
-                        Date.valueOf(datesFin.get(0).getValue()) : null;
+                Date dateFinLocataireSQL = (isModification && datesFin.get(0).getValue() != null) ?
+                        Date.valueOf(datesFin.get(0).getValue()) : dateFinSQL;
 
-                float repartitionLoyer = checkBoxLoyerPourcentage.isSelected() ?
-                        Float.parseFloat(fieldsRepartitionsLoyer.get(0).getText()) :
-                        (Float.parseFloat(fieldsRepartitionsLoyer.get(0).getText()) / Float.parseFloat(fieldMontantLoyer.getText())) * 100;
-
-                float repartitionCharges = checkBoxChargesPourcentage.isSelected() ?
-                        Float.parseFloat(fieldsRepartitionsCharges.get(0).getText()) :
-                        (Float.parseFloat(fieldsRepartitionsCharges.get(0).getText()) / Float.parseFloat(fieldTotalCharges.getText())) * 100;
-
-                locataireAssociations = Map.of(locataire,
-                        new AssociationBailLocataires(locataire, b,
-                                repartitionCharges, repartitionCharges, repartitionCharges, repartitionCharges, repartitionLoyer,
-                                dateDebutLocataireSQL,
-                                dateFinLocataireSQL
-                        ));
-            } else {
-                // Vérification que la somme des répartitions est égale à 100 pour chaque type
-                if (!checkBoxLoyerEuro.isSelected() || !checkBoxChargesEuro.isSelected()) {
-                    float totalLoyer = 0;
-                    float totalCharges = 0;
-
-                    for (int i = 0; i < choiceBoxesLocataires.size(); i++) {
-                        if (!fieldsRepartitionsLoyer.get(i).getText().isEmpty()) {
-                            totalLoyer += Float.parseFloat(fieldsRepartitionsLoyer.get(i).getText());
-                        }
-                        if (!fieldsRepartitionsCharges.get(i).getText().isEmpty()) {
-                            totalCharges += Float.parseFloat(fieldsRepartitionsCharges.get(i).getText());
-                        }
-                    }
-
-                    if (Math.abs(totalLoyer - 100) > 0.01 || Math.abs(totalCharges - 100) > 0.01) {
-                        JfxUtil.displayError("Erreur de répartition",
-                                "La somme des répartitions doit être égale à 100% pour chaque type de charge.\n" +
-                                        String.format("Total Loyer: %.2f%%\n", totalLoyer) +
-                                        String.format("Total Charges: %.2f%%\n", totalCharges));
-                        return;
-                    }
+                float repartitionLoyer = 0.0f;
+                if (!fieldsRepartitionsLoyer.get(0).getText().isEmpty()) {
+                    repartitionLoyer = checkBoxLoyerPourcentage.isSelected() ?
+                            Float.parseFloat(fieldsRepartitionsLoyer.get(0).getText()) :
+                            (Float.parseFloat(fieldsRepartitionsLoyer.get(0).getText()) / Float.parseFloat(fieldMontantLoyer.getText())) * 100;
                 }
 
-                // Vérification des doublons de locataires
+                float repartitionCharges = 0.0f;
+                if (!fieldsRepartitionsCharges.get(0).getText().isEmpty()) {
+                    repartitionCharges = Float.parseFloat(fieldsRepartitionsCharges.get(0).getText());
+                }
+
+                AssociationBailLocataires association = new AssociationBailLocataires(locataire, b,
+                        repartitionCharges, repartitionCharges, repartitionCharges, repartitionCharges, repartitionLoyer,
+                        dateDebutLocataireSQL,
+                        dateFinLocataireSQL
+                );
+                locataireAssociations = new HashMap<>();
+                locataireAssociations.put(locataire, association);
+            } else {
                 Set<Locataire> uniqueLocataires = new HashSet<>();
                 for (ChoiceBox<Locataire> cb : choiceBoxesLocataires) {
                     if (!uniqueLocataires.add(cb.getValue())) {
                         throw new IllegalArgumentException("Des locataires en double ont été détectés. Chaque locataire doit être unique.");
                     }
                 }
+                float totalMontantLoyer = Float.parseFloat(fieldMontantLoyer.getText());
+                locataireAssociations = new HashMap<>();
+                
+                for (ChoiceBox<Locataire> x : choiceBoxesLocataires) {
+                    int index = choiceBoxesLocataires.indexOf(x);
+                    if (x.getValue() == null) {
+                        throw new IllegalArgumentException("Le locataire " + (index + 1) + " n'est pas sélectionné");
+                    }
+                    if (datesDebut.get(index).getValue() == null) {
+                        throw new IllegalArgumentException("La date de début du locataire " + (index + 1) + " est manquante");
+                    }
+                    Date dateDebutLocataireSQL = Date.valueOf(datesDebut.get(index).getValue());
+                    Date dateFinLocataireSQL = isModification && datesFin.get(index).getValue() != null ?
+                            Date.valueOf(datesFin.get(index).getValue()) : null;
 
-                locataireAssociations = choiceBoxesLocataires.stream()
-                        .collect(Collectors.toMap(ChoiceBox::getValue,
-                                x -> {
-                                    int index = choiceBoxesLocataires.indexOf(x);
-                                    if (x.getValue() == null) {
-                                        throw new IllegalArgumentException("Le locataire " + (index + 1) + " n'est pas sélectionné");
-                                    }
-                                    if (datesDebut.get(index).getValue() == null) {
-                                        throw new IllegalArgumentException("La date de début du locataire " + (index + 1) + " est manquante");
-                                    }
-                                    Date dateDebutLocataireSQL = Date.valueOf(datesDebut.get(index).getValue());
-                                    Date dateFinLocataireSQL = isModification && datesFin.get(index).getValue() != null ?
-                                            Date.valueOf(datesFin.get(index).getValue()) : null;
+                    float repartitionLoyer = 0.0f;
+                    if (!fieldsRepartitionsLoyer.get(index).getText().isEmpty()) {
+                        if (checkBoxLoyerEuro.isSelected()) {
+                            float montantLocataire = Float.parseFloat(fieldsRepartitionsLoyer.get(index).getText());
+                            repartitionLoyer = (montantLocataire / totalMontantLoyer) * 100;
+                        } else {
+                            repartitionLoyer = Float.parseFloat(fieldsRepartitionsLoyer.get(index).getText());
+                        }
+                    }
 
-                                    float repartitionLoyer = checkBoxLoyerPourcentage.isSelected() ?
-                                            Float.parseFloat(fieldsRepartitionsLoyer.get(index).getText()) :
-                                            (Float.parseFloat(fieldsRepartitionsLoyer.get(index).getText()) / Float.parseFloat(fieldMontantLoyer.getText())) * 100;
+                    float repartitionCharges = 0.0f;
+                    if (!fieldsRepartitionsCharges.get(index).getText().isEmpty()) {
+                        repartitionCharges = Float.parseFloat(fieldsRepartitionsCharges.get(index).getText());
+                    }
 
-                                    float repartitionCharges = checkBoxChargesPourcentage.isSelected() ?
-                                            Float.parseFloat(fieldsRepartitionsCharges.get(index).getText()) :
-                                            (Float.parseFloat(fieldsRepartitionsCharges.get(index).getText()) / Float.parseFloat(fieldTotalCharges.getText())) * 100;
-
-                                    return new AssociationBailLocataires(x.getValue(), b,
-                                            repartitionCharges, repartitionCharges, repartitionCharges, repartitionCharges, repartitionLoyer,
-                                            dateDebutLocataireSQL,
-                                            dateFinLocataireSQL
-                                    );
-                                }
-                        ));
+                    AssociationBailLocataires association = new AssociationBailLocataires(x.getValue(), b,
+                            repartitionCharges, repartitionCharges, repartitionCharges, repartitionCharges, repartitionLoyer,
+                            dateDebutLocataireSQL,
+                            dateFinLocataireSQL
+                    );
+                    locataireAssociations.put(x.getValue(), association);
+                }
             }
             b.setLocatairesAssociation(locataireAssociations);
         } catch (IllegalArgumentException e) {
             JfxUtil.displayError("Erreur de validation", e.getMessage());
+            e.printStackTrace();
         } catch (Queryable.QbleException e) {
             JfxUtil.displayError("Erreur de sauvegarde",
                     "Une erreur est survenue lors de la sauvegarde du bail : " + e.getMessage());
             e.printStackTrace();
-        } catch (Exception e) {
-            JfxUtil.displayError("Erreur inattendue",
-                    "Une erreur inattendue est survenue : " + e.getMessage());
-            e.printStackTrace();
         }
     }
 
-
     private boolean validateDates() {
-        // Vérifier que la date de fin du bail est postérieure à la date de début
+        if (dateDebut.getValue() == null || dateFin.getValue() == null) {
+            JfxUtil.displayError("Erreur de dates", "Les dates de début et de fin du bail sont obligatoires.");
+            return false;
+        }
         if (dateFin.getValue().isBefore(dateDebut.getValue())) {
             JfxUtil.displayError("Erreur de dates", "La date de fin du bail doit être postérieure à la date de début.");
             return false;
         }
 
-        // Vérifier que les dates des colocataires sont comprises entre les dates de début et de fin du bail
         for (int i = 0; i < datesDebut.size(); i++) {
-            if (datesDebut.get(i).getValue().isBefore(dateDebut.getValue()) ||
-                    datesFin.get(i).getValue().isAfter(dateFin.getValue())) {
+            if (datesDebut.get(i).getValue() == null) {
+                JfxUtil.displayError("Erreur de dates", "La date de début est manquante pour le locataire " + (i + 1));
+                return false;
+            }
+            if (datesFin.get(i).getValue() != null && (
+                    datesDebut.get(i).getValue().isBefore(dateDebut.getValue()) ||
+                    datesFin.get(i).getValue().isAfter(dateFin.getValue()))) {
                 JfxUtil.displayError("Erreur de dates",
                         "Les dates de début et de fin des colocataires doivent être comprises entre les dates de début et de fin du bail.");
                 return false;
@@ -609,91 +553,66 @@ public class CtrlGererUnBail {
         return true;
     }
 
-
     private boolean validateRepartition() {
         if (checkBoxLocationSimple.isSelected()) {
-            // En mode location simple, on ignore la vérification de répartition
-            return true;
+            if (checkBoxLoyerEuro.isSelected()){
+                fieldsRepartitionsLoyer.get(0).setText(fieldMontantLoyer.getText());
+            }else{
+                fieldsRepartitionsLoyer.get(0).setText("100");
+            }
+            fieldsRepartitionsCharges.get(0).setText("100");
+            return false;
         }
 
-        float totalLoyer = 0;
-        float totalCharges = 0;
-
         try {
-            if (!fieldMontantLoyer.getText().isEmpty()) {
-                totalLoyer = Float.parseFloat(fieldMontantLoyer.getText());
-            }
-            if (!fieldTotalCharges.getText().isEmpty()) {
-                totalCharges = Float.parseFloat(fieldTotalCharges.getText());
-            }
-
-            for (int i = 0; i < fieldsRepartitionsLoyer.size(); i++) {
-                if (!fieldsRepartitionsLoyer.get(i).getText().isEmpty()) {
-                    totalLoyer -= Float.parseFloat(fieldsRepartitionsLoyer.get(i).getText());
+            // Validate charges (always in percentage)
+            float sumCharges = 0;
+            for (TextField field : fieldsRepartitionsCharges) {
+                if (!field.getText().isEmpty()) {
+                    sumCharges += Float.parseFloat(field.getText());
                 }
             }
-
-            for (int i = 0; i < fieldsRepartitionsCharges.size(); i++) {
-                if (!fieldsRepartitionsCharges.get(i).getText().isEmpty()) {
-                    totalCharges -= Float.parseFloat(fieldsRepartitionsCharges.get(i).getText());
-                }
+            if (Math.abs(100 - sumCharges) > EPSILON) {
+                JfxUtil.displayError("Erreur de répartition des charges",
+                        "La somme des pourcentages des charges doit être égale à 100%.");
+                return true;
             }
 
-            if (checkBoxLoyerEuro.isSelected() && Math.abs(totalLoyer) > 0.01) {
-                float originalLoyer = Float.parseFloat(fieldMontantLoyer.getText());
+            // Validate rent based on mode
+            if (checkBoxLoyerEuro.isSelected()) {
+                float totalLoyer = Float.parseFloat(fieldMontantLoyer.getText());
                 float sumLoyer = 0;
                 for (TextField field : fieldsRepartitionsLoyer) {
                     if (!field.getText().isEmpty()) {
                         sumLoyer += Float.parseFloat(field.getText());
                     }
                 }
-                if (Math.abs(originalLoyer - sumLoyer) > 0.01) {
-                    JfxUtil.displayError("Erreur de répartition",
-                            "La somme des répartitions du loyer doit être égale au montant total du loyer.\n" +
-                                    String.format("Reste à répartir : %.2f €\n", originalLoyer - sumLoyer));
-                    return false;
+                if (Math.abs(totalLoyer - sumLoyer) > EPSILON) {
+                    JfxUtil.displayError("Erreur de répartition du loyer",
+                            String.format("La somme des parts de loyer (%.2f€) doit être égale au montant total du loyer (%.2f€).", 
+                            sumLoyer, totalLoyer));
+                    return true;
                 }
-            }
-
-            if (checkBoxChargesEuro.isSelected() && Math.abs(totalCharges) > 0.01) {
-                float originalCharges = Float.parseFloat(fieldTotalCharges.getText());
-                float sumCharges = 0;
-                for (TextField field : fieldsRepartitionsCharges) {
+            } else {
+                float sumPourcentage = 0;
+                for (TextField field : fieldsRepartitionsLoyer) {
                     if (!field.getText().isEmpty()) {
-                        sumCharges += Float.parseFloat(field.getText());
+                        sumPourcentage += Float.parseFloat(field.getText());
                     }
                 }
-                if (Math.abs(originalCharges - sumCharges) > 0.01) {
-                    JfxUtil.displayError("Erreur de répartition",
-                            "La somme des répartitions des charges doit être égale au montant total des charges.\n" +
-                                    String.format("Reste à répartir : %.2f €\n", originalCharges - sumCharges));
-                    return false;
+                if (Math.abs(100 - sumPourcentage) > EPSILON) {
+                    JfxUtil.displayError("Erreur de répartition du loyer",
+                            "La somme des pourcentages de loyer doit être égale à 100%.");
+                    return true;
                 }
             }
-
-            if (!checkBoxLoyerEuro.isSelected() && Math.abs(totalLoyer - 100) > 0.01) {
-                JfxUtil.displayError("Erreur de répartition",
-                        "La somme des répartitions du loyer doit être égale à 100%.\n" +
-                                String.format("Reste à répartir : %.2f %%\n", 100 - totalLoyer));
-                return false;
-            }
-
-            if (!checkBoxChargesEuro.isSelected() && Math.abs(totalCharges - 100) > 0.01) {
-                JfxUtil.displayError("Erreur de répartition",
-                        "La somme des répartitions des charges doit être égale à 100%.\n" +
-                                String.format("Reste à répartir : %.2f %%\n", 100 - totalCharges));
-                return false;
-            }
-
+            return false;
         } catch (NumberFormatException e) {
             JfxUtil.displayError("Erreur de conversion des valeurs numériques",
                     "Veuillez vérifier que toutes les valeurs numériques sont correctes.");
-            return false;
+            return true;
         }
-
-        return true;
     }
-
 
     private int trySavingFile() {
         if (selectedFile != null) {
@@ -735,9 +654,8 @@ public class CtrlGererUnBail {
 
     public void addLocataireToBail(ActionEvent event) {
         try {
-            int rowIndex = choiceBoxesLocataires.size() + 2; // +2 car on commence à la ligne 3
+            int rowIndex = choiceBoxesLocataires.size() + 2;
 
-            // Création du ChoiceBox pour le locataire
             ChoiceBox<Locataire> choiceBox = new ChoiceBox<>();
             choiceBox.getItems().addAll(Locataire.findAll());
             choiceBox.setPrefSize(200, 30);
@@ -748,14 +666,12 @@ public class CtrlGererUnBail {
                 choiceBox.setValue(choiceBox.getItems().getFirst());
             }
 
-            // Création du TextField pour la répartition des charges
             TextField repartitionCharges = new TextField();
-            repartitionCharges.setPromptText("Répartition Charges (€)");
+            repartitionCharges.setPromptText("Répartition Charges (%)");
             repartitionCharges.setPrefSize(200, 30);
             repartitionCharges.setVisible(checkBoxColocation.isSelected());
             repartitionCharges.textProperty().addListener((obs, oldVal, newVal) -> updateRepartitionLabels());
 
-            // Création du TextField pour la répartition du loyer
             TextField repartitionLoyer = new TextField();
             repartitionLoyer.setPromptText("Répartition Loyer (€)");
             repartitionLoyer.setPrefSize(200, 30);
@@ -771,17 +687,15 @@ public class CtrlGererUnBail {
             DatePicker datePickerFin = new DatePicker();
             datePickerDebut.setPromptText("Date Fin");
             datePickerFin.setValue(dateFin.getValue());
-            datePickerFin.setPrefSize(200, 30);
+            datePickerFin.setPrefSize(200, 25);
             datePickerFin.setVisible(checkBoxColocation.isSelected());
 
-            // Ajout des éléments au GridPane principal dans le nouvel ordre
             gridPaneContent.add(choiceBox, 3, rowIndex);
             gridPaneContent.add(repartitionLoyer, 4, rowIndex);
             gridPaneContent.add(repartitionCharges, 5, rowIndex);
             gridPaneContent.add(datePickerDebut, 6, rowIndex);
             gridPaneContent.add(datePickerFin, 7, rowIndex);
 
-            // Ajout aux listes pour la gestion
             addToLists(choiceBox, datePickerDebut, datePickerFin, repartitionLoyer, repartitionCharges);
         }
         catch (Locataire.LocataireException e) {
@@ -794,7 +708,6 @@ public class CtrlGererUnBail {
         datesDebut.add(datePickerDebut);
         datesFin.add(datePickerFin);
 
-        // Ajout de la validation des nombres non-négatifs pour les champs de répartition
         addNonNegativeValidation(repartitionLoyer);
         addNonNegativeValidation(repartitionCharges);
 
@@ -803,30 +716,47 @@ public class CtrlGererUnBail {
     }
 
     private void updateNombreColocataires(int nbColocataires) {
-        // Supprimer les lignes en trop
+        System.out.println("Mise à jour du nombre de colocataires : " + nbColocataires);
         while (choiceBoxesLocataires.size() > nbColocataires) {
             int lastIndex = choiceBoxesLocataires.size() - 1;
-            int rowIndex = lastIndex + 2; // +2 car on commence à la ligne 3
-
-            // Supprimer les éléments du GridPane
+            int rowIndex = lastIndex + 2;
             gridPaneContent.getChildren().removeIf(node ->
                     GridPane.getRowIndex(node) == rowIndex &&
                             (GridPane.getColumnIndex(node) == 3 || GridPane.getColumnIndex(node) == 4 || GridPane.getColumnIndex(node) == 5 || GridPane.getColumnIndex(node) == 6 || GridPane.getColumnIndex(node) == 7)
             );
-
-            // Supprimer des listes
             choiceBoxesLocataires.remove(lastIndex);
             fieldsRepartitionsCharges.remove(lastIndex);
             fieldsRepartitionsLoyer.remove(lastIndex);
         }
-
-        // Ajouter les lignes manquantes
         while (choiceBoxesLocataires.size() < nbColocataires) {
             addLocataireToBail(null);
         }
 
+        // Update rent and charges distribution
+        float montantLoyer = 0;
+        try {
+            if (!fieldMontantLoyer.getText().isEmpty()) {
+                montantLoyer = Float.parseFloat(fieldMontantLoyer.getText());
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Erreur de conversion du montant du loyer");
+        }
+
+        float partLoyer = checkBoxLoyerEuro.isSelected() ? montantLoyer / nbColocataires : 100.0f / nbColocataires;
+        float partCharges = 100.0f / nbColocataires;
+
+        for (int i = 0; i < nbColocataires; i++) {
+            if (!fieldsRepartitionsLoyer.isEmpty() && i < fieldsRepartitionsLoyer.size()) {
+                fieldsRepartitionsLoyer.get(i).setText(String.format("%.2f", partLoyer));
+            }
+            if (!fieldsRepartitionsCharges.isEmpty() && i < fieldsRepartitionsCharges.size()) {
+                fieldsRepartitionsCharges.get(i).setText(String.format("%.2f", partCharges));
+            }
+        }
+
         updateColocationFields();
     }
+
 
     public void refreshChoiceboixLocataires(){
         choiceBoxesLocataires.forEach(cb -> {
@@ -883,15 +813,14 @@ public class CtrlGererUnBail {
 
     private void updatePromptTexts() {
         String loyerPrompt = checkBoxLoyerEuro.isSelected() ? "Répartition Loyer (€)" : "Répartition Loyer (%)";
-        String chargesPrompt = checkBoxChargesEuro.isSelected() ? "Répartition Charges (€)" : "Répartition Charges (%)";
-        
+        String chargesPrompt = "Répartition Charges (%)";
+
         for (TextField field : fieldsRepartitionsLoyer) {
             field.setPromptText(loyerPrompt);
         }
-        
+
         for (TextField field : fieldsRepartitionsCharges) {
             field.setPromptText(chargesPrompt);
         }
     }
-
 }
