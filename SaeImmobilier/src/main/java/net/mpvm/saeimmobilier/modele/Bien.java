@@ -16,8 +16,7 @@ public abstract class Bien extends Queryable {
     private static final String SELECT_QUERY = "SELECT * FROM bien";
     private static final String SELECT_ID_QUERY = "SELECT IdBien FROM bien WHERE NumeroFiscal = ?";
     private static final String SELECT_QUERY_BY_ID = "SELECT * FROM bien WHERE IdBien = ?";
-    public static final String SELECT_FROM_ID = "SELECT * FROM Bien WHERE IdBien = ?";
-    public static final String DELETE_QUERY = "DELETE FROM Bien WHERE IdBien = ? AND TypeBien = ?";
+    private static final String SELECT_FROM_IMMEUBLE="SELECT * FROM Bien WHERE IdImmeuble = ?";
 
     private int idBien;
     private String numeroFiscal;
@@ -71,9 +70,8 @@ public abstract class Bien extends Queryable {
         return Optional.empty();
     }
 
-    public void setAssurance(Assurance assurance) throws Assurance.AssuranceException {
+    public void setAssurance(Assurance assurance) {
         //TODO : query
-        assurance.attribuerUneAssurance(this);
     }
 
     //fonction pour "sauvegarder" l'id générée par
@@ -82,20 +80,10 @@ public abstract class Bien extends Queryable {
     }
 
     //super méthode pour supprimer le Bien : gère les spécificités des classes filles
-    public final void delete() throws QueryElement.QEltException {
+    public final void delete() throws BienException {
         //check de la présence du bien dans la BD
         if (this.getIdBien() == -1){
             throw new Immeuble.ImmeubleException("Le bien n'existe pas dans la table", null);
-        }
-
-        //gestion des spécificités de chaque type
-        if(this instanceof Immeuble immeuble){
-            for (BienLouable b :immeuble.getBiensAssocies()){
-                b.delete();
-            }
-        }else{
-            for(Bail b : Bail.getBauxFromBien((BienLouable) this))
-                b.delete();
         }
 
         //Gestion de la suppression des contraintes Travaux & Assurances
@@ -106,7 +94,17 @@ public abstract class Bien extends Queryable {
                 UpdateQueryElement deleteTravauxQuery = new UpdateQueryElement(DELETE_TRAVAUX, true);
                 UpdateQueryElement updateQuery = new UpdateQueryElement(UPDATE_ASSURANCES, true);
                 UpdateQueryElement deleteQuery = new UpdateQueryElement(DELETE_QUERY, true);
-        ) {
+        ){
+        //gestion des spécificités de chaque type
+        if(this instanceof Immeuble immeuble){
+            for (BienLouable b :immeuble.getBiensAssocies()){
+                b.delete();
+            }
+        }else{
+            for(Bail b : Bail.getBauxFromBien((BienLouable) this))
+                b.delete();
+        }
+
             //init des paramètres et exécutions des requêtes
             deleteTravauxQuery.setArgs(Map.of(1, this.getIdBien())).execute();
             updateQuery.setArgs(Map.of(1, this.getIdBien())).execute();
@@ -116,10 +114,11 @@ public abstract class Bien extends Queryable {
             e.getSqlException().printStackTrace();
             throw new Bien.BienException("Erreur lors de la suppression du bienA", e.getSqlException());
         }
+
+
     }
 
 
-    //trouve tous les biens
     public static List<? extends Bien> findAll() throws BienException {
         List<Bien> biens = new ArrayList<>();
         try(SelectQueryElement selectQueryElement = new SelectQueryElement(SELECT_QUERY)){
@@ -130,7 +129,6 @@ public abstract class Bien extends Queryable {
         return biens;
     }
 
-    //fonction pour différencier les différents types de Bien et les instancier correctement
     private static void sortResult(List<Bien> biens, SelectQueryElement selectQueryElement) throws QueryElement.QEltException {
         selectQueryElement.execute();
         List<Map<String, Object>> result = selectQueryElement.getResult();
@@ -185,11 +183,13 @@ public abstract class Bien extends Queryable {
 
     }
 
+    public void update() {
+    }
+
     public String getIdProprio() {
         return this.idProprio;
     }
 
-    //Factory builder pour préserver l'unicité entre les biens créés et ceux chargés de la BD
     public abstract static class BBuilder extends Queryable.Builder{
 
         private final int IdBien;
@@ -240,7 +240,7 @@ public abstract class Bien extends Queryable {
         }
 
         private static Bien getFromQuery(int idBien, TypeBien type) throws BienException {
-            try(SelectQueryElement selectQueryElement = new SelectQueryElement(SELECT_FROM_ID)){
+            try(SelectQueryElement selectQueryElement = new SelectQueryElement(SELECT_QUERY_BY_ID)){
                 selectQueryElement.setArgs(Map.of(1, idBien));
                 selectQueryElement.execute();
                 List<Map<String,Object>> result = selectQueryElement.getResult();
