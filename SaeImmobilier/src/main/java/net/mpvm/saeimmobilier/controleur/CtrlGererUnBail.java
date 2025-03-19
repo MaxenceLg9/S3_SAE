@@ -193,20 +193,12 @@ public class CtrlGererUnBail {
             } catch (IOException e) {
                 // Handle any errors that occur during file saving
                 e.printStackTrace();
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("File Save Error");
-                alert.setHeaderText("Failed to save the file.");
-                alert.setContentText(e.getMessage());
-                alert.showAndWait();
+                JfxUtil.setAlert(Alert.AlertType.ERROR, "File Save Error", "Failed to save the file.", e.getMessage());
                 return -1;
             }
         } else {
             // Show an alert if no file was selected
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("No File Selected");
-            alert.setHeaderText("No file was selected.");
-            alert.setContentText("Please select a PDF file to save.");
-            alert.showAndWait();
+            JfxUtil.setAlert(Alert.AlertType.WARNING, "No File Selected", "No file was selected.", "Please select a PDF file to save.");
             return -1;
         }
     }

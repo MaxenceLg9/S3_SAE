@@ -94,11 +94,11 @@ public class CtrlNewAssurance {
                 String nomAssurance = fieldNom.getText();
 
                 if (typeContrat == null) {
-                    alertError("Type de contrat manquant", "Veuillez sélectionner un type de contrat.");
+                    JfxUtil.displayError("Type de contrat manquant", "Veuillez sélectionner un type de contrat.");
                     return;
                 }
                 if (annee < 1950 || annee > 2050) {
-                    alertError("Année invalide", "L'année doit être comprise entre 1950 et 2050.");
+                    JfxUtil.displayError("Année invalide", "L'année doit être comprise entre 1950 et 2050.");
                     return;
                 }
                 new Assurance.ABuilder(typeContrat, annee, protectionJuridique, prime, numeroContrat, nomAssurance)
@@ -106,13 +106,12 @@ public class CtrlNewAssurance {
                         .save();
                 JfxUtil.setAlert(Alert.AlertType.INFORMATION, "Succès", "Ajout de l'Assurance", "L'assurance a été ajoutée avec succès !");
             } catch (NumberFormatException e) {
-                alertError("Format des champs invalide", "Veuillez saisir des valeurs numériques pour les champs appropriés.");
+                JfxUtil.displayError("Format des champs invalide", "Veuillez saisir des valeurs numériques pour les champs appropriés.");
             } catch (Assurance.AssuranceException e) {
                 System.out.println(e.getMessage());
-                alertError("Erreur lors de l'enregistrement", "Une erreur est survenue lors de l'ajout de l'assurance.");
-            }
+                JfxUtil.displayError("Erreur lors de l'enregistrement", "Une erreur est survenue lors de l'ajout de l'assurance.");            }
         } else {
-            alertFieldsEmpty();
+            JfxUtil.displayError("Champs vides","Veuillez remplir tous les champs avant de valider.");
         }
     }
 
@@ -153,18 +152,6 @@ public class CtrlNewAssurance {
                 }
             }
         }
-    }
-
-    private void alertFieldsEmpty() {
-        alertError("Champs vides", "Veuillez remplir tous les champs avant de valider.");
-    }
-
-    private void alertError(String header, String content) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Erreur");
-        alert.setHeaderText(header);
-        alert.setContentText(content);
-        alert.showAndWait();
     }
 
     private boolean fieldsNotEmpty() {

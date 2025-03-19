@@ -8,6 +8,7 @@ import net.mpvm.saeimmobilier.modele.*;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import net.mpvm.saeimmobilier.util.JfxUtil;
 
 import java.sql.Date;
 import java.time.LocalDate;
@@ -198,19 +199,9 @@ public class CtrlCharges {
                 default:
                     throw new IllegalArgumentException("Type de charge inconnu.");
             }
-
-            Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
-            successAlert.setTitle("Succès");
-            successAlert.setHeaderText(null);
-            successAlert.setContentText("Charge ajoutée avec succès !");
-            successAlert.showAndWait();
-
+            JfxUtil.setAlert(Alert.AlertType.INFORMATION, "Succès", null, "Charge ajoutée avec succès !");
         } catch (Exception e) {
-            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-            errorAlert.setTitle("Erreur");
-            errorAlert.setHeaderText("Erreur lors de l'ajout de la charge");
-            errorAlert.setContentText(e.getMessage());
-            errorAlert.showAndWait();
+            JfxUtil.setAlert(Alert.AlertType.ERROR, "Erreur", "Erreur lors de l'ajout de la charge", e.getMessage());
             e.printStackTrace();
         }
     }
@@ -229,11 +220,7 @@ public class CtrlCharges {
     }
 
     private void alertFieldsEmpty() {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Erreur");
-        alert.setHeaderText("Champs vides");
-        alert.setContentText("Veuillez remplir tous les champs et sélectionner une date.");
-        alert.showAndWait();
+        JfxUtil.setAlert(Alert.AlertType.ERROR, "Erreur", "Champs vides", "Veuillez remplir tous les champs et sélectionner une date.");
     }
 
     private boolean fieldsNotEmpty() {
