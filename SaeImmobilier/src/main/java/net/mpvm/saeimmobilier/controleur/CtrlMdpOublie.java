@@ -35,31 +35,12 @@ public class CtrlMdpOublie {
                 System.out.println(this.FieldNewPwd1.getText());
                 System.out.println(0);
             } else {
-                alertFieldsEmpty();
+                JfxUtil.setAlert(Alert.AlertType.ERROR, "Erreur", "Mots de passe différents !", "Veuillez entrer les mêmes mot de passe");
 
             }
         }else {
-            alertPwdTooSmall();
+            JfxUtil.setAlert(Alert.AlertType.ERROR, "Erreur", "Mot de passe trop petit !", "La taille du mot de passe doit être d'au moins 5 caractères ");
         }
     }
-
-
-    private void alertFieldsEmpty() {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Erreur");
-        alert.setHeaderText("Mots de passe différents !");
-        alert.setContentText("Veuillez entrer les mêmes mot de passe");
-        alert.showAndWait();
-    }
-
-    private  void alertPwdTooSmall(){
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Erreur");
-        alert.setHeaderText("Mot de passe trop petit !");
-        alert.setContentText("La taille du mot de passe doit être d'au moins 5 caractères ");
-        alert.showAndWait();
-    }
-
-
 
 }

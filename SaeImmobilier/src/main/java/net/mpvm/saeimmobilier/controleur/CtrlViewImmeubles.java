@@ -124,12 +124,7 @@ public class CtrlViewImmeubles {
         try {
             immeuble.delete();
             afficheImmeubles();
-
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Suppression réussie");
-            alert.setHeaderText(null);
-            alert.setContentText("L'immeuble a été supprimé avec succès.");
-            alert.showAndWait();
+            JfxUtil.setAlert(Alert.AlertType.INFORMATION, "Suppression réussie", null, "L'immeuble a été supprimé avec succès.");
         } catch (Bien.BienException e) {
             JfxUtil.displayError("Erreur lors de la suppression de l'immeuble", e.getMessage());
             e.printStackTrace();
