@@ -3,6 +3,7 @@ package net.mpvm.saeimmobilier.util;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -55,12 +56,12 @@ public class JfxUtil {
         setAlert(Alert.AlertType.ERROR, "Erreur", erreur, message);
     }
 
-    public static void setAlert(Alert.AlertType alertType, String title, String headerText, String contentText) {
+    public static Optional<ButtonType> setAlert(Alert.AlertType alertType, String title, String headerText, String contentText) {
         Alert alert = new Alert(alertType);
         alert.setTitle(title);
         alert.setHeaderText(headerText);
         alert.setContentText(contentText);
-        alert.showAndWait();
+        return alert.showAndWait();
     }
 
     public static void showWindow(Stage stage, Class<? extends Application> applicationClass) {
@@ -72,11 +73,7 @@ public class JfxUtil {
     }
 
     public static int askForDelete(String message) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirmation de la suppression");
-        alert.setHeaderText(message);
-        alert.setContentText("Cette action est irréversible");
-        Optional<ButtonType> result = alert.showAndWait();
+        Optional<ButtonType> result = JfxUtil.setAlert(Alert.AlertType.CONFIRMATION, "Confirmation de la suppression", message, "Cette action est irréversible");
         return result.isPresent() && result.get().equals(ButtonType.OK) ? 1 : 0;
     }
 
@@ -104,5 +101,10 @@ public class JfxUtil {
     public static Float doubleToFloat(Object d){
 
         return ((Double) d).floatValue();
+    }
+
+    public static void setClass(String className, Node... nodes){
+        for (Node node : nodes) node.getStyleClass().add(className);
+
     }
 }

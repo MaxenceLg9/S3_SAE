@@ -21,6 +21,28 @@ import java.util.stream.Collectors;
 
 public class CtrlAttribuerTravaux {
 
+    public static final String CRÉER_TRAVAUX = "Créer Travaux";
+    public static final String RETOUR_AUX_IMMEUBLES = "Retour aux immeubles";
+    public static final String BUTTON_SUPPRIMER = "button-supprimer";
+    public static final String TRAVAUX_À_ATTRIBUER = "Travaux à Attribuer";
+    public static final String BUTTON_VALIDER = "button-valider";
+    public static final String ID_TRAVAUX = "ID Travaux : ";
+    public static final String NUMÉRO_FACTURE = "Numéro Facture : ";
+    public static final String ENTREPRISE = "Entreprise : ";
+    public static final String MONTANT = "Montant : ";
+    public static final String MONTANT_NON_DÉDUCTIBLE = "Montant Non Déductible : ";
+    public static final String RÉDUCTION = "Réduction : ";
+    public static final String DATE_TRAVAUX = "Date Travaux : ";
+    public static final String NATURE = "Nature : ";
+    public static final String NUMÉRO_DEVIS = "Numéro Devis : ";
+    public static final String ID_BIEN = "ID Bien : ";
+    public static final String SUPPRIMER_LES_TRAVAUX = "Supprimer les travaux";
+    public static final String CHOISIR = "  Choisir  ";
+    public static final String CONFIRMATION_DE_LA_SUPPRESSION = "Confirmation de la suppression";
+    public static final String SOUHAITEZ_VOUS_RÉELLEMENT_SUPPRIMER_CES_TRAVAUX = "Souhaitez-vous réellement supprimer ces travaux ?";
+    public static final String CETTE_ACTION_EST_IRRÉVERSIBLE = "Cette action est irréversible";
+    public static final String ASSURANCE_LABEL = "assurance-label";
+    public static final String ASSURANCE_TITLE = "assurance-title";
     @FXML
     public VBox vBoxContent;
 
@@ -65,20 +87,20 @@ public class CtrlAttribuerTravaux {
             return;
         }
 
-        Label titre = new Label("Travaux à Attribuer");
+        Label titre = new Label(TRAVAUX_À_ATTRIBUER);
         titre.setStyle("-fx-font-size: 24px; -fx-text-fill: white; -fx-font-weight: bold;");
         titre.setAlignment(Pos.CENTER);
 
         vBoxContent.getChildren().clear();
         vBoxContent.getChildren().add(titre);
-        Button retourImmeubles = new Button("Retour aux immeubles");
-        retourImmeubles.setOnAction(event -> retourImmeubles(event));
-        retourImmeubles.getStyleClass().add("button-supprimer");
+        Button retourImmeubles = new Button(RETOUR_AUX_IMMEUBLES);
+        retourImmeubles.setOnAction(this::retourImmeubles);
+        retourImmeubles.getStyleClass().add(BUTTON_SUPPRIMER);
         vBoxContent.getChildren().add(retourImmeubles);
 
-        Button creerTravaux = new Button("Créer Travaux");
-        creerTravaux.setOnAction(event -> creerTravaux(event));
-        creerTravaux.getStyleClass().add("button-valider");
+        Button creerTravaux = new Button(CRÉER_TRAVAUX);
+        creerTravaux.setOnAction(this::creerTravaux);
+        creerTravaux.getStyleClass().add(BUTTON_VALIDER);
         vBoxContent.getChildren().add(creerTravaux);
 
         for (Travaux t : travaux.values()) {
@@ -90,36 +112,35 @@ public class CtrlAttribuerTravaux {
 
             gp.getColumnConstraints().addAll(col1, col1, col1);
 
-            Label idTravauxLabel = new Label("ID Travaux : " + t.getIdTravaux());
-            Label numeroFacture = new Label("Numéro Facture : " + t.getNumeroFacture());
-            Label entreprise = new Label("Entreprise : " + t.getEntreprise());
-            Label montant = new Label("Montant : " + t.getMontant());
-            Label montantNonDeductible = new Label("Montant Non Déductible : " + t.getMontantNonDeductible());
-            Label reduction = new Label("Réduction : " + t.getReduction());
-            Label dateTravaux = new Label("Date Travaux : " + t.getDateTravaux());
-            Label nature = new Label("Nature : " + t.getNature());
-            Label numeroDevis = new Label("Numéro Devis : " + t.getNumeroDevis());
-            Label idBienLabel = new Label("ID Bien : " + t.setIdBienTravaux(t));
+            Label idTravauxLabel = new Label(ID_TRAVAUX + t.getIdTravaux());
+            Label numeroFacture = new Label(NUMÉRO_FACTURE + t.getNumeroFacture());
+            Label entreprise = new Label(ENTREPRISE + t.getEntreprise());
+            Label montant = new Label(MONTANT + t.getMontant());
+            Label montantNonDeductible = new Label(MONTANT_NON_DÉDUCTIBLE + t.getMontantNonDeductible());
+            Label reduction = new Label(RÉDUCTION + t.getReduction());
+            Label dateTravaux = new Label(DATE_TRAVAUX + t.getDateTravaux());
+            Label nature = new Label(NATURE + t.getNature());
+            Label numeroDevis = new Label(NUMÉRO_DEVIS + t.getNumeroDevis());
+            Label idBienLabel = new Label(ID_BIEN + t.setIdBienTravaux(t));
 
-            Button deleteButton = new Button("Supprimer les travaux");
-            Button chooseButton = new Button("  Choisir  ");
+            Button deleteButton = new Button(SUPPRIMER_LES_TRAVAUX);
+            Button chooseButton = new Button(CHOISIR);
 
-            deleteButton.setOnAction(event -> askForDelete(t.getIdTravaux()));
+            deleteButton.setOnAction(event -> JfxUtil.setAlert(Alert.AlertType.CONFIRMATION, CONFIRMATION_DE_LA_SUPPRESSION, SOUHAITEZ_VOUS_RÉELLEMENT_SUPPRIMER_CES_TRAVAUX, CETTE_ACTION_EST_IRRÉVERSIBLE)
+                    .filter(r -> r.equals(ButtonType.OK))
+                    .ifPresent(r -> {
+                        try {
+                            deleteTravaux(t.getIdTravaux());
+                        } catch (Travaux.TravauxException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }));
             chooseButton.setOnAction(event -> attribuerTravaux(this.idBien, t));
 
-            idTravauxLabel.getStyleClass().add("assurance-label");
-            idTravauxLabel.getStyleClass().add("assurance-title");
-            numeroFacture.getStyleClass().add("assurance-label");
-            entreprise.getStyleClass().add("assurance-label");
-            montant.getStyleClass().add("assurance-label");
-            montantNonDeductible.getStyleClass().add("assurance-label");
-            reduction.getStyleClass().add("assurance-label");
-            dateTravaux.getStyleClass().add("assurance-label");
-            nature.getStyleClass().add("assurance-label");
-            numeroDevis.getStyleClass().add("assurance-label");
-            idBienLabel.getStyleClass().add("assurance-label");
-            deleteButton.getStyleClass().add("button-supprimer");
-            chooseButton.getStyleClass().add("button-valider");
+            idTravauxLabel.getStyleClass().add(ASSURANCE_TITLE);
+            JfxUtil.setClass(ASSURANCE_LABEL,idTravauxLabel,numeroFacture,entreprise,montant,montantNonDeductible,reduction,dateTravaux,nature,numeroDevis,idBienLabel);
+            deleteButton.getStyleClass().add(BUTTON_SUPPRIMER);
+            chooseButton.getStyleClass().add(BUTTON_VALIDER);
 
             gp.add(idTravauxLabel, 0, 0);
             gp.add(numeroFacture, 1, 0);
@@ -161,7 +182,7 @@ public class CtrlAttribuerTravaux {
         JfxUtil.showWindow(s, VueImmeubles.class);
     }
 
-    public void attribuerTravaux(int idBien, Travaux travaux) {
+    void attribuerTravaux(int idBien, Travaux travaux) {
         if (travaux == null) {
             JfxUtil.displayError("Erreur", "Les travaux sélectionnés sont invalides.");
             return;
@@ -169,52 +190,25 @@ public class CtrlAttribuerTravaux {
 
         try {
             travaux.attribuerDesTravaux(idBien, travaux.getIdTravaux());
-
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Succès");
-            alert.setHeaderText("Attribution réussie");
-            alert.setContentText("Les travaux ont été attribués avec succès au bien !");
-            alert.showAndWait();
-
+            JfxUtil.setAlert(Alert.AlertType.INFORMATION, "Succès", "Attribution réussie", "Les travaux ont été attribués avec succès au bien !");
             afficheTravaux();
 
         } catch (Travaux.TravauxException travauxException) {
             travauxException.printStackTrace();
             JfxUtil.displayError(
                     "Erreur lors de l'attribution des travaux",
-                    "ID Bien : " + idBien + "\nID Travaux : " + travaux.getIdTravaux() +
+                    ID_BIEN + idBien + "\nID Travaux : " + travaux.getIdTravaux() +
                             "\nVérifiez que les travaux sont compatibles avec le bien sélectionné."
 
             );
         }
     }
 
-    @FXML
-    public void askForDelete(int id) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirmation de la suppression");
-        alert.setHeaderText("Souhaitez-vous réellement supprimer ces travaux ?");
-        alert.setContentText("Cette action est irréversible");
-        alert.showAndWait()
-                .filter(r -> r.equals(ButtonType.OK))
-                .ifPresent(r -> {
-                    try {
-                        deleteTravaux(id);
-                    } catch (Travaux.TravauxException e) {
-                        throw new RuntimeException(e);
-                    }
-                });
-    }
-
     private void deleteTravaux(int id) throws Travaux.TravauxException {
         try {
             travaux.get(id).delete();
             afficheTravaux();
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Suppression réussie");
-            alert.setHeaderText(null);
-            alert.setContentText("Les travaux ont été supprimés avec succès.");
-            alert.showAndWait();
+            JfxUtil.setAlert(Alert.AlertType.INFORMATION, "Suppression réussie", null, "Les travaux ont été supprimés avec succès.");
         } catch (Travaux.TravauxException e) {
             JfxUtil.displayError("Erreur lors de la suppression des travaux", e.getMessage());
         }
