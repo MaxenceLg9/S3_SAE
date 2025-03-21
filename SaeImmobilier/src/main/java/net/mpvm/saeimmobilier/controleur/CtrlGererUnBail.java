@@ -102,6 +102,9 @@ public class CtrlGererUnBail {
                     if (!fieldsRepartitionsLoyer.isEmpty() && !fieldsRepartitionsCharges.isEmpty()) {
                         fieldsRepartitionsLoyer.get(0).setDisable(false);
                         fieldsRepartitionsCharges.get(0).setDisable(false);
+                        // Clear all distribution fields when switching to co-rental
+                        fieldsRepartitionsLoyer.forEach(field -> field.setText(""));
+                        fieldsRepartitionsCharges.forEach(field -> field.setText(""));
                     }
                     updateRepartitionLabels();
                     LOGGER.info("Colocation sélectionnée avec " + nbColocataires + " colocataires.");
