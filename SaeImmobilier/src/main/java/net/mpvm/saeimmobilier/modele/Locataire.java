@@ -1,14 +1,20 @@
 package net.mpvm.saeimmobilier.modele;
 
-import net.mpvm.saeimmobilier.sql.Query.QueryElement;
-import net.mpvm.saeimmobilier.sql.Query.SelectQueryElement;
-import net.mpvm.saeimmobilier.sql.Query.UpdateQueryElement;
-import net.mpvm.saeimmobilier.sql.Query.Queryable;
-import net.mpvm.saeimmobilier.util.JfxUtil;
-
 import java.math.BigInteger;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import net.mpvm.saeimmobilier.sql.Query.QueryElement;
+import net.mpvm.saeimmobilier.sql.Query.Queryable;
+import net.mpvm.saeimmobilier.sql.Query.SelectQueryElement;
+import net.mpvm.saeimmobilier.sql.Query.UpdateQueryElement;
+import net.mpvm.saeimmobilier.util.JfxUtil;
 
 public final class Locataire extends Queryable {
 
@@ -49,19 +55,48 @@ public final class Locataire extends Queryable {
 				(int) row.get("IdLocataire"));
 	}
 
-	public static void setLocatairesAssociation(Map<Locataire,AssociationBailLocataires> locatairesAssociation) throws Bail.BailException {
-		if (locatairesAssociation == null || locatairesAssociation.isEmpty()) {
-			throw new Bail.BailException("Locataires list cannot be null or empty.",null);
-		}
-		if(locatairesAssociation.values().stream().mapToDouble(AssociationBailLocataires::getPartElectricite).sum() != 100 ||
-				locatairesAssociation.values().stream().mapToDouble(AssociationBailLocataires::getPartEntretien).sum() != 100 ||
-				locatairesAssociation.values().stream().mapToDouble(AssociationBailLocataires::getPartOrduresMenageres).sum() != 100 ||
-				locatairesAssociation.values().stream().mapToDouble(AssociationBailLocataires::getPartEau).sum() != 100 ||
-				locatairesAssociation.values().stream().mapToDouble(AssociationBailLocataires::getPartLoyer).sum() != 100)
-			throw new Bail.BailException("La somme des répartitions doit être égale à 100",null);
-		if(locatairesAssociation.keySet().stream().anyMatch(x -> x.getIdLocataire() == -1))
-			throw new Bail.BailException("Un locataire n'existe pas dans la base de données",null);
+//	public static void setLocatairesAssociation(Map<Locataire,AssociationBailLocataires> locatairesAssociation) throws Bail.BailException {
+//		if (locatairesAssociation == null || locatairesAssociation.isEmpty()) {
+//			throw new Bail.BailException("Locataires list cannot be null or empty.",null);
+//		}
+//		if(locatairesAssociation.values().stream().mapToDouble(AssociationBailLocataires::getPartElectricite).sum() != 100 ||
+//				locatairesAssociation.values().stream().mapToDouble(AssociationBailLocataires::getPartEntretien).sum() != 100 ||
+//				locatairesAssociation.values().stream().mapToDouble(AssociationBailLocataires::getPartOrduresMenageres).sum() != 100 ||
+//				locatairesAssociation.values().stream().mapToDouble(AssociationBailLocataires::getPartEau).sum() != 100 ||
+//				locatairesAssociation.values().stream().mapToDouble(AssociationBailLocataires::getPartLoyer).sum()*1000 != 100)
+//			throw new Bail.BailException("La somme des répartitions doit être égale à 100",null);
+//		if(locatairesAssociation.keySet().stream().anyMatch(x -> x.getIdLocataire() == -1))
+//			throw new Bail.BailException("Un locataire n'existe pas dans la base de données",null);
+public static void setLocatairesAssociation(Map<Locataire, AssociationBailLocataires> locatairesAssociation) throws Bail.BailException {
+	if (locatairesAssociation == null || locatairesAssociation.isEmpty()) {
+		throw new Bail.BailException("Locataires list cannot be null or empty.", null);
+	}
 
+	double sumElectricite = locatairesAssociation.values().stream().mapToDouble(AssociationBailLocataires::getPartElectricite).sum();
+	double sumEntretien = locatairesAssociation.values().stream().mapToDouble(AssociationBailLocataires::getPartEntretien).sum();
+	double sumOrduresMenageres = locatairesAssociation.values().stream().mapToDouble(AssociationBailLocataires::getPartOrduresMenageres).sum();
+	double sumEau = locatairesAssociation.values().stream().mapToDouble(AssociationBailLocataires::getPartEau).sum();
+	double sumLoyer = locatairesAssociation.values().stream().mapToDouble(AssociationBailLocataires::getPartLoyer).sum();
+
+	if (sumElectricite != 100) {
+		throw new Bail.BailException("La somme des répartitions d'électricité doit être égale à 100. Actuelle: " + sumElectricite, null);
+	}
+	if (sumEntretien != 100) {
+		throw new Bail.BailException("La somme des répartitions d'entretien doit être égale à 100. Actuelle: " + sumEntretien, null);
+	}
+	if (sumOrduresMenageres != 100) {
+		throw new Bail.BailException("La somme des répartitions des ordures ménagères doit être égale à 100. Actuelle: " + sumOrduresMenageres, null);
+	}
+	if (sumEau != 100) {
+		throw new Bail.BailException("La somme des répartitions d'eau doit être égale à 100. Actuelle: " + sumEau, null);
+	}
+	if (sumLoyer -100 >0.01) {
+		throw new Bail.BailException("La somme des répartitions de loyer doit être égale à 100. Actuelle: " + sumLoyer, null);
+	}
+
+	if (locatairesAssociation.keySet().stream().anyMatch(x -> x.getIdLocataire() == -1)) {
+		throw new Bail.BailException("Un locataire n'existe pas dans la base de données", null);
+	}
 		Collection<Locataire> locataires = locatairesAssociation.values().stream().map(AssociationBailLocataires::getLocataire).toList();
 		// Use a Set to check for duplicates
 		Set<Locataire> uniqueLocataires = new HashSet<>(locataires);
@@ -69,7 +104,7 @@ public final class Locataire extends Queryable {
 			throw new Bail.BailException("Duplicate locataires in list",null);
 		}
 		try (UpdateQueryElement query = new UpdateQueryElement(
-				"INSERT INTO AssocieBailLocataire" +
+				"INSERT INTO AssocieBailLocataire " +
 						"(IdLocataire, IdBail, RepartitionElectricite, RepartitionEntretien, RepartitionOrdures_Menageres, RepartitionEau, RepartitionLoyer, DateDebut, DateFin) " +
 						"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) ",
 				true)) {
