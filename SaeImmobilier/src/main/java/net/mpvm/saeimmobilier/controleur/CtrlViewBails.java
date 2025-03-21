@@ -76,7 +76,7 @@ public class CtrlViewBails {
             TextField fieldRevaloriser = new TextField();
             fieldRevaloriser.setPromptText("Donner un numéro de ICC");
             fieldRevaloriser.setDisable(true);
-            fieldRevaloriser.setMaxWidth(400);
+            fieldRevaloriser.setMaxWidth(200);
             vBoxBails.getChildren().add(fieldRevaloriser);
             Button revaloriserValider = new Button("Valider Revalorisation");
             revaloriserValider.setDisable(true);
@@ -177,6 +177,7 @@ public class CtrlViewBails {
     private void ajouterBail(ActionEvent event, int idBien) {
         Stage s = new Stage();
         s.getProperties().put("idBien", idBien);
+        s.setOnHidden(e -> afficheBails());
         JfxUtil.updateStage(s, "creerUnBail.fxml", "Créer un bail");
     }
 

@@ -1,5 +1,7 @@
 package net.mpvm.saeimmobilier.controleur;
 
+import java.util.List;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -11,10 +13,11 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import net.mpvm.saeimmobilier.modele.BienLouable;
 import net.mpvm.saeimmobilier.modele.Immeuble;
-import net.mpvm.saeimmobilier.vue.*;
 import net.mpvm.saeimmobilier.util.JfxUtil;
-
-import java.util.List;
+import net.mpvm.saeimmobilier.vue.VueAttribuerAssurance;
+import net.mpvm.saeimmobilier.vue.VueAttribuerTravaux;
+import net.mpvm.saeimmobilier.vue.VueBiensLouables;
+import net.mpvm.saeimmobilier.vue.VueNewBien;
 
 public class CtrlViewImmeubles {
 
@@ -164,7 +167,7 @@ public class CtrlViewImmeubles {
         Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         Stage s = new Stage();
         s.getProperties().put("controleur",this);
+        s.setOnHidden(e -> afficheImmeubles());
         JfxUtil.showWindow(s, VueNewBien.class);
-
     }
 }
