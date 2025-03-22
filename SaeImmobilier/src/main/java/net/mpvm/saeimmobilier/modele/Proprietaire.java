@@ -6,7 +6,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import net.mpvm.saeimmobilier.sql.Query.*;
+import net.mpvm.saeimmobilier.sql.Query.QueryElement;
+import net.mpvm.saeimmobilier.sql.Query.Queryable;
+import net.mpvm.saeimmobilier.sql.Query.Result;
+import net.mpvm.saeimmobilier.sql.Query.SelectQueryElement;
+import net.mpvm.saeimmobilier.sql.Query.UpdateQueryElement;
 
 public class Proprietaire extends Queryable{
 	public static final String INSERT_QUERY = "INSERT INTO Proprietaire (Email,MotDePasse) VALUES (?,?)";
@@ -14,6 +18,8 @@ public class Proprietaire extends Queryable{
 	public static final String DELETE_QUERY = "DELETE FROM Proprietaire";
 	public static final String SELECT_COUNT_WHERE_EMAIL = "SELECT COUNT(*) AS count FROM Proprietaire WHERE email = ?";
 	public static final String SELECT_COUNT_PROPRIETAIRE = "SELECT COUNT(*) AS count FROM Proprietaire";
+	public static final String UPDATE_WHERE_EMAIL = "UPDATE Proprietaire SET MotDePasse = ? WHERE Email = ?";
+
 
 
 	private String email;
@@ -110,10 +116,18 @@ public class Proprietaire extends Queryable{
 		}
 	}
 
-
-	@Override
-	public void modify() throws QbleException {
-
+	
+	public void changerMDP(String Password) throws QbleException {
+		try (UpdateQueryElement query = new UpdateQueryElement(UPDATE_WHERE_EMAIL, true)) {
+			query.setArgs(
+				Map.of(
+					1, Password,
+					2, this.getEmail()
+				)
+			).execute();
+		} catch (QueryElement.QEltException QEltException) {
+			throw new ProprietaireException("Erreur lors de la modification du mot de passe : ", QEltException.getSqlException());
+		}
 	}
 
 	@Override
@@ -168,6 +182,19 @@ public class Proprietaire extends Queryable{
 		}
 		public ProprietaireException(String message, SQLException cause){
 			super(message, cause);
+		}
+	}
+	@Override
+	public void modify() throws QbleException {
+		try (SelectQueryElement query = new SelectQueryElement(SELECT_COUNT_WHERE_EMAIL)) {
+			query.setArgs(Map.of(1, this.getEmail()));
+			Map<String, Object> results = query.execute().getFirst();
+			if ((long) results.get("count") == 0) {
+				throw new ProprietaireException("Aucun compte n'existe avec cette adresse email");
+			}
+			this.changerMDP(this.getPassword());
+		} catch (QueryElement.QEltException qEltException) {
+			throw new ProprietaireException("Erreur lors de la modification du mot de passe", qEltException.getSqlException());
 		}
 	}
 }

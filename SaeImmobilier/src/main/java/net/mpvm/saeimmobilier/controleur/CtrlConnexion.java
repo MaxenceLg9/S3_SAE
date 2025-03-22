@@ -100,6 +100,8 @@ public class CtrlConnexion {
                 Map<String,Proprietaire> proprietaires = Proprietaire.findAll().stream().filter(Proprietaire-> Proprietaire.getEmail().equals(this.FieldMail.getText())).collect(Collectors.toMap(Proprietaire::getPassword, Function.identity()));
                 for(Proprietaire p : proprietaires.values()) {
                     System.out.println(this.FieldMail.getText());
+                    System.out.println(this.FieldPwd.getText());
+
                     System.out.println(p.getEmail());
                     if (this.FieldMail.getText().equals(p.getEmail())) {
                         if (this.FieldPwd.getText().equals(p.getPassword())) {
