@@ -1,22 +1,24 @@
 package net.mpvm.saeimmobilier.controleur;
 
-import com.dlsc.formsfx.model.structure.Element;
+import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import net.mpvm.saeimmobilier.modele.Travaux;
 import net.mpvm.saeimmobilier.util.JfxUtil;
 
-import java.sql.Date;
-import java.util.ArrayList;
-import java.util.List;
-
 public class CtrlNewTravaux {
     @FXML
     public Button btnAjouter;
-
     @FXML
     public Button btnAnnuler;
     @FXML

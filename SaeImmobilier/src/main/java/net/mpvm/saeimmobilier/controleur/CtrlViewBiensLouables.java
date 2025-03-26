@@ -232,8 +232,9 @@ public class CtrlViewBiensLouables {
         s.getProperties().put("bien",idBien);
         JfxUtil.showWindow(s,VueAttribuerAssurance.class);
     }
-    public void ajouterBien(ActionEvent event) throws Exception {
+    public void ajouterBien(ActionEvent event) {
         Stage s = new Stage();
+        s.setOnHidden(e -> afficheBiens());
         s.setOnHidden(e -> afficheBiens());
         JfxUtil.showWindow(s, VueNewBien.class);
     }

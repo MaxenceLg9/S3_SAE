@@ -195,7 +195,6 @@ public class CtrlViewImmeubles {
             JfxUtil.setAlert(Alert.AlertType.INFORMATION, "Suppression réussie", null, "L'immeuble a été supprimé avec succès.");
         } catch (Bien.BienException e) {
             JfxUtil.displayError("Erreur lors de la suppression de l'immeuble", e.getMessage());
-            e.printStackTrace();
         }
     }
 
@@ -214,7 +213,6 @@ public class CtrlViewImmeubles {
         JfxUtil.showWindow(s, VueAttribuerAssurance.class);
     }
     private void attribuerTravaux(int idBien, ActionEvent event) {
-
         Stage s = new Stage();
         s.getProperties().put("bien",idBien);
         JfxUtil.showWindow(s, VueAttribuerTravaux.class);
@@ -226,9 +224,9 @@ public class CtrlViewImmeubles {
     }
     @FXML
     private void ajouterBien(ActionEvent event){
-        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         Stage s = new Stage();
         s.getProperties().put("controleur",this);
+        s.setOnHidden(e -> afficheImmeubles());
         JfxUtil.showWindow(s, VueNewBien.class);
 
     }
