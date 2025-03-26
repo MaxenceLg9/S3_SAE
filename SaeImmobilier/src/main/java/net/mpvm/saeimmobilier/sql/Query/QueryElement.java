@@ -99,6 +99,7 @@ public abstract class QueryElement<T> implements Closeable {
     public QueryElement<T> setArgs(Map<Integer,Object> args) throws QEltException {
         if(args.size() != nArgs)
             throw new QEltException("Error, wrong number of args");
+        System.out.println(args);
         for(Map.Entry<Integer,Object> entry : args.entrySet()) {
             try {
                 preparedStatement.setObject(entry.getKey(), entry.getValue());

@@ -9,7 +9,8 @@ import net.mpvm.saeimmobilier.sql.Query.*;
 import net.mpvm.saeimmobilier.util.JfxUtil;
 
 public class Travaux extends Queryable {
-	private String numeroFacture;
+    public static final String DELETE_TRAVAUX = "DELETE FROM Travaux WHERE IdBien = ?";
+    private String numeroFacture;
 	private String entreprise;
 	private Float montant;
 	private Float montantNonDeductible;

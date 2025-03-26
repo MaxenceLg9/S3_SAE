@@ -178,8 +178,6 @@ public class CtrlAttribuerTravaux {
     private void retourImmeubles(ActionEvent actionEvent) {
         Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
         stage.close();
-        Stage s=new Stage();
-        JfxUtil.showWindow(s, VueImmeubles.class);
     }
 
     void attribuerTravaux(int idBien, Travaux travaux) {

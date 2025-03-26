@@ -13,6 +13,7 @@ import java.util.Map;
 //Classe de gestion des assurances
 public class Assurance extends Queryable{
 
+    public static final String UPDATE_ASSURANCES = "UPDATE Assurance SET IdBien = NULL WHERE IdBien = ?";
     private int idAssurance;
     private int annee;
     private float protectionJuridique;

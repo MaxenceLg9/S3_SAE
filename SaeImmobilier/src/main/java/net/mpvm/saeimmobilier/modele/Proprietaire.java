@@ -9,11 +9,11 @@ import java.util.regex.Pattern;
 import net.mpvm.saeimmobilier.sql.Query.*;
 
 public class Proprietaire extends Queryable{
-	public static final String INSERT_QUERY = "INSERT INTO proprietaire (Email,MotDePasse) VALUES (?,?)";
-	public static final String SELECT_QUERY = "SELECT * FROM proprietaire";
-	public static final String DELETE_QUERY = "DELETE FROM proprietaire WHERE IdProprietaire = ?";
-	public static final String SELECT_COUNT_WHERE_EMAIL = "SELECT COUNT(*) AS count FROM proprietaire WHERE email = ?";
-	public static final String SELECT_COUNT_PROPRIETAIRE = "SELECT COUNT(*) AS count FROM proprietaire";
+	public static final String INSERT_QUERY = "INSERT INTO Proprietaire (Email,MotDePasse) VALUES (?,?)";
+	public static final String SELECT_QUERY = "SELECT * FROM Proprietaire";
+	public static final String DELETE_QUERY = "DELETE FROM Proprietaire WHERE IdProprietaire = ?";
+	public static final String SELECT_COUNT_WHERE_EMAIL = "SELECT COUNT(*) AS count FROM Proprietaire WHERE email = ?";
+	public static final String SELECT_COUNT_PROPRIETAIRE = "SELECT COUNT(*) AS count FROM Proprietaire";
 
 
 	private String email;
@@ -60,6 +60,7 @@ public class Proprietaire extends Queryable{
 	public static long countProprietaire() throws ProprietaireException {
 		try(SelectQueryElement query = new SelectQueryElement(SELECT_COUNT_PROPRIETAIRE)){
 			Result rs = query.execute();
+			System.out.println(rs.getFirst());
 			return (long) rs.getFirst().get("count");
 		}
 		catch (QueryElement.QEltException qEltException){

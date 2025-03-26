@@ -17,7 +17,7 @@ public final class UpdateQueryElement extends QueryElement<Integer> {
             throw new QEltException("Error executing query", sqlException);
         }
         System.out.println(this.getClass().getSimpleName() + " : " + row + " rows updated");
-        System.out.println("Query : " + this.getQuery());
+        System.out.println("Query : " + this.getQuery() + " with args : ");
         return row;
     }
 
