@@ -6,9 +6,13 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.HPos;
 import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 import javafx.scene.control.*;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import net.mpvm.saeimmobilier.modele.Bien;
@@ -66,11 +70,23 @@ public class CtrlViewImmeubles {
             private final GridPane actionsPane = new GridPane();
 
             {
+                voirBiensButton.setPrefWidth(200);
+                attribuerAssuranceButton.setPrefWidth(200);
+                faireTravaux.setPrefWidth(200);
+                supprimerButton.setPrefWidth(200);
                 actionsPane.setHgap(5);
+                actionsPane.setVgap(5);
                 actionsPane.add(voirBiensButton, 0, 0);
                 actionsPane.add(attribuerAssuranceButton, 1, 0);
                 actionsPane.add(faireTravaux, 0, 1);
                 actionsPane.add(supprimerButton, 1, 1);
+                actionsPane.setAlignment(Pos.CENTER);
+                ColumnConstraints cc = new ColumnConstraints(200);
+                cc.setHalignment(HPos.CENTER);
+                actionsPane.getColumnConstraints().addAll(cc,cc);
+                RowConstraints rc = new RowConstraints();
+                rc.setValignment(VPos.CENTER);
+                actionsPane.getRowConstraints().addAll(rc,rc);
             }
 
             @Override
@@ -148,6 +164,22 @@ public class CtrlViewImmeubles {
                             }
                         }
                     });
+                    setOnMouseClicked(e -> {
+                        if (e.getClickCount() == 1){
+                            for(TableRow<Immeuble> row : register){
+                                for (int i = 0; i < row.getChildrenUnmodifiable().size(); i++) {
+                                    if (row.getChildrenUnmodifiable().get(i) instanceof TableCell<?, ?> cell) {
+                                        cell.setStyle(STYLE_CELL);
+                                    }
+                                }
+                            }
+                            for (int i = 0; i < getChildrenUnmodifiable().size(); i++) {
+                                if (getChildrenUnmodifiable().get(i) instanceof TableCell<?, ?> cell) {
+                                    cell.setStyle(STYLE_CELL_HOVER);
+                                }
+                            }
+                        }
+                    });
                     setOnMouseExited(event -> {
                         if (!isSelected()) {
                             for (int i = 0; i < getChildrenUnmodifiable().size(); i++) {
@@ -164,7 +196,7 @@ public class CtrlViewImmeubles {
         colAdresse.setPrefWidth(150);
         colCodePostal.setPrefWidth(100);
         colVille.setPrefWidth(100);
-        colActions.setPrefWidth(200);
+        colActions.setPrefWidth(300);
     }
 
 
@@ -206,8 +238,6 @@ public class CtrlViewImmeubles {
 
 
     private void attribuerAssurance(int idBien,ActionEvent event) {
-        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-        stage.close();
         Stage s = new Stage();
         s.getProperties().put("bien",idBien);
         JfxUtil.showWindow(s, VueAttribuerAssurance.class);
