@@ -71,9 +71,8 @@ public class CtrlViewBiensLouables {
                 Label label = new Label("Aucun bien trouvé.");
                 label.getStyleClass().add("assurance-title");
                 vBoxBiensLouables.getChildren().add(label);
-                return;
             }
-            else{
+            else {
                 creerTableView();
                 ObservableList<BienLouable> lesBiens = FXCollections.observableArrayList(biens);
                 tableBiensLouables.setItems(lesBiens);
