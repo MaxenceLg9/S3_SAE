@@ -2,12 +2,14 @@ package net.mpvm.saeimmobilier.controleur;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
@@ -74,7 +76,7 @@ public class CtrlViewBails {
             TextField fieldRevaloriser = new TextField();
             fieldRevaloriser.setPromptText("Donner un numéro de ICC");
             fieldRevaloriser.setDisable(true);
-            fieldRevaloriser.setMaxWidth(400);
+            fieldRevaloriser.setMaxWidth(200);
             vBoxBails.getChildren().add(fieldRevaloriser);
             Button revaloriserValider = new Button("Valider Revalorisation");
             revaloriserValider.setDisable(true);
@@ -175,10 +177,22 @@ public class CtrlViewBails {
     private void ajouterBail(ActionEvent event, int idBien) {
         Stage s = new Stage();
         s.getProperties().put("idBien", idBien);
+        s.setOnHidden(e -> afficheBails());
         JfxUtil.updateStage(s, "creerUnBail.fxml", "Créer un bail");
     }
 
     private void resilierBail(Bail bail) {
+        // Dialogue de confirmaton
+        Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmation.setTitle("Confirmer la résiliation");
+        confirmation.setHeaderText("Êtes-vous sûr de vouloir résilier ce bail ?");
+        confirmation.setContentText("Cette action est irréversible.");
+        
+        Optional<ButtonType> result = confirmation.showAndWait();
+        if (result.isEmpty() || result.get() != ButtonType.OK) {
+            return;
+        }
+        
         try {
             bail.delete();
             afficheBails();

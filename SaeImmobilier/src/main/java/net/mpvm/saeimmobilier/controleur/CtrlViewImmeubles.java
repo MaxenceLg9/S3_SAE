@@ -170,6 +170,30 @@ public class CtrlViewImmeubles {
 
     public void afficheImmeubles() {
         try {
+            // Effacer les éléments existants avant de les ajouter à nouveau
+            vBoxImmeubles.getChildren().clear();
+
+            // Ajouter le titre
+            Label titre = new Label("Liste des Immeubles");
+            titre.setStyle("-fx-font-size: 24px; -fx-text-fill: white; -fx-font-weight: bold; -fx-alignment: center;");
+            titre.setAlignment(Pos.CENTER);
+            vBoxImmeubles.getChildren().add(titre);
+
+            // Ajouter le bouton retour à l'accueil
+            Button retourAccueil = new Button("Retour à l'accueil");
+            retourAccueil.setOnAction(event -> retourAccueil(event));
+            retourAccueil.getStyleClass().add("button-supprimer");
+            vBoxImmeubles.getChildren().add(retourAccueil);
+            Button ajouterBien = new Button("Ajouter Bien");
+            ajouterBien.setOnAction(event -> {
+                try {
+                    ajouterBien(event);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            });
+            ajouterBien.getStyleClass().add("button-valider");
+            vBoxImmeubles.getChildren().add(ajouterBien);
             List<Immeuble> immeubles = Immeuble.findAll();
 
             if (immeubles.isEmpty()) {
@@ -207,6 +231,8 @@ public class CtrlViewImmeubles {
 
 
     private void attribuerAssurance(int idBien,ActionEvent event) {
+        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+        stage.close();
         Stage s = new Stage();
         s.getProperties().put("bien",idBien);
         JfxUtil.showWindow(s, VueAttribuerAssurance.class);
@@ -224,6 +250,7 @@ public class CtrlViewImmeubles {
     }
     @FXML
     private void ajouterBien(ActionEvent event){
+        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         Stage s = new Stage();
         s.getProperties().put("controleur",this);
         JfxUtil.showWindow(s, VueNewBien.class);

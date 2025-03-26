@@ -99,7 +99,7 @@
         <!-- Colonne 6 - Répartition Charges -->
         <Label text="Répartition Charges" GridPane.rowIndex="0" GridPane.columnIndex="5" style="-fx-text-fill: white; -fx-font-weight: bold;"/>
 
-        <Label text="Pourcentages" textAlignment="CENTER" GridPane.rowIndex="1" GridPane.columnIndex="5" style="-fx-text-fill: white; -fx-font-weight: italic;"/>
+        <Label text="Pourcentages" textAlignment="CENTER" GridPane.rowIndex="1" GridPane.columnIndex="5" style="-fx-text-fill: white;"/>
         <Label fx:id="labelResteCharges" GridPane.rowIndex="10" GridPane.columnIndex="5" style="-fx-text-fill: white;"/>
 
         <Label text="Date Début" GridPane.rowIndex="0" GridPane.columnIndex="6" style="-fx-text-fill: white; -fx-font-weight: bold;"/>

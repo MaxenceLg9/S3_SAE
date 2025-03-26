@@ -230,12 +230,12 @@ public class CtrlViewBiensLouables {
 
     private void attribuerAssurance(int idBien,ActionEvent event) {
         Stage s = new Stage();
-        //TODO : check ces getProperties car unsafe
         s.getProperties().put("bien",idBien);
         JfxUtil.showWindow(s,VueAttribuerAssurance.class);
     }
     public void ajouterBien(ActionEvent event) throws Exception {
         Stage s = new Stage();
+        s.setOnHidden(e -> afficheBiens());
         JfxUtil.showWindow(s, VueNewBien.class);
     }
     @FXML
@@ -249,5 +249,7 @@ public class CtrlViewBiensLouables {
         Stage s = new Stage();
         s.getProperties().put("bien",bien);
         JfxUtil.showWindow(s, VueModifierBien.class);
+        s.setOnHidden(e -> afficheBiens());
+
     }
 }

@@ -74,20 +74,6 @@ public class Bail extends Queryable {
 				(String) row.get("CheminDocument"));
 	}
 
-
-//	public static Bail getBailFromCharges(Charges charges) {
-//		try(SelectQueryElement selectQueryElement = new SelectQueryElement("SELECT * FROM Bail B JOIN Charges C ON C.IdBail = B.Bail WHERE C.IdCharges = ?")){
-//			selectQueryElement.setArgs(Map.of(1, charges.getIdCharges()));
-//			Result result = selectQueryElement.execute();
-//			Map<String, Object> row = result.getFirst();
-//			return new Bail(row);
-//		}
-//		catch (QueryElement.QEltException e) {
-//			e.printStackTrace();
-//			return null;
-//		}
-//	}
-
 	public static List<Bail> getBauxFromBien(BienLouable bienLouable) throws BailException {
 		try(SelectQueryElement selectQueryElement = new SelectQueryElement("SELECT * FROM Bail WHERE IdBien = ?")){
 			selectQueryElement.setArgs(Map.of(1,bienLouable.getIdBien())).execute();
@@ -148,22 +134,6 @@ public class Bail extends Queryable {
 		}
 	}
 
-//	public static List<Bail> getBauxFromLocataire(Locataire locataire) throws BailException {
-//		ArrayList<Bail> bauxList = new ArrayList<>();
-//		try (SelectQueryElement selectQueryElement = new SelectQueryElement(SELECT_BAUX_FROM_LOCATAIRE)) {
-//			selectQueryElement.setArgs(Map.of(-1, locataire.getIdLocataire())); // Assuming getId() retrieves the current Locataire's ID.
-//			selectQueryElement.execute();
-//			List<Map<String, Object>> result = selectQueryElement.getResult();
-//			for (Map<String, Object> row : result) {
-//				bauxList.add(new Bail(row)); // Assuming Bail has a constructor that accepts a map of database row values.
-//			}
-//		} catch (QueryElement.QEltException qEltException) {
-//			qEltException.getSqlException().printStackTrace();
-//			throw new BailException("Erreur lors de la récupération des baux du locataire", qEltException.getSqlException());
-//		}
-//		return bauxList;
-//
-//	}
 	public static double calculerLoyersProprietaire() throws Exception {
 		double totalLoyers = 0.0;
 

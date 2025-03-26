@@ -8,6 +8,8 @@ import javafx.stage.Stage;
 import net.mpvm.saeimmobilier.util.JfxUtil;
 import net.mpvm.saeimmobilier.vue.VueAccueil;
 import net.mpvm.saeimmobilier.vue.VueConnexion;
+import net.mpvm.saeimmobilier.modele.Proprietaire;
+import net.mpvm.saeimmobilier.sql.Query.Queryable;
 
 
 public class CtrlMdpOublie {
@@ -29,17 +31,29 @@ public class CtrlMdpOublie {
         JfxUtil.showWindow(stage, VueConnexion.class);
     }
 
-    public void Modifier(javafx.event.ActionEvent actionEvent) {
-        if(this.FieldNewPwd1.getText().length()>=5 && this.FieldNewPwd2.getText().length()>= 5) {
-            if (this.FieldNewPwd1.getText().equals(this.FieldNewPwd2.getText())) {
-                System.out.println(this.FieldNewPwd1.getText());
-                System.out.println(0);
-            } else {
-                JfxUtil.setAlert(Alert.AlertType.ERROR, "Erreur", "Mots de passe différents !", "Veuillez entrer les mêmes mot de passe");
+    public void Modifier(javafx.event.ActionEvent actionEvent) throws Queryable.QbleException {
+        String email = this.FieldEmail.getText().trim();
+        String newPassword = this.FieldNewPwd1.getText();
+        String confirmPassword = this.FieldNewPwd2.getText();
 
-            }
-        }else {
-            JfxUtil.setAlert(Alert.AlertType.ERROR, "Erreur", "Mot de passe trop petit !", "La taille du mot de passe doit être d'au moins 5 caractères ");
+        if (email.isEmpty()) {
+            JfxUtil.setAlert(Alert.AlertType.ERROR, "Erreur", "Email manquant", "Veuillez entrer votre adresse email");
+            return;
+        }
+
+        if (!newPassword.equals(confirmPassword)) {
+            JfxUtil.setAlert(Alert.AlertType.ERROR, "Erreur", "Mots de passe différents !", "Veuillez entrer les mêmes mot de passe");
+            return;
+        }
+
+        try {
+            Proprietaire proprietaire = new Proprietaire(email, newPassword);
+            proprietaire.modify();
+            JfxUtil.setAlert(Alert.AlertType.INFORMATION, "Succès", "Mot de passe modifié", "Votre mot de passe a été modifié avec succès");
+            Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
+            JfxUtil.showWindow(stage, VueConnexion.class);
+        } catch (Proprietaire.ProprietaireException e) {
+            JfxUtil.setAlert(Alert.AlertType.ERROR, "Erreur", "Erreur de modification", e.getMessage());
         }
     }
 
