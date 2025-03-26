@@ -2,27 +2,32 @@ package net.mpvm.saeimmobilier.controleur;
 
 import java.util.List;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import net.mpvm.saeimmobilier.modele.Bien;
 import net.mpvm.saeimmobilier.modele.BienLouable;
+import net.mpvm.saeimmobilier.modele.Immeuble;
 import net.mpvm.saeimmobilier.util.JfxUtil;
 import net.mpvm.saeimmobilier.vue.VueAttribuerAssurance;
 import net.mpvm.saeimmobilier.vue.VueBails;
-import net.mpvm.saeimmobilier.vue.VueCreerUnBail;
 import net.mpvm.saeimmobilier.vue.VueModifierBien;
 import net.mpvm.saeimmobilier.vue.VueNewBien;
 
 
 public class CtrlViewBiensLouables {
 
+    public static final String STYLE_CELL = "-fx-text-fill: white; -fx-font-size: 14px; -fx-background-color: #1e2d3e;";
+    public static final String STYLE_CELL_HOVER = "-fx-text-fill: black; -fx-font-size: 14px; -fx-background-color: white;";
+    @FXML
+    private TableView<BienLouable> tableBiensLouables;
     @FXML
     private VBox vBoxBiensLouables;
     @FXML
@@ -60,86 +65,148 @@ public class CtrlViewBiensLouables {
 
     public void afficheBiens() {
         try {
-            Label titre = new Label("Liste des Biens Louables");
-            titre.setStyle("-fx-font-size: 24px; -fx-text-fill: white; -fx-font-weight: bold;");
-            titre.setAlignment(Pos.CENTER);
 
-            vBoxBiensLouables.getChildren().clear();
-            vBoxBiensLouables.getChildren().add(titre);
-            Button retourImmeubles = new Button("Retour aux immeubles");
-            retourImmeubles.setOnAction(this::retourImmeubles);
-            retourImmeubles.getStyleClass().add("button-supprimer");
-            vBoxBiensLouables.getChildren().add(retourImmeubles);
             List<BienLouable> biens = BienLouable.findByImmeuble(idImmeuble);
-            Button ajouterBien = new Button("Ajouter Bien");
-            ajouterBien.setOnAction(event -> {
-                try {
-                    ajouterBien(event);
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-            });
-            ajouterBien.getStyleClass().add("button-valider");
-            vBoxBiensLouables.getChildren().add(ajouterBien);
             if (biens.isEmpty()) {
                 Label label = new Label("Aucun bien trouvé.");
                 label.getStyleClass().add("assurance-title");
                 vBoxBiensLouables.getChildren().add(label);
                 return;
             }
-
-            for (BienLouable bien : biens) {
-
-                GridPane gp = new GridPane();
-                gp.setHgap(10);
-                gp.setVgap(5);
-                gp.setAlignment(Pos.TOP_CENTER);
-                gp.getStyleClass().add("locataire-gridpane");
-                Label Nom = new Label("Nom " + bien.getIdProprio());
-                Label typeBien = new Label("Type " + bien.getTypeBien());
-                Label CAdresse = new Label("Complément d'Adresse " + bien.getComplementAdresse());
-                Label surface = new Label("Surface " + bien.getSurface() + " m²");
-                Label nbPieces = new Label("Pièces " + bien.getNbPieces());
-
-                Button gererBailsButton = new Button("Gérer Bails");
-                gererBailsButton.setOnAction(event -> gererBails(bien.getIdBien(),event));
-
-                Button attribuerAssuranceButton = new Button("Attribuer Assurance");
-                attribuerAssuranceButton.setOnAction(event -> attribuerAssurance(bien.getIdBien(),event));
-
-                Button supprimerButton = new Button("Supprimer");
-                supprimerButton.setOnAction(event -> {
-                    if (JfxUtil.askForDelete("Voulez vous supprimer le bien?") == 1)
-                        supprimerBien(bien);
-                });
-
-                Button modifierButton = new Button("Modifier");
-                modifierButton.setOnAction(event-> modifierBien(bien,event));
-
-                List<Label> labels = List.of(Nom,typeBien, CAdresse, surface, nbPieces);
-                Nom.getStyleClass().add("assurance-title");
-                labels.forEach(label -> label.getStyleClass().add("assurance-label"));
-
-                gererBailsButton.getStyleClass().add("button-valider");
-                attribuerAssuranceButton.getStyleClass().add("button-valider");
-                supprimerButton.getStyleClass().add("button-supprimer");
-                modifierButton.getStyleClass().add("button-valider");
-                gp.add(Nom,0,0);
-                gp.add(typeBien, 0, 1);
-                gp.add(CAdresse, 1, 0);
-                gp.add(surface, 1, 1);
-                gp.add(nbPieces, 2, 1);
-                gp.add(gererBailsButton, 3, 0);
-                gp.add(attribuerAssuranceButton, 4, 0);
-                gp.add(supprimerButton, 3, 1);
-                gp.add(modifierButton, 5, 0);
-
-                vBoxBiensLouables.getChildren().add(gp);
+            else{
+                creerTableView();
+                ObservableList<BienLouable> lesBiens = FXCollections.observableArrayList(biens);
+                tableBiensLouables.setItems(lesBiens);
             }
         } catch (Bien.BienException e) {
             JfxUtil.displayError("Erreur lors du chargement des biens", e.getMessage());
             e.printStackTrace();
         }
+    }
+
+    private void creerTableView() {
+
+        TableColumn<BienLouable, String> colNom = new TableColumn<>("Nom");
+        colNom.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getIdProprio()));
+
+
+        TableColumn<BienLouable, String> colAdresse = new TableColumn<>("Adresse");
+        colAdresse.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getAdresse() + " " + cell.getValue().getComplementAdresse()));
+
+
+        TableColumn<BienLouable, String> colCodePostal = new TableColumn<>("Code Postal");
+        colCodePostal.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getCodePostal()));
+
+
+        TableColumn<BienLouable, String> colVille = new TableColumn<>("Ville");
+        colVille.getStyleClass().add("col-ville");
+        colVille.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getVille()));
+
+        TableColumn<BienLouable, String> colActions = new TableColumn<>("Actions");
+
+        colActions.setCellFactory(param -> new TableCell<>() {
+            private final Button voirBiensButton = new Button("Voir les baux");
+            private final Button attribuerAssuranceButton = new Button("Attribuer Assurance");
+            private final Button modifier = new Button("Modifier");
+            private final Button supprimerButton = new Button("Supprimer");
+
+            private final GridPane actionsPane = new GridPane();
+
+            {
+                actionsPane.setHgap(5);
+                actionsPane.add(voirBiensButton, 0, 0);
+                actionsPane.add(attribuerAssuranceButton, 1, 0);
+                actionsPane.add(modifier, 0, 1);
+                actionsPane.add(supprimerButton, 1, 1);
+            }
+
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                setStyle(STYLE_CELL);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    BienLouable bienLouable = getTableView().getItems().get(getIndex());
+                    voirBiensButton.getStyleClass().add("button-valider");
+                    attribuerAssuranceButton.getStyleClass().add("button-valider");
+                    modifier.getStyleClass().add("button-valider");
+                    supprimerButton.getStyleClass().add("button-supprimer");
+
+                    voirBiensButton.setOnAction(event -> gererBails(bienLouable.getIdBien(), event));
+                    attribuerAssuranceButton.setOnAction(event -> attribuerAssurance(bienLouable.getIdBien(), event));
+                    modifier.setOnAction(event -> modifierBien(bienLouable, event));
+                    supprimerButton.setOnAction(event -> {
+                        if (JfxUtil.askForDelete("Voulez vous supprimer l'immeuble") == 1)
+                            supprimerBien(bienLouable);
+                    });
+
+                    setGraphic(actionsPane);
+                    setAlignment(Pos.CENTER);
+                }
+            }
+        });
+
+        tableBiensLouables.getColumns().clear();
+        tableBiensLouables.getColumns().addAll(List.of(colNom,colAdresse,colCodePostal,colVille));
+        tableBiensLouables.getColumns().forEach(column -> {
+            TableColumn<BienLouable, String> col = (TableColumn<BienLouable, String>) column;
+            col.setCellFactory(c -> new TableCell<>() {
+                @Override
+                protected void updateItem(String item, boolean empty) {
+                    super.updateItem(item, empty);
+                    setStyle(STYLE_CELL);
+                    if (empty || item == null) {
+                        setText(null);
+                    } else {
+                        setText(item);
+                        setAlignment(Pos.CENTER); // Ensures the text is centered
+                    }
+                }
+            });
+        });
+
+        tableBiensLouables.getColumns().add(colActions);
+        tableBiensLouables.setRowFactory(tv -> new TableRow<BienLouable>() {
+            @Override
+            protected void updateItem(BienLouable item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (empty || item == null) {
+                    setStyle(""); // Reset style for empty rows
+                } else {
+                    if (isSelected()) {
+                        setStyle("-fx-background-color: #336699; -fx-text-fill: white;"); // Apply hover style
+                    } else {
+                        setStyle(""); // Reset style for unselected rows
+                    }
+
+                    setOnMouseEntered(event -> {
+                        if (!isSelected()) {
+                            for (int i = 0; i < getChildrenUnmodifiable().size(); i++) {
+                                if (getChildrenUnmodifiable().get(i) instanceof TableCell<?, ?> cell) {
+                                    cell.setStyle(STYLE_CELL_HOVER);
+                                }
+                            }
+                        }
+                    });
+                    setOnMouseExited(event -> {
+                        if (!isSelected()) {
+                            for (int i = 0; i < getChildrenUnmodifiable().size(); i++) {
+                                if (getChildrenUnmodifiable().get(i) instanceof TableCell<?, ?> cell) {
+                                    cell.setStyle(STYLE_CELL);
+                                }
+                            }
+                        }
+                    });
+                }
+            }
+        });
+        colNom.setPrefWidth(100);
+        colAdresse.setPrefWidth(150);
+        colCodePostal.setPrefWidth(100);
+        colVille.setPrefWidth(100);
+        colActions.setPrefWidth(200);
     }
 
     private void supprimerBien(BienLouable bien) {
@@ -167,7 +234,7 @@ public class CtrlViewBiensLouables {
         s.getProperties().put("bien",idBien);
         JfxUtil.showWindow(s,VueAttribuerAssurance.class);
     }
-    private void ajouterBien(ActionEvent event) throws Exception {
+    public void ajouterBien(ActionEvent event) throws Exception {
         Stage s = new Stage();
         JfxUtil.showWindow(s, VueNewBien.class);
     }
