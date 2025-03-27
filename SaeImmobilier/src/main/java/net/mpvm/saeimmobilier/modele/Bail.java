@@ -153,11 +153,7 @@ public class Bail extends Queryable {
 	}
 	public static List<Bail> findAllCalculLoyers() throws Bail.BailException {
 		List<Bail> bailslist = new ArrayList<>();
-		String SELECT_QUERY = """
-        SELECT *
-        FROM Bail B
-        WHERE B.ARCHIVE is null
-    	""";
+		String SELECT_QUERY = "SELECT * FROM Bail B WHERE B.ARCHIVE=FALSE";
 
 		try (SelectQueryElement query = new SelectQueryElement(SELECT_QUERY)) {
 			Result rs = query.execute();
