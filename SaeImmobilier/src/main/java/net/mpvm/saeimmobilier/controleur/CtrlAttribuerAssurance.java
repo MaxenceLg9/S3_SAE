@@ -96,7 +96,12 @@ public class CtrlAttribuerAssurance {
             Label typeContrat = new Label("Type de Contrat " + a.getTypeContrat());
             Label annee = new Label("Année " + a.getAnnee());
             Label totalPrime = new Label("Total Prime " + a.getTotalPrime());
-            Label idBienLabel = new Label("ID Bien associé : " + a.selectIdBien());
+            Bien bienAssure = a.getBienAssure();
+            Label idBienLabel;
+            if(bienAssure == null)
+                idBienLabel = new Label("Cette assurance n'est associée à aucun bien");
+            else
+                idBienLabel = new Label("Bien assure : " + bienAssure.getIdProprio());
             Button deleteButton = new Button("Supprimer l'assurance");
             Button chooseButton = new Button("  Choisir  ");
 

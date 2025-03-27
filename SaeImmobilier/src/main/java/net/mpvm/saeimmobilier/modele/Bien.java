@@ -35,6 +35,9 @@ public abstract class Bien extends Queryable {
     }
 
     public static Bien findById(int idBien) throws BienException {
+        if(BBuilder.checkPresentIn(idBien)){
+                return BBuilder.get(idBien);
+        }
         try (SelectQueryElement selectQueryElement = new SelectQueryElement(SELECT_QUERY_BY_ID)) {
             selectQueryElement.setArgs(Map.of(1, idBien));
             selectQueryElement.execute();
@@ -42,6 +45,33 @@ public abstract class Bien extends Queryable {
 
             Map<String, Object> result = results.getFirst();
             TypeBien typeBien = TypeBien.valueOf(result.get("TypeBien").toString().toUpperCase());
+
+            return switch (typeBien) {
+                case HABITATION -> new Habitation.HBuilder(result).build();
+                case GARAGE -> new Garage.GBuilder(result).build();
+                case IMMEUBLE -> new Immeuble.IBuilder(result).build();
+
+            };
+        } catch (QueryElement.QEltException e) {
+            throw new BienException("Erreur lors de la récupération du bien avec ID " + idBien, e.getSqlException());
+        }
+    }
+
+    public static Bien findByIdWithType(int idBien,TypeBien typeBien) throws BienException {
+        if(BBuilder.checkPresentIn(idBien)){
+            if(typeBien.getTClass().isInstance(biens.get(idBien)))
+                return BBuilder.get(idBien);
+            else
+                throw new Bien.BienException("Le bien n'est pas du bon type", null);
+        }
+        try (SelectQueryElement selectQueryElement = new SelectQueryElement(SELECT_QUERY_BY_ID)) {
+            selectQueryElement.setArgs(Map.of(1, idBien));
+            selectQueryElement.execute();
+            List<Map<String, Object>> results = selectQueryElement.getResult();
+
+            Map<String, Object> result = results.getFirst();
+            if(TypeBien.valueOf(result.get("TypeBien").toString().toUpperCase()) != typeBien)
+                throw new BienException("Le bien avec cet id n'est pas du bon type",null);
 
             return switch (typeBien) {
                 case HABITATION -> new Habitation.HBuilder(result).build();
@@ -231,7 +261,6 @@ public abstract class Bien extends Queryable {
                     throw new Bien.BienException("Le bien n'est pas du bon type", null);
             }
             return getFromQuery(idBien, typeBien);
-
         }
 
         private static Bien getFromQuery(int idBien, TypeBien type) throws BienException {
