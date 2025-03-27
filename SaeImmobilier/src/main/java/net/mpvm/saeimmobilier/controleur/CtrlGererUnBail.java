@@ -44,8 +44,9 @@ public class CtrlGererUnBail {
     public DatePicker dateDebut, dateFin, dateSignature;
     public TextField fieldMontantLoyer, fieldDepotGarantie, fieldNbColocataires;
     public CheckBox checkBoxArchive, checkBoxRenouvelable, checkBoxLocationSimple, checkBoxColocation, checkBoxLoyerEuro, checkBoxLoyerPourcentage;
-    public Label labelResteLoyer, labelResteCharges, labelAdresse, labelComplementAdresse, labelType;
+    public Label labelResteLoyer, labelResteCharges, labelAdresse, labelComplementAdresse, labelType,labelCodePostal, labelVille;
     public GridPane gridPaneContent;
+
     private List<ChoiceBox<Locataire>> choiceBoxesLocataires = new LinkedList<>();
     private List<DatePicker> datesDebut = new LinkedList<>(), datesFin = new LinkedList<>();
     private List<TextField> fieldsRepartitionsCharges = new LinkedList<>(), fieldsRepartitionsLoyer = new LinkedList<>();
@@ -174,6 +175,8 @@ public class CtrlGererUnBail {
 
                     if (bienLouable != null) {
                         labelAdresse.setText(bienLouable.getAdresse());
+                        labelCodePostal.setText(bienLouable.getCodePostal());
+                        labelVille.setText(bienLouable.getVille());
                         labelComplementAdresse.setText(bienLouable.getComplementAdresse());
                         labelType.setText(bienLouable.getTypeBien().toString());
                     }

@@ -27,9 +27,13 @@
     </padding>
     
     <Label text="Création d'un nouveau bail" style="-fx-font-size: 32px; -fx-font-weight: bold; -fx-text-fill: white;"/>
-    <Label fx:id="labelAdresse" style="-fx-font-weight: bold; -fx-text-fill: white;"/>
-    <Label fx:id="labelComplementAdresse" style="-fx-text-fill: white;"/>
-    <Label fx:id="labelType" style="-fx-text-fill: white;"/>
+    <HBox spacing="10" alignment="CENTER">
+        <Label fx:id="labelAdresse" style="-fx-font-weight: bold; -fx-text-fill: white;-fx-font-size: 16px;"/>
+        <Label fx:id="labelCodePostal" style="-fx-font-weight: bold; -fx-text-fill: white;-fx-font-size: 16px;"/>
+        <Label fx:id="labelVille" style="-fx-font-weight: bold; -fx-text-fill: white;-fx-font-size: 16px;"/>
+        <Label fx:id="labelComplementAdresse" style="-fx-text-fill: white;-fx-font-size: 16px;"/>
+        <Label fx:id="labelType" style="-fx-text-fill: white;-fx-font-size: 16px;"/>
+    </HBox>
 
     <GridPane fx:id="gridPaneContent" hgap="10" vgap="10" style="-fx-border-color: white; -fx-border-radius: 3; -fx-background-color: #34495e;">
         <columnConstraints>
@@ -59,51 +63,51 @@
         </rowConstraints>
         
         <!-- Colonne 1 - Libellés -->
-        <Label text="Début" GridPane.rowIndex="1" GridPane.columnIndex="0" style="-fx-text-fill: white;"/>
-        <Label text="Fin" GridPane.rowIndex="2" GridPane.columnIndex="0" style="-fx-text-fill: white;"/>
-        <Label text="Signature" GridPane.rowIndex="3" GridPane.columnIndex="0" style="-fx-text-fill: white;"/>
-        <Label text="Loyer" GridPane.rowIndex="5" GridPane.columnIndex="0" style="-fx-text-fill: white;"/>
-        <Label text="Garantie" GridPane.rowIndex="6" GridPane.columnIndex="0" style="-fx-text-fill: white;"/>
+        <Label text="Début" GridPane.rowIndex="1" GridPane.columnIndex="0" style="-fx-text-fill: white;-fx-font-size: 14px;"/>
+        <Label text="Fin" GridPane.rowIndex="2" GridPane.columnIndex="0" style="-fx-text-fill: white;-fx-font-size: 14px;"/>
+        <Label text="Signature" GridPane.rowIndex="3" GridPane.columnIndex="0" style="-fx-text-fill: white;-fx-font-size: 14px;"/>
+        <Label text="Loyer" GridPane.rowIndex="5" GridPane.columnIndex="0" style="-fx-text-fill: white;-fx-font-size: 14px;"/>
+        <Label text="Garantie" GridPane.rowIndex="6" GridPane.columnIndex="0" style="-fx-text-fill: white;-fx-font-size: 14px;"/>
         
         <!-- Colonne 2 - Champs de saisie -->
-        <Label text="Dates du Bail" GridPane.rowIndex="0" GridPane.columnIndex="1" style="-fx-text-fill: white; -fx-font-weight: bold;"/>
+        <Label text="Dates du Bail" GridPane.rowIndex="0" GridPane.columnIndex="1" style="-fx-text-fill: white; -fx-font-weight: bold;-fx-font-size: 16px;"/>
         <DatePicker fx:id="dateDebut" GridPane.rowIndex="1" GridPane.columnIndex="1" style="-fx-background-color: #ecf0f1;"/>
         <DatePicker fx:id="dateFin" GridPane.rowIndex="2" GridPane.columnIndex="1" style="-fx-background-color: #ecf0f1;"/>
         <DatePicker fx:id="dateSignature" GridPane.rowIndex="3" GridPane.columnIndex="1" style="-fx-background-color: #ecf0f1;"/>
-        <Label text="Charges" GridPane.rowIndex="4" GridPane.columnIndex="1" style="-fx-text-fill: white; -fx-font-weight: bold;"/>
+        <Label text="Charges" GridPane.rowIndex="4" GridPane.columnIndex="1" style="-fx-text-fill: white; -fx-font-weight: bold;-fx-font-size: 16px;"/>
         <TextField fx:id="fieldMontantLoyer" GridPane.rowIndex="5" GridPane.columnIndex="1" style="-fx-background-color: #ecf0f1;"/>
         <TextField fx:id="fieldDepotGarantie" GridPane.rowIndex="6" GridPane.columnIndex="1" style="-fx-background-color: #ecf0f1;"/>
         
         <!-- Colonne 3 - Type de Location -->
-        <Label text="Type de Location" GridPane.rowIndex="0" GridPane.columnIndex="2" style="-fx-text-fill: white; -fx-font-weight: bold;"/>
+        <Label text="Type de Location" GridPane.rowIndex="0" GridPane.columnIndex="2" style="-fx-text-fill: white; -fx-font-weight: bold;-fx-font-size: 16px;"/>
         <CheckBox fx:id="checkBoxLocationSimple" text="Location Simple" GridPane.rowIndex="1" GridPane.columnIndex="2" style="-fx-text-fill: white;"/>
         <CheckBox fx:id="checkBoxColocation" text="Colocation" GridPane.rowIndex="2" GridPane.columnIndex="2" style="-fx-text-fill: white;"/>
         <TextField fx:id="fieldNbColocataires" promptText="Nombre de colocataires (1-8)" GridPane.rowIndex="3" GridPane.columnIndex="2" style="-fx-background-color: #ecf0f1;"/>
-        <Label text="Options" GridPane.rowIndex="4" GridPane.columnIndex="2" style="-fx-text-fill: white; -fx-font-weight: bold;"/>
+        <Label text="Options" GridPane.rowIndex="4" GridPane.columnIndex="2" style="-fx-text-fill: white; -fx-font-weight: bold;-fx-font-size: 16px;"/>
         <CheckBox fx:id="checkBoxArchive" text="Archive" GridPane.rowIndex="5" GridPane.columnIndex="2" style="-fx-text-fill: white;"/>
         <CheckBox fx:id="checkBoxRenouvelable" text="Renouvelable" GridPane.rowIndex="6" GridPane.columnIndex="2" style="-fx-text-fill: white;"/>
         
         <!-- Colonne 4 - Locataires -->
-        <Label text="Locataires" GridPane.rowIndex="0" GridPane.columnIndex="3" style="-fx-text-fill: white; -fx-font-weight: bold;"/>
+        <Label text="Locataires" GridPane.rowIndex="0" GridPane.columnIndex="3" style="-fx-text-fill: white; -fx-font-weight: bold;-fx-font-size: 16px;"/>
         <Button text="Nouveau Locataire" onAction="#newLocataire" GridPane.rowIndex="1" GridPane.columnIndex="3" styleClass="button-valider"/>
 
         
         <!-- Colonne 5 - Répartition Loyer -->
-        <Label text="Répartition Loyer" GridPane.rowIndex="0" GridPane.columnIndex="4" style="-fx-text-fill: white; -fx-font-weight: bold;"/>
+        <Label text="Répartition Loyer" GridPane.rowIndex="0" GridPane.columnIndex="4" style="-fx-text-fill: white; -fx-font-weight: bold;-fx-font-size: 16px;"/>
         <HBox spacing="10" alignment="CENTER" GridPane.rowIndex="1" GridPane.columnIndex="4">
             <CheckBox fx:id="checkBoxLoyerEuro" text="Euro" style="-fx-text-fill: white;"/>
             <CheckBox fx:id="checkBoxLoyerPourcentage" text="Pourcentages" style="-fx-text-fill: white;"/>
         </HBox>
-        <Label fx:id="labelResteLoyer" GridPane.rowIndex="10" GridPane.columnIndex="4" style="-fx-text-fill: white;"/>
+        <Label fx:id="labelResteLoyer" GridPane.rowIndex="10" GridPane.columnIndex="4" style="-fx-text-fill: white;-fx-font-size: 14px;"/>
         
         <!-- Colonne 6 - Répartition Charges -->
-        <Label text="Répartition Charges" GridPane.rowIndex="0" GridPane.columnIndex="5" style="-fx-text-fill: white; -fx-font-weight: bold;"/>
+        <Label text="Répartition Charges" GridPane.rowIndex="0" GridPane.columnIndex="5" style="-fx-text-fill: white; -fx-font-weight: bold;-fx-font-size: 16px;"/>
 
         <Label text="Pourcentages" textAlignment="CENTER" GridPane.rowIndex="1" GridPane.columnIndex="5" style="-fx-text-fill: white;"/>
-        <Label fx:id="labelResteCharges" GridPane.rowIndex="10" GridPane.columnIndex="5" style="-fx-text-fill: white;"/>
+        <Label fx:id="labelResteCharges" GridPane.rowIndex="10" GridPane.columnIndex="5" style="-fx-text-fill: white;-fx-font-size: 14px;"/>
 
-        <Label text="Date Début" GridPane.rowIndex="0" GridPane.columnIndex="6" style="-fx-text-fill: white; -fx-font-weight: bold;"/>
-        <Label text="Date Fin" GridPane.rowIndex="0" GridPane.columnIndex="7" style="-fx-text-fill: white; -fx-font-weight: bold;"/>
+        <Label text="Date Début" GridPane.rowIndex="0" GridPane.columnIndex="6" style="-fx-text-fill: white; -fx-font-weight: bold;-fx-font-size: 16px;"/>
+        <Label text="Date Fin" GridPane.rowIndex="0" GridPane.columnIndex="7" style="-fx-text-fill: white; -fx-font-weight: bold;-fx-font-size: 16px;"/>
 
         <!-- Boutons de validation -->
         <HBox spacing="10" alignment="CENTER" GridPane.rowIndex="11" GridPane.columnIndex="0" GridPane.columnSpan="6">
