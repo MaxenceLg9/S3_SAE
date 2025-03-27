@@ -16,6 +16,9 @@ import javafx.stage.Stage;
 import net.mpvm.saeimmobilier.modele.Travaux;
 import net.mpvm.saeimmobilier.util.JfxUtil;
 
+import static net.mpvm.saeimmobilier.util.JfxUtil.BUTTON_SUPPRIMER;
+import static net.mpvm.saeimmobilier.util.JfxUtil.BUTTON_VALIDER;
+
 public class CtrlNewTravaux {
     @FXML
     public Button btnAjouter;
@@ -85,9 +88,9 @@ public class CtrlNewTravaux {
     }
 
     private void setupButtons() {
-        btnAjouter.getStyleClass().add("button-valider");
-        btnAnnuler.getStyleClass().add("button-supprimer");
-        btnRetour.getStyleClass().add("button-supprimer");
+        btnAjouter.getStyleClass().add(BUTTON_VALIDER);
+        btnAnnuler.getStyleClass().add(BUTTON_SUPPRIMER);
+        btnRetour.getStyleClass().add(BUTTON_SUPPRIMER);
     }
 
     @FXML

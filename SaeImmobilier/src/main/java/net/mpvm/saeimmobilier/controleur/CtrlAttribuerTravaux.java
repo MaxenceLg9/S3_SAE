@@ -11,21 +11,19 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import net.mpvm.saeimmobilier.modele.Travaux;
 import net.mpvm.saeimmobilier.util.JfxUtil;
-import net.mpvm.saeimmobilier.vue.VueImmeubles;
 import net.mpvm.saeimmobilier.vue.VueNewTravaux;
 
 import java.util.Map;
-import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+
+import static net.mpvm.saeimmobilier.util.JfxUtil.BUTTON_SUPPRIMER;
 
 public class CtrlAttribuerTravaux {
 
     public static final String CRÉER_TRAVAUX = "Créer Travaux";
     public static final String RETOUR_AUX_IMMEUBLES = "Retour aux immeubles";
-    public static final String BUTTON_SUPPRIMER = "button-supprimer";
     public static final String TRAVAUX_À_ATTRIBUER = "Travaux à Attribuer";
-    public static final String BUTTON_VALIDER = "button-valider";
     public static final String ID_TRAVAUX = "ID Travaux : ";
     public static final String NUMÉRO_FACTURE = "Numéro Facture : ";
     public static final String ENTREPRISE = "Entreprise : ";
@@ -100,7 +98,7 @@ public class CtrlAttribuerTravaux {
 
         Button creerTravaux = new Button(CRÉER_TRAVAUX);
         creerTravaux.setOnAction(this::creerTravaux);
-        creerTravaux.getStyleClass().add(BUTTON_VALIDER);
+        creerTravaux.getStyleClass().add(JfxUtil.BUTTON_VALIDER);
         vBoxContent.getChildren().add(creerTravaux);
 
         for (Travaux t : travaux.values()) {
@@ -140,7 +138,7 @@ public class CtrlAttribuerTravaux {
             idTravauxLabel.getStyleClass().add(ASSURANCE_TITLE);
             JfxUtil.setClass(ASSURANCE_LABEL,idTravauxLabel,numeroFacture,entreprise,montant,montantNonDeductible,reduction,dateTravaux,nature,numeroDevis,idBienLabel);
             deleteButton.getStyleClass().add(BUTTON_SUPPRIMER);
-            chooseButton.getStyleClass().add(BUTTON_VALIDER);
+            chooseButton.getStyleClass().add(JfxUtil.BUTTON_VALIDER);
 
             gp.add(idTravauxLabel, 0, 0);
             gp.add(numeroFacture, 1, 0);

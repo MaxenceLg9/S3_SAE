@@ -20,6 +20,9 @@ import net.mpvm.saeimmobilier.util.JfxUtil;
 import net.mpvm.saeimmobilier.vue.VueCharges;
 import net.mpvm.saeimmobilier.vue.VueLocataires;
 
+import static net.mpvm.saeimmobilier.util.JfxUtil.BUTTON_SUPPRIMER;
+import static net.mpvm.saeimmobilier.util.JfxUtil.BUTTON_VALIDER;
+
 public class CtrlViewBails {
 
     @FXML
@@ -67,11 +70,11 @@ public class CtrlViewBails {
 
             retourBiens = new Button("Retour aux biens");
             retourBiens.setOnAction(event -> retourBiens(event));
-            retourBiens.getStyleClass().add("button-supprimer");
+            retourBiens.getStyleClass().add(BUTTON_SUPPRIMER);
             vBoxBails.getChildren().add(retourBiens);
             Button ajouterBail = new Button("Ajouter Bail");
             ajouterBail.setOnAction(event -> ajouterBail(event, idBien));
-            ajouterBail.getStyleClass().add("button-valider");
+            ajouterBail.getStyleClass().add(BUTTON_VALIDER);
             vBoxBails.getChildren().add(ajouterBail);
             TextField fieldRevaloriser = new TextField();
             fieldRevaloriser.setPromptText("Donner un numéro de ICC");
@@ -80,7 +83,7 @@ public class CtrlViewBails {
             vBoxBails.getChildren().add(fieldRevaloriser);
             Button revaloriserValider = new Button("Valider Revalorisation");
             revaloriserValider.setDisable(true);
-            revaloriserValider.getStyleClass().add("button-valider");
+            revaloriserValider.getStyleClass().add(BUTTON_VALIDER);
             vBoxBails.getChildren().add(revaloriserValider);
             List<Bail> baux = Bail.findByBien(idBien);
 
@@ -143,11 +146,11 @@ public class CtrlViewBails {
                 labels.forEach(label -> label.getStyleClass().add("assurance-label"));
                 dateDebut.getStyleClass().add("assurance-title");
                 dateFin.getStyleClass().add("assurance-title");
-                voirDocument.getStyleClass().add("button-valider");
-                creerCharges.getStyleClass().add("button-valider");
-                revaloriserLoyer.getStyleClass().add("button-valider");
-                gererLocatairesButton.getStyleClass().add("button-valider");
-                resilierBailButton.getStyleClass().add("button-supprimer");
+                voirDocument.getStyleClass().add(BUTTON_VALIDER);
+                creerCharges.getStyleClass().add(BUTTON_VALIDER);
+                revaloriserLoyer.getStyleClass().add(BUTTON_VALIDER);
+                gererLocatairesButton.getStyleClass().add(BUTTON_VALIDER);
+                resilierBailButton.getStyleClass().add(BUTTON_SUPPRIMER);
 
                 gp.add(dateDebut, 0, 0);
                 gp.add(dateFin, 1, 0);

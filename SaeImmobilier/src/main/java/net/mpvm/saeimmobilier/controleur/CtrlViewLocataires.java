@@ -22,6 +22,8 @@ import javafx.stage.Stage;
 import net.mpvm.saeimmobilier.modele.Locataire;
 import net.mpvm.saeimmobilier.util.JfxUtil;
 
+import static net.mpvm.saeimmobilier.util.JfxUtil.BUTTON_SUPPRIMER;
+
 public class CtrlViewLocataires {
 
     @FXML
@@ -74,7 +76,7 @@ public class CtrlViewLocataires {
 
         retourAccueil = new Button("Retour à l'accueil");
         retourAccueil.setOnAction(event -> retourAccueil(event));
-        retourAccueil.getStyleClass().add("button-supprimer");
+        retourAccueil.getStyleClass().add(BUTTON_SUPPRIMER);
         vBoxContent.getChildren().add(retourAccueil);
         for(Locataire l : locataires.values()) {
             GridPane gp = new GridPane();
@@ -99,7 +101,7 @@ public class CtrlViewLocataires {
             email.getStyleClass().add("assurance-label");
             telephone.getStyleClass().add("assurance-label");
             sexe.getStyleClass().add("assurance-label");
-            button.getStyleClass().add("button-supprimer");
+            button.getStyleClass().add(BUTTON_SUPPRIMER);
 
             gp.add(nom, 0, 0);
             gp.add(prenom, 1, 0);

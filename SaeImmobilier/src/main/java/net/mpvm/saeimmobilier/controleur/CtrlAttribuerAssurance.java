@@ -18,10 +18,10 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import static net.mpvm.saeimmobilier.util.JfxUtil.BUTTON_VALIDER;
+
 public class CtrlAttribuerAssurance {
 
-    public static final String BUTTON_SUPPRIMER = "button-supprimer";
-    public static final String BUTTON_VALIDER = "button-valider";
     private static final String ASSURANCE_LABEL = "assurance-label";
     public static final String ASSURANCE_TITLE = "assurance-title";
     @FXML
@@ -74,7 +74,7 @@ public class CtrlAttribuerAssurance {
         vBoxContent.getChildren().add(titre);
         Button retourImmeubles = new Button("Retour aux immeubles");
         retourImmeubles.setOnAction(this::retourImmeubles);
-        retourImmeubles.getStyleClass().add(BUTTON_SUPPRIMER);
+        retourImmeubles.getStyleClass().add(JfxUtil.BUTTON_SUPPRIMER);
         vBoxContent.getChildren().add(retourImmeubles);
 
         Button creerAssurance = new Button("Créer Assurance");
@@ -116,7 +116,7 @@ public class CtrlAttribuerAssurance {
 
             nomAssurance.getStyleClass().add(ASSURANCE_TITLE);
             JfxUtil.setClass(ASSURANCE_LABEL,protectionJuridique,prime,typeContrat,annee,totalPrime,idBienLabel);
-            deleteButton.getStyleClass().add(BUTTON_SUPPRIMER);
+            deleteButton.getStyleClass().add(JfxUtil.BUTTON_SUPPRIMER);
             chooseButton.getStyleClass().add(BUTTON_VALIDER);
 
             gp.add(nomAssurance, 0, 0);

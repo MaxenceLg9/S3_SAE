@@ -30,6 +30,9 @@ import net.mpvm.saeimmobilier.vue.VueBails;
 import net.mpvm.saeimmobilier.vue.VueModifierBien;
 import net.mpvm.saeimmobilier.vue.VueNewBien;
 
+import static net.mpvm.saeimmobilier.util.JfxUtil.BUTTON_SUPPRIMER;
+import static net.mpvm.saeimmobilier.util.JfxUtil.BUTTON_VALIDER;
+
 
 public class CtrlViewBiensLouables {
 
@@ -151,10 +154,10 @@ public class CtrlViewBiensLouables {
                     setGraphic(null);
                 } else {
                     BienLouable bienLouable = getTableView().getItems().get(getIndex());
-                    voirBiensButton.getStyleClass().add("button-valider");
-                    attribuerAssuranceButton.getStyleClass().add("button-valider");
-                    modifier.getStyleClass().add("button-valider");
-                    supprimerButton.getStyleClass().add("button-supprimer");
+                    voirBiensButton.getStyleClass().add(BUTTON_VALIDER);
+                    attribuerAssuranceButton.getStyleClass().add(BUTTON_VALIDER);
+                    modifier.getStyleClass().add(BUTTON_VALIDER);
+                    supprimerButton.getStyleClass().add(BUTTON_SUPPRIMER);
 
                     voirBiensButton.setOnAction(event -> gererBails(bienLouable.getIdBien(), event));
                     attribuerAssuranceButton.setOnAction(event -> attribuerAssurance(bienLouable.getIdBien(), event));

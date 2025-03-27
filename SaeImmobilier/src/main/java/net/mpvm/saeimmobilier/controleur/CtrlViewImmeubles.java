@@ -24,6 +24,9 @@ import net.mpvm.saeimmobilier.util.JfxUtil;
 import java.util.LinkedList;
 import java.util.List;
 
+import static net.mpvm.saeimmobilier.util.JfxUtil.BUTTON_SUPPRIMER;
+import static net.mpvm.saeimmobilier.util.JfxUtil.BUTTON_VALIDER;
+
 public class CtrlViewImmeubles {
 
     public static final String STYLE_CELL = "-fx-text-fill: white; -fx-font-size: 14px; -fx-background-color: #1e2d3e;";
@@ -97,10 +100,10 @@ public class CtrlViewImmeubles {
                     setGraphic(null);
                 } else {
                     Immeuble immeuble = getTableView().getItems().get(getIndex());
-                    voirBiensButton.getStyleClass().add("button-valider");
-                    attribuerAssuranceButton.getStyleClass().add("button-valider");
-                    faireTravaux.getStyleClass().add("button-valider");
-                    supprimerButton.getStyleClass().add("button-supprimer");
+                    voirBiensButton.getStyleClass().add(BUTTON_VALIDER);
+                    attribuerAssuranceButton.getStyleClass().add(BUTTON_VALIDER);
+                    faireTravaux.getStyleClass().add(BUTTON_VALIDER);
+                    supprimerButton.getStyleClass().add(BUTTON_SUPPRIMER);
 
                     voirBiensButton.setOnAction(event -> afficheBiensPourImmeuble(immeuble.getIdBien(), event));
                     attribuerAssuranceButton.setOnAction(event -> attribuerAssurance(immeuble.getIdBien(), event));

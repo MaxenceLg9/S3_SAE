@@ -15,6 +15,8 @@ import net.mpvm.saeimmobilier.vue.VueAccueil;
 import java.util.ArrayList;
 import java.util.List;
 
+import static net.mpvm.saeimmobilier.util.JfxUtil.BUTTON_SUPPRIMER;
+
 public class CtrlNewAssurance {
 
     @FXML
@@ -64,7 +66,7 @@ public class CtrlNewAssurance {
 
     private void setupButtons() {
         Button btnAjouterAssurance = new Button("Ajouter Assurance");
-        btnAjouterAssurance.getStyleClass().add("button-valider");
+        btnAjouterAssurance.getStyleClass().add(BUTTON_VALIDER);
         btnAjouterAssurance.setOnAction(this::ajouterAssurance);
 
         Button btnAnnuler = new Button("Effacer la saisie");
@@ -72,7 +74,7 @@ public class CtrlNewAssurance {
         btnAnnuler.setOnAction(this::Effacer);
 
         Button btnRetourAccueil = new Button("Retour à l'Accueil");
-        btnRetourAccueil.getStyleClass().add("button-supprimer");
+        btnRetourAccueil.getStyleClass().add(BUTTON_SUPPRIMER);
         btnRetourAccueil.setOnAction(this::retourAccueil);
 
         bottomGridPane.add(btnAjouterAssurance, 2, 0);
