@@ -10,7 +10,13 @@ import javafx.fxml.FXML;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
+import javafx.scene.control.TableView;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
@@ -18,7 +24,6 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import net.mpvm.saeimmobilier.modele.Bien;
 import net.mpvm.saeimmobilier.modele.BienLouable;
-import net.mpvm.saeimmobilier.modele.Immeuble;
 import net.mpvm.saeimmobilier.util.JfxUtil;
 import net.mpvm.saeimmobilier.vue.VueAttribuerAssurance;
 import net.mpvm.saeimmobilier.vue.VueBails;
@@ -39,6 +44,7 @@ public class CtrlViewBiensLouables {
 
     private int idImmeuble;
 
+    // Initialise le contrôleur et configure les listeners pour la scène
     @FXML
     public void initialize() {
         vBoxBiensLouables.sceneProperty().addListener((observable, oldScene, newScene) -> {
@@ -56,6 +62,7 @@ public class CtrlViewBiensLouables {
         });
     }
 
+    // Récupère l'identifiant de l'immeuble à partir des propriétés de la fenêtre
     public void setIdImmeuble(Stage stage) {
         Object id = stage.getProperties().get("bien");
         if (id instanceof Integer) {
@@ -66,7 +73,7 @@ public class CtrlViewBiensLouables {
     }
 
 
-
+    // Met à jour les biens affichés
     public void afficheBiens() {
         try {
 
@@ -87,6 +94,7 @@ public class CtrlViewBiensLouables {
         }
     }
 
+    // Crée et configure le tableau d'affichage des biens louables
     private void creerTableView() {
 
         TableColumn<BienLouable, String> colNom = new TableColumn<>("Nom");

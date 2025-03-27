@@ -1,5 +1,9 @@
 package net.mpvm.saeimmobilier.controleur;
 
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
@@ -9,15 +13,14 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
-import javafx.scene.layout.*;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import net.mpvm.saeimmobilier.modele.Locataire;
 import net.mpvm.saeimmobilier.util.JfxUtil;
-import net.mpvm.saeimmobilier.vue.VueNewLocataire;
-
-import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 public class CtrlViewLocataires {
 
@@ -28,6 +31,7 @@ public class CtrlViewLocataires {
 
     private Map<Integer, Locataire> locataires;
     private int idBail;
+    // Affiche les locataires liés à un bail
     public void initialize(){
         vBoxContent.sceneProperty().addListener((observable, oldScene, newScene) -> {
             if (newScene != null) {
@@ -43,7 +47,7 @@ public class CtrlViewLocataires {
             }
         });
     }
-
+    // Récupère l'id du bail depuis la propriété de la scène
     public void setIdBail(Stage stage) {
         Object id = stage.getProperties().get("bail");
         if (id instanceof Integer) {
@@ -52,6 +56,7 @@ public class CtrlViewLocataires {
             throw new IllegalStateException("Propriété 'bail' manquante ou incorrecte.");
         }
     }
+    // Affiche la liste des locataires
     private void afficheLocataires() {
 
         try {
