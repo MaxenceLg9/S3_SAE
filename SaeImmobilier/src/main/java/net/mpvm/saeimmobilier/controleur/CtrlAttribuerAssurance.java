@@ -196,6 +196,14 @@ public class CtrlAttribuerAssurance {
     @FXML
     private void ajouterAssurance(ActionEvent event) {
         Stage s = new Stage();
+        s.setOnHidden(e -> {
+            try {
+                afficheAssurances();
+            } catch (Assurance.AssuranceException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+
         JfxUtil.showWindow(s, VueNewAssurance.class);
     }
 

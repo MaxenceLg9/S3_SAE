@@ -58,7 +58,6 @@ public class Travaux extends Queryable {
 	}
 
 
-
 	public static List<Travaux> findTravauxByBien(int idBien) throws TravauxException {
 		List<Travaux> travaux = new ArrayList<>();
 		String query = "SELECT * FROM Travaux WHERE IdBien = ?";
@@ -214,11 +213,7 @@ public class Travaux extends Queryable {
 
 	@Override
 	public void modify() throws QbleException {
-
 	}
-
-
-
 
 	@Override
 	public void archiver() throws QbleException {
@@ -246,29 +241,29 @@ public class Travaux extends Queryable {
 	}
 
 
-	public static Travaux findById(String numeroFacture) throws TravauxException {
-		String SELECT_QUERY = """
-        SELECT NumeroFacture, Entreprise, Montant, MontantNonDeductible, Reduction, Nature, NumeroDevis, DateTravaux
-        FROM Travaux
-        WHERE NumeroFacture = ?
-    """;
-
-		try (SelectQueryElement query = new SelectQueryElement(SELECT_QUERY)) {
-			query.setArgs(Map.of(1, numeroFacture));
-			Result rs = query.execute();
-
-			if (!rs.isEmpty()) {
-				Map<String, Object> row = rs.getFirst(); // Assuming the first result is the one we need.
-				return new Travaux(
-						row
-				);
-			} else {
-				throw new TravauxException("Aucun travail trouvé avec le numéro de facture : " + numeroFacture);
-			}
-		} catch (QueryElement.QEltException qEltException) {
-			throw new TravauxException("Erreur lors de la récupération du travail", qEltException.getSqlException());
-		}
-	}
+//	public static Travaux findById(String numeroFacture) throws TravauxException {
+//		String SELECT_QUERY = """
+//        SELECT NumeroFacture, Entreprise, Montant, MontantNonDeductible, Reduction, Nature, NumeroDevis, DateTravaux
+//        FROM Travaux
+//        WHERE NumeroFacture = ?
+//    """;
+//
+//		try (SelectQueryElement query = new SelectQueryElement(SELECT_QUERY)) {
+//			query.setArgs(Map.of(1, numeroFacture));
+//			Result rs = query.execute();
+//
+//			if (!rs.isEmpty()) {
+//				Map<String, Object> row = rs.getFirst(); // Assuming the first result is the one we need.
+//				return new Travaux(
+//						row
+//				);
+//			} else {
+//				throw new TravauxException("Aucun travail trouvé avec le numéro de facture : " + numeroFacture);
+//			}
+//		} catch (QueryElement.QEltException qEltException) {
+//			throw new TravauxException("Erreur lors de la récupération du travail", qEltException.getSqlException());
+//		}
+//	}
 
 	public int getIdTravaux() {
 		return this.idTravaux;
@@ -516,7 +511,6 @@ public class Travaux extends Queryable {
 		public TravauxException(String message) {
 			super(message);
 		}
-
 		public TravauxException(String message, SQLException sqlException) {
 			super(message, sqlException);
 		}

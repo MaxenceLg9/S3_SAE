@@ -59,9 +59,6 @@ public class CtrlCalculsChargesEtImpots {
         }
     }
 
-
-
-
     @FXML
     private void calculerLoyers() {
         try {
@@ -73,8 +70,6 @@ public class CtrlCalculsChargesEtImpots {
             for (Bail b : bailsList) {
                 txtResultats.appendText(String.format("Bail | Date Début : %s, Date Fin : %s, Loyer : %.2f €\n",
                         DATE_FORMAT.format(b.getDateDebut()), DATE_FORMAT.format(b.getDateFin()), b.getLoyer()));
-
-
             }
             if (totalLoyers==0){
                 txtResultats.appendText(String.format("Total des loyers : %.2f €", totalLoyers));

@@ -167,6 +167,14 @@ public class CtrlAttribuerTravaux {
         Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         stage.close();
         Stage s = new Stage();
+        s.setOnHidden(e -> {
+            try {
+                afficheTravaux();
+            } catch (Travaux.TravauxException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+
         JfxUtil.showWindow(s, VueNewTravaux.class);
     }
 

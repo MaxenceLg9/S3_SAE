@@ -1,20 +1,23 @@
 package net.mpvm.saeimmobilier.modele;
 
 
-import net.mpvm.saeimmobilier.sql.Query.*;
-import net.mpvm.saeimmobilier.util.JfxUtil;
-import net.mpvm.saeimmobilier.util.Unfinished;
-
-
-import java.awt.*;
+import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigInteger;
-import java.sql.SQLException;
-import java.util.*;
 import java.sql.Date;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Map;
+
+import net.mpvm.saeimmobilier.sql.Query.QueryElement;
+import net.mpvm.saeimmobilier.sql.Query.Queryable;
+import net.mpvm.saeimmobilier.sql.Query.Result;
+import net.mpvm.saeimmobilier.sql.Query.SelectQueryElement;
+import net.mpvm.saeimmobilier.sql.Query.UpdateQueryElement;
+import net.mpvm.saeimmobilier.util.JfxUtil;
+import net.mpvm.saeimmobilier.util.Unfinished;
 
 public class Bail extends Queryable {
 
@@ -34,10 +37,9 @@ public class Bail extends Queryable {
 	private Date dateSignature;
 
 	private static final String SELECT_BAUX_FROM_LOCATAIRE = "SELECT B.* FROM Bail B JOIN AssocieBailLocataire ABL ON B.IdBail = ABL.IdBail WHERE ABL.IdLocataire = ?";
-	private static final String SELECT_TOTAL_LOYER = "SELECT SUM(Bail.MontantLoyer) AS TotalLoyers FROM Bail JOIN Bien B ON Bail.IdBien = B.IdBien AND Bail.Archive IS NULL";
+	private static final String SELECT_TOTAL_LOYER = "SELECT SUM(Bail.MontantLoyer) AS TotalLoyers FROM Bail JOIN Bien B ON Bail.IdBien = B.IdBien ";
 	public static final String DELETE_QUERY = "DELETE FROM Bail WHERE IdBail = ?";
 	public static final String DELETE_QUERY_BIEN = "DELETE FROM Bail WHERE IdBien = ?";
-
 
 	private Bail(int idBail, Date dateDebut, float loyer, boolean renouvelable, float totalCharge, float depotGarantie, Date dateSignature, Date dateFin, BienLouable bienLouable, String cheminFichier){
 		this.idBail = idBail;
@@ -99,8 +101,6 @@ public class Bail extends Queryable {
 		Desktop.getDesktop().open(getDocument());
 	}
 
-
-
 	public BienLouable getBienLouable(){
 		return this.bienLouable;
 	}
@@ -122,7 +122,6 @@ public class Bail extends Queryable {
 
 		return baux;
 	}
-
 
 	public void revaloriserLoyer(int icc){
 		setLoyer(this.loyer * icc/100);
@@ -153,13 +152,14 @@ public class Bail extends Queryable {
 	}
 	public static List<Bail> findAllCalculLoyers() throws Bail.BailException {
 		List<Bail> bailslist = new ArrayList<>();
-		String SELECT_QUERY = "SELECT * FROM Bail B WHERE B.ARCHIVE=FALSE";
+		String SELECT_QUERY = "SELECT * FROM Bail WHERE NOT Archive";
 
 		try (SelectQueryElement query = new SelectQueryElement(SELECT_QUERY)) {
 			Result rs = query.execute();
 			for (Map<String, Object> row : rs) {
 				Bail bail = new Bail(row);
 				bailslist.add(bail);
+				System.out.println(bail.getIdBail());
 			}
 		} catch (QueryElement.QEltException qEltException) {
 			throw new Bail.BailException("Erreur lors de la récupération des bails", qEltException.getSqlException());
@@ -174,20 +174,20 @@ public class Bail extends Queryable {
 	}
 
 	// Méthode pour diviser le loyer entre colocataires
-	public Map<Locataire, Float> diviserLoyer() throws BailException {
-		if (this.getLocataires().isEmpty()) {
-			throw new IllegalStateException("Aucun locataire n'est associé au bail.");
-		}
-
-		Map<Locataire, Float> partsLoyer = new HashMap<>();
-
-		Map<Locataire,AssociationBailLocataires> locatairesAssociation = Locataire.getLocatairesAssociation(this);
-		if(locatairesAssociation.keySet().size() > 1){
-			partsLoyer = locatairesAssociation.values().stream().collect(Collectors.toMap(AssociationBailLocataires::getLocataire, AssociationBailLocataires::getPartLoyer));
-		}
-
-		return partsLoyer;
-	}
+//	public Map<Locataire, Float> diviserLoyer() throws BailException {
+//		if (this.getLocataires().isEmpty()) {
+//			throw new IllegalStateException("Aucun locataire n'est associé au bail.");
+//		}
+//
+//		Map<Locataire, Float> partsLoyer = new HashMap<>();
+//
+//		Map<Locataire,AssociationBailLocataires> locatairesAssociation = Locataire.getLocatairesAssociation(this);
+//		if(locatairesAssociation.keySet().size() > 1){
+//			partsLoyer = locatairesAssociation.values().stream().collect(Collectors.toMap(AssociationBailLocataires::getLocataire, AssociationBailLocataires::getPartLoyer));
+//		}
+//
+//		return partsLoyer;
+//	}
 
 	public int getIdBail() {
 		return idBail;
@@ -265,7 +265,6 @@ public class Bail extends Queryable {
 		return Paiement.getPaiements(this);
 	}
 
-
 	public void setLocatairesAssociation(Map<Locataire,AssociationBailLocataires> locatairesAssociation) throws BailException {
 		Locataire.setLocatairesAssociation(locatairesAssociation);
 	}
@@ -329,7 +328,6 @@ public class Bail extends Queryable {
 		}
 	}
 
-
 	public void delete(BienLouable bienLouable) throws BailException {
 		if (this.getIdBail() == -1)
 			throw new Bail.BailException("Le bail n'existe pas dans la table", null);
@@ -347,13 +345,9 @@ public class Bail extends Queryable {
 		}
 	}
 
-
-
 	@Override
 	public void archiver() throws QbleException {
-
 	}
-
 
 	public Date getDateSignature() {
 		return this.dateSignature;
@@ -361,7 +355,6 @@ public class Bail extends Queryable {
 	public void setDateSignature(Date dateSignature) {
 		this.dateSignature = dateSignature;
 	}
-
 
 	public static class BailException extends QbleException {
 		public BailException(String message, SQLException sqlException) {

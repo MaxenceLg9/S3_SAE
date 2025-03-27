@@ -190,16 +190,16 @@ CREATE TABLE Document(
 );
 
 CREATE TABLE DeclarationFiscale(
-                                   IdDeclarationFiscale INT auto_increment,
-                                   Annee INT,
-                                   RevenusImmobiliers DOUBLE,
-                                   FraisGestion DOUBLE,
-                                   MontantTravaux DOUBLE,
-                                   Cotisations DOUBLE,
-                                   IdDocument INT NOT NULL,
-                                   PRIMARY KEY(IdDeclarationFiscale),
-                                   UNIQUE(IdDocument),
-                                   FOREIGN KEY(IdDocument) REFERENCES Document(IdDocument)
+                           IdDeclarationFiscale INT auto_increment,
+                           Annee INT,
+                           RevenusImmobiliers DOUBLE,
+                           FraisGestion DOUBLE,
+                           MontantTravaux DOUBLE,
+                           Cotisations DOUBLE,
+                           IdDocument INT NOT NULL,
+                           PRIMARY KEY(IdDeclarationFiscale),
+                           UNIQUE(IdDocument),
+                           FOREIGN KEY(IdDocument) REFERENCES Document(IdDocument)
 );
 
 CREATE TABLE EtatDesLieux(
