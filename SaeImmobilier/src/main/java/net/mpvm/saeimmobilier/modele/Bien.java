@@ -96,9 +96,8 @@ public abstract class Bien extends Queryable {
     public abstract String getAdresse();
 
 
-    public Optional<Assurance> getAssurance() {
-        //TODO : query
-        return Optional.empty();
+    public Optional<Assurance> getAssurance() throws Assurance.AssuranceException {
+        return Optional.ofNullable(Assurance.getAssuranceFromBien(this));
     }
 
     public void setAssurance(Assurance assurance) {

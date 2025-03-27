@@ -92,7 +92,7 @@
                   </Label>
                     </children>
                     <columnConstraints>
-                        <ColumnConstraints hgrow="ALWAYS" percentWidth="70.0" />
+                        <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" percentWidth="70.0" />
                     </columnConstraints>
                     <rowConstraints>
                         <RowConstraints />

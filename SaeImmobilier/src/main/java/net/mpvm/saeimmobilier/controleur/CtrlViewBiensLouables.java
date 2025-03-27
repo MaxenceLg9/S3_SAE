@@ -1,5 +1,6 @@
 package net.mpvm.saeimmobilier.controleur;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import javafx.beans.property.SimpleStringProperty;
@@ -22,6 +23,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import net.mpvm.saeimmobilier.modele.Assurance;
 import net.mpvm.saeimmobilier.modele.Bien;
 import net.mpvm.saeimmobilier.modele.BienLouable;
 import net.mpvm.saeimmobilier.util.JfxUtil;
@@ -31,6 +33,7 @@ import net.mpvm.saeimmobilier.vue.VueModifierBien;
 import net.mpvm.saeimmobilier.vue.VueNewBien;
 
 import static net.mpvm.saeimmobilier.util.JfxUtil.*;
+import static net.mpvm.saeimmobilier.util.JfxUtil.STYLE_CELL;
 
 
 public class CtrlViewBiensLouables {
@@ -135,7 +138,8 @@ public class CtrlViewBiensLouables {
                 actionsPane.add(modifier, 0, 1);
                 actionsPane.add(supprimerButton, 1, 1);
                 actionsPane.setAlignment(Pos.CENTER);
-                ColumnConstraints cc = new ColumnConstraints(200);
+                ColumnConstraints cc = new ColumnConstraints();
+                cc.setMinWidth(200);
                 cc.setHalignment(HPos.CENTER);
                 actionsPane.getColumnConstraints().addAll(cc,cc);
                 RowConstraints rc = new RowConstraints();
@@ -169,12 +173,9 @@ public class CtrlViewBiensLouables {
                 }
             }
         });
-
-        tableBiensLouables.getColumns().clear();
-        tableBiensLouables.getColumns().addAll(List.of(colNom,colAdresse,colCodePostal,colVille));
-        tableBiensLouables.getColumns().forEach(column -> {
-            TableColumn<BienLouable, String> col = (TableColumn<BienLouable, String>) column;
-            col.setCellFactory(c -> new TableCell<>() {
+        List<TableColumn<BienLouable,String>> columns = List.of(colNom,colAdresse,colCodePostal,colVille);
+        columns.forEach(column -> {
+            column.setCellFactory(c -> new TableCell<>() {
                 @Override
                 protected void updateItem(String item, boolean empty) {
                     super.updateItem(item, empty);
@@ -187,42 +188,18 @@ public class CtrlViewBiensLouables {
                     }
                 }
             });
+            tableBiensLouables.getColumns().add(column);
         });
 
         tableBiensLouables.getColumns().add(colActions);
-        tableBiensLouables.setRowFactory(tv -> new TableRow<BienLouable>() {
+        tableBiensLouables.setRowFactory(tv -> new TableRow<>() {
+
+            private static final List<TableRow<?>> register = new LinkedList<>();
+
             @Override
             protected void updateItem(BienLouable item, boolean empty) {
                 super.updateItem(item, empty);
-
-                if (empty || item == null) {
-                    setStyle(""); // Reset style for empty rows
-                } else {
-                    if (isSelected()) {
-                        setStyle("-fx-background-color: #336699; -fx-text-fill: white;"); // Apply hover style
-                    } else {
-                        setStyle(""); // Reset style for unselected rows
-                    }
-
-                    setOnMouseEntered(event -> {
-                        if (!isSelected()) {
-                            for (int i = 0; i < getChildrenUnmodifiable().size(); i++) {
-                                if (getChildrenUnmodifiable().get(i) instanceof TableCell<?, ?> cell) {
-                                    cell.setStyle(STYLE_CELL_HOVER);
-                                }
-                            }
-                        }
-                    });
-                    setOnMouseExited(event -> {
-                        if (!isSelected()) {
-                            for (int i = 0; i < getChildrenUnmodifiable().size(); i++) {
-                                if (getChildrenUnmodifiable().get(i) instanceof TableCell<?, ?> cell) {
-                                    cell.setStyle(STYLE_CELL);
-                                }
-                            }
-                        }
-                    });
-                }
+                JfxUtil.updateRow(item, empty, register, this);
             }
         });
         colNom.setPrefWidth(100);
@@ -230,6 +207,7 @@ public class CtrlViewBiensLouables {
         colCodePostal.setPrefWidth(100);
         colVille.setPrefWidth(100);
         colActions.setPrefWidth(300);
+        colActions.setPrefWidth(500);
     }
 
     private void supprimerBien(BienLouable bien) {
