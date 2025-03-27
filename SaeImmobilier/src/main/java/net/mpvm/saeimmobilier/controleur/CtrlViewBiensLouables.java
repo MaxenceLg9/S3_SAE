@@ -251,7 +251,7 @@ public class CtrlViewBiensLouables {
     public void ajouterBien(ActionEvent event) {
         Stage s = new Stage();
         s.setOnHidden(e -> afficheBiens());
-        s.setOnHidden(e -> afficheBiens());
+
         JfxUtil.showWindow(s, VueNewBien.class);
     }
     @FXML
@@ -264,8 +264,9 @@ public class CtrlViewBiensLouables {
     private void modifierBien(BienLouable bien,ActionEvent event) {
         Stage s = new Stage();
         s.getProperties().put("bien",bien);
-        JfxUtil.showWindow(s, VueModifierBien.class);
         s.setOnHidden(e -> afficheBiens());
+        JfxUtil.showWindow(s, VueModifierBien.class);
+
 
     }
 }
