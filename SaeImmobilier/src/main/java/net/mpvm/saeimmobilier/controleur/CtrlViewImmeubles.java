@@ -24,8 +24,7 @@ import net.mpvm.saeimmobilier.util.JfxUtil;
 import java.util.LinkedList;
 import java.util.List;
 
-import static net.mpvm.saeimmobilier.util.JfxUtil.BUTTON_SUPPRIMER;
-import static net.mpvm.saeimmobilier.util.JfxUtil.BUTTON_VALIDER;
+import static net.mpvm.saeimmobilier.util.JfxUtil.*;
 
 public class CtrlViewImmeubles {
 
@@ -59,7 +58,7 @@ public class CtrlViewImmeubles {
 
 
         TableColumn<Immeuble, String> colVille = new TableColumn<>("Ville");
-        colVille.getStyleClass().add("col-ville");
+        colVille.getStyleClass().add(COL_VILLE);
         colVille.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getVille()));
 
         TableColumn<Immeuble, String> colActions = new TableColumn<>("Actions");
@@ -209,7 +208,7 @@ public class CtrlViewImmeubles {
 
             if (immeubles.isEmpty()) {
                 Label label = new Label("Aucun immeuble trouvé.");
-                label.getStyleClass().add("assurance-label");
+                label.getStyleClass().add(ASSURANCE_LABEL);
                 vBoxImmeubles.getChildren().add(label);
                 return;
             }

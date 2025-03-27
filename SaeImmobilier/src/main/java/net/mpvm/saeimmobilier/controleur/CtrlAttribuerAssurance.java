@@ -18,12 +18,9 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static net.mpvm.saeimmobilier.util.JfxUtil.BUTTON_VALIDER;
+import static net.mpvm.saeimmobilier.util.JfxUtil.*;
 
 public class CtrlAttribuerAssurance {
-
-    private static final String ASSURANCE_LABEL = "assurance-label";
-    public static final String ASSURANCE_TITLE = "assurance-title";
     @FXML
     public VBox vBoxContent;
 
@@ -133,7 +130,7 @@ public class CtrlAttribuerAssurance {
             gp.setHgap(10);
             gp.setVgap(5);
 
-            gp.getStyleClass().add("assurance-gridpane");
+            gp.getStyleClass().add(JfxUtil.ASSURANCE_GRIDPANE);
             gp.setPrefWidth(Region.USE_COMPUTED_SIZE);
             gp.setMaxWidth(Region.USE_COMPUTED_SIZE);
 

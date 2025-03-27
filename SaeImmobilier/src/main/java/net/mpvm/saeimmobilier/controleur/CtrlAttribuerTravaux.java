@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static net.mpvm.saeimmobilier.util.JfxUtil.BUTTON_SUPPRIMER;
+import static net.mpvm.saeimmobilier.util.JfxUtil.*;
 
 public class CtrlAttribuerTravaux {
 
@@ -39,8 +39,6 @@ public class CtrlAttribuerTravaux {
     public static final String CONFIRMATION_DE_LA_SUPPRESSION = "Confirmation de la suppression";
     public static final String SOUHAITEZ_VOUS_RÉELLEMENT_SUPPRIMER_CES_TRAVAUX = "Souhaitez-vous réellement supprimer ces travaux ?";
     public static final String CETTE_ACTION_EST_IRRÉVERSIBLE = "Cette action est irréversible";
-    public static final String ASSURANCE_LABEL = "assurance-label";
-    public static final String ASSURANCE_TITLE = "assurance-title";
     @FXML
     public VBox vBoxContent;
 
@@ -157,7 +155,7 @@ public class CtrlAttribuerTravaux {
             gp.setHgap(10);
             gp.setVgap(5);
 
-            gp.getStyleClass().add("assurance-gridpane");
+            gp.getStyleClass().add(ASSURANCE_GRIDPANE);
             gp.setPrefWidth(Region.USE_COMPUTED_SIZE);
             gp.setMaxWidth(Region.USE_COMPUTED_SIZE);
 

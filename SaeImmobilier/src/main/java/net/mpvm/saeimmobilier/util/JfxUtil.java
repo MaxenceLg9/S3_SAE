@@ -18,6 +18,10 @@ public class JfxUtil {
 
     public static final String BUTTON_VALIDER = "button-valider";
     public static final String BUTTON_SUPPRIMER = "button-supprimer";
+    public static final String ASSURANCE_TITLE = "assurance-title";
+    public static final String ASSURANCE_GRIDPANE = "assurance-gridpane";
+    public static final String ASSURANCE_LABEL = "assurance-label";
+    public static final String COL_VILLE = "col-ville";
 
     public static void updateStage(Stage primaryStage, String fxmlFile, String nomPage){
         updateStage(primaryStage, fxmlFile, nomPage, 0, 0);

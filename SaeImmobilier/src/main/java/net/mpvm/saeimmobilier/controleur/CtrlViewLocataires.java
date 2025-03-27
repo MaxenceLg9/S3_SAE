@@ -22,7 +22,7 @@ import javafx.stage.Stage;
 import net.mpvm.saeimmobilier.modele.Locataire;
 import net.mpvm.saeimmobilier.util.JfxUtil;
 
-import static net.mpvm.saeimmobilier.util.JfxUtil.BUTTON_SUPPRIMER;
+import static net.mpvm.saeimmobilier.util.JfxUtil.*;
 
 public class CtrlViewLocataires {
 
@@ -95,12 +95,12 @@ public class CtrlViewLocataires {
             Button button = new Button("Supprimer le locataire");
             button.setOnAction(event -> askForDelete(l.getIdLocataire()));
 
-            nom.getStyleClass().add("assurance-label");
-            nom.getStyleClass().add("assurance-title");
-            prenom.getStyleClass().add("assurance-label");
-            email.getStyleClass().add("assurance-label");
-            telephone.getStyleClass().add("assurance-label");
-            sexe.getStyleClass().add("assurance-label");
+            nom.getStyleClass().add(ASSURANCE_LABEL);
+            nom.getStyleClass().add(ASSURANCE_TITLE);
+            prenom.getStyleClass().add(ASSURANCE_LABEL);
+            email.getStyleClass().add(ASSURANCE_LABEL);
+            telephone.getStyleClass().add(ASSURANCE_LABEL);
+            sexe.getStyleClass().add(ASSURANCE_LABEL);
             button.getStyleClass().add(BUTTON_SUPPRIMER);
 
             gp.add(nom, 0, 0);
@@ -125,7 +125,7 @@ public class CtrlViewLocataires {
             GridPane.setValignment(telephone, VPos.CENTER);
             GridPane.setValignment(sexe, VPos.CENTER);
 
-            gp.getStyleClass().add("assurance-gridpane");
+            gp.getStyleClass().add(ASSURANCE_GRIDPANE);
             gp.setHgap(10);
             gp.setVgap(5);
 

@@ -30,8 +30,7 @@ import net.mpvm.saeimmobilier.vue.VueBails;
 import net.mpvm.saeimmobilier.vue.VueModifierBien;
 import net.mpvm.saeimmobilier.vue.VueNewBien;
 
-import static net.mpvm.saeimmobilier.util.JfxUtil.BUTTON_SUPPRIMER;
-import static net.mpvm.saeimmobilier.util.JfxUtil.BUTTON_VALIDER;
+import static net.mpvm.saeimmobilier.util.JfxUtil.*;
 
 
 public class CtrlViewBiensLouables {
@@ -83,7 +82,7 @@ public class CtrlViewBiensLouables {
             List<BienLouable> biens = BienLouable.findByImmeuble(idImmeuble);
             if (biens.isEmpty()) {
                 Label label = new Label("Aucun bien trouvé.");
-                label.getStyleClass().add("assurance-title");
+                label.getStyleClass().add(ASSURANCE_TITLE);
                 vBoxBiensLouables.getChildren().add(label);
             }
             else {
@@ -113,7 +112,7 @@ public class CtrlViewBiensLouables {
 
 
         TableColumn<BienLouable, String> colVille = new TableColumn<>("Ville");
-        colVille.getStyleClass().add("col-ville");
+        colVille.getStyleClass().add(COL_VILLE);
         colVille.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getVille()));
 
         TableColumn<BienLouable, String> colActions = new TableColumn<>("Actions");

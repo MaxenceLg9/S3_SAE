@@ -20,8 +20,7 @@ import net.mpvm.saeimmobilier.util.JfxUtil;
 import net.mpvm.saeimmobilier.vue.VueCharges;
 import net.mpvm.saeimmobilier.vue.VueLocataires;
 
-import static net.mpvm.saeimmobilier.util.JfxUtil.BUTTON_SUPPRIMER;
-import static net.mpvm.saeimmobilier.util.JfxUtil.BUTTON_VALIDER;
+import static net.mpvm.saeimmobilier.util.JfxUtil.*;
 
 public class CtrlViewBails {
 
@@ -89,7 +88,7 @@ public class CtrlViewBails {
 
             if (baux.isEmpty()) {
                 Label label = new Label("Aucun bail trouvé.");
-                label.getStyleClass().add("assurance-title");
+                label.getStyleClass().add(JfxUtil.ASSURANCE_TITLE);
                 vBoxBails.getChildren().add(label);
                 return;
             }
@@ -143,9 +142,9 @@ public class CtrlViewBails {
 
                 // Application des styles
                 List<Label> labels = List.of(dateDebut, dateFin, montantLoyer, dateSignature, colocation);
-                labels.forEach(label -> label.getStyleClass().add("assurance-label"));
-                dateDebut.getStyleClass().add("assurance-title");
-                dateFin.getStyleClass().add("assurance-title");
+                labels.forEach(label -> label.getStyleClass().add(ASSURANCE_LABEL));
+                dateDebut.getStyleClass().add(JfxUtil.ASSURANCE_TITLE);
+                dateFin.getStyleClass().add(JfxUtil.ASSURANCE_TITLE);
                 voirDocument.getStyleClass().add(BUTTON_VALIDER);
                 creerCharges.getStyleClass().add(BUTTON_VALIDER);
                 revaloriserLoyer.getStyleClass().add(BUTTON_VALIDER);
