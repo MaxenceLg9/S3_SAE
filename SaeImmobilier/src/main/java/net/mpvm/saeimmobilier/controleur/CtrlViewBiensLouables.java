@@ -41,8 +41,6 @@ public class CtrlViewBiensLouables {
     private TableView<BienLouable> tableBiensLouables;
     @FXML
     private VBox vBoxBiensLouables;
-    @FXML
-    private Button retourAccueil;
 
     private int idImmeuble;
 

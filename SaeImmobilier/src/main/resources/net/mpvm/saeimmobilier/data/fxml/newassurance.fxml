@@ -2,7 +2,6 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
@@ -28,58 +27,71 @@
 
             </top>
             <center>
-                <GridPane alignment="CENTER" hgap="15.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="470.0" prefWidth="770.0" vgap="25.0">
+                <GridPane alignment="CENTER" hgap="15.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="470.0" prefWidth="770.0">
                     <children>
-                        <!-- Nom de l'Assurance -->
-                        <Label text="Nom" textFill="WHITE" GridPane.rowIndex="0">
-                            <font>
-                                <Font name="Calibri" size="16.0" />
-                            </font>
-                        </Label>
-                        <TextField fx:id="fieldNom" promptText="Nom de l'assurance" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                        <TextField fx:id="fieldNom" promptText="Nom de l'assurance" GridPane.rowIndex="1">
+                     <GridPane.margin>
+                        <Insets bottom="20.0" />
+                     </GridPane.margin></TextField>
 
                         <!-- Année -->
-                        <Label text="Année" textFill="WHITE" GridPane.rowIndex="1">
+                        <Label text="Année" textFill="WHITE" GridPane.rowIndex="2">
                             <font>
                                 <Font name="Calibri" size="16.0" />
                             </font>
                         </Label>
-                        <TextField fx:id="fieldAnnee" promptText="Année d'effet" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <TextField fx:id="fieldAnnee" promptText="Année d'effet" GridPane.rowIndex="3">
+                     <GridPane.margin>
+                        <Insets bottom="20.0" />
+                     </GridPane.margin></TextField>
 
                         <!-- Protection Juridique -->
-                        <Label text="Protection Juridique" textFill="WHITE" GridPane.rowIndex="2">
+                        <Label text="Protection Juridique" textFill="WHITE" GridPane.rowIndex="4">
                             <font>
                                 <Font name="Calibri" size="16.0" />
                             </font>
                         </Label>
-                        <TextField fx:id="fieldProtectionJuridique" promptText="Valeur de la protection juridique" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" />
+                        <TextField fx:id="fieldProtectionJuridique" promptText="Valeur de la protection juridique" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5">
+                     <GridPane.margin>
+                        <Insets bottom="20.0" />
+                     </GridPane.margin></TextField>
 
                         <!-- Numéro de Contrat -->
-                        <Label text="Numéro de contrat" textFill="WHITE" GridPane.rowIndex="3">
+                        <Label text="Numéro de contrat" textFill="WHITE" GridPane.rowIndex="6">
                             <font>
                                 <Font name="Calibri" size="16.0" />
                             </font>
                         </Label>
-                        <TextField fx:id="fieldNumeroDeContrat" promptText="Numéro de contrat" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <TextField fx:id="fieldNumeroDeContrat" promptText="Numéro de contrat" GridPane.rowIndex="7">
+                     <GridPane.margin>
+                        <Insets bottom="20.0" />
+                     </GridPane.margin></TextField>
 
                         <!-- Prime -->
-                        <Label text="Prime" textFill="WHITE" GridPane.rowIndex="4">
+                        <Label text="Prime" textFill="WHITE" GridPane.rowIndex="8">
                             <font>
                                 <Font name="Calibri" size="16.0" />
                             </font>
                         </Label>
-                        <TextField fx:id="fieldPrime" promptText="Valeur de la prime" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                        <TextField fx:id="fieldPrime" promptText="Valeur de la prime" GridPane.rowIndex="9">
+                     <GridPane.margin>
+                        <Insets bottom="20.0" />
+                     </GridPane.margin></TextField>
 
                         <!-- Type de Contrat -->
-                        <Label text="Type de Contrat" textFill="WHITE" GridPane.rowIndex="5">
+                        <Label text="Type de Contrat" textFill="WHITE" GridPane.rowIndex="10">
                             <font>
                                 <Font name="Calibri" size="16.0" />
                             </font>
                         </Label>
-                        <ComboBox fx:id="comboTypeContrat" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
+                        <ComboBox fx:id="comboTypeContrat" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" GridPane.halignment="CENTER" GridPane.rowIndex="11" />
+                  <Label text="Nom" textFill="WHITE">
+                     <font>
+                        <Font name="Calibri" size="16.0" />
+                     </font>
+                  </Label>
                     </children>
                     <columnConstraints>
-                        <ColumnConstraints hgrow="ALWAYS" percentWidth="30.0" />
                         <ColumnConstraints hgrow="ALWAYS" percentWidth="70.0" />
                     </columnConstraints>
                     <rowConstraints>
@@ -87,10 +99,16 @@
                         <RowConstraints />
                         <RowConstraints />
                         <RowConstraints />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" />
                         <RowConstraints />
-                        <RowConstraints maxHeight="0.0" minHeight="0.0" prefHeight="0.0" />
-                        <RowConstraints maxHeight="0.0" minHeight="0.0" prefHeight="0.0" />
+                        <RowConstraints />
+                        <RowConstraints />
+                  <RowConstraints />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" />
+                  <RowConstraints minHeight="10.0" />
+                  <RowConstraints />
+                  <RowConstraints />
+                  <RowConstraints maxHeight="0.0" minHeight="0.0" prefHeight="0.0" />
+                  <RowConstraints maxHeight="0.0" minHeight="0.0" prefHeight="0.0" />
                     </rowConstraints>
                 </GridPane>
             </center>

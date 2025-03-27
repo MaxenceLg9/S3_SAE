@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static net.mpvm.saeimmobilier.util.JfxUtil.BUTTON_SUPPRIMER;
+import static net.mpvm.saeimmobilier.util.JfxUtil.BUTTON_VALIDER;
 
 public class CtrlNewAssurance {
 

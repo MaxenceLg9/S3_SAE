@@ -119,12 +119,6 @@ public class Assurance extends Queryable{
         this.typeContrat = typeContrat;
     }
 
-    //renvoie le bien associé à l'assurance
-    public Bien getBien() {
-        //TODO : Use a query
-        return null;
-    }
-
     public float getAugmentationAnnuelle() {
         return 0;
     }
@@ -305,8 +299,7 @@ public class Assurance extends Queryable{
         this.idAssurance = id;
     }
 
-    //renvoie l'idBien
-    public int selectIdBien() throws AssuranceException {
+    public Bien getBienAssure() throws AssuranceException {
         if (this.idAssurance <= 0) {
             throw new AssuranceException("L'ID de l'assurance est invalide.");
         }
@@ -323,7 +316,7 @@ public class Assurance extends Queryable{
 
             // Récupère le premier résultat et retourne l'ID du bien sous forme de chaîne
             Map<String, Object> row = rs.getFirst();
-            return (int) row.get("IdBien");
+            return row.get("IdBien") == null ? null : Bien.findById((int) row.get("IdBien"));
         } catch (QueryElement.QEltException qEltException) {
             throw new AssuranceException(
                     "Erreur lors de la récupération de l'ID du bien associé à l'assurance avec ID " + this.idAssurance,
