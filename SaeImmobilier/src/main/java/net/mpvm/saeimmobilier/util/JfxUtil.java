@@ -1,5 +1,6 @@
 package net.mpvm.saeimmobilier.util;
 
+import com.mysql.cj.xdevapi.Table;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -7,10 +8,15 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableRow;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import net.mpvm.saeimmobilier.modele.Immeuble;
+import net.mpvm.saeimmobilier.sql.Query.Queryable;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -22,6 +28,9 @@ public class JfxUtil {
     public static final String ASSURANCE_GRIDPANE = "assurance-gridpane";
     public static final String ASSURANCE_LABEL = "assurance-label";
     public static final String COL_VILLE = "col-ville";
+    public static final String STYLE_CELL = "-fx-text-fill: white; -fx-font-size: 14px; -fx-background-color: #1e2d3e;";
+    public static final String STYLE_CELL_HOVER = "-fx-text-fill: black; -fx-font-size: 14px; -fx-background-color: white;";
+    public static final String STYLE_BORDER_CELL = "-fx-border-color: black; -fx-border-width: 0 0 1 0;";
 
     public static void updateStage(Stage primaryStage, String fxmlFile, String nomPage){
         updateStage(primaryStage, fxmlFile, nomPage, 0, 0);
@@ -113,5 +122,52 @@ public class JfxUtil {
     public static void setClass(String className, Node... nodes){
         for (Node node : nodes) node.getStyleClass().add(className);
 
+    }
+
+    public static void updateRow(Queryable item, boolean empty, List<TableRow<?>> register, TableRow<?> tableRow) {
+        if (empty || item == null) {
+            tableRow.setStyle(""); // Reset style for empty rows
+        } else {
+            if (tableRow.isSelected()) {
+                tableRow.setStyle(STYLE_BORDER_CELL+"-fx-background-color: #336699; -fx-text-fill: white;"); // Apply hover style
+            } else {
+                tableRow.setStyle(STYLE_BORDER_CELL); // Reset style for unselected rows
+            }
+
+            tableRow.setOnMouseEntered(event -> {
+                if (!tableRow.isSelected()) {
+                    for (int i = 0; i < tableRow.getChildrenUnmodifiable().size(); i++) {
+                        if (tableRow.getChildrenUnmodifiable().get(i) instanceof TableCell<?, ?> cell) {
+                            cell.setStyle(STYLE_CELL_HOVER);
+                        }
+                    }
+                }
+            });
+            tableRow.setOnMouseClicked(e -> {
+                if (e.getClickCount() == 1){
+                    for(TableRow<?> row : register){
+                        for (int i = 0; i < row.getChildrenUnmodifiable().size(); i++) {
+                            if (row.getChildrenUnmodifiable().get(i) instanceof TableCell<?, ?> cell) {
+                                cell.setStyle(STYLE_CELL);
+                            }
+                        }
+                    }
+                    for (int i = 0; i < tableRow.getChildrenUnmodifiable().size(); i++) {
+                        if (tableRow.getChildrenUnmodifiable().get(i) instanceof TableCell<?, ?> cell) {
+                            cell.setStyle(STYLE_CELL_HOVER);
+                        }
+                    }
+                }
+            });
+            tableRow.setOnMouseExited(event -> {
+                if (!tableRow.isSelected()) {
+                    for (int i = 0; i < tableRow.getChildrenUnmodifiable().size(); i++) {
+                        if (tableRow.getChildrenUnmodifiable().get(i) instanceof TableCell<?, ?> cell) {
+                            cell.setStyle(STYLE_CELL);
+                        }
+                    }
+                }
+            });
+        }
     }
 }

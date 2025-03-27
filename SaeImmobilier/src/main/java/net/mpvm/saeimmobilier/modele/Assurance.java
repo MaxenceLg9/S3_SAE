@@ -252,12 +252,24 @@ public class Assurance extends Queryable{
 
     }
 
+    public static Assurance getAssuranceFromBien(Bien bien)throws AssuranceException{
+        try(SelectQueryElement selectQueryElement = new SelectQueryElement("SELECT Assurance.* FROM Assurance JOIN Bien ON Bien.IdBien = Assurance.IdBien WHERE Annee = 2025 AND Bien.IdBien = ?")){
+            selectQueryElement.setArgs(Map.of(1,bien.getIdBien()));
+            Result rs = selectQueryElement.execute();
+            if(rs.isEmpty())
+                return null;
+            return new Assurance.ABuilder(rs.getFirst()).build();
+        } catch(QueryElement.QEltException qE){
+            throw new AssuranceException("Erreur lors de la récupération de l'assurance",qE.getSqlException());
+        }
+    }
+
     //associe une assurance à un bien
     public void attribuerUneAssurance(Bien bien) throws AssuranceException {
         if (bien.getIdBien() <= 0 || idAssurance <= 0) {
             throw new AssuranceException("L'ID du bien et de l'assurance doivent être valides.");
         }
-        String CHECK_QUERY = "SELECT COUNT(*) as count FROM AssuranceHERE IdBien = ? AND Annee = ?";
+        String CHECK_QUERY = "SELECT COUNT(*) as count FROM Assurance WHERE IdBien = ? AND Annee = ?";
         try (SelectQueryElement checkQuery = new SelectQueryElement(CHECK_QUERY)) {
             checkQuery.setArgs(Map.of(1, bien.getIdBien(), 2, this.annee));
             Result rs = checkQuery.execute();
@@ -303,16 +315,10 @@ public class Assurance extends Queryable{
         if (this.idAssurance <= 0) {
             throw new AssuranceException("L'ID de l'assurance est invalide.");
         }
-
         String SELECT_QUERY = "SELECT IdBien FROM Assurance WHERE IdAssurance = ?";
         try (SelectQueryElement query = new SelectQueryElement(SELECT_QUERY)) {
             query.setArgs(Map.of(1, this.idAssurance));
             Result rs = query.execute();
-
-            if (rs.isEmpty()) {
-                // Renvoie "aucun" si aucun résultat n'est trouvé
-                throw new AssuranceException("Aucun bien trouvé pour l'asssurance");
-            }
 
             // Récupère le premier résultat et retourne l'ID du bien sous forme de chaîne
             Map<String, Object> row = rs.getFirst();
@@ -357,8 +363,8 @@ public class Assurance extends Queryable{
             this((int) args.get("IdAssurance"),
                     TypeContrat.valueOf(args.get("TypeContrat").toString()),
                     (int) args.get("Annee"),
-                    JfxUtil.doubleToFloat((double) args.get("ProtectionJuridique")),
-                    JfxUtil.doubleToFloat((double) args.get("Prime")),
+                    JfxUtil.doubleToFloat(args.get("ProtectionJuridique")),
+                    JfxUtil.doubleToFloat(args.get("Prime")),
                     args.get("NumeroContrat").toString(),
                     args.get("NomAssurance").toString());
         }

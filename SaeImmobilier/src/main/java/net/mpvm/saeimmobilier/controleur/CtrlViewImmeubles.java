@@ -10,10 +10,7 @@ import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.control.*;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.RowConstraints;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import net.mpvm.saeimmobilier.modele.Bien;
 import net.mpvm.saeimmobilier.modele.BienLouable;
@@ -28,8 +25,6 @@ import static net.mpvm.saeimmobilier.util.JfxUtil.*;
 
 public class CtrlViewImmeubles {
 
-    public static final String STYLE_CELL = "-fx-text-fill: white; -fx-font-size: 14px; -fx-background-color: #1e2d3e;";
-    public static final String STYLE_CELL_HOVER = "-fx-text-fill: black; -fx-font-size: 14px; -fx-background-color: white;";
     @FXML
     private VBox vBoxImmeubles;
 
@@ -47,7 +42,6 @@ public class CtrlViewImmeubles {
     private void creerTableView() {
         TableColumn<Immeuble, String> colNom = new TableColumn<>("Nom");
         colNom.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getIdProprio()));
-
 
         TableColumn<Immeuble, String> colAdresse = new TableColumn<>("Adresse");
         colAdresse.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getAdresse()));
@@ -72,24 +66,33 @@ public class CtrlViewImmeubles {
             private final GridPane actionsPane = new GridPane();
 
             {
+                // Ensures buttons are centered inside the GridPane
+                actionsPane.setAlignment(Pos.CENTER);
+                actionsPane.setHgap(10);
+                actionsPane.setVgap(10);
+
+                ColumnConstraints cc = new ColumnConstraints();
+                cc.setHalignment(HPos.CENTER);
+                cc.setHgrow(Priority.ALWAYS);
+
+                RowConstraints rc = new RowConstraints();
+                rc.setValignment(VPos.CENTER);
+                rc.setVgrow(Priority.ALWAYS);
+
+                actionsPane.getColumnConstraints().addAll(cc, cc); // Apply to both columns
+                actionsPane.getRowConstraints().addAll(rc, rc); // Apply to both rows
+
                 voirBiensButton.setPrefWidth(200);
                 attribuerAssuranceButton.setPrefWidth(200);
                 faireTravaux.setPrefWidth(200);
                 supprimerButton.setPrefWidth(200);
-                actionsPane.setHgap(5);
-                actionsPane.setVgap(5);
+
                 actionsPane.add(voirBiensButton, 0, 0);
                 actionsPane.add(attribuerAssuranceButton, 1, 0);
                 actionsPane.add(faireTravaux, 0, 1);
                 actionsPane.add(supprimerButton, 1, 1);
-                actionsPane.setAlignment(Pos.CENTER);
-                ColumnConstraints cc = new ColumnConstraints(200);
-                cc.setHalignment(HPos.CENTER);
-                actionsPane.getColumnConstraints().addAll(cc,cc);
-                RowConstraints rc = new RowConstraints();
-                rc.setValignment(VPos.CENTER);
-                actionsPane.getRowConstraints().addAll(rc,rc);
             }
+
 
             @Override
             protected void updateItem(String item, boolean empty) {
@@ -111,16 +114,13 @@ public class CtrlViewImmeubles {
                         if (JfxUtil.askForDelete("Voulez vous supprimer l'immeuble") == 1)
                             supprimerImmeuble(immeuble);
                     });
-
                     setGraphic(actionsPane);
-                    setAlignment(Pos.CENTER);
                 }
             }
         });
-        tableImmeubles.getColumns().addAll(List.of(colNom,colAdresse,colCodePostal,colVille));
-        tableImmeubles.getColumns().forEach(column -> {
-            TableColumn<Immeuble, String> col = (TableColumn<Immeuble, String>) column;
-            col.setCellFactory(c -> new TableCell<Immeuble, String>() {
+        List<TableColumn<Immeuble,String>> columns = List.of(colNom,colAdresse,colCodePostal,colVille);
+        columns.forEach(column -> {
+            column.setCellFactory(c -> new TableCell<>() {
                 @Override
                 protected void updateItem(String item, boolean empty) {
                     super.updateItem(item, empty);
@@ -133,12 +133,13 @@ public class CtrlViewImmeubles {
                     }
                 }
             });
+            tableImmeubles.getColumns().add(column);
         });
 
         tableImmeubles.getColumns().add(colActions);
         tableImmeubles.setRowFactory(tv -> new TableRow<Immeuble>() {
 
-            private static final List<TableRow<Immeuble>> register = new LinkedList<>();
+            private static final List<TableRow<?>> register = new LinkedList<>();
 
             {
                 register.add(this);
@@ -147,51 +148,7 @@ public class CtrlViewImmeubles {
             @Override
             protected void updateItem(Immeuble item, boolean empty) {
                 super.updateItem(item, empty);
-
-                if (empty || item == null) {
-                    setStyle(""); // Reset style for empty rows
-                } else {
-                    if (isSelected()) {
-                        setStyle("-fx-background-color: #336699; -fx-text-fill: white;"); // Apply hover style
-                    } else {
-                        setStyle(""); // Reset style for unselected rows
-                    }
-
-                    setOnMouseEntered(event -> {
-                        if (!isSelected()) {
-                            for (int i = 0; i < getChildrenUnmodifiable().size(); i++) {
-                                if (getChildrenUnmodifiable().get(i) instanceof TableCell<?, ?> cell) {
-                                    cell.setStyle(STYLE_CELL_HOVER);
-                                }
-                            }
-                        }
-                    });
-                    setOnMouseClicked(e -> {
-                        if (e.getClickCount() == 1){
-                            for(TableRow<Immeuble> row : register){
-                                for (int i = 0; i < row.getChildrenUnmodifiable().size(); i++) {
-                                    if (row.getChildrenUnmodifiable().get(i) instanceof TableCell<?, ?> cell) {
-                                        cell.setStyle(STYLE_CELL);
-                                    }
-                                }
-                            }
-                            for (int i = 0; i < getChildrenUnmodifiable().size(); i++) {
-                                if (getChildrenUnmodifiable().get(i) instanceof TableCell<?, ?> cell) {
-                                    cell.setStyle(STYLE_CELL_HOVER);
-                                }
-                            }
-                        }
-                    });
-                    setOnMouseExited(event -> {
-                        if (!isSelected()) {
-                            for (int i = 0; i < getChildrenUnmodifiable().size(); i++) {
-                                if (getChildrenUnmodifiable().get(i) instanceof TableCell<?, ?> cell) {
-                                    cell.setStyle(STYLE_CELL);
-                                }
-                            }
-                        }
-                    });
-                }
+                JfxUtil.updateRow(item, empty,register,this);
             }
         });
         colNom.setPrefWidth(100);
@@ -199,6 +156,7 @@ public class CtrlViewImmeubles {
         colCodePostal.setPrefWidth(100);
         colVille.setPrefWidth(100);
         colActions.setPrefWidth(300);
+        colActions.setMaxWidth(500);
     }
 
 

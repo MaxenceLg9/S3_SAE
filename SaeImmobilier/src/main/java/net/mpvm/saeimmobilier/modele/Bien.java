@@ -96,9 +96,8 @@ public abstract class Bien extends Queryable {
     public abstract String getAdresse();
 
 
-    public Optional<Assurance> getAssurance() {
-        //TODO : query
-        return Optional.empty();
+    public Optional<Assurance> getAssurance() throws Assurance.AssuranceException {
+        return Optional.ofNullable(Assurance.getAssuranceFromBien(this));
     }
 
     public void setAssurance(Assurance assurance) {
@@ -192,10 +191,6 @@ public abstract class Bien extends Queryable {
         this.idProprio = idProprio;
     }
 
-    public Optional<Assurance> getAssuranceActuelle() {
-        //TODO JE SAIS PAS
-        return Optional.empty();
-    }
 
     public String getNumeroFiscal() {
         return this.numeroFiscal;
@@ -214,8 +209,6 @@ public abstract class Bien extends Queryable {
 
     }
 
-    public void update() {
-    }
 
     public String getIdProprio() {
         return this.idProprio;
