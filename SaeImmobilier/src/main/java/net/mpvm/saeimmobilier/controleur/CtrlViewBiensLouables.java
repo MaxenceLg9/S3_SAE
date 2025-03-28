@@ -3,6 +3,7 @@ package net.mpvm.saeimmobilier.controleur;
 import java.util.LinkedList;
 import java.util.List;
 
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -50,18 +51,10 @@ public class CtrlViewBiensLouables {
     // Initialise le contrôleur et configure les listeners pour la scène
     @FXML
     public void initialize() {
-        vBoxBiensLouables.sceneProperty().addListener((observable, oldScene, newScene) -> {
-            if (newScene != null) {
-                Stage stage = (Stage) newScene.getWindow();
-                if (stage != null) {
-                    setIdImmeuble(stage);
-                    afficheBiens();
-                } else {
-                    System.out.println("Pas de stage");
-                }
-            } else {
-                System.out.println("Pas de scène");
-            }
+        Platform.runLater(() -> {
+            creerTableView();
+            setIdImmeuble((Stage) vBoxBiensLouables.getScene().getWindow());
+            afficheBiens();
         });
     }
 
@@ -87,7 +80,6 @@ public class CtrlViewBiensLouables {
                 vBoxBiensLouables.getChildren().add(label);
             }
             else {
-                creerTableView();
                 ObservableList<BienLouable> lesBiens = FXCollections.observableArrayList(biens);
                 tableBiensLouables.setItems(lesBiens);
             }
