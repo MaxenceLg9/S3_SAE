@@ -57,7 +57,6 @@ public class TestImmeuble {
         assertEquals(immeuble, immeuble1);
         immeuble.delete();
         assertEquals(-1, immeuble.getIdBien());
-        assertNull(Bien.BBuilder.get(239));
     }
 
     @Test

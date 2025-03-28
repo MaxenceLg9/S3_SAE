@@ -30,6 +30,7 @@ public class TestProprietaire {
         assertNotNull(proprietaire);
         assertEquals(EMAIL,proprietaire.getEmail());
         assertEquals(PASSWORD,proprietaire.getPassword());
+        Proprietaire.countProprietaire();
     }
 
     @Test
